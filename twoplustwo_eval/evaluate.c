@@ -1221,6 +1221,9 @@ static void __Pyx_WriteUnraisable(const char *name, int clineno,
                                   int lineno, const char *filename,
                                   int full_traceback, int nogil);
 
+/* IncludeStringH.proto */
+#include <string.h>
+
 /* MemviewSliceInit.proto */
 #define __Pyx_BUF_MAX_NDIMS %(BUF_MAX_NDIMS)d
 #define __Pyx_MEMVIEW_DIRECT   1
@@ -1318,9 +1321,6 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_CallMethO(PyObject *func, PyObject
 
 /* PyObjectCallOneArg.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObject *arg);
-
-/* IncludeStringH.proto */
-#include <string.h>
 
 /* BytesEquals.proto */
 static CYTHON_INLINE int __Pyx_PyBytes_Equals(PyObject* s1, PyObject* s2, int equals);
@@ -1786,8 +1786,8 @@ static CYTHON_INLINE PyObject *__pyx_f_16PyTwoPlusTwoEval_sum_new_card(int, uint
 static CYTHON_INLINE PyObject *__pyx_f_16PyTwoPlusTwoEval_eval_hands(uint32_t *, int, double *); /*proto*/
 static uint32_t __pyx_f_16PyTwoPlusTwoEval_handStats_C(PyObject *, int __pyx_skip_dispatch); /*proto*/
 static int __pyx_f_16PyTwoPlusTwoEval_create_deck(__Pyx_memviewslice, int, int *); /*proto*/
-static double __pyx_f_16PyTwoPlusTwoEval__evaluate_all_hands(__Pyx_memviewslice, int, uint32_t, uint32_t); /*proto*/
-static double __pyx_f_16PyTwoPlusTwoEval_evaluate_all_hands(__Pyx_memviewslice, int __pyx_skip_dispatch); /*proto*/
+static __Pyx_memviewslice __pyx_f_16PyTwoPlusTwoEval__evaluate_all_hands(__Pyx_memviewslice, int, uint32_t, uint32_t); /*proto*/
+static __Pyx_memviewslice __pyx_f_16PyTwoPlusTwoEval_evaluate_all_hands(__Pyx_memviewslice, int __pyx_skip_dispatch); /*proto*/
 static void __pyx_f_16PyTwoPlusTwoEval_create_boards(int *, int, uint32_t *, int, int, double *); /*proto*/
 static __Pyx_memviewslice __pyx_f_16PyTwoPlusTwoEval_evaluate_all_boards(__Pyx_memviewslice, __Pyx_memviewslice, int __pyx_skip_dispatch); /*proto*/
 static struct __pyx_array_obj *__pyx_array_new(PyObject *, Py_ssize_t, char *, char *, char *); /*proto*/
@@ -1824,8 +1824,8 @@ static void __pyx_memoryview_slice_assign_scalar(__Pyx_memviewslice *, int, size
 static void __pyx_memoryview__slice_assign_scalar(char *, Py_ssize_t *, Py_ssize_t *, int, size_t, void *); /*proto*/
 static PyObject *__pyx_unpickle_Enum__set_state(struct __pyx_MemviewEnum_obj *, PyObject *); /*proto*/
 static PyObject *__pyx_format_from_typeinfo(__Pyx_TypeInfo *); /*proto*/
-static __Pyx_TypeInfo __Pyx_TypeInfo_int = { "int", NULL, sizeof(int), { 0 }, 0, IS_UNSIGNED(int) ? 'U' : 'I', IS_UNSIGNED(int), 0 };
 static __Pyx_TypeInfo __Pyx_TypeInfo_double = { "double", NULL, sizeof(double), { 0 }, 0, 'R', 0, 0 };
+static __Pyx_TypeInfo __Pyx_TypeInfo_int = { "int", NULL, sizeof(int), { 0 }, 0, IS_UNSIGNED(int) ? 'U' : 'I', IS_UNSIGNED(int), 0 };
 static __Pyx_TypeInfo __Pyx_TypeInfo_nn_uint32_t = { "uint32_t", NULL, sizeof(uint32_t), { 0 }, 0, IS_UNSIGNED(uint32_t) ? 'U' : 'I', IS_UNSIGNED(uint32_t), 0 };
 #define __Pyx_MODULE_NAME "PyTwoPlusTwoEval"
 extern int __pyx_module_is_main_PyTwoPlusTwoEval;
@@ -2823,12 +2823,12 @@ static int __pyx_f_16PyTwoPlusTwoEval_create_deck(__Pyx_memviewslice __pyx_v_dea
 /* "twoplustwo_eval/evaluate.pyx":82
  * 
  * 
- * cdef double _evaluate_all_hands(int[:] dead_cards, int len_dead_cards, stdint.uint32_t eval_hand, stdint.uint32_t eval_board):             # <<<<<<<<<<<<<<
+ * cdef double[:] _evaluate_all_hands(int[:] dead_cards, int len_dead_cards, stdint.uint32_t eval_hand, stdint.uint32_t eval_board):             # <<<<<<<<<<<<<<
  *     """
  *     Evaluate all rival hands vs eval_hand in one board
  */
 
-static double __pyx_f_16PyTwoPlusTwoEval__evaluate_all_hands(__Pyx_memviewslice __pyx_v_dead_cards, int __pyx_v_len_dead_cards, uint32_t __pyx_v_eval_hand, uint32_t __pyx_v_eval_board) {
+static __Pyx_memviewslice __pyx_f_16PyTwoPlusTwoEval__evaluate_all_hands(__Pyx_memviewslice __pyx_v_dead_cards, int __pyx_v_len_dead_cards, uint32_t __pyx_v_eval_hand, uint32_t __pyx_v_eval_board) {
   uint32_t __pyx_v_tmp_sum;
   uint32_t __pyx_v_first_eval_rival;
   uint32_t __pyx_v_eval_rival;
@@ -2839,21 +2839,25 @@ static double __pyx_f_16PyTwoPlusTwoEval__evaluate_all_hands(__Pyx_memviewslice 
   int __pyx_v_c2;
   int __pyx_v_card1;
   int __pyx_v_card2;
-  int __pyx_v_total;
   int *__pyx_v_rival_cards;
   int __pyx_v_num_cards;
-  double __pyx_r;
+  double __pyx_v_results[2];
+  __Pyx_memviewslice __pyx_r = { 0, 0, { 0 }, { 0 }, { 0 } };
   __Pyx_RefNannyDeclarations
-  int __pyx_t_1;
+  double __pyx_t_1[2];
   int __pyx_t_2;
   int __pyx_t_3;
-  size_t __pyx_t_4;
-  int __pyx_t_5;
+  int __pyx_t_4;
+  size_t __pyx_t_5;
   int __pyx_t_6;
   int __pyx_t_7;
   int __pyx_t_8;
   int __pyx_t_9;
-  double __pyx_t_10;
+  int __pyx_t_10;
+  struct __pyx_array_obj *__pyx_t_11 = NULL;
+  PyObject *__pyx_t_12 = NULL;
+  PyObject *__pyx_t_13 = NULL;
+  __Pyx_memviewslice __pyx_t_14 = { 0, 0, { 0 }, { 0 }, { 0 } };
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -2863,7 +2867,7 @@ static double __pyx_f_16PyTwoPlusTwoEval__evaluate_all_hands(__Pyx_memviewslice 
  *     cdef:
  *         stdint.uint32_t tmp_sum, first_eval_rival, eval_rival
  *         int win=0, loss=0, tie=0             # <<<<<<<<<<<<<<
- *         int c1, c2, card1, card2, total
+ *         int c1, c2, card1, card2
  *         int *rival_cards = <int *> PyMem_Malloc((52 - len_dead_cards) * sizeof(int))
  */
   __pyx_v_win = 0;
@@ -2872,35 +2876,46 @@ static double __pyx_f_16PyTwoPlusTwoEval__evaluate_all_hands(__Pyx_memviewslice 
 
   /* "twoplustwo_eval/evaluate.pyx":90
  *         int win=0, loss=0, tie=0
- *         int c1, c2, card1, card2, total
+ *         int c1, c2, card1, card2
  *         int *rival_cards = <int *> PyMem_Malloc((52 - len_dead_cards) * sizeof(int))             # <<<<<<<<<<<<<<
  *         int num_cards = create_deck(dead_cards, len_dead_cards, rival_cards)  # call func to create deck (rival_cards)
- *     # evaluate all rival hands possibles
+ *         double[2] results = [0.0, 0.0]
  */
   __pyx_v_rival_cards = ((int *)PyMem_Malloc(((52 - __pyx_v_len_dead_cards) * (sizeof(int)))));
 
   /* "twoplustwo_eval/evaluate.pyx":91
- *         int c1, c2, card1, card2, total
+ *         int c1, c2, card1, card2
  *         int *rival_cards = <int *> PyMem_Malloc((52 - len_dead_cards) * sizeof(int))
  *         int num_cards = create_deck(dead_cards, len_dead_cards, rival_cards)  # call func to create deck (rival_cards)             # <<<<<<<<<<<<<<
+ *         double[2] results = [0.0, 0.0]
  *     # evaluate all rival hands possibles
- *     for c1 in range(num_cards):
  */
   __pyx_v_num_cards = __pyx_f_16PyTwoPlusTwoEval_create_deck(__pyx_v_dead_cards, __pyx_v_len_dead_cards, __pyx_v_rival_cards);
 
-  /* "twoplustwo_eval/evaluate.pyx":93
+  /* "twoplustwo_eval/evaluate.pyx":92
+ *         int *rival_cards = <int *> PyMem_Malloc((52 - len_dead_cards) * sizeof(int))
  *         int num_cards = create_deck(dead_cards, len_dead_cards, rival_cards)  # call func to create deck (rival_cards)
+ *         double[2] results = [0.0, 0.0]             # <<<<<<<<<<<<<<
+ *     # evaluate all rival hands possibles
+ *     for c1 in range(num_cards):
+ */
+  __pyx_t_1[0] = 0.0;
+  __pyx_t_1[1] = 0.0;
+  memcpy(&(__pyx_v_results[0]), __pyx_t_1, sizeof(__pyx_v_results[0]) * (2));
+
+  /* "twoplustwo_eval/evaluate.pyx":94
+ *         double[2] results = [0.0, 0.0]
  *     # evaluate all rival hands possibles
  *     for c1 in range(num_cards):             # <<<<<<<<<<<<<<
  *         card1 = rival_cards[c1]
  *         tmp_sum = eval_board + card1
  */
-  __pyx_t_1 = __pyx_v_num_cards;
-  __pyx_t_2 = __pyx_t_1;
-  for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
-    __pyx_v_c1 = __pyx_t_3;
+  __pyx_t_2 = __pyx_v_num_cards;
+  __pyx_t_3 = __pyx_t_2;
+  for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
+    __pyx_v_c1 = __pyx_t_4;
 
-    /* "twoplustwo_eval/evaluate.pyx":94
+    /* "twoplustwo_eval/evaluate.pyx":95
  *     # evaluate all rival hands possibles
  *     for c1 in range(num_cards):
  *         card1 = rival_cards[c1]             # <<<<<<<<<<<<<<
@@ -2909,7 +2924,7 @@ static double __pyx_f_16PyTwoPlusTwoEval__evaluate_all_hands(__Pyx_memviewslice 
  */
     __pyx_v_card1 = (__pyx_v_rival_cards[__pyx_v_c1]);
 
-    /* "twoplustwo_eval/evaluate.pyx":95
+    /* "twoplustwo_eval/evaluate.pyx":96
  *     for c1 in range(num_cards):
  *         card1 = rival_cards[c1]
  *         tmp_sum = eval_board + card1             # <<<<<<<<<<<<<<
@@ -2918,36 +2933,36 @@ static double __pyx_f_16PyTwoPlusTwoEval__evaluate_all_hands(__Pyx_memviewslice 
  */
     __pyx_v_tmp_sum = (__pyx_v_eval_board + __pyx_v_card1);
 
-    /* "twoplustwo_eval/evaluate.pyx":96
+    /* "twoplustwo_eval/evaluate.pyx":97
  *         card1 = rival_cards[c1]
  *         tmp_sum = eval_board + card1
  *         first_eval_rival = handdat[tmp_sum]  # sum only first card             # <<<<<<<<<<<<<<
  *         for c2 in range(c1 + 1, num_cards):
  *             card2 = rival_cards[c2]
  */
-    if (unlikely(!__pyx_v_16PyTwoPlusTwoEval_handdat.memview)) { __Pyx_RaiseUnboundLocalError("handdat"); __PYX_ERR(0, 96, __pyx_L1_error) }
-    __pyx_t_4 = __pyx_v_tmp_sum;
-    __pyx_t_5 = -1;
-    if (unlikely(__pyx_t_4 >= (size_t)__pyx_v_16PyTwoPlusTwoEval_handdat.shape[0])) __pyx_t_5 = 0;
-    if (unlikely(__pyx_t_5 != -1)) {
-      __Pyx_RaiseBufferIndexError(__pyx_t_5);
-      __PYX_ERR(0, 96, __pyx_L1_error)
+    if (unlikely(!__pyx_v_16PyTwoPlusTwoEval_handdat.memview)) { __Pyx_RaiseUnboundLocalError("handdat"); __PYX_ERR(0, 97, __pyx_L1_error) }
+    __pyx_t_5 = __pyx_v_tmp_sum;
+    __pyx_t_6 = -1;
+    if (unlikely(__pyx_t_5 >= (size_t)__pyx_v_16PyTwoPlusTwoEval_handdat.shape[0])) __pyx_t_6 = 0;
+    if (unlikely(__pyx_t_6 != -1)) {
+      __Pyx_RaiseBufferIndexError(__pyx_t_6);
+      __PYX_ERR(0, 97, __pyx_L1_error)
     }
-    __pyx_v_first_eval_rival = (*((uint32_t *) ( /* dim=0 */ (__pyx_v_16PyTwoPlusTwoEval_handdat.data + __pyx_t_4 * __pyx_v_16PyTwoPlusTwoEval_handdat.strides[0]) )));
+    __pyx_v_first_eval_rival = (*((uint32_t *) ( /* dim=0 */ (__pyx_v_16PyTwoPlusTwoEval_handdat.data + __pyx_t_5 * __pyx_v_16PyTwoPlusTwoEval_handdat.strides[0]) )));
 
-    /* "twoplustwo_eval/evaluate.pyx":97
+    /* "twoplustwo_eval/evaluate.pyx":98
  *         tmp_sum = eval_board + card1
  *         first_eval_rival = handdat[tmp_sum]  # sum only first card
  *         for c2 in range(c1 + 1, num_cards):             # <<<<<<<<<<<<<<
  *             card2 = rival_cards[c2]
  *             tmp_sum = first_eval_rival + card2
  */
-    __pyx_t_5 = __pyx_v_num_cards;
-    __pyx_t_6 = __pyx_t_5;
-    for (__pyx_t_7 = (__pyx_v_c1 + 1); __pyx_t_7 < __pyx_t_6; __pyx_t_7+=1) {
-      __pyx_v_c2 = __pyx_t_7;
+    __pyx_t_6 = __pyx_v_num_cards;
+    __pyx_t_7 = __pyx_t_6;
+    for (__pyx_t_8 = (__pyx_v_c1 + 1); __pyx_t_8 < __pyx_t_7; __pyx_t_8+=1) {
+      __pyx_v_c2 = __pyx_t_8;
 
-      /* "twoplustwo_eval/evaluate.pyx":98
+      /* "twoplustwo_eval/evaluate.pyx":99
  *         first_eval_rival = handdat[tmp_sum]  # sum only first card
  *         for c2 in range(c1 + 1, num_cards):
  *             card2 = rival_cards[c2]             # <<<<<<<<<<<<<<
@@ -2956,7 +2971,7 @@ static double __pyx_f_16PyTwoPlusTwoEval__evaluate_all_hands(__Pyx_memviewslice 
  */
       __pyx_v_card2 = (__pyx_v_rival_cards[__pyx_v_c2]);
 
-      /* "twoplustwo_eval/evaluate.pyx":99
+      /* "twoplustwo_eval/evaluate.pyx":100
  *         for c2 in range(c1 + 1, num_cards):
  *             card2 = rival_cards[c2]
  *             tmp_sum = first_eval_rival + card2             # <<<<<<<<<<<<<<
@@ -2965,51 +2980,51 @@ static double __pyx_f_16PyTwoPlusTwoEval__evaluate_all_hands(__Pyx_memviewslice 
  */
       __pyx_v_tmp_sum = (__pyx_v_first_eval_rival + __pyx_v_card2);
 
-      /* "twoplustwo_eval/evaluate.pyx":100
+      /* "twoplustwo_eval/evaluate.pyx":101
  *             card2 = rival_cards[c2]
  *             tmp_sum = first_eval_rival + card2
  *             eval_rival = handdat[tmp_sum]             # <<<<<<<<<<<<<<
  *             if len_dead_cards < 5:
  *                 eval_rival = handdat[eval_rival]
  */
-      if (unlikely(!__pyx_v_16PyTwoPlusTwoEval_handdat.memview)) { __Pyx_RaiseUnboundLocalError("handdat"); __PYX_ERR(0, 100, __pyx_L1_error) }
-      __pyx_t_4 = __pyx_v_tmp_sum;
-      __pyx_t_8 = -1;
-      if (unlikely(__pyx_t_4 >= (size_t)__pyx_v_16PyTwoPlusTwoEval_handdat.shape[0])) __pyx_t_8 = 0;
-      if (unlikely(__pyx_t_8 != -1)) {
-        __Pyx_RaiseBufferIndexError(__pyx_t_8);
-        __PYX_ERR(0, 100, __pyx_L1_error)
+      if (unlikely(!__pyx_v_16PyTwoPlusTwoEval_handdat.memview)) { __Pyx_RaiseUnboundLocalError("handdat"); __PYX_ERR(0, 101, __pyx_L1_error) }
+      __pyx_t_5 = __pyx_v_tmp_sum;
+      __pyx_t_9 = -1;
+      if (unlikely(__pyx_t_5 >= (size_t)__pyx_v_16PyTwoPlusTwoEval_handdat.shape[0])) __pyx_t_9 = 0;
+      if (unlikely(__pyx_t_9 != -1)) {
+        __Pyx_RaiseBufferIndexError(__pyx_t_9);
+        __PYX_ERR(0, 101, __pyx_L1_error)
       }
-      __pyx_v_eval_rival = (*((uint32_t *) ( /* dim=0 */ (__pyx_v_16PyTwoPlusTwoEval_handdat.data + __pyx_t_4 * __pyx_v_16PyTwoPlusTwoEval_handdat.strides[0]) )));
+      __pyx_v_eval_rival = (*((uint32_t *) ( /* dim=0 */ (__pyx_v_16PyTwoPlusTwoEval_handdat.data + __pyx_t_5 * __pyx_v_16PyTwoPlusTwoEval_handdat.strides[0]) )));
 
-      /* "twoplustwo_eval/evaluate.pyx":101
+      /* "twoplustwo_eval/evaluate.pyx":102
  *             tmp_sum = first_eval_rival + card2
  *             eval_rival = handdat[tmp_sum]
  *             if len_dead_cards < 5:             # <<<<<<<<<<<<<<
  *                 eval_rival = handdat[eval_rival]
  *             # evaluate counter
  */
-      __pyx_t_9 = ((__pyx_v_len_dead_cards < 5) != 0);
-      if (__pyx_t_9) {
+      __pyx_t_10 = ((__pyx_v_len_dead_cards < 5) != 0);
+      if (__pyx_t_10) {
 
-        /* "twoplustwo_eval/evaluate.pyx":102
+        /* "twoplustwo_eval/evaluate.pyx":103
  *             eval_rival = handdat[tmp_sum]
  *             if len_dead_cards < 5:
  *                 eval_rival = handdat[eval_rival]             # <<<<<<<<<<<<<<
  *             # evaluate counter
  *             if eval_hand > eval_rival:
  */
-        if (unlikely(!__pyx_v_16PyTwoPlusTwoEval_handdat.memview)) { __Pyx_RaiseUnboundLocalError("handdat"); __PYX_ERR(0, 102, __pyx_L1_error) }
-        __pyx_t_4 = __pyx_v_eval_rival;
-        __pyx_t_8 = -1;
-        if (unlikely(__pyx_t_4 >= (size_t)__pyx_v_16PyTwoPlusTwoEval_handdat.shape[0])) __pyx_t_8 = 0;
-        if (unlikely(__pyx_t_8 != -1)) {
-          __Pyx_RaiseBufferIndexError(__pyx_t_8);
-          __PYX_ERR(0, 102, __pyx_L1_error)
+        if (unlikely(!__pyx_v_16PyTwoPlusTwoEval_handdat.memview)) { __Pyx_RaiseUnboundLocalError("handdat"); __PYX_ERR(0, 103, __pyx_L1_error) }
+        __pyx_t_5 = __pyx_v_eval_rival;
+        __pyx_t_9 = -1;
+        if (unlikely(__pyx_t_5 >= (size_t)__pyx_v_16PyTwoPlusTwoEval_handdat.shape[0])) __pyx_t_9 = 0;
+        if (unlikely(__pyx_t_9 != -1)) {
+          __Pyx_RaiseBufferIndexError(__pyx_t_9);
+          __PYX_ERR(0, 103, __pyx_L1_error)
         }
-        __pyx_v_eval_rival = (*((uint32_t *) ( /* dim=0 */ (__pyx_v_16PyTwoPlusTwoEval_handdat.data + __pyx_t_4 * __pyx_v_16PyTwoPlusTwoEval_handdat.strides[0]) )));
+        __pyx_v_eval_rival = (*((uint32_t *) ( /* dim=0 */ (__pyx_v_16PyTwoPlusTwoEval_handdat.data + __pyx_t_5 * __pyx_v_16PyTwoPlusTwoEval_handdat.strides[0]) )));
 
-        /* "twoplustwo_eval/evaluate.pyx":101
+        /* "twoplustwo_eval/evaluate.pyx":102
  *             tmp_sum = first_eval_rival + card2
  *             eval_rival = handdat[tmp_sum]
  *             if len_dead_cards < 5:             # <<<<<<<<<<<<<<
@@ -3018,17 +3033,17 @@ static double __pyx_f_16PyTwoPlusTwoEval__evaluate_all_hands(__Pyx_memviewslice 
  */
       }
 
-      /* "twoplustwo_eval/evaluate.pyx":104
+      /* "twoplustwo_eval/evaluate.pyx":105
  *                 eval_rival = handdat[eval_rival]
  *             # evaluate counter
  *             if eval_hand > eval_rival:             # <<<<<<<<<<<<<<
  *                 win += 1
  *             elif eval_hand == eval_rival:
  */
-      __pyx_t_9 = ((__pyx_v_eval_hand > __pyx_v_eval_rival) != 0);
-      if (__pyx_t_9) {
+      __pyx_t_10 = ((__pyx_v_eval_hand > __pyx_v_eval_rival) != 0);
+      if (__pyx_t_10) {
 
-        /* "twoplustwo_eval/evaluate.pyx":105
+        /* "twoplustwo_eval/evaluate.pyx":106
  *             # evaluate counter
  *             if eval_hand > eval_rival:
  *                 win += 1             # <<<<<<<<<<<<<<
@@ -3037,7 +3052,7 @@ static double __pyx_f_16PyTwoPlusTwoEval__evaluate_all_hands(__Pyx_memviewslice 
  */
         __pyx_v_win = (__pyx_v_win + 1);
 
-        /* "twoplustwo_eval/evaluate.pyx":104
+        /* "twoplustwo_eval/evaluate.pyx":105
  *                 eval_rival = handdat[eval_rival]
  *             # evaluate counter
  *             if eval_hand > eval_rival:             # <<<<<<<<<<<<<<
@@ -3047,17 +3062,17 @@ static double __pyx_f_16PyTwoPlusTwoEval__evaluate_all_hands(__Pyx_memviewslice 
         goto __pyx_L8;
       }
 
-      /* "twoplustwo_eval/evaluate.pyx":106
+      /* "twoplustwo_eval/evaluate.pyx":107
  *             if eval_hand > eval_rival:
  *                 win += 1
  *             elif eval_hand == eval_rival:             # <<<<<<<<<<<<<<
  *                 tie += 1
  *             else:
  */
-      __pyx_t_9 = ((__pyx_v_eval_hand == __pyx_v_eval_rival) != 0);
-      if (__pyx_t_9) {
+      __pyx_t_10 = ((__pyx_v_eval_hand == __pyx_v_eval_rival) != 0);
+      if (__pyx_t_10) {
 
-        /* "twoplustwo_eval/evaluate.pyx":107
+        /* "twoplustwo_eval/evaluate.pyx":108
  *                 win += 1
  *             elif eval_hand == eval_rival:
  *                 tie += 1             # <<<<<<<<<<<<<<
@@ -3066,7 +3081,7 @@ static double __pyx_f_16PyTwoPlusTwoEval__evaluate_all_hands(__Pyx_memviewslice 
  */
         __pyx_v_tie = (__pyx_v_tie + 1);
 
-        /* "twoplustwo_eval/evaluate.pyx":106
+        /* "twoplustwo_eval/evaluate.pyx":107
  *             if eval_hand > eval_rival:
  *                 win += 1
  *             elif eval_hand == eval_rival:             # <<<<<<<<<<<<<<
@@ -3076,7 +3091,7 @@ static double __pyx_f_16PyTwoPlusTwoEval__evaluate_all_hands(__Pyx_memviewslice 
         goto __pyx_L8;
       }
 
-      /* "twoplustwo_eval/evaluate.pyx":109
+      /* "twoplustwo_eval/evaluate.pyx":110
  *                 tie += 1
  *             else:
  *                 loss += 1             # <<<<<<<<<<<<<<
@@ -3090,66 +3105,93 @@ static double __pyx_f_16PyTwoPlusTwoEval__evaluate_all_hands(__Pyx_memviewslice 
     }
   }
 
-  /* "twoplustwo_eval/evaluate.pyx":111
+  /* "twoplustwo_eval/evaluate.pyx":112
  *                 loss += 1
  * 
  *     PyMem_Free(rival_cards)             # <<<<<<<<<<<<<<
- *     total = win + loss + tie
- *     return (win + tie / 2) / total
+ *     results[0] = win
+ *     results[1] = tie / 2
  */
   PyMem_Free(__pyx_v_rival_cards);
 
-  /* "twoplustwo_eval/evaluate.pyx":112
- * 
- *     PyMem_Free(rival_cards)
- *     total = win + loss + tie             # <<<<<<<<<<<<<<
- *     return (win + tie / 2) / total
- * 
- */
-  __pyx_v_total = ((__pyx_v_win + __pyx_v_loss) + __pyx_v_tie);
-
   /* "twoplustwo_eval/evaluate.pyx":113
+ * 
  *     PyMem_Free(rival_cards)
- *     total = win + loss + tie
- *     return (win + tie / 2) / total             # <<<<<<<<<<<<<<
+ *     results[0] = win             # <<<<<<<<<<<<<<
+ *     results[1] = tie / 2
+ *     return results
+ */
+  (__pyx_v_results[0]) = __pyx_v_win;
+
+  /* "twoplustwo_eval/evaluate.pyx":114
+ *     PyMem_Free(rival_cards)
+ *     results[0] = win
+ *     results[1] = tie / 2             # <<<<<<<<<<<<<<
+ *     return results
+ * 
+ */
+  (__pyx_v_results[1]) = (((double)__pyx_v_tie) / 2.0);
+
+  /* "twoplustwo_eval/evaluate.pyx":115
+ *     results[0] = win
+ *     results[1] = tie / 2
+ *     return results             # <<<<<<<<<<<<<<
  * 
  * 
  */
-  __pyx_t_10 = (__pyx_v_win + (((double)__pyx_v_tie) / 2.0));
-  if (unlikely(__pyx_v_total == 0)) {
-    PyErr_SetString(PyExc_ZeroDivisionError, "float division");
-    __PYX_ERR(0, 113, __pyx_L1_error)
-  }
-  __pyx_r = (__pyx_t_10 / ((double)__pyx_v_total));
+  __pyx_t_13 = __pyx_format_from_typeinfo(&__Pyx_TypeInfo_double); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 115, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_13);
+  __pyx_t_12 = Py_BuildValue((char*) "("  __PYX_BUILD_PY_SSIZE_T  ")", ((Py_ssize_t)2)); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 115, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_12);
+  __pyx_t_11 = __pyx_array_new(__pyx_t_12, sizeof(double), PyBytes_AS_STRING(__pyx_t_13), (char *) "fortran", (char *) __pyx_v_results);
+  if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 115, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_11);
+  __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+  __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
+  __pyx_t_14 = __Pyx_PyObject_to_MemoryviewSlice_ds_double(((PyObject *)__pyx_t_11), PyBUF_WRITABLE); if (unlikely(!__pyx_t_14.memview)) __PYX_ERR(0, 115, __pyx_L1_error)
+  __Pyx_DECREF(((PyObject *)__pyx_t_11)); __pyx_t_11 = 0;
+  __pyx_r = __pyx_t_14;
+  __pyx_t_14.memview = NULL;
+  __pyx_t_14.data = NULL;
   goto __pyx_L0;
 
   /* "twoplustwo_eval/evaluate.pyx":82
  * 
  * 
- * cdef double _evaluate_all_hands(int[:] dead_cards, int len_dead_cards, stdint.uint32_t eval_hand, stdint.uint32_t eval_board):             # <<<<<<<<<<<<<<
+ * cdef double[:] _evaluate_all_hands(int[:] dead_cards, int len_dead_cards, stdint.uint32_t eval_hand, stdint.uint32_t eval_board):             # <<<<<<<<<<<<<<
  *     """
  *     Evaluate all rival hands vs eval_hand in one board
  */
 
   /* function exit code */
   __pyx_L1_error:;
-  __Pyx_WriteUnraisable("PyTwoPlusTwoEval._evaluate_all_hands", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
-  __pyx_r = 0;
+  __Pyx_XDECREF(((PyObject *)__pyx_t_11));
+  __Pyx_XDECREF(__pyx_t_12);
+  __Pyx_XDECREF(__pyx_t_13);
+  __PYX_XDEC_MEMVIEW(&__pyx_t_14, 1);
+  __pyx_r.data = NULL;
+  __pyx_r.memview = NULL;
+  __Pyx_AddTraceback("PyTwoPlusTwoEval._evaluate_all_hands", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  goto __pyx_L2;
   __pyx_L0:;
+  if (unlikely(!__pyx_r.memview)) {
+    PyErr_SetString(PyExc_TypeError, "Memoryview return value is not initialized");
+  }
+  __pyx_L2:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "twoplustwo_eval/evaluate.pyx":116
+/* "twoplustwo_eval/evaluate.pyx":118
  * 
  * 
- * cpdef double evaluate_all_hands(int[:] cards):             # <<<<<<<<<<<<<<
+ * cpdef double[:] evaluate_all_hands(int[:] cards):             # <<<<<<<<<<<<<<
  *     """
  *     Evaluate one hand vs all other hands in one specific board
  */
 
 static PyObject *__pyx_pw_16PyTwoPlusTwoEval_3evaluate_all_hands(PyObject *__pyx_self, PyObject *__pyx_arg_cards); /*proto*/
-static double __pyx_f_16PyTwoPlusTwoEval_evaluate_all_hands(__Pyx_memviewslice __pyx_v_cards, CYTHON_UNUSED int __pyx_skip_dispatch) {
+static __Pyx_memviewslice __pyx_f_16PyTwoPlusTwoEval_evaluate_all_hands(__Pyx_memviewslice __pyx_v_cards, CYTHON_UNUSED int __pyx_skip_dispatch) {
   uint32_t __pyx_v_tmp_sum;
   uint32_t __pyx_v_eval_board;
   uint32_t __pyx_v_eval_hand;
@@ -3158,7 +3200,7 @@ static double __pyx_f_16PyTwoPlusTwoEval_evaluate_all_hands(__Pyx_memviewslice _
   CYTHON_UNUSED int __pyx_v_loss;
   CYTHON_UNUSED int __pyx_v_tie;
   int __pyx_v_len_cards;
-  double __pyx_r;
+  __Pyx_memviewslice __pyx_r = { 0, 0, { 0 }, { 0 }, { 0 } };
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
   int __pyx_t_2;
@@ -3167,12 +3209,13 @@ static double __pyx_f_16PyTwoPlusTwoEval_evaluate_all_hands(__Pyx_memviewslice _
   int __pyx_t_5;
   size_t __pyx_t_6;
   int __pyx_t_7;
+  __Pyx_memviewslice __pyx_t_8 = { 0, 0, { 0 }, { 0 }, { 0 } };
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("evaluate_all_hands", 0);
 
-  /* "twoplustwo_eval/evaluate.pyx":125
+  /* "twoplustwo_eval/evaluate.pyx":127
  *         stdint.uint32_t tmp_sum, eval_board, eval_hand
  *         int i
  *         int win=0, loss=0, tie=0             # <<<<<<<<<<<<<<
@@ -3183,7 +3226,7 @@ static double __pyx_f_16PyTwoPlusTwoEval_evaluate_all_hands(__Pyx_memviewslice _
   __pyx_v_loss = 0;
   __pyx_v_tie = 0;
 
-  /* "twoplustwo_eval/evaluate.pyx":126
+  /* "twoplustwo_eval/evaluate.pyx":128
  *         int i
  *         int win=0, loss=0, tie=0
  *         int len_cards = cards.shape[0]             # <<<<<<<<<<<<<<
@@ -3192,7 +3235,7 @@ static double __pyx_f_16PyTwoPlusTwoEval_evaluate_all_hands(__Pyx_memviewslice _
  */
   __pyx_v_len_cards = (__pyx_v_cards.shape[0]);
 
-  /* "twoplustwo_eval/evaluate.pyx":128
+  /* "twoplustwo_eval/evaluate.pyx":130
  *         int len_cards = cards.shape[0]
  *     # eval board
  *     eval_board = 53             # <<<<<<<<<<<<<<
@@ -3201,7 +3244,7 @@ static double __pyx_f_16PyTwoPlusTwoEval_evaluate_all_hands(__Pyx_memviewslice _
  */
   __pyx_v_eval_board = 53;
 
-  /* "twoplustwo_eval/evaluate.pyx":129
+  /* "twoplustwo_eval/evaluate.pyx":131
  *     # eval board
  *     eval_board = 53
  *     for i in range(2, len_cards):  # board is the same for all hands, store sum             # <<<<<<<<<<<<<<
@@ -3213,7 +3256,7 @@ static double __pyx_f_16PyTwoPlusTwoEval_evaluate_all_hands(__Pyx_memviewslice _
   for (__pyx_t_3 = 2; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
     __pyx_v_i = __pyx_t_3;
 
-    /* "twoplustwo_eval/evaluate.pyx":130
+    /* "twoplustwo_eval/evaluate.pyx":132
  *     eval_board = 53
  *     for i in range(2, len_cards):  # board is the same for all hands, store sum
  *         tmp_sum = eval_board + cards[i]             # <<<<<<<<<<<<<<
@@ -3228,29 +3271,29 @@ static double __pyx_f_16PyTwoPlusTwoEval_evaluate_all_hands(__Pyx_memviewslice _
     } else if (unlikely(__pyx_t_4 >= __pyx_v_cards.shape[0])) __pyx_t_5 = 0;
     if (unlikely(__pyx_t_5 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_5);
-      __PYX_ERR(0, 130, __pyx_L1_error)
+      __PYX_ERR(0, 132, __pyx_L1_error)
     }
     __pyx_v_tmp_sum = (__pyx_v_eval_board + (*((int *) ( /* dim=0 */ (__pyx_v_cards.data + __pyx_t_4 * __pyx_v_cards.strides[0]) ))));
 
-    /* "twoplustwo_eval/evaluate.pyx":131
+    /* "twoplustwo_eval/evaluate.pyx":133
  *     for i in range(2, len_cards):  # board is the same for all hands, store sum
  *         tmp_sum = eval_board + cards[i]
  *         eval_board = handdat[tmp_sum]             # <<<<<<<<<<<<<<
  *     # eval hand
  *     eval_hand = eval_board  # starting in board sum
  */
-    if (unlikely(!__pyx_v_16PyTwoPlusTwoEval_handdat.memview)) { __Pyx_RaiseUnboundLocalError("handdat"); __PYX_ERR(0, 131, __pyx_L1_error) }
+    if (unlikely(!__pyx_v_16PyTwoPlusTwoEval_handdat.memview)) { __Pyx_RaiseUnboundLocalError("handdat"); __PYX_ERR(0, 133, __pyx_L1_error) }
     __pyx_t_6 = __pyx_v_tmp_sum;
     __pyx_t_5 = -1;
     if (unlikely(__pyx_t_6 >= (size_t)__pyx_v_16PyTwoPlusTwoEval_handdat.shape[0])) __pyx_t_5 = 0;
     if (unlikely(__pyx_t_5 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_5);
-      __PYX_ERR(0, 131, __pyx_L1_error)
+      __PYX_ERR(0, 133, __pyx_L1_error)
     }
     __pyx_v_eval_board = (*((uint32_t *) ( /* dim=0 */ (__pyx_v_16PyTwoPlusTwoEval_handdat.data + __pyx_t_6 * __pyx_v_16PyTwoPlusTwoEval_handdat.strides[0]) )));
   }
 
-  /* "twoplustwo_eval/evaluate.pyx":133
+  /* "twoplustwo_eval/evaluate.pyx":135
  *         eval_board = handdat[tmp_sum]
  *     # eval hand
  *     eval_hand = eval_board  # starting in board sum             # <<<<<<<<<<<<<<
@@ -3259,7 +3302,7 @@ static double __pyx_f_16PyTwoPlusTwoEval_evaluate_all_hands(__Pyx_memviewslice _
  */
   __pyx_v_eval_hand = __pyx_v_eval_board;
 
-  /* "twoplustwo_eval/evaluate.pyx":134
+  /* "twoplustwo_eval/evaluate.pyx":136
  *     # eval hand
  *     eval_hand = eval_board  # starting in board sum
  *     for i in range(2):             # <<<<<<<<<<<<<<
@@ -3269,7 +3312,7 @@ static double __pyx_f_16PyTwoPlusTwoEval_evaluate_all_hands(__Pyx_memviewslice _
   for (__pyx_t_1 = 0; __pyx_t_1 < 2; __pyx_t_1+=1) {
     __pyx_v_i = __pyx_t_1;
 
-    /* "twoplustwo_eval/evaluate.pyx":135
+    /* "twoplustwo_eval/evaluate.pyx":137
  *     eval_hand = eval_board  # starting in board sum
  *     for i in range(2):
  *         tmp_sum = eval_hand + cards[i]             # <<<<<<<<<<<<<<
@@ -3284,28 +3327,28 @@ static double __pyx_f_16PyTwoPlusTwoEval_evaluate_all_hands(__Pyx_memviewslice _
     } else if (unlikely(__pyx_t_4 >= __pyx_v_cards.shape[0])) __pyx_t_2 = 0;
     if (unlikely(__pyx_t_2 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_2);
-      __PYX_ERR(0, 135, __pyx_L1_error)
+      __PYX_ERR(0, 137, __pyx_L1_error)
     }
     __pyx_v_tmp_sum = (__pyx_v_eval_hand + (*((int *) ( /* dim=0 */ (__pyx_v_cards.data + __pyx_t_4 * __pyx_v_cards.strides[0]) ))));
 
-    /* "twoplustwo_eval/evaluate.pyx":136
+    /* "twoplustwo_eval/evaluate.pyx":138
  *     for i in range(2):
  *         tmp_sum = eval_hand + cards[i]
  *         eval_hand = handdat[tmp_sum]             # <<<<<<<<<<<<<<
  *         if len_cards < 5:
  *             eval_hand = handdat[eval_hand]
  */
-    if (unlikely(!__pyx_v_16PyTwoPlusTwoEval_handdat.memview)) { __Pyx_RaiseUnboundLocalError("handdat"); __PYX_ERR(0, 136, __pyx_L1_error) }
+    if (unlikely(!__pyx_v_16PyTwoPlusTwoEval_handdat.memview)) { __Pyx_RaiseUnboundLocalError("handdat"); __PYX_ERR(0, 138, __pyx_L1_error) }
     __pyx_t_6 = __pyx_v_tmp_sum;
     __pyx_t_2 = -1;
     if (unlikely(__pyx_t_6 >= (size_t)__pyx_v_16PyTwoPlusTwoEval_handdat.shape[0])) __pyx_t_2 = 0;
     if (unlikely(__pyx_t_2 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_2);
-      __PYX_ERR(0, 136, __pyx_L1_error)
+      __PYX_ERR(0, 138, __pyx_L1_error)
     }
     __pyx_v_eval_hand = (*((uint32_t *) ( /* dim=0 */ (__pyx_v_16PyTwoPlusTwoEval_handdat.data + __pyx_t_6 * __pyx_v_16PyTwoPlusTwoEval_handdat.strides[0]) )));
 
-    /* "twoplustwo_eval/evaluate.pyx":137
+    /* "twoplustwo_eval/evaluate.pyx":139
  *         tmp_sum = eval_hand + cards[i]
  *         eval_hand = handdat[tmp_sum]
  *         if len_cards < 5:             # <<<<<<<<<<<<<<
@@ -3315,24 +3358,24 @@ static double __pyx_f_16PyTwoPlusTwoEval_evaluate_all_hands(__Pyx_memviewslice _
     __pyx_t_7 = ((__pyx_v_len_cards < 5) != 0);
     if (__pyx_t_7) {
 
-      /* "twoplustwo_eval/evaluate.pyx":138
+      /* "twoplustwo_eval/evaluate.pyx":140
  *         eval_hand = handdat[tmp_sum]
  *         if len_cards < 5:
  *             eval_hand = handdat[eval_hand]             # <<<<<<<<<<<<<<
  * 
  *     return _evaluate_all_hands(cards, len_cards, eval_hand, eval_board)
  */
-      if (unlikely(!__pyx_v_16PyTwoPlusTwoEval_handdat.memview)) { __Pyx_RaiseUnboundLocalError("handdat"); __PYX_ERR(0, 138, __pyx_L1_error) }
+      if (unlikely(!__pyx_v_16PyTwoPlusTwoEval_handdat.memview)) { __Pyx_RaiseUnboundLocalError("handdat"); __PYX_ERR(0, 140, __pyx_L1_error) }
       __pyx_t_6 = __pyx_v_eval_hand;
       __pyx_t_2 = -1;
       if (unlikely(__pyx_t_6 >= (size_t)__pyx_v_16PyTwoPlusTwoEval_handdat.shape[0])) __pyx_t_2 = 0;
       if (unlikely(__pyx_t_2 != -1)) {
         __Pyx_RaiseBufferIndexError(__pyx_t_2);
-        __PYX_ERR(0, 138, __pyx_L1_error)
+        __PYX_ERR(0, 140, __pyx_L1_error)
       }
       __pyx_v_eval_hand = (*((uint32_t *) ( /* dim=0 */ (__pyx_v_16PyTwoPlusTwoEval_handdat.data + __pyx_t_6 * __pyx_v_16PyTwoPlusTwoEval_handdat.strides[0]) )));
 
-      /* "twoplustwo_eval/evaluate.pyx":137
+      /* "twoplustwo_eval/evaluate.pyx":139
  *         tmp_sum = eval_hand + cards[i]
  *         eval_hand = handdat[tmp_sum]
  *         if len_cards < 5:             # <<<<<<<<<<<<<<
@@ -3342,36 +3385,46 @@ static double __pyx_f_16PyTwoPlusTwoEval_evaluate_all_hands(__Pyx_memviewslice _
     }
   }
 
-  /* "twoplustwo_eval/evaluate.pyx":140
+  /* "twoplustwo_eval/evaluate.pyx":142
  *             eval_hand = handdat[eval_hand]
  * 
  *     return _evaluate_all_hands(cards, len_cards, eval_hand, eval_board)             # <<<<<<<<<<<<<<
  * 
  * 
  */
-  __pyx_r = __pyx_f_16PyTwoPlusTwoEval__evaluate_all_hands(__pyx_v_cards, __pyx_v_len_cards, __pyx_v_eval_hand, __pyx_v_eval_board);
+  __pyx_t_8 = __pyx_f_16PyTwoPlusTwoEval__evaluate_all_hands(__pyx_v_cards, __pyx_v_len_cards, __pyx_v_eval_hand, __pyx_v_eval_board); if (unlikely(!__pyx_t_8.memview)) __PYX_ERR(0, 142, __pyx_L1_error)
+  __pyx_r = __pyx_t_8;
+  __pyx_t_8.memview = NULL;
+  __pyx_t_8.data = NULL;
   goto __pyx_L0;
 
-  /* "twoplustwo_eval/evaluate.pyx":116
+  /* "twoplustwo_eval/evaluate.pyx":118
  * 
  * 
- * cpdef double evaluate_all_hands(int[:] cards):             # <<<<<<<<<<<<<<
+ * cpdef double[:] evaluate_all_hands(int[:] cards):             # <<<<<<<<<<<<<<
  *     """
  *     Evaluate one hand vs all other hands in one specific board
  */
 
   /* function exit code */
   __pyx_L1_error:;
-  __Pyx_WriteUnraisable("PyTwoPlusTwoEval.evaluate_all_hands", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
-  __pyx_r = 0;
+  __PYX_XDEC_MEMVIEW(&__pyx_t_8, 1);
+  __pyx_r.data = NULL;
+  __pyx_r.memview = NULL;
+  __Pyx_AddTraceback("PyTwoPlusTwoEval.evaluate_all_hands", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  goto __pyx_L2;
   __pyx_L0:;
+  if (unlikely(!__pyx_r.memview)) {
+    PyErr_SetString(PyExc_TypeError, "Memoryview return value is not initialized");
+  }
+  __pyx_L2:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
 /* Python wrapper */
 static PyObject *__pyx_pw_16PyTwoPlusTwoEval_3evaluate_all_hands(PyObject *__pyx_self, PyObject *__pyx_arg_cards); /*proto*/
-static char __pyx_doc_16PyTwoPlusTwoEval_2evaluate_all_hands[] = "\n    Evaluate one hand vs all other hands in one specific board\n    :param cards: Array int where hand[:2] and board[2:]\n    :return: probabilities to win\n    ";
+static char __pyx_doc_16PyTwoPlusTwoEval_2evaluate_all_hands[] = "\n    Evaluate one hand vs all other hands in one specific board\n    :param cards: Array int where hand[:2] and board[2:]\n    :return: probabilities to [win, tie]\n    ";
 static PyObject *__pyx_pw_16PyTwoPlusTwoEval_3evaluate_all_hands(PyObject *__pyx_self, PyObject *__pyx_arg_cards) {
   __Pyx_memviewslice __pyx_v_cards = { 0, 0, { 0 }, { 0 }, { 0 } };
   int __pyx_lineno = 0;
@@ -3381,7 +3434,7 @@ static PyObject *__pyx_pw_16PyTwoPlusTwoEval_3evaluate_all_hands(PyObject *__pyx
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("evaluate_all_hands (wrapper)", 0);
   assert(__pyx_arg_cards); {
-    __pyx_v_cards = __Pyx_PyObject_to_MemoryviewSlice_ds_int(__pyx_arg_cards, PyBUF_WRITABLE); if (unlikely(!__pyx_v_cards.memview)) __PYX_ERR(0, 116, __pyx_L3_error)
+    __pyx_v_cards = __Pyx_PyObject_to_MemoryviewSlice_ds_int(__pyx_arg_cards, PyBUF_WRITABLE); if (unlikely(!__pyx_v_cards.memview)) __PYX_ERR(0, 118, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -3399,22 +3452,28 @@ static PyObject *__pyx_pw_16PyTwoPlusTwoEval_3evaluate_all_hands(PyObject *__pyx
 static PyObject *__pyx_pf_16PyTwoPlusTwoEval_2evaluate_all_hands(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_cards) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
+  __Pyx_memviewslice __pyx_t_1 = { 0, 0, { 0 }, { 0 }, { 0 } };
+  PyObject *__pyx_t_2 = NULL;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("evaluate_all_hands", 0);
   __Pyx_XDECREF(__pyx_r);
-  if (unlikely(!__pyx_v_cards.memview)) { __Pyx_RaiseUnboundLocalError("cards"); __PYX_ERR(0, 116, __pyx_L1_error) }
-  __pyx_t_1 = PyFloat_FromDouble(__pyx_f_16PyTwoPlusTwoEval_evaluate_all_hands(__pyx_v_cards, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 116, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_r = __pyx_t_1;
-  __pyx_t_1 = 0;
+  if (unlikely(!__pyx_v_cards.memview)) { __Pyx_RaiseUnboundLocalError("cards"); __PYX_ERR(0, 118, __pyx_L1_error) }
+  __pyx_t_1 = __pyx_f_16PyTwoPlusTwoEval_evaluate_all_hands(__pyx_v_cards, 0); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 118, __pyx_L1_error)
+  __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_1, 1, (PyObject *(*)(char *)) __pyx_memview_get_double, (int (*)(char *, PyObject *)) __pyx_memview_set_double, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 118, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __PYX_XDEC_MEMVIEW(&__pyx_t_1, 1);
+  __pyx_t_1.memview = NULL;
+  __pyx_t_1.data = NULL;
+  __pyx_r = __pyx_t_2;
+  __pyx_t_2 = 0;
   goto __pyx_L0;
 
   /* function exit code */
   __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
+  __PYX_XDEC_MEMVIEW(&__pyx_t_1, 1);
+  __Pyx_XDECREF(__pyx_t_2);
   __Pyx_AddTraceback("PyTwoPlusTwoEval.evaluate_all_hands", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
@@ -3424,7 +3483,7 @@ static PyObject *__pyx_pf_16PyTwoPlusTwoEval_2evaluate_all_hands(CYTHON_UNUSED P
   return __pyx_r;
 }
 
-/* "twoplustwo_eval/evaluate.pyx":143
+/* "twoplustwo_eval/evaluate.pyx":145
  * 
  * 
  * cdef void create_boards(int deck[], int len_deck, stdint.uint32_t sum_hands[],             # <<<<<<<<<<<<<<
@@ -3466,7 +3525,7 @@ static void __pyx_f_16PyTwoPlusTwoEval_create_boards(int *__pyx_v_deck, int __py
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("create_boards", 0);
 
-  /* "twoplustwo_eval/evaluate.pyx":148
+  /* "twoplustwo_eval/evaluate.pyx":150
  *     cdef:
  *         int a, b, c, d, e
  *         stdint.uint32_t *new_sum_hands_a = <stdint.uint32_t *>PyMem_Malloc(num_hands * sizeof(stdint.uint32_t))             # <<<<<<<<<<<<<<
@@ -3475,7 +3534,7 @@ static void __pyx_f_16PyTwoPlusTwoEval_create_boards(int *__pyx_v_deck, int __py
  */
   __pyx_v_new_sum_hands_a = ((uint32_t *)PyMem_Malloc((__pyx_v_num_hands * (sizeof(uint32_t)))));
 
-  /* "twoplustwo_eval/evaluate.pyx":149
+  /* "twoplustwo_eval/evaluate.pyx":151
  *         int a, b, c, d, e
  *         stdint.uint32_t *new_sum_hands_a = <stdint.uint32_t *>PyMem_Malloc(num_hands * sizeof(stdint.uint32_t))
  *         stdint.uint32_t *new_sum_hands_b = <stdint.uint32_t *>PyMem_Malloc(num_hands * sizeof(stdint.uint32_t))             # <<<<<<<<<<<<<<
@@ -3484,7 +3543,7 @@ static void __pyx_f_16PyTwoPlusTwoEval_create_boards(int *__pyx_v_deck, int __py
  */
   __pyx_v_new_sum_hands_b = ((uint32_t *)PyMem_Malloc((__pyx_v_num_hands * (sizeof(uint32_t)))));
 
-  /* "twoplustwo_eval/evaluate.pyx":150
+  /* "twoplustwo_eval/evaluate.pyx":152
  *         stdint.uint32_t *new_sum_hands_a = <stdint.uint32_t *>PyMem_Malloc(num_hands * sizeof(stdint.uint32_t))
  *         stdint.uint32_t *new_sum_hands_b = <stdint.uint32_t *>PyMem_Malloc(num_hands * sizeof(stdint.uint32_t))
  *         stdint.uint32_t *new_sum_hands_c = <stdint.uint32_t *>PyMem_Malloc(num_hands * sizeof(stdint.uint32_t))             # <<<<<<<<<<<<<<
@@ -3493,7 +3552,7 @@ static void __pyx_f_16PyTwoPlusTwoEval_create_boards(int *__pyx_v_deck, int __py
  */
   __pyx_v_new_sum_hands_c = ((uint32_t *)PyMem_Malloc((__pyx_v_num_hands * (sizeof(uint32_t)))));
 
-  /* "twoplustwo_eval/evaluate.pyx":151
+  /* "twoplustwo_eval/evaluate.pyx":153
  *         stdint.uint32_t *new_sum_hands_b = <stdint.uint32_t *>PyMem_Malloc(num_hands * sizeof(stdint.uint32_t))
  *         stdint.uint32_t *new_sum_hands_c = <stdint.uint32_t *>PyMem_Malloc(num_hands * sizeof(stdint.uint32_t))
  *         stdint.uint32_t *new_sum_hands_d = <stdint.uint32_t *>PyMem_Malloc(num_hands * sizeof(stdint.uint32_t))             # <<<<<<<<<<<<<<
@@ -3502,7 +3561,7 @@ static void __pyx_f_16PyTwoPlusTwoEval_create_boards(int *__pyx_v_deck, int __py
  */
   __pyx_v_new_sum_hands_d = ((uint32_t *)PyMem_Malloc((__pyx_v_num_hands * (sizeof(uint32_t)))));
 
-  /* "twoplustwo_eval/evaluate.pyx":152
+  /* "twoplustwo_eval/evaluate.pyx":154
  *         stdint.uint32_t *new_sum_hands_c = <stdint.uint32_t *>PyMem_Malloc(num_hands * sizeof(stdint.uint32_t))
  *         stdint.uint32_t *new_sum_hands_d = <stdint.uint32_t *>PyMem_Malloc(num_hands * sizeof(stdint.uint32_t))
  *         stdint.uint32_t *new_sum_hands_e = <stdint.uint32_t *>PyMem_Malloc(num_hands * sizeof(stdint.uint32_t))             # <<<<<<<<<<<<<<
@@ -3511,7 +3570,7 @@ static void __pyx_f_16PyTwoPlusTwoEval_create_boards(int *__pyx_v_deck, int __py
  */
   __pyx_v_new_sum_hands_e = ((uint32_t *)PyMem_Malloc((__pyx_v_num_hands * (sizeof(uint32_t)))));
 
-  /* "twoplustwo_eval/evaluate.pyx":154
+  /* "twoplustwo_eval/evaluate.pyx":156
  *         stdint.uint32_t *new_sum_hands_e = <stdint.uint32_t *>PyMem_Malloc(num_hands * sizeof(stdint.uint32_t))
  * 
  *     if len_board < 5:             # <<<<<<<<<<<<<<
@@ -3521,7 +3580,7 @@ static void __pyx_f_16PyTwoPlusTwoEval_create_boards(int *__pyx_v_deck, int __py
   __pyx_t_1 = ((__pyx_v_len_board < 5) != 0);
   if (__pyx_t_1) {
 
-    /* "twoplustwo_eval/evaluate.pyx":155
+    /* "twoplustwo_eval/evaluate.pyx":157
  * 
  *     if len_board < 5:
  *         for a in range(len_deck):             # <<<<<<<<<<<<<<
@@ -3533,18 +3592,18 @@ static void __pyx_f_16PyTwoPlusTwoEval_create_boards(int *__pyx_v_deck, int __py
     for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
       __pyx_v_a = __pyx_t_4;
 
-      /* "twoplustwo_eval/evaluate.pyx":156
+      /* "twoplustwo_eval/evaluate.pyx":158
  *     if len_board < 5:
  *         for a in range(len_deck):
  *             sum_new_card(deck[a], sum_hands, num_hands, new_sum_hands_a)             # <<<<<<<<<<<<<<
  *             if len_board == 4:
  *                 eval_hands(new_sum_hands_a, num_hands, results)
  */
-      __pyx_t_5 = __pyx_f_16PyTwoPlusTwoEval_sum_new_card((__pyx_v_deck[__pyx_v_a]), __pyx_v_sum_hands, __pyx_v_num_hands, __pyx_v_new_sum_hands_a); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 156, __pyx_L1_error)
+      __pyx_t_5 = __pyx_f_16PyTwoPlusTwoEval_sum_new_card((__pyx_v_deck[__pyx_v_a]), __pyx_v_sum_hands, __pyx_v_num_hands, __pyx_v_new_sum_hands_a); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 158, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-      /* "twoplustwo_eval/evaluate.pyx":157
+      /* "twoplustwo_eval/evaluate.pyx":159
  *         for a in range(len_deck):
  *             sum_new_card(deck[a], sum_hands, num_hands, new_sum_hands_a)
  *             if len_board == 4:             # <<<<<<<<<<<<<<
@@ -3554,18 +3613,18 @@ static void __pyx_f_16PyTwoPlusTwoEval_create_boards(int *__pyx_v_deck, int __py
       __pyx_t_1 = ((__pyx_v_len_board == 4) != 0);
       if (__pyx_t_1) {
 
-        /* "twoplustwo_eval/evaluate.pyx":158
+        /* "twoplustwo_eval/evaluate.pyx":160
  *             sum_new_card(deck[a], sum_hands, num_hands, new_sum_hands_a)
  *             if len_board == 4:
  *                 eval_hands(new_sum_hands_a, num_hands, results)             # <<<<<<<<<<<<<<
  *             if len_board < 4:
  *                 for b in range(a+1, len_deck):
  */
-        __pyx_t_5 = __pyx_f_16PyTwoPlusTwoEval_eval_hands(__pyx_v_new_sum_hands_a, __pyx_v_num_hands, __pyx_v_results); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 158, __pyx_L1_error)
+        __pyx_t_5 = __pyx_f_16PyTwoPlusTwoEval_eval_hands(__pyx_v_new_sum_hands_a, __pyx_v_num_hands, __pyx_v_results); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 160, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_5);
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-        /* "twoplustwo_eval/evaluate.pyx":157
+        /* "twoplustwo_eval/evaluate.pyx":159
  *         for a in range(len_deck):
  *             sum_new_card(deck[a], sum_hands, num_hands, new_sum_hands_a)
  *             if len_board == 4:             # <<<<<<<<<<<<<<
@@ -3574,7 +3633,7 @@ static void __pyx_f_16PyTwoPlusTwoEval_create_boards(int *__pyx_v_deck, int __py
  */
       }
 
-      /* "twoplustwo_eval/evaluate.pyx":159
+      /* "twoplustwo_eval/evaluate.pyx":161
  *             if len_board == 4:
  *                 eval_hands(new_sum_hands_a, num_hands, results)
  *             if len_board < 4:             # <<<<<<<<<<<<<<
@@ -3584,7 +3643,7 @@ static void __pyx_f_16PyTwoPlusTwoEval_create_boards(int *__pyx_v_deck, int __py
       __pyx_t_1 = ((__pyx_v_len_board < 4) != 0);
       if (__pyx_t_1) {
 
-        /* "twoplustwo_eval/evaluate.pyx":160
+        /* "twoplustwo_eval/evaluate.pyx":162
  *                 eval_hands(new_sum_hands_a, num_hands, results)
  *             if len_board < 4:
  *                 for b in range(a+1, len_deck):             # <<<<<<<<<<<<<<
@@ -3596,18 +3655,18 @@ static void __pyx_f_16PyTwoPlusTwoEval_create_boards(int *__pyx_v_deck, int __py
         for (__pyx_t_8 = (__pyx_v_a + 1); __pyx_t_8 < __pyx_t_7; __pyx_t_8+=1) {
           __pyx_v_b = __pyx_t_8;
 
-          /* "twoplustwo_eval/evaluate.pyx":161
+          /* "twoplustwo_eval/evaluate.pyx":163
  *             if len_board < 4:
  *                 for b in range(a+1, len_deck):
  *                     sum_new_card(deck[b], new_sum_hands_a, num_hands, new_sum_hands_b)             # <<<<<<<<<<<<<<
  *                     if len_board == 3:
  *                         eval_hands(new_sum_hands_b, num_hands, results)
  */
-          __pyx_t_5 = __pyx_f_16PyTwoPlusTwoEval_sum_new_card((__pyx_v_deck[__pyx_v_b]), __pyx_v_new_sum_hands_a, __pyx_v_num_hands, __pyx_v_new_sum_hands_b); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 161, __pyx_L1_error)
+          __pyx_t_5 = __pyx_f_16PyTwoPlusTwoEval_sum_new_card((__pyx_v_deck[__pyx_v_b]), __pyx_v_new_sum_hands_a, __pyx_v_num_hands, __pyx_v_new_sum_hands_b); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 163, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_5);
           __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-          /* "twoplustwo_eval/evaluate.pyx":162
+          /* "twoplustwo_eval/evaluate.pyx":164
  *                 for b in range(a+1, len_deck):
  *                     sum_new_card(deck[b], new_sum_hands_a, num_hands, new_sum_hands_b)
  *                     if len_board == 3:             # <<<<<<<<<<<<<<
@@ -3617,18 +3676,18 @@ static void __pyx_f_16PyTwoPlusTwoEval_create_boards(int *__pyx_v_deck, int __py
           __pyx_t_1 = ((__pyx_v_len_board == 3) != 0);
           if (__pyx_t_1) {
 
-            /* "twoplustwo_eval/evaluate.pyx":163
+            /* "twoplustwo_eval/evaluate.pyx":165
  *                     sum_new_card(deck[b], new_sum_hands_a, num_hands, new_sum_hands_b)
  *                     if len_board == 3:
  *                         eval_hands(new_sum_hands_b, num_hands, results)             # <<<<<<<<<<<<<<
  *                     if len_board < 3:
  *                         for c in range(b+1, len_deck):
  */
-            __pyx_t_5 = __pyx_f_16PyTwoPlusTwoEval_eval_hands(__pyx_v_new_sum_hands_b, __pyx_v_num_hands, __pyx_v_results); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 163, __pyx_L1_error)
+            __pyx_t_5 = __pyx_f_16PyTwoPlusTwoEval_eval_hands(__pyx_v_new_sum_hands_b, __pyx_v_num_hands, __pyx_v_results); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 165, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_5);
             __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-            /* "twoplustwo_eval/evaluate.pyx":162
+            /* "twoplustwo_eval/evaluate.pyx":164
  *                 for b in range(a+1, len_deck):
  *                     sum_new_card(deck[b], new_sum_hands_a, num_hands, new_sum_hands_b)
  *                     if len_board == 3:             # <<<<<<<<<<<<<<
@@ -3637,7 +3696,7 @@ static void __pyx_f_16PyTwoPlusTwoEval_create_boards(int *__pyx_v_deck, int __py
  */
           }
 
-          /* "twoplustwo_eval/evaluate.pyx":164
+          /* "twoplustwo_eval/evaluate.pyx":166
  *                     if len_board == 3:
  *                         eval_hands(new_sum_hands_b, num_hands, results)
  *                     if len_board < 3:             # <<<<<<<<<<<<<<
@@ -3647,7 +3706,7 @@ static void __pyx_f_16PyTwoPlusTwoEval_create_boards(int *__pyx_v_deck, int __py
           __pyx_t_1 = ((__pyx_v_len_board < 3) != 0);
           if (__pyx_t_1) {
 
-            /* "twoplustwo_eval/evaluate.pyx":165
+            /* "twoplustwo_eval/evaluate.pyx":167
  *                         eval_hands(new_sum_hands_b, num_hands, results)
  *                     if len_board < 3:
  *                         for c in range(b+1, len_deck):             # <<<<<<<<<<<<<<
@@ -3659,18 +3718,18 @@ static void __pyx_f_16PyTwoPlusTwoEval_create_boards(int *__pyx_v_deck, int __py
             for (__pyx_t_11 = (__pyx_v_b + 1); __pyx_t_11 < __pyx_t_10; __pyx_t_11+=1) {
               __pyx_v_c = __pyx_t_11;
 
-              /* "twoplustwo_eval/evaluate.pyx":166
+              /* "twoplustwo_eval/evaluate.pyx":168
  *                     if len_board < 3:
  *                         for c in range(b+1, len_deck):
  *                             sum_new_card(deck[c], new_sum_hands_b, num_hands, new_sum_hands_c)             # <<<<<<<<<<<<<<
  *                             for d in range(c+1, len_deck):
  *                                 sum_new_card(deck[d], new_sum_hands_c, num_hands, new_sum_hands_d)
  */
-              __pyx_t_5 = __pyx_f_16PyTwoPlusTwoEval_sum_new_card((__pyx_v_deck[__pyx_v_c]), __pyx_v_new_sum_hands_b, __pyx_v_num_hands, __pyx_v_new_sum_hands_c); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 166, __pyx_L1_error)
+              __pyx_t_5 = __pyx_f_16PyTwoPlusTwoEval_sum_new_card((__pyx_v_deck[__pyx_v_c]), __pyx_v_new_sum_hands_b, __pyx_v_num_hands, __pyx_v_new_sum_hands_c); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 168, __pyx_L1_error)
               __Pyx_GOTREF(__pyx_t_5);
               __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-              /* "twoplustwo_eval/evaluate.pyx":167
+              /* "twoplustwo_eval/evaluate.pyx":169
  *                         for c in range(b+1, len_deck):
  *                             sum_new_card(deck[c], new_sum_hands_b, num_hands, new_sum_hands_c)
  *                             for d in range(c+1, len_deck):             # <<<<<<<<<<<<<<
@@ -3682,18 +3741,18 @@ static void __pyx_f_16PyTwoPlusTwoEval_create_boards(int *__pyx_v_deck, int __py
               for (__pyx_t_14 = (__pyx_v_c + 1); __pyx_t_14 < __pyx_t_13; __pyx_t_14+=1) {
                 __pyx_v_d = __pyx_t_14;
 
-                /* "twoplustwo_eval/evaluate.pyx":168
+                /* "twoplustwo_eval/evaluate.pyx":170
  *                             sum_new_card(deck[c], new_sum_hands_b, num_hands, new_sum_hands_c)
  *                             for d in range(c+1, len_deck):
  *                                 sum_new_card(deck[d], new_sum_hands_c, num_hands, new_sum_hands_d)             # <<<<<<<<<<<<<<
  *                                 for e in range(d+1, len_deck):
  *                                     sum_new_card(deck[e], new_sum_hands_d, num_hands, new_sum_hands_e)
  */
-                __pyx_t_5 = __pyx_f_16PyTwoPlusTwoEval_sum_new_card((__pyx_v_deck[__pyx_v_d]), __pyx_v_new_sum_hands_c, __pyx_v_num_hands, __pyx_v_new_sum_hands_d); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 168, __pyx_L1_error)
+                __pyx_t_5 = __pyx_f_16PyTwoPlusTwoEval_sum_new_card((__pyx_v_deck[__pyx_v_d]), __pyx_v_new_sum_hands_c, __pyx_v_num_hands, __pyx_v_new_sum_hands_d); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 170, __pyx_L1_error)
                 __Pyx_GOTREF(__pyx_t_5);
                 __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-                /* "twoplustwo_eval/evaluate.pyx":169
+                /* "twoplustwo_eval/evaluate.pyx":171
  *                             for d in range(c+1, len_deck):
  *                                 sum_new_card(deck[d], new_sum_hands_c, num_hands, new_sum_hands_d)
  *                                 for e in range(d+1, len_deck):             # <<<<<<<<<<<<<<
@@ -3705,32 +3764,32 @@ static void __pyx_f_16PyTwoPlusTwoEval_create_boards(int *__pyx_v_deck, int __py
                 for (__pyx_t_17 = (__pyx_v_d + 1); __pyx_t_17 < __pyx_t_16; __pyx_t_17+=1) {
                   __pyx_v_e = __pyx_t_17;
 
-                  /* "twoplustwo_eval/evaluate.pyx":170
+                  /* "twoplustwo_eval/evaluate.pyx":172
  *                                 sum_new_card(deck[d], new_sum_hands_c, num_hands, new_sum_hands_d)
  *                                 for e in range(d+1, len_deck):
  *                                     sum_new_card(deck[e], new_sum_hands_d, num_hands, new_sum_hands_e)             # <<<<<<<<<<<<<<
  *                                     eval_hands(new_sum_hands_e, num_hands, results)
  * 
  */
-                  __pyx_t_5 = __pyx_f_16PyTwoPlusTwoEval_sum_new_card((__pyx_v_deck[__pyx_v_e]), __pyx_v_new_sum_hands_d, __pyx_v_num_hands, __pyx_v_new_sum_hands_e); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 170, __pyx_L1_error)
+                  __pyx_t_5 = __pyx_f_16PyTwoPlusTwoEval_sum_new_card((__pyx_v_deck[__pyx_v_e]), __pyx_v_new_sum_hands_d, __pyx_v_num_hands, __pyx_v_new_sum_hands_e); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 172, __pyx_L1_error)
                   __Pyx_GOTREF(__pyx_t_5);
                   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-                  /* "twoplustwo_eval/evaluate.pyx":171
+                  /* "twoplustwo_eval/evaluate.pyx":173
  *                                 for e in range(d+1, len_deck):
  *                                     sum_new_card(deck[e], new_sum_hands_d, num_hands, new_sum_hands_e)
  *                                     eval_hands(new_sum_hands_e, num_hands, results)             # <<<<<<<<<<<<<<
  * 
  *     PyMem_Free(new_sum_hands_a)
  */
-                  __pyx_t_5 = __pyx_f_16PyTwoPlusTwoEval_eval_hands(__pyx_v_new_sum_hands_e, __pyx_v_num_hands, __pyx_v_results); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 171, __pyx_L1_error)
+                  __pyx_t_5 = __pyx_f_16PyTwoPlusTwoEval_eval_hands(__pyx_v_new_sum_hands_e, __pyx_v_num_hands, __pyx_v_results); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 173, __pyx_L1_error)
                   __Pyx_GOTREF(__pyx_t_5);
                   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
                 }
               }
             }
 
-            /* "twoplustwo_eval/evaluate.pyx":164
+            /* "twoplustwo_eval/evaluate.pyx":166
  *                     if len_board == 3:
  *                         eval_hands(new_sum_hands_b, num_hands, results)
  *                     if len_board < 3:             # <<<<<<<<<<<<<<
@@ -3740,7 +3799,7 @@ static void __pyx_f_16PyTwoPlusTwoEval_create_boards(int *__pyx_v_deck, int __py
           }
         }
 
-        /* "twoplustwo_eval/evaluate.pyx":159
+        /* "twoplustwo_eval/evaluate.pyx":161
  *             if len_board == 4:
  *                 eval_hands(new_sum_hands_a, num_hands, results)
  *             if len_board < 4:             # <<<<<<<<<<<<<<
@@ -3750,7 +3809,7 @@ static void __pyx_f_16PyTwoPlusTwoEval_create_boards(int *__pyx_v_deck, int __py
       }
     }
 
-    /* "twoplustwo_eval/evaluate.pyx":154
+    /* "twoplustwo_eval/evaluate.pyx":156
  *         stdint.uint32_t *new_sum_hands_e = <stdint.uint32_t *>PyMem_Malloc(num_hands * sizeof(stdint.uint32_t))
  * 
  *     if len_board < 5:             # <<<<<<<<<<<<<<
@@ -3759,7 +3818,7 @@ static void __pyx_f_16PyTwoPlusTwoEval_create_boards(int *__pyx_v_deck, int __py
  */
   }
 
-  /* "twoplustwo_eval/evaluate.pyx":173
+  /* "twoplustwo_eval/evaluate.pyx":175
  *                                     eval_hands(new_sum_hands_e, num_hands, results)
  * 
  *     PyMem_Free(new_sum_hands_a)             # <<<<<<<<<<<<<<
@@ -3768,7 +3827,7 @@ static void __pyx_f_16PyTwoPlusTwoEval_create_boards(int *__pyx_v_deck, int __py
  */
   PyMem_Free(__pyx_v_new_sum_hands_a);
 
-  /* "twoplustwo_eval/evaluate.pyx":174
+  /* "twoplustwo_eval/evaluate.pyx":176
  * 
  *     PyMem_Free(new_sum_hands_a)
  *     PyMem_Free(new_sum_hands_b)             # <<<<<<<<<<<<<<
@@ -3777,7 +3836,7 @@ static void __pyx_f_16PyTwoPlusTwoEval_create_boards(int *__pyx_v_deck, int __py
  */
   PyMem_Free(__pyx_v_new_sum_hands_b);
 
-  /* "twoplustwo_eval/evaluate.pyx":175
+  /* "twoplustwo_eval/evaluate.pyx":177
  *     PyMem_Free(new_sum_hands_a)
  *     PyMem_Free(new_sum_hands_b)
  *     PyMem_Free(new_sum_hands_c)             # <<<<<<<<<<<<<<
@@ -3786,7 +3845,7 @@ static void __pyx_f_16PyTwoPlusTwoEval_create_boards(int *__pyx_v_deck, int __py
  */
   PyMem_Free(__pyx_v_new_sum_hands_c);
 
-  /* "twoplustwo_eval/evaluate.pyx":176
+  /* "twoplustwo_eval/evaluate.pyx":178
  *     PyMem_Free(new_sum_hands_b)
  *     PyMem_Free(new_sum_hands_c)
  *     PyMem_Free(new_sum_hands_d)             # <<<<<<<<<<<<<<
@@ -3795,7 +3854,7 @@ static void __pyx_f_16PyTwoPlusTwoEval_create_boards(int *__pyx_v_deck, int __py
  */
   PyMem_Free(__pyx_v_new_sum_hands_d);
 
-  /* "twoplustwo_eval/evaluate.pyx":177
+  /* "twoplustwo_eval/evaluate.pyx":179
  *     PyMem_Free(new_sum_hands_c)
  *     PyMem_Free(new_sum_hands_d)
  *     PyMem_Free(new_sum_hands_e)             # <<<<<<<<<<<<<<
@@ -3804,7 +3863,7 @@ static void __pyx_f_16PyTwoPlusTwoEval_create_boards(int *__pyx_v_deck, int __py
  */
   PyMem_Free(__pyx_v_new_sum_hands_e);
 
-  /* "twoplustwo_eval/evaluate.pyx":178
+  /* "twoplustwo_eval/evaluate.pyx":180
  *     PyMem_Free(new_sum_hands_d)
  *     PyMem_Free(new_sum_hands_e)
  *     return             # <<<<<<<<<<<<<<
@@ -3813,7 +3872,7 @@ static void __pyx_f_16PyTwoPlusTwoEval_create_boards(int *__pyx_v_deck, int __py
  */
   goto __pyx_L0;
 
-  /* "twoplustwo_eval/evaluate.pyx":143
+  /* "twoplustwo_eval/evaluate.pyx":145
  * 
  * 
  * cdef void create_boards(int deck[], int len_deck, stdint.uint32_t sum_hands[],             # <<<<<<<<<<<<<<
@@ -3829,12 +3888,12 @@ static void __pyx_f_16PyTwoPlusTwoEval_create_boards(int *__pyx_v_deck, int __py
   __Pyx_RefNannyFinishContext();
 }
 
-/* "twoplustwo_eval/evaluate.pyx":181
+/* "twoplustwo_eval/evaluate.pyx":183
  * 
  * 
  * cpdef double[:] evaluate_all_boards(int[:] hands, int[:] board):             # <<<<<<<<<<<<<<
- *     cdef:
- *         stdint.uint32_t tmp_sum, sum_board
+ *     """
+ *     Evaluate hands vs Board, if board is incomplete (< 5) complete it with all possible cards and eval it.
  */
 
 static PyObject *__pyx_pw_16PyTwoPlusTwoEval_5evaluate_all_boards(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
@@ -3872,7 +3931,7 @@ static __Pyx_memviewslice __pyx_f_16PyTwoPlusTwoEval_evaluate_all_boards(__Pyx_m
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("evaluate_all_boards", 0);
 
-  /* "twoplustwo_eval/evaluate.pyx":184
+  /* "twoplustwo_eval/evaluate.pyx":190
  *     cdef:
  *         stdint.uint32_t tmp_sum, sum_board
  *         int len_hands = hands.shape[0]             # <<<<<<<<<<<<<<
@@ -3881,7 +3940,7 @@ static __Pyx_memviewslice __pyx_f_16PyTwoPlusTwoEval_evaluate_all_boards(__Pyx_m
  */
   __pyx_v_len_hands = (__pyx_v_hands.shape[0]);
 
-  /* "twoplustwo_eval/evaluate.pyx":185
+  /* "twoplustwo_eval/evaluate.pyx":191
  *         stdint.uint32_t tmp_sum, sum_board
  *         int len_hands = hands.shape[0]
  *         int num_hands = len_hands // 2             # <<<<<<<<<<<<<<
@@ -3890,7 +3949,7 @@ static __Pyx_memviewslice __pyx_f_16PyTwoPlusTwoEval_evaluate_all_boards(__Pyx_m
  */
   __pyx_v_num_hands = __Pyx_div_long(__pyx_v_len_hands, 2);
 
-  /* "twoplustwo_eval/evaluate.pyx":186
+  /* "twoplustwo_eval/evaluate.pyx":192
  *         int len_hands = hands.shape[0]
  *         int num_hands = len_hands // 2
  *         int len_board = board.shape[0]             # <<<<<<<<<<<<<<
@@ -3899,7 +3958,7 @@ static __Pyx_memviewslice __pyx_f_16PyTwoPlusTwoEval_evaluate_all_boards(__Pyx_m
  */
   __pyx_v_len_board = (__pyx_v_board.shape[0]);
 
-  /* "twoplustwo_eval/evaluate.pyx":187
+  /* "twoplustwo_eval/evaluate.pyx":193
  *         int num_hands = len_hands // 2
  *         int len_board = board.shape[0]
  *         int len_total = len_board + len_hands             # <<<<<<<<<<<<<<
@@ -3908,7 +3967,7 @@ static __Pyx_memviewslice __pyx_f_16PyTwoPlusTwoEval_evaluate_all_boards(__Pyx_m
  */
   __pyx_v_len_total = (__pyx_v_len_board + __pyx_v_len_hands);
 
-  /* "twoplustwo_eval/evaluate.pyx":188
+  /* "twoplustwo_eval/evaluate.pyx":194
  *         int len_board = board.shape[0]
  *         int len_total = len_board + len_hands
  *         stdint.uint32_t *sum_hands = <stdint.uint32_t *>PyMem_Malloc(num_hands * sizeof(stdint.uint32_t))             # <<<<<<<<<<<<<<
@@ -3917,34 +3976,34 @@ static __Pyx_memviewslice __pyx_f_16PyTwoPlusTwoEval_evaluate_all_boards(__Pyx_m
  */
   __pyx_v_sum_hands = ((uint32_t *)PyMem_Malloc((__pyx_v_num_hands * (sizeof(uint32_t)))));
 
-  /* "twoplustwo_eval/evaluate.pyx":189
+  /* "twoplustwo_eval/evaluate.pyx":195
  *         int len_total = len_board + len_hands
  *         stdint.uint32_t *sum_hands = <stdint.uint32_t *>PyMem_Malloc(num_hands * sizeof(stdint.uint32_t))
  *         int *deck = <int *>PyMem_Malloc((52 - len_total) * sizeof(int))             # <<<<<<<<<<<<<<
  *         int *dead_cards = <int *>PyMem_Malloc(len_total * sizeof(int))
- *         double *results = <double *>PyMem_Malloc(len_hands * sizeof(double))
+ *         double *results = <double *>PyMem_Malloc(len_hands * sizeof(double))  # array to fill with win,tie hands
  */
   __pyx_v_deck = ((int *)PyMem_Malloc(((52 - __pyx_v_len_total) * (sizeof(int)))));
 
-  /* "twoplustwo_eval/evaluate.pyx":190
+  /* "twoplustwo_eval/evaluate.pyx":196
  *         stdint.uint32_t *sum_hands = <stdint.uint32_t *>PyMem_Malloc(num_hands * sizeof(stdint.uint32_t))
  *         int *deck = <int *>PyMem_Malloc((52 - len_total) * sizeof(int))
  *         int *dead_cards = <int *>PyMem_Malloc(len_total * sizeof(int))             # <<<<<<<<<<<<<<
- *         double *results = <double *>PyMem_Malloc(len_hands * sizeof(double))
+ *         double *results = <double *>PyMem_Malloc(len_hands * sizeof(double))  # array to fill with win,tie hands
  *         int i
  */
   __pyx_v_dead_cards = ((int *)PyMem_Malloc((__pyx_v_len_total * (sizeof(int)))));
 
-  /* "twoplustwo_eval/evaluate.pyx":191
+  /* "twoplustwo_eval/evaluate.pyx":197
  *         int *deck = <int *>PyMem_Malloc((52 - len_total) * sizeof(int))
  *         int *dead_cards = <int *>PyMem_Malloc(len_total * sizeof(int))
- *         double *results = <double *>PyMem_Malloc(len_hands * sizeof(double))             # <<<<<<<<<<<<<<
+ *         double *results = <double *>PyMem_Malloc(len_hands * sizeof(double))  # array to fill with win,tie hands             # <<<<<<<<<<<<<<
  *         int i
  *     # hands and board to one array dead cards
  */
   __pyx_v_results = ((double *)PyMem_Malloc((__pyx_v_len_hands * (sizeof(double)))));
 
-  /* "twoplustwo_eval/evaluate.pyx":194
+  /* "twoplustwo_eval/evaluate.pyx":200
  *         int i
  *     # hands and board to one array dead cards
  *     for i in range(len_hands):             # <<<<<<<<<<<<<<
@@ -3956,7 +4015,7 @@ static __Pyx_memviewslice __pyx_f_16PyTwoPlusTwoEval_evaluate_all_boards(__Pyx_m
   for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
     __pyx_v_i = __pyx_t_3;
 
-    /* "twoplustwo_eval/evaluate.pyx":195
+    /* "twoplustwo_eval/evaluate.pyx":201
  *     # hands and board to one array dead cards
  *     for i in range(len_hands):
  *         results[i] = 0.0  # start results to 0             # <<<<<<<<<<<<<<
@@ -3965,7 +4024,7 @@ static __Pyx_memviewslice __pyx_f_16PyTwoPlusTwoEval_evaluate_all_boards(__Pyx_m
  */
     (__pyx_v_results[__pyx_v_i]) = 0.0;
 
-    /* "twoplustwo_eval/evaluate.pyx":196
+    /* "twoplustwo_eval/evaluate.pyx":202
  *     for i in range(len_hands):
  *         results[i] = 0.0  # start results to 0
  *         dead_cards[i] = hands[i]             # <<<<<<<<<<<<<<
@@ -3980,12 +4039,12 @@ static __Pyx_memviewslice __pyx_f_16PyTwoPlusTwoEval_evaluate_all_boards(__Pyx_m
     } else if (unlikely(__pyx_t_4 >= __pyx_v_hands.shape[0])) __pyx_t_5 = 0;
     if (unlikely(__pyx_t_5 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_5);
-      __PYX_ERR(0, 196, __pyx_L1_error)
+      __PYX_ERR(0, 202, __pyx_L1_error)
     }
     (__pyx_v_dead_cards[__pyx_v_i]) = (*((int *) ( /* dim=0 */ (__pyx_v_hands.data + __pyx_t_4 * __pyx_v_hands.strides[0]) )));
   }
 
-  /* "twoplustwo_eval/evaluate.pyx":197
+  /* "twoplustwo_eval/evaluate.pyx":203
  *         results[i] = 0.0  # start results to 0
  *         dead_cards[i] = hands[i]
  *     for i in range(len_board):             # <<<<<<<<<<<<<<
@@ -3997,7 +4056,7 @@ static __Pyx_memviewslice __pyx_f_16PyTwoPlusTwoEval_evaluate_all_boards(__Pyx_m
   for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
     __pyx_v_i = __pyx_t_3;
 
-    /* "twoplustwo_eval/evaluate.pyx":198
+    /* "twoplustwo_eval/evaluate.pyx":204
  *         dead_cards[i] = hands[i]
  *     for i in range(len_board):
  *         dead_cards[len_hands + i] = board[i]             # <<<<<<<<<<<<<<
@@ -4012,12 +4071,12 @@ static __Pyx_memviewslice __pyx_f_16PyTwoPlusTwoEval_evaluate_all_boards(__Pyx_m
     } else if (unlikely(__pyx_t_4 >= __pyx_v_board.shape[0])) __pyx_t_5 = 0;
     if (unlikely(__pyx_t_5 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_5);
-      __PYX_ERR(0, 198, __pyx_L1_error)
+      __PYX_ERR(0, 204, __pyx_L1_error)
     }
     (__pyx_v_dead_cards[(__pyx_v_len_hands + __pyx_v_i)]) = (*((int *) ( /* dim=0 */ (__pyx_v_board.data + __pyx_t_4 * __pyx_v_board.strides[0]) )));
   }
 
-  /* "twoplustwo_eval/evaluate.pyx":199
+  /* "twoplustwo_eval/evaluate.pyx":205
  *     for i in range(len_board):
  *         dead_cards[len_hands + i] = board[i]
  *     cdef int[:] dead_cards_py = <int[:len_total]> dead_cards             # <<<<<<<<<<<<<<
@@ -4026,24 +4085,24 @@ static __Pyx_memviewslice __pyx_f_16PyTwoPlusTwoEval_evaluate_all_boards(__Pyx_m
  */
   if (!__pyx_v_dead_cards) {
     PyErr_SetString(PyExc_ValueError,"Cannot create cython.array from NULL pointer");
-    __PYX_ERR(0, 199, __pyx_L1_error)
+    __PYX_ERR(0, 205, __pyx_L1_error)
   }
-  __pyx_t_8 = __pyx_format_from_typeinfo(&__Pyx_TypeInfo_int); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 199, __pyx_L1_error)
+  __pyx_t_8 = __pyx_format_from_typeinfo(&__Pyx_TypeInfo_int); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 205, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
-  __pyx_t_7 = Py_BuildValue((char*) "("  __PYX_BUILD_PY_SSIZE_T  ")", ((Py_ssize_t)__pyx_v_len_total)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 199, __pyx_L1_error)
+  __pyx_t_7 = Py_BuildValue((char*) "("  __PYX_BUILD_PY_SSIZE_T  ")", ((Py_ssize_t)__pyx_v_len_total)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 205, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __pyx_t_6 = __pyx_array_new(__pyx_t_7, sizeof(int), PyBytes_AS_STRING(__pyx_t_8), (char *) "c", (char *) __pyx_v_dead_cards);
-  if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 199, __pyx_L1_error)
+  if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 205, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-  __pyx_t_9 = __Pyx_PyObject_to_MemoryviewSlice_ds_int(((PyObject *)__pyx_t_6), PyBUF_WRITABLE); if (unlikely(!__pyx_t_9.memview)) __PYX_ERR(0, 199, __pyx_L1_error)
+  __pyx_t_9 = __Pyx_PyObject_to_MemoryviewSlice_ds_int(((PyObject *)__pyx_t_6), PyBUF_WRITABLE); if (unlikely(!__pyx_t_9.memview)) __PYX_ERR(0, 205, __pyx_L1_error)
   __Pyx_DECREF(((PyObject *)__pyx_t_6)); __pyx_t_6 = 0;
   __pyx_v_dead_cards_py = __pyx_t_9;
   __pyx_t_9.memview = NULL;
   __pyx_t_9.data = NULL;
 
-  /* "twoplustwo_eval/evaluate.pyx":200
+  /* "twoplustwo_eval/evaluate.pyx":206
  *         dead_cards[len_hands + i] = board[i]
  *     cdef int[:] dead_cards_py = <int[:len_total]> dead_cards
  *     cdef int len_deck = create_deck(dead_cards_py, len_total, deck)  # create deck less dead cards             # <<<<<<<<<<<<<<
@@ -4052,7 +4111,7 @@ static __Pyx_memviewslice __pyx_f_16PyTwoPlusTwoEval_evaluate_all_boards(__Pyx_m
  */
   __pyx_v_len_deck = __pyx_f_16PyTwoPlusTwoEval_create_deck(__pyx_v_dead_cards_py, __pyx_v_len_total, __pyx_v_deck);
 
-  /* "twoplustwo_eval/evaluate.pyx":201
+  /* "twoplustwo_eval/evaluate.pyx":207
  *     cdef int[:] dead_cards_py = <int[:len_total]> dead_cards
  *     cdef int len_deck = create_deck(dead_cards_py, len_total, deck)  # create deck less dead cards
  *     PyMem_Free(dead_cards)             # <<<<<<<<<<<<<<
@@ -4061,7 +4120,7 @@ static __Pyx_memviewslice __pyx_f_16PyTwoPlusTwoEval_evaluate_all_boards(__Pyx_m
  */
   PyMem_Free(__pyx_v_dead_cards);
 
-  /* "twoplustwo_eval/evaluate.pyx":203
+  /* "twoplustwo_eval/evaluate.pyx":209
  *     PyMem_Free(dead_cards)
  *     # eval board
  *     sum_board = 53             # <<<<<<<<<<<<<<
@@ -4070,7 +4129,7 @@ static __Pyx_memviewslice __pyx_f_16PyTwoPlusTwoEval_evaluate_all_boards(__Pyx_m
  */
   __pyx_v_sum_board = 53;
 
-  /* "twoplustwo_eval/evaluate.pyx":204
+  /* "twoplustwo_eval/evaluate.pyx":210
  *     # eval board
  *     sum_board = 53
  *     for i in range(len_board):             # <<<<<<<<<<<<<<
@@ -4082,7 +4141,7 @@ static __Pyx_memviewslice __pyx_f_16PyTwoPlusTwoEval_evaluate_all_boards(__Pyx_m
   for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
     __pyx_v_i = __pyx_t_3;
 
-    /* "twoplustwo_eval/evaluate.pyx":205
+    /* "twoplustwo_eval/evaluate.pyx":211
  *     sum_board = 53
  *     for i in range(len_board):
  *         tmp_sum = sum_board + board[i]             # <<<<<<<<<<<<<<
@@ -4097,29 +4156,29 @@ static __Pyx_memviewslice __pyx_f_16PyTwoPlusTwoEval_evaluate_all_boards(__Pyx_m
     } else if (unlikely(__pyx_t_4 >= __pyx_v_board.shape[0])) __pyx_t_5 = 0;
     if (unlikely(__pyx_t_5 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_5);
-      __PYX_ERR(0, 205, __pyx_L1_error)
+      __PYX_ERR(0, 211, __pyx_L1_error)
     }
     __pyx_v_tmp_sum = (__pyx_v_sum_board + (*((int *) ( /* dim=0 */ (__pyx_v_board.data + __pyx_t_4 * __pyx_v_board.strides[0]) ))));
 
-    /* "twoplustwo_eval/evaluate.pyx":206
+    /* "twoplustwo_eval/evaluate.pyx":212
  *     for i in range(len_board):
  *         tmp_sum = sum_board + board[i]
  *         sum_board = handdat[tmp_sum]             # <<<<<<<<<<<<<<
  *     # eval hands
  *     for i in range(num_hands):
  */
-    if (unlikely(!__pyx_v_16PyTwoPlusTwoEval_handdat.memview)) { __Pyx_RaiseUnboundLocalError("handdat"); __PYX_ERR(0, 206, __pyx_L1_error) }
+    if (unlikely(!__pyx_v_16PyTwoPlusTwoEval_handdat.memview)) { __Pyx_RaiseUnboundLocalError("handdat"); __PYX_ERR(0, 212, __pyx_L1_error) }
     __pyx_t_10 = __pyx_v_tmp_sum;
     __pyx_t_5 = -1;
     if (unlikely(__pyx_t_10 >= (size_t)__pyx_v_16PyTwoPlusTwoEval_handdat.shape[0])) __pyx_t_5 = 0;
     if (unlikely(__pyx_t_5 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_5);
-      __PYX_ERR(0, 206, __pyx_L1_error)
+      __PYX_ERR(0, 212, __pyx_L1_error)
     }
     __pyx_v_sum_board = (*((uint32_t *) ( /* dim=0 */ (__pyx_v_16PyTwoPlusTwoEval_handdat.data + __pyx_t_10 * __pyx_v_16PyTwoPlusTwoEval_handdat.strides[0]) )));
   }
 
-  /* "twoplustwo_eval/evaluate.pyx":208
+  /* "twoplustwo_eval/evaluate.pyx":214
  *         sum_board = handdat[tmp_sum]
  *     # eval hands
  *     for i in range(num_hands):             # <<<<<<<<<<<<<<
@@ -4131,7 +4190,7 @@ static __Pyx_memviewslice __pyx_f_16PyTwoPlusTwoEval_evaluate_all_boards(__Pyx_m
   for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
     __pyx_v_i = __pyx_t_3;
 
-    /* "twoplustwo_eval/evaluate.pyx":210
+    /* "twoplustwo_eval/evaluate.pyx":216
  *     for i in range(num_hands):
  *         # hand card 0
  *         tmp_sum = sum_board + hands[i * 2]             # <<<<<<<<<<<<<<
@@ -4146,33 +4205,33 @@ static __Pyx_memviewslice __pyx_f_16PyTwoPlusTwoEval_evaluate_all_boards(__Pyx_m
     } else if (unlikely(__pyx_t_4 >= __pyx_v_hands.shape[0])) __pyx_t_5 = 0;
     if (unlikely(__pyx_t_5 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_5);
-      __PYX_ERR(0, 210, __pyx_L1_error)
+      __PYX_ERR(0, 216, __pyx_L1_error)
     }
     __pyx_v_tmp_sum = (__pyx_v_sum_board + (*((int *) ( /* dim=0 */ (__pyx_v_hands.data + __pyx_t_4 * __pyx_v_hands.strides[0]) ))));
 
-    /* "twoplustwo_eval/evaluate.pyx":211
+    /* "twoplustwo_eval/evaluate.pyx":217
  *         # hand card 0
  *         tmp_sum = sum_board + hands[i * 2]
  *         sum_hands[i] = handdat[tmp_sum]             # <<<<<<<<<<<<<<
  *         # hand card 1
  *         tmp_sum = sum_hands[i] + hands[i * 2 + 1]
  */
-    if (unlikely(!__pyx_v_16PyTwoPlusTwoEval_handdat.memview)) { __Pyx_RaiseUnboundLocalError("handdat"); __PYX_ERR(0, 211, __pyx_L1_error) }
+    if (unlikely(!__pyx_v_16PyTwoPlusTwoEval_handdat.memview)) { __Pyx_RaiseUnboundLocalError("handdat"); __PYX_ERR(0, 217, __pyx_L1_error) }
     __pyx_t_10 = __pyx_v_tmp_sum;
     __pyx_t_5 = -1;
     if (unlikely(__pyx_t_10 >= (size_t)__pyx_v_16PyTwoPlusTwoEval_handdat.shape[0])) __pyx_t_5 = 0;
     if (unlikely(__pyx_t_5 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_5);
-      __PYX_ERR(0, 211, __pyx_L1_error)
+      __PYX_ERR(0, 217, __pyx_L1_error)
     }
     (__pyx_v_sum_hands[__pyx_v_i]) = (*((uint32_t *) ( /* dim=0 */ (__pyx_v_16PyTwoPlusTwoEval_handdat.data + __pyx_t_10 * __pyx_v_16PyTwoPlusTwoEval_handdat.strides[0]) )));
 
-    /* "twoplustwo_eval/evaluate.pyx":213
+    /* "twoplustwo_eval/evaluate.pyx":219
  *         sum_hands[i] = handdat[tmp_sum]
  *         # hand card 1
  *         tmp_sum = sum_hands[i] + hands[i * 2 + 1]             # <<<<<<<<<<<<<<
  *         sum_hands[i] = handdat[tmp_sum]
- *     # brute force fill board with all cards
+ *     # brute force fill board with all cards and eval it
  */
     __pyx_t_4 = ((__pyx_v_i * 2) + 1);
     __pyx_t_5 = -1;
@@ -4182,72 +4241,72 @@ static __Pyx_memviewslice __pyx_f_16PyTwoPlusTwoEval_evaluate_all_boards(__Pyx_m
     } else if (unlikely(__pyx_t_4 >= __pyx_v_hands.shape[0])) __pyx_t_5 = 0;
     if (unlikely(__pyx_t_5 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_5);
-      __PYX_ERR(0, 213, __pyx_L1_error)
+      __PYX_ERR(0, 219, __pyx_L1_error)
     }
     __pyx_v_tmp_sum = ((__pyx_v_sum_hands[__pyx_v_i]) + (*((int *) ( /* dim=0 */ (__pyx_v_hands.data + __pyx_t_4 * __pyx_v_hands.strides[0]) ))));
 
-    /* "twoplustwo_eval/evaluate.pyx":214
+    /* "twoplustwo_eval/evaluate.pyx":220
  *         # hand card 1
  *         tmp_sum = sum_hands[i] + hands[i * 2 + 1]
  *         sum_hands[i] = handdat[tmp_sum]             # <<<<<<<<<<<<<<
- *     # brute force fill board with all cards
+ *     # brute force fill board with all cards and eval it
  *     if len_board < 5:
  */
-    if (unlikely(!__pyx_v_16PyTwoPlusTwoEval_handdat.memview)) { __Pyx_RaiseUnboundLocalError("handdat"); __PYX_ERR(0, 214, __pyx_L1_error) }
+    if (unlikely(!__pyx_v_16PyTwoPlusTwoEval_handdat.memview)) { __Pyx_RaiseUnboundLocalError("handdat"); __PYX_ERR(0, 220, __pyx_L1_error) }
     __pyx_t_10 = __pyx_v_tmp_sum;
     __pyx_t_5 = -1;
     if (unlikely(__pyx_t_10 >= (size_t)__pyx_v_16PyTwoPlusTwoEval_handdat.shape[0])) __pyx_t_5 = 0;
     if (unlikely(__pyx_t_5 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_5);
-      __PYX_ERR(0, 214, __pyx_L1_error)
+      __PYX_ERR(0, 220, __pyx_L1_error)
     }
     (__pyx_v_sum_hands[__pyx_v_i]) = (*((uint32_t *) ( /* dim=0 */ (__pyx_v_16PyTwoPlusTwoEval_handdat.data + __pyx_t_10 * __pyx_v_16PyTwoPlusTwoEval_handdat.strides[0]) )));
   }
 
-  /* "twoplustwo_eval/evaluate.pyx":216
+  /* "twoplustwo_eval/evaluate.pyx":222
  *         sum_hands[i] = handdat[tmp_sum]
- *     # brute force fill board with all cards
+ *     # brute force fill board with all cards and eval it
  *     if len_board < 5:             # <<<<<<<<<<<<<<
  *         create_boards(deck, len_deck, sum_hands, num_hands, len_board, results)
- *     else:  # eval board, eval hands in results
+ *     else:  # eval board, each hand in results
  */
   __pyx_t_11 = ((__pyx_v_len_board < 5) != 0);
   if (__pyx_t_11) {
 
-    /* "twoplustwo_eval/evaluate.pyx":217
- *     # brute force fill board with all cards
+    /* "twoplustwo_eval/evaluate.pyx":223
+ *     # brute force fill board with all cards and eval it
  *     if len_board < 5:
  *         create_boards(deck, len_deck, sum_hands, num_hands, len_board, results)             # <<<<<<<<<<<<<<
- *     else:  # eval board, eval hands in results
+ *     else:  # eval board, each hand in results
  *         eval_hands(sum_hands, num_hands, results)
  */
     __pyx_f_16PyTwoPlusTwoEval_create_boards(__pyx_v_deck, __pyx_v_len_deck, __pyx_v_sum_hands, __pyx_v_num_hands, __pyx_v_len_board, __pyx_v_results);
 
-    /* "twoplustwo_eval/evaluate.pyx":216
+    /* "twoplustwo_eval/evaluate.pyx":222
  *         sum_hands[i] = handdat[tmp_sum]
- *     # brute force fill board with all cards
+ *     # brute force fill board with all cards and eval it
  *     if len_board < 5:             # <<<<<<<<<<<<<<
  *         create_boards(deck, len_deck, sum_hands, num_hands, len_board, results)
- *     else:  # eval board, eval hands in results
+ *     else:  # eval board, each hand in results
  */
     goto __pyx_L11;
   }
 
-  /* "twoplustwo_eval/evaluate.pyx":219
+  /* "twoplustwo_eval/evaluate.pyx":225
  *         create_boards(deck, len_deck, sum_hands, num_hands, len_board, results)
- *     else:  # eval board, eval hands in results
+ *     else:  # eval board, each hand in results
  *         eval_hands(sum_hands, num_hands, results)             # <<<<<<<<<<<<<<
  * 
  *     PyMem_Free(sum_hands)
  */
   /*else*/ {
-    __pyx_t_8 = __pyx_f_16PyTwoPlusTwoEval_eval_hands(__pyx_v_sum_hands, __pyx_v_num_hands, __pyx_v_results); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 219, __pyx_L1_error)
+    __pyx_t_8 = __pyx_f_16PyTwoPlusTwoEval_eval_hands(__pyx_v_sum_hands, __pyx_v_num_hands, __pyx_v_results); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 225, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   }
   __pyx_L11:;
 
-  /* "twoplustwo_eval/evaluate.pyx":221
+  /* "twoplustwo_eval/evaluate.pyx":227
  *         eval_hands(sum_hands, num_hands, results)
  * 
  *     PyMem_Free(sum_hands)             # <<<<<<<<<<<<<<
@@ -4256,44 +4315,44 @@ static __Pyx_memviewslice __pyx_f_16PyTwoPlusTwoEval_evaluate_all_boards(__Pyx_m
  */
   PyMem_Free(__pyx_v_sum_hands);
 
-  /* "twoplustwo_eval/evaluate.pyx":222
+  /* "twoplustwo_eval/evaluate.pyx":228
  * 
  *     PyMem_Free(sum_hands)
  *     PyMem_Free(deck)             # <<<<<<<<<<<<<<
  * 
- *     cdef double[:] results_py = <double[:len_hands]> results
+ *     cdef double[:] results_py = <double[:len_hands]> results  # C array to memory view
  */
   PyMem_Free(__pyx_v_deck);
 
-  /* "twoplustwo_eval/evaluate.pyx":224
+  /* "twoplustwo_eval/evaluate.pyx":230
  *     PyMem_Free(deck)
  * 
- *     cdef double[:] results_py = <double[:len_hands]> results             # <<<<<<<<<<<<<<
+ *     cdef double[:] results_py = <double[:len_hands]> results  # C array to memory view             # <<<<<<<<<<<<<<
  *     return results_py
  * 
  */
   if (!__pyx_v_results) {
     PyErr_SetString(PyExc_ValueError,"Cannot create cython.array from NULL pointer");
-    __PYX_ERR(0, 224, __pyx_L1_error)
+    __PYX_ERR(0, 230, __pyx_L1_error)
   }
-  __pyx_t_7 = __pyx_format_from_typeinfo(&__Pyx_TypeInfo_double); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 224, __pyx_L1_error)
+  __pyx_t_7 = __pyx_format_from_typeinfo(&__Pyx_TypeInfo_double); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 230, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_8 = Py_BuildValue((char*) "("  __PYX_BUILD_PY_SSIZE_T  ")", ((Py_ssize_t)__pyx_v_len_hands)); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 224, __pyx_L1_error)
+  __pyx_t_8 = Py_BuildValue((char*) "("  __PYX_BUILD_PY_SSIZE_T  ")", ((Py_ssize_t)__pyx_v_len_hands)); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 230, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __pyx_t_6 = __pyx_array_new(__pyx_t_8, sizeof(double), PyBytes_AS_STRING(__pyx_t_7), (char *) "c", (char *) __pyx_v_results);
-  if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 224, __pyx_L1_error)
+  if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 230, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  __pyx_t_12 = __Pyx_PyObject_to_MemoryviewSlice_ds_double(((PyObject *)__pyx_t_6), PyBUF_WRITABLE); if (unlikely(!__pyx_t_12.memview)) __PYX_ERR(0, 224, __pyx_L1_error)
+  __pyx_t_12 = __Pyx_PyObject_to_MemoryviewSlice_ds_double(((PyObject *)__pyx_t_6), PyBUF_WRITABLE); if (unlikely(!__pyx_t_12.memview)) __PYX_ERR(0, 230, __pyx_L1_error)
   __Pyx_DECREF(((PyObject *)__pyx_t_6)); __pyx_t_6 = 0;
   __pyx_v_results_py = __pyx_t_12;
   __pyx_t_12.memview = NULL;
   __pyx_t_12.data = NULL;
 
-  /* "twoplustwo_eval/evaluate.pyx":225
+  /* "twoplustwo_eval/evaluate.pyx":231
  * 
- *     cdef double[:] results_py = <double[:len_hands]> results
+ *     cdef double[:] results_py = <double[:len_hands]> results  # C array to memory view
  *     return results_py             # <<<<<<<<<<<<<<
  * 
  */
@@ -4301,12 +4360,12 @@ static __Pyx_memviewslice __pyx_f_16PyTwoPlusTwoEval_evaluate_all_boards(__Pyx_m
   __pyx_r = __pyx_v_results_py;
   goto __pyx_L0;
 
-  /* "twoplustwo_eval/evaluate.pyx":181
+  /* "twoplustwo_eval/evaluate.pyx":183
  * 
  * 
  * cpdef double[:] evaluate_all_boards(int[:] hands, int[:] board):             # <<<<<<<<<<<<<<
- *     cdef:
- *         stdint.uint32_t tmp_sum, sum_board
+ *     """
+ *     Evaluate hands vs Board, if board is incomplete (< 5) complete it with all possible cards and eval it.
  */
 
   /* function exit code */
@@ -4333,6 +4392,7 @@ static __Pyx_memviewslice __pyx_f_16PyTwoPlusTwoEval_evaluate_all_boards(__Pyx_m
 
 /* Python wrapper */
 static PyObject *__pyx_pw_16PyTwoPlusTwoEval_5evaluate_all_boards(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_16PyTwoPlusTwoEval_4evaluate_all_boards[] = "\n    Evaluate hands vs Board, if board is incomplete (< 5) complete it with all possible cards and eval it.\n    :return: [win hand 1, win hand 2, tie hand 1, tie hand 2 ... ]\n    ";
 static PyObject *__pyx_pw_16PyTwoPlusTwoEval_5evaluate_all_boards(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   __Pyx_memviewslice __pyx_v_hands = { 0, 0, { 0 }, { 0 }, { 0 } };
   __Pyx_memviewslice __pyx_v_board = { 0, 0, { 0 }, { 0 }, { 0 } };
@@ -4365,11 +4425,11 @@ static PyObject *__pyx_pw_16PyTwoPlusTwoEval_5evaluate_all_boards(PyObject *__py
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_board)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("evaluate_all_boards", 1, 2, 2, 1); __PYX_ERR(0, 181, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("evaluate_all_boards", 1, 2, 2, 1); __PYX_ERR(0, 183, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "evaluate_all_boards") < 0)) __PYX_ERR(0, 181, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "evaluate_all_boards") < 0)) __PYX_ERR(0, 183, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -4377,12 +4437,12 @@ static PyObject *__pyx_pw_16PyTwoPlusTwoEval_5evaluate_all_boards(PyObject *__py
       values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
       values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
     }
-    __pyx_v_hands = __Pyx_PyObject_to_MemoryviewSlice_ds_int(values[0], PyBUF_WRITABLE); if (unlikely(!__pyx_v_hands.memview)) __PYX_ERR(0, 181, __pyx_L3_error)
-    __pyx_v_board = __Pyx_PyObject_to_MemoryviewSlice_ds_int(values[1], PyBUF_WRITABLE); if (unlikely(!__pyx_v_board.memview)) __PYX_ERR(0, 181, __pyx_L3_error)
+    __pyx_v_hands = __Pyx_PyObject_to_MemoryviewSlice_ds_int(values[0], PyBUF_WRITABLE); if (unlikely(!__pyx_v_hands.memview)) __PYX_ERR(0, 183, __pyx_L3_error)
+    __pyx_v_board = __Pyx_PyObject_to_MemoryviewSlice_ds_int(values[1], PyBUF_WRITABLE); if (unlikely(!__pyx_v_board.memview)) __PYX_ERR(0, 183, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("evaluate_all_boards", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 181, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("evaluate_all_boards", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 183, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("PyTwoPlusTwoEval.evaluate_all_boards", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -4405,10 +4465,10 @@ static PyObject *__pyx_pf_16PyTwoPlusTwoEval_4evaluate_all_boards(CYTHON_UNUSED 
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("evaluate_all_boards", 0);
   __Pyx_XDECREF(__pyx_r);
-  if (unlikely(!__pyx_v_hands.memview)) { __Pyx_RaiseUnboundLocalError("hands"); __PYX_ERR(0, 181, __pyx_L1_error) }
-  if (unlikely(!__pyx_v_board.memview)) { __Pyx_RaiseUnboundLocalError("board"); __PYX_ERR(0, 181, __pyx_L1_error) }
-  __pyx_t_1 = __pyx_f_16PyTwoPlusTwoEval_evaluate_all_boards(__pyx_v_hands, __pyx_v_board, 0); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 181, __pyx_L1_error)
-  __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_1, 1, (PyObject *(*)(char *)) __pyx_memview_get_double, (int (*)(char *, PyObject *)) __pyx_memview_set_double, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 181, __pyx_L1_error)
+  if (unlikely(!__pyx_v_hands.memview)) { __Pyx_RaiseUnboundLocalError("hands"); __PYX_ERR(0, 183, __pyx_L1_error) }
+  if (unlikely(!__pyx_v_board.memview)) { __Pyx_RaiseUnboundLocalError("board"); __PYX_ERR(0, 183, __pyx_L1_error) }
+  __pyx_t_1 = __pyx_f_16PyTwoPlusTwoEval_evaluate_all_boards(__pyx_v_hands, __pyx_v_board, 0); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 183, __pyx_L1_error)
+  __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_1, 1, (PyObject *(*)(char *)) __pyx_memview_get_double, (int (*)(char *, PyObject *)) __pyx_memview_set_double, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 183, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __PYX_XDEC_MEMVIEW(&__pyx_t_1, 1);
   __pyx_t_1.memview = NULL;
@@ -18516,7 +18576,7 @@ static PyTypeObject __pyx_type___pyx_memoryviewslice = {
 static PyMethodDef __pyx_methods[] = {
   {"handStats_C", (PyCFunction)__pyx_pw_16PyTwoPlusTwoEval_1handStats_C, METH_O, __pyx_doc_16PyTwoPlusTwoEval_handStats_C},
   {"evaluate_all_hands", (PyCFunction)__pyx_pw_16PyTwoPlusTwoEval_3evaluate_all_hands, METH_O, __pyx_doc_16PyTwoPlusTwoEval_2evaluate_all_hands},
-  {"evaluate_all_boards", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_16PyTwoPlusTwoEval_5evaluate_all_boards, METH_VARARGS|METH_KEYWORDS, 0},
+  {"evaluate_all_boards", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_16PyTwoPlusTwoEval_5evaluate_all_boards, METH_VARARGS|METH_KEYWORDS, __pyx_doc_16PyTwoPlusTwoEval_4evaluate_all_boards},
   {0, 0, 0, 0}
 };
 
