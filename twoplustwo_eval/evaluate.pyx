@@ -4,9 +4,16 @@ import cython
 
 from libc cimport stdint
 
-path = "/home/marcos/Gits/poker_projects/poker_hand_evaluator/data/HandRanks.dat"
-dat = np.fromfile(path, dtype=np.uint32)
-cdef stdint.uint32_t[:] handdat = dat[:]  # np.array to C
+import pickle
+
+path = "/home/extra/Data/poker/"
+dat = np.fromfile(path + 'HandRanks.dat', dtype=np.uint32)
+with open(path + 'river_centroids.pkl', 'rb') as f:
+    _river_centroids = pickle.load(f)
+# np.array to C(memory views)
+cdef stdint.uint32_t[:] handdat = dat[:]  # eval two plus two
+cdef double[:] river_centroids = _river_centroids.reshape(_river_centroids.shape[0],)[:]  # river centroids
+cdef int len_centroids = _river_centroids.shape[0]
 
 
 cdef inline void sum_new_card(int new_card, stdint.uint32_t sum_hands[], int num_hands, stdint.uint32_t new_sum_hands[]):
@@ -53,6 +60,37 @@ cdef inline void eval_hands(stdint.uint32_t sum_hands[], int num_hands, double r
     else:
         results[win_id] += 1
 
+@cython.cdivision(True)
+cpdef double results_to_ev(double[:] results):
+    cdef:
+        double total = results[0] + results[1] + results[2]
+        double won = results[0] + results[1]
+    return won / total
+
+
+cdef int ehs_distance_turn(double ehs):
+    cdef:
+        int idx, min_idx
+        double min_emd, emd
+    for idx in range(len_centroids):
+        emd = abs(ehs - river_centroids[idx])
+        if idx == 0:
+            min_idx = idx
+            min_emd = emd
+        else:
+            if emd < min_emd:
+                min_idx = idx
+                min_emd = emd
+
+    return min_idx
+
+@cython.cdivision(True)
+cdef void ev_clusters(double n_simulations, double[:] results, double clusters[]):
+    cdef double ehs
+    cdef int idx
+    ehs = results_to_ev(results)
+    idx = ehs_distance_turn(ehs)
+    clusters[idx] += 1 / n_simulations
 
 
 cpdef stdint.uint32_t handStats_C(h):
@@ -99,7 +137,7 @@ cdef int create_deck(int[:] dead_cards, int len_dead_cards, int results[]):
     return num_cards
 
 cdef void all_hands_create_boards(int[:] cards, int len_cards, stdint.uint32_t eval_hand, stdint.uint32_t eval_board,
-                             double[:] results):
+                             double[:] results, double clusters[], bint ehs):
     cdef:
         stdint.uint32_t eval_board_turn, eval_board_river
         stdint.uint32_t eval_hand_turn, eval_hand_river
@@ -107,6 +145,7 @@ cdef void all_hands_create_boards(int[:] cards, int len_cards, stdint.uint32_t e
         int *deck = <int *> PyMem_Malloc((52 - len_cards) * sizeof(int))
         int len_deck = create_deck(cards, len_cards, deck)  # call func to create deck (rival_cards)
         int a, b, i
+        double n_simulations = 46.0 if len_cards == 6 else 1081.0  # number simulations (turn or river)
     for i in range(len_cards):
         dead_cards[i] = cards[i]
 
@@ -116,6 +155,8 @@ cdef void all_hands_create_boards(int[:] cards, int len_cards, stdint.uint32_t e
         if len_cards == 6:
             dead_cards[6] = deck[a]
             _evaluate_all_hands(dead_cards, 7, eval_hand_turn, eval_board_turn, results)
+            if ehs:
+                ev_clusters(n_simulations, results, clusters)
         else:
             dead_cards[5] = deck[a]
             for b in range(a+1, len_deck):
@@ -123,6 +164,8 @@ cdef void all_hands_create_boards(int[:] cards, int len_cards, stdint.uint32_t e
                 eval_hand_river = handdat[eval_hand_turn + deck[b]]
                 dead_cards[6] = deck[b]
                 _evaluate_all_hands(dead_cards, 7, eval_hand_river, eval_board_river, results)
+                if ehs:
+                    ev_clusters(n_simulations, results, clusters)
 
     PyMem_Free(deck)
     return
@@ -163,10 +206,11 @@ cdef void _evaluate_all_hands(int[:] dead_cards, int len_dead_cards, stdint.uint
     return
 
 
-cpdef double[:] evaluate_all_hands(int[:] cards):
+cpdef double[:] evaluate_all_hands(int[:] cards, bint ehs=False):
     """
     Evaluate one hand vs all other hands in one specific board
     :param cards: Array int where hand[:2] and board[2:]
+    :param ehs: return ehs clusters
     :return: probabilities to [win, tie]
     """
     cdef:
@@ -174,6 +218,11 @@ cpdef double[:] evaluate_all_hands(int[:] cards):
         int i
         int len_cards = cards.shape[0]
         double[3] results = [0.0, 0.0, 0.0]
+        double *_clusters =  <double *> PyMem_Malloc(len_centroids * sizeof(double))
+    # clusters to 0.0
+    for i in range(len_centroids):
+        _clusters[i] = 0.0
+    cdef double[:] clusters = <double[:len_centroids]> _clusters
     # eval board
     eval_board = 53
     for i in range(2, len_cards):  # board is the same for all hands, store sum
@@ -188,9 +237,13 @@ cpdef double[:] evaluate_all_hands(int[:] cards):
     if len_cards == 7:
         _evaluate_all_hands(cards, len_cards, eval_hand, eval_board, results)
     else:
-        all_hands_create_boards(cards, len_cards, eval_hand, eval_board, results)
+        all_hands_create_boards(cards, len_cards, eval_hand, eval_board, results, _clusters, ehs)
 
-    return results
+    if ehs:
+        return clusters
+    else:
+        PyMem_Free(_clusters)
+        return results
 
 cdef void create_boards(int deck[], int len_deck, stdint.uint32_t sum_hands[],
                         int num_hands, int len_board,
