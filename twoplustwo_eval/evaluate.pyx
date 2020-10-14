@@ -1,18 +1,30 @@
 import numpy as np
 from cpython.mem cimport PyMem_Malloc, PyMem_Free
+from pathlib import Path
 import cython
 
 from libc cimport stdint
 
 import pickle
 
-path = "/home/extra/Data/poker/"
-dat = np.fromfile(path + 'HandRanks.dat', dtype=np.uint32)
-with open(path + 'river_centroids.pkl', 'rb') as f:
-    _river_centroids = pickle.load(f)
+path = Path("/home/extra/Data/poker")
+path_river_centroid = path / Path('river_centroids.pkl')
+path_turn_centroid = path / Path('turn_centroids.pkl')
+dat = np.fromfile(path / Path('HandRanks.dat'), dtype=np.uint32)  # eval file two plus two
+if path_river_centroid.exists():
+    with open(path_river_centroid, 'rb') as f:
+        _river_centroids = pickle.load(f)
+else:
+    _river_centroids = np.zeros((1,1))
+if path_turn_centroid.exists():
+    with open(path_turn_centroid, 'rb') as f:
+        _turn_centroids = pickle.load(f)
+else:
+    _turn_centroids = np.zeros((1,1))
 # np.array to C(memory views)
-cdef stdint.uint32_t[:] handdat = dat[:]  # eval two plus two
+cdef stdint.uint32_t[:] handdat = dat[:]
 cdef double[:] river_centroids = _river_centroids.reshape(_river_centroids.shape[0],)[:]  # river centroids
+cdef double[:] turn_centroids = _turn_centroids.reshape(_turn_centroids.shape[0],)[:]  # turn centroids
 cdef int len_centroids = _river_centroids.shape[0]
 
 
@@ -68,12 +80,15 @@ cpdef double results_to_ev(double[:] results):
     return won / total
 
 
-cdef int ehs_distance_turn(double ehs):
+cdef int ehs_distance(double ehs, street='turn'):
     cdef:
         int idx, min_idx
         double min_emd, emd
     for idx in range(len_centroids):
-        emd = abs(ehs - river_centroids[idx])
+        if street == 'turn':
+            emd = abs(ehs - river_centroids[idx])
+        else:
+            emd = abs(ehs - turn_centroids[idx])
         if idx == 0:
             min_idx = idx
             min_emd = emd
@@ -89,7 +104,7 @@ cdef void ev_clusters(double n_simulations, double[:] results, double clusters[]
     cdef double ehs
     cdef int idx
     ehs = results_to_ev(results)
-    idx = ehs_distance_turn(ehs)
+    idx = ehs_distance(ehs)
     clusters[idx] += 1 / n_simulations
 
 
