@@ -3,3 +3,4 @@ build
 *.ipynb
 *.so
 *.c
+/twoplustwo_eval.egg-info/
