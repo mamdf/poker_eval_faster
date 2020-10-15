@@ -80,10 +80,10 @@ cpdef double results_to_ev(double[:] results):
     return won / total
 
 
-cdef int ehs_distance(double ehs, bint turn):
+cpdef int ehs_distance(double ev, bint turn):
     """
-    Compare ev(ehs) vs K centroids
-    :param ehs: ev all hands vs one board
+    Compare ev vs K centroids
+    :param ev: ev all hands vs one board
     :param turn: bool ehs turn or flop
     :return: the best idx centroid which fix with current ev
     """
@@ -92,9 +92,9 @@ cdef int ehs_distance(double ehs, bint turn):
         double min_emd, emd
     for idx in range(len_centroids):
         if turn:
-            emd = abs(ehs - river_centroids[idx])  # as wasserstein_distance for one value but faster
+            emd = abs(ev - river_centroids[idx])  # as wasserstein_distance for one value but faster
         else:
-            emd = abs(ehs - turn_centroids[idx])  # as wasserstein_distance for one value but faster
+            emd = abs(ev - turn_centroids[idx])  # as wasserstein_distance for one value but faster
         if idx == 0:
             min_idx = idx
             min_emd = emd
@@ -107,10 +107,10 @@ cdef int ehs_distance(double ehs, bint turn):
 
 @cython.cdivision(True)
 cdef void ev_clusters(double n_simulations, double[:] results, double clusters[], bint turn=1):
-    cdef double ehs
+    cdef double ev
     cdef int idx
-    ehs = results_to_ev(results)
-    idx = ehs_distance(ehs, turn)
+    ev = results_to_ev(results)
+    idx = ehs_distance(ev, turn)
     clusters[idx] += 1 / n_simulations
     for i in range(3):  # clear results
         results[i] = 0.0
