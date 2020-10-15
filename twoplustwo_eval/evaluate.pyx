@@ -75,20 +75,26 @@ cdef inline void eval_hands(stdint.uint32_t sum_hands[], int num_hands, double r
 @cython.cdivision(True)
 cpdef double results_to_ev(double[:] results):
     cdef:
-        double total = results[0] + results[1] + results[2]
+        double total = results[0] + results[1] * 2 + results[2]
         double won = results[0] + results[1]
     return won / total
 
 
-cdef int ehs_distance(double ehs, street='turn'):
+cdef int ehs_distance(double ehs, bint turn):
+    """
+    Compare ev(ehs) vs K centroids
+    :param ehs: ev all hands vs one board
+    :param turn: bool ehs turn or flop
+    :return: the best idx centroid which fix with current ev
+    """
     cdef:
         int idx, min_idx
         double min_emd, emd
     for idx in range(len_centroids):
-        if street == 'turn':
-            emd = abs(ehs - river_centroids[idx])
+        if turn:
+            emd = abs(ehs - river_centroids[idx])  # as wasserstein_distance for one value but faster
         else:
-            emd = abs(ehs - turn_centroids[idx])
+            emd = abs(ehs - turn_centroids[idx])  # as wasserstein_distance for one value but faster
         if idx == 0:
             min_idx = idx
             min_emd = emd
@@ -100,12 +106,14 @@ cdef int ehs_distance(double ehs, street='turn'):
     return min_idx
 
 @cython.cdivision(True)
-cdef void ev_clusters(double n_simulations, double[:] results, double clusters[]):
+cdef void ev_clusters(double n_simulations, double[:] results, double clusters[], bint turn=1):
     cdef double ehs
     cdef int idx
     ehs = results_to_ev(results)
-    idx = ehs_distance(ehs)
+    idx = ehs_distance(ehs, turn)
     clusters[idx] += 1 / n_simulations
+    for i in range(3):  # clear results
+        results[i] = 0.0
 
 
 cpdef stdint.uint32_t handStats_C(h):
@@ -171,7 +179,7 @@ cdef void all_hands_create_boards(int[:] cards, int len_cards, stdint.uint32_t e
             dead_cards[6] = deck[a]
             _evaluate_all_hands(dead_cards, 7, eval_hand_turn, eval_board_turn, results)
             if ehs:
-                ev_clusters(n_simulations, results, clusters)
+                ev_clusters(n_simulations, results, clusters, turn=1)
         else:
             dead_cards[5] = deck[a]
             for b in range(a+1, len_deck):
@@ -180,7 +188,7 @@ cdef void all_hands_create_boards(int[:] cards, int len_cards, stdint.uint32_t e
                 dead_cards[6] = deck[b]
                 _evaluate_all_hands(dead_cards, 7, eval_hand_river, eval_board_river, results)
                 if ehs:
-                    ev_clusters(n_simulations, results, clusters)
+                    ev_clusters(n_simulations, results, clusters, turn=0)
 
     PyMem_Free(deck)
     return
