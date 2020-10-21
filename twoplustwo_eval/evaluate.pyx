@@ -2,16 +2,11 @@ import numpy as np
 from cpython.mem cimport PyMem_Malloc, PyMem_Free
 from pathlib import Path
 import cython
-import sys
-
 from libc cimport stdint
 
 
-sys.path.append('/home/marcos/Projects/poker/hand_isomorphism')
-
 path = Path("/home/extra/Data/poker")
 dat = np.fromfile(path / Path('HandRanks.dat'), dtype=np.uint32)  # eval file two plus two
-
 # np.array to C(memory views)
 cdef stdint.uint32_t[:] handdat = dat[:]
 
