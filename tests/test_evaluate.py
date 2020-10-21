@@ -35,6 +35,6 @@ def test_evaluate_all_hands(cards, expected, expected_pct):
 @pytest.mark.parametrize('ev, expected', [(0.01, 0), (0.1, 3), (0.12, 5), (0.5, 25), (0.509, 26), (0.75, 35),
                                           (1.0, 49)])
 def test_ehs_distance(ev, expected):
-    result = ehs_distance(ev, turn=1)
+    result = ehs_distance(ev, 1, 0)
     assert result == expected
 

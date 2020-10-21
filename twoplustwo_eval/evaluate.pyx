@@ -1,11 +1,18 @@
+cimport numpy as np
 import numpy as np
 from cpython.mem cimport PyMem_Malloc, PyMem_Free
+from twoplustwo_eval.distance import wasserstein_distance
 from pathlib import Path
 import cython
+import sys
 
 from libc cimport stdint
 
 import pickle
+
+sys.path.append('/home/marcos/Projects/poker/hand_isomorphism')
+import index
+ind = index.HandIndex([2,4])
 
 path = Path("/home/extra/Data/poker")
 path_river_centroid = path / Path('river_centroids.pkl')
@@ -19,12 +26,16 @@ else:
 if path_turn_centroid.exists():
     with open(path_turn_centroid, 'rb') as f:
         _turn_centroids = pickle.load(f)
+    with open(path / Path('turn_clusters.pkl'), 'rb') as f:
+        _turn_clusters = pickle.load(f)
 else:
     _turn_centroids = np.zeros((1,1))
+    _turn_clusters = np.zeros((1,1))
 # np.array to C(memory views)
 cdef stdint.uint32_t[:] handdat = dat[:]
 cdef double[:] river_centroids = _river_centroids.reshape(_river_centroids.shape[0],)[:]  # river centroids
-cdef double[:] turn_centroids = _turn_centroids.reshape(_turn_centroids.shape[0],)[:]  # turn centroids
+cdef double[:,:] turn_centroids = _turn_centroids[:,:]  # turn centroids
+cdef stdint.uint8_t[:] turn_clusters = _turn_clusters[:]  # turn clusters
 cdef int len_centroids = _river_centroids.shape[0]
 
 
@@ -80,7 +91,7 @@ cpdef double results_to_ev(double[:] results):
     return won / total
 
 
-cpdef int ehs_distance(double ev, bint turn):
+cpdef int ehs_distance(double ev, bint turn, int cluster):
     """
     Compare ev vs K centroids
     :param ev: ev all hands vs one board
@@ -90,11 +101,14 @@ cpdef int ehs_distance(double ev, bint turn):
     cdef:
         int idx, min_idx
         double min_emd, emd
+    current_centroid = None
     for idx in range(len_centroids):
         if turn:
             emd = abs(ev - river_centroids[idx])  # as wasserstein_distance for one value but faster
-        else:
-            emd = abs(ev - turn_centroids[idx])  # as wasserstein_distance for one value but faster
+        else:  # flop
+            if current_centroid is None:
+                current_centroid = np.sort(turn_centroids[cluster])
+            emd = wasserstein_distance(current_centroid, turn_centroids[idx])
         if idx == 0:
             min_idx = idx
             min_emd = emd
@@ -106,11 +120,19 @@ cpdef int ehs_distance(double ev, bint turn):
     return min_idx
 
 @cython.cdivision(True)
-cdef void ev_clusters(double n_simulations, double[:] results, double clusters[], bint turn=1):
+cdef void ev_clusters(double n_simulations, double[:] results, double clusters[], int[:] cards, bint turn=1):
     cdef double ev
-    cdef int idx
-    ev = results_to_ev(results)
-    idx = ehs_distance(ev, turn)
+    cdef int idx, i, idx_cluster, cluster
+    if turn:
+        ev = results_to_ev(results)
+        idx = ehs_distance(ev, turn, 0)
+    else:
+        new_ind_cards = []
+        for i in range(6):
+            new_ind_cards.append(cards[i] - 1)
+        idx_cluster = ind.index(new_ind_cards)
+        cluster = turn_clusters[idx_cluster]
+        idx = ehs_distance(0.0, turn, cluster)
     clusters[idx] += 1 / n_simulations
     for i in range(3):  # clear results
         results[i] = 0.0
@@ -168,7 +190,7 @@ cdef void all_hands_create_boards(int[:] cards, int len_cards, stdint.uint32_t e
         int *deck = <int *> PyMem_Malloc((52 - len_cards) * sizeof(int))
         int len_deck = create_deck(cards, len_cards, deck)  # call func to create deck (rival_cards)
         int a, b, i
-        double n_simulations = 46.0 if len_cards == 6 else 1081.0  # number simulations (turn or river)
+        double n_simulations = 46.0 if len_cards == 6 else 47.0  # number simulations (turn or river)
     for i in range(len_cards):
         dead_cards[i] = cards[i]
 
@@ -179,16 +201,17 @@ cdef void all_hands_create_boards(int[:] cards, int len_cards, stdint.uint32_t e
             dead_cards[6] = deck[a]
             _evaluate_all_hands(dead_cards, 7, eval_hand_turn, eval_board_turn, results)
             if ehs:
-                ev_clusters(n_simulations, results, clusters, turn=1)
+                ev_clusters(n_simulations, results, clusters, dead_cards, turn=1)
         else:
             dead_cards[5] = deck[a]
-            for b in range(a+1, len_deck):
-                eval_board_river = handdat[eval_board_turn + deck[b]]
-                eval_hand_river = handdat[eval_hand_turn + deck[b]]
-                dead_cards[6] = deck[b]
-                _evaluate_all_hands(dead_cards, 7, eval_hand_river, eval_board_river, results)
-                if ehs:
-                    ev_clusters(n_simulations, results, clusters, turn=0)
+            if ehs:
+                ev_clusters(n_simulations, results, clusters, dead_cards, turn=0)
+            else:
+                for b in range(a+1, len_deck):
+                    eval_board_river = handdat[eval_board_turn + deck[b]]
+                    eval_hand_river = handdat[eval_hand_turn + deck[b]]
+                    dead_cards[6] = deck[b]
+                    _evaluate_all_hands(dead_cards, 7, eval_hand_river, eval_board_river, results)
 
     PyMem_Free(deck)
     return
