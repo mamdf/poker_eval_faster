@@ -11,3 +11,7 @@ def cards_to_int(cards: List[str]):
 
 def int_to_cards(cards: List[int]):
     return [DECK[i-1] for i in cards]
+
+
+def hands_to_int(hands):
+    return [[CARDS_TO_INT[c] - 1 for c in hand] for hand in hands]
