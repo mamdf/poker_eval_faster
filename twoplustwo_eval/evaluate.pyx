@@ -250,9 +250,9 @@ cpdef double[:] evaluate_all_boards(int[:] hands, int[:] board):
     """
     cdef:
         stdint.uint32_t tmp_sum, sum_board
-        int len_hands = hands.shape[0]
+        int len_hands = hands.size
+        int len_board = board.size
         int num_hands = len_hands // 2
-        int len_board = board.shape[0]
         int len_total = len_board + len_hands
         stdint.uint32_t *sum_hands = <stdint.uint32_t *>PyMem_Malloc(num_hands * sizeof(stdint.uint32_t))
         int *deck = <int *>PyMem_Malloc((52 - len_total) * sizeof(int))
