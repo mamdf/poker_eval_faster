@@ -2,6 +2,7 @@ import numpy as np
 from cpython.mem cimport PyMem_Malloc, PyMem_Free
 from pathlib import Path
 import cython
+from array import array
 from libc cimport stdint
 
 
@@ -243,7 +244,7 @@ cdef void create_boards(int deck[], int len_deck, stdint.uint32_t sum_hands[],
     return
 
 
-cpdef double[:] evaluate_all_boards(int[:] hands, int[:] board):
+cpdef double[:] evaluate_all_boards(int[:] hands, int[:] board=array('i', [])):
     """
     Evaluate hands vs Board, if board is incomplete (< 5) complete it with all possible cards and eval it.
     :return: [win hand 1, win hand 2, tie hand 1, tie hand 2 ... ]
