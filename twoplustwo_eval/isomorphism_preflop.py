@@ -1,5 +1,16 @@
 import numpy as np
-from typing import List
+from typing import List, Tuple
+
+
+def sort_axis1(hands):
+    sort_cards = []
+    for h in hands:
+        if h[0] > h[1]:
+            sort_cards.append((h[1], h[0]))
+        else:
+            sort_cards.append((h[0], h[1]))
+
+    return sort_cards
 
 
 def _suit_config(hands_int, last_suit=0, config=None):
@@ -24,10 +35,10 @@ def _suit_config(hands_int, last_suit=0, config=None):
     return [new_hand] + _suit_config(hands_int[1:], last_suit, config)
 
 
-def fix_hole_cards(hands_int: List[List[int]]):
-    hands_int = np.sort(hands_int, axis=1)  # hole card sorted c1 < c2
-    hands_int = np.sort(hands_int, axis=0)  # p1 < p2 < p3
+def fix_hole_cards(hands_int: Tuple[Tuple[int, int]]):
+    hands_int = sort_axis1(hands_int)  # hole card sorted c1 < c2
+    hands_int.sort()  # p1 < p2 < p3
 
     result = _suit_config(hands_int)
-    result = np.sort(result, axis=1)  # it has not sorted yet, sorted (ex: AdAc -> AcAd)
-    return np.asarray([i+1 for hand in result for i in hand], dtype='int32')  # flatten
+    result = sort_axis1(result)  # it has not sorted yet, sorted (ex: AdAc -> AcAd)
+    return [i+1 for hand in result for i in hand]  # flatten

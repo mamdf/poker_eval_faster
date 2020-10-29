@@ -64,7 +64,7 @@ cpdef double results_to_ev(double[:] results):
     return won / total
 
 
-cpdef stdint.uint32_t handStats_C(h):
+cpdef stdint.uint32_t evaluate(h):
     """ Takes a hand as an array of strings (as above)
     Returns a dict of the hand's stats.
     value is an integer whose value that can be compared to other hand values.

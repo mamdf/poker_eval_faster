@@ -15,4 +15,4 @@ hands = [
 @pytest.mark.parametrize('hand', hands)
 def test_fix_hole_cards(hand):
     int_hand = hands_to_int(hand)
-    assert fix_hole_cards(int_hand).tolist() == [17, 38, 22, 47, 49, 52], hand
+    assert fix_hole_cards(int_hand) == [17, 38, 22, 47, 49, 52], hand
