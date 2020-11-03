@@ -19,7 +19,7 @@ def _suit_config(hands_int, last_suit=0, config=None):
 
     new_hand = []
     for card in hands_int[0]:
-        suit_idx = card % 4
+        suit_idx = (card - 1) % 4
         rank = card - suit_idx  # rank club
         if config and config.get(suit_idx) is not None:  # suit's already in config
             new_hand.append(rank + config[suit_idx])
@@ -35,10 +35,15 @@ def _suit_config(hands_int, last_suit=0, config=None):
     return [new_hand] + _suit_config(hands_int[1:], last_suit, config)
 
 
-def fix_hole_cards(hands_int: Tuple[Tuple[int, int]]):
+def fix_hole_cards(hands_int: List[List[int]]):
+    """
+    Canonical pre-flop hands, ex: AcKc QdJd == AhcH QsJs
+    :param hands_int: List[List[int]]
+    :return: List[int]
+    """
     hands_int = sort_axis1(hands_int)  # hole card sorted c1 < c2
     hands_int.sort()  # p1 < p2 < p3
 
     result = _suit_config(hands_int)
     result = sort_axis1(result)  # it has not sorted yet, sorted (ex: AdAc -> AcAd)
-    return [i+1 for hand in result for i in hand]  # flatten
+    return [i for hand in result for i in hand]  # flatten
