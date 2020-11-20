@@ -1,4 +1,3 @@
-import numpy as np
 from typing import List, Tuple
 
 
@@ -37,13 +36,17 @@ def _suit_config(hands_int, last_suit=0, config=None):
 
 def fix_hole_cards(hands_int: List[List[int]]):
     """
-    Canonical pre-flop hands, ex: AcKc QdJd == AhcH QsJs
+    Canonical pre-flop hands, ex: AcKc QdJd == Ahch QsJs
     :param hands_int: List[List[int]]
-    :return: List[int]
+    :return: List[int] canonical cards, List[int] arg index sorted
     """
+    arg_index = []
     hands_int = sort_axis1(hands_int)  # hole card sorted c1 < c2
-    hands_int.sort()  # p1 < p2 < p3
+    sort_hands = sorted(hands_int)  # p1 < p2 < p3
+    for hand in hands_int:
+        arg_index.append(sort_hands.index(hand))
 
-    result = _suit_config(hands_int)
+    result = _suit_config(sort_hands)
     result = sort_axis1(result)  # it has not sorted yet, sorted (ex: AdAc -> AcAd)
-    return [i for hand in result for i in hand]  # flatten
+    result = [i for hand in result for i in hand]  # flatten
+    return result, arg_index
