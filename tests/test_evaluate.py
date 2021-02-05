@@ -1,51 +1,41 @@
-from twoplustwo_eval import evaluate_all_hands, results_to_ev, evaluate_all_boards, results_to_ev_all_boards
-from twoplustwo_eval import cards_to_int, int_to_cards
+from twoplustwo_eval.equity import evaluate_hands, evaluate_one_hand_vs_all
 import pytest
 
-ps_eval = [
-    [['5c', '2d', '2c', '2h', '5h', '7h', '7s'], [860, 21, 88], 88.99],
-    [['Qc', '2d', '5c', 'Tc', '3d', '4d', '9h'], [116, 4.5, 865], 12.17],
-    [['Ac', '4d', '8c', '4h', '5h', 'Jh', '2s'], [498, 3, 486], 50.61],
-    [['4c', '5d', '2c', '7c', 'Qc', 'Qh', '6s'], [12, 10, 958], 2.22],
-    [['6c', '8d', '9c', '2h', 'Th', '2s', '9s'], [0, 100.5, 789], 10.15],
-    [['6c', '6d', '9c', '7d', 'Jh', 'Ah', '6s'], [946, 0, 44], 95.56],
-    [['9c', 'Jc', '5d', '9d', 'Kd', '4h'], [29525, 293, 15429], 65.48],
-    [['3c', '4c', '6c', '6d', 'Kd', '7h'], [6778, 2043.5, 34675], 19.37],
-    [['Jc', '3d', 'Ac', '9d', '7h', 'Qh'], [12940, 1231.5, 30137], 31.12],
-    [['6c', 'Kd', '3c', 'Qc', '5h', '7h'], [16509, 476, 28079], 37.3],
-    [['Tc', '9d', '2c', 'Ac', 'Qh', '7s'], [12770, 378, 32014], 28.87],
-    [['5c', '8d', '8c', 'Tc', '3h', 'Jh'], [25394, 684, 18778], 57.26],
-    [['Tc', 'Qc', 'Ad', 'Jh', '3s'], [544829, 15937, 493487], 52.4],
-    [['8c', '6d', '9c', '5d', '3h'], [376668, 10278, 672966], 36.16],
-    [['5c', '9d', '9c', 'Qc', 'Jh'], [598361, 32985, 405859], 58.99],
-    [['7c', 'Kc', '7d', 'Jd', '6h'], [713844, 4323, 347700], 67.11],
-    [['5c', '7d', 'Ac', '5h', '7h'], [877485, 6333.5, 180038], 82.59],
-    [['Kc', 'Jd', '2c', '4c', '2d'], [537561, 21002.5, 490624], 52.19],
+ps_hand_vs_all = [
+    [['5c', '2d'], ['2c', '2h', '5h', '7h', '7s'], 88.99],
+    [['Qc', '2d'], ['5c', 'Tc', '3d', '4d', '9h'],  12.17],
+    [['Ac', '4d'], ['8c', '4h', '5h', 'Jh', '2s'],  50.61],
+    [['4c', '5d'], ['2c', '7c', 'Qc', 'Qh', '6s'],  2.22],
+    [['6c', '8d'], ['9c', '2h', 'Th', '2s', '9s'],  10.15],
+    [['6c', '6d'], ['9c', '7d', 'Jh', 'Ah', '6s'],  95.56],
+    [['9c', 'Jc'], ['5d', '9d', 'Kd', '4h'],  65.48],
+    [['3c', '4c'], ['6c', '6d', 'Kd', '7h'],  19.37],
+    [['Jc', '3d'], ['Ac', '9d', '7h', 'Qh'],  31.12],
+    [['6c', 'Kd'], ['3c', 'Qc', '5h', '7h'],  37.3],
+    [['Tc', '9d'], ['2c', 'Ac', 'Qh', '7s'],  28.87],
+    [['5c', '8d'], ['8c', 'Tc', '3h', 'Jh'],  57.26],
+    [['Tc', 'Qc'], ['Ad', 'Jh', '3s'], 52.4],
+    [['8c', '6d'], ['9c', '5d', '3h'], 36.16],
+    [['5c', '9d'], ['9c', 'Qc', 'Jh'], 58.99],
+    [['7c', 'Kc'], ['7d', 'Jd', '6h'], 67.11],
+    [['5c', '7d'], ['Ac', '5h', '7h'], 82.59],
+    [['Kc', 'Jd'], ['2c', '4c', '2d'], 52.19],
 ]
 
 ps_eval_hands = [
-    [['9c', '8c', 'Tc', 'Td'], ['Qh', 'Jh', '8s'], [150.0, 834.0, 3.0, 3.0], [15.45, 84.55]],
-    [['Kc', 'Qc', '6c', '6d', '9s', '8s'], [], [564097.0, 384893.0, 417591.0, 1391.0, 1391.0, 1391.0],
-     [41.25, 28.18, 30.57]],
-    [['Kc', 'Qc', '6c', '6d', 'Kd', 'Kh'], [], [168597.0, 270982.0, 914557.0, 7596.67, 1424.67, 7596.67],
-     [12.85, 19.87, 67.27]]
+    [[['9c', '8c'], ['Tc', 'Td']], ['Qh', 'Jh', '8s'], [15.45, 84.55]],
+    [[['Kc', 'Qc'], ['6c', '6d'], ['9s', '8s']], [], [41.25, 28.18, 30.57]],
+    [[['Kc', 'Qc'], ['6c', '6d'], ['Kd', 'Kh']], [], [12.85, 19.87, 67.27]]
     ]
 
 
-@pytest.mark.parametrize('cards, expected, expected_pct', ps_eval)
-def test_evaluate_all_hands(cards, expected, expected_pct):
-    cards = cards_to_int(cards)
-    result = evaluate_all_hands(cards)
-    assert list(result) == expected
-    ev_pct = results_to_ev(result)
-    assert round(ev_pct * 100, 2) == expected_pct
+@pytest.mark.parametrize('hand, board, expected_pct', ps_hand_vs_all)
+def test_evaluate_one_hand_vs_all(hand, board, expected_pct):
+    result = evaluate_one_hand_vs_all(hand, board)
+    assert round(result * 100, 2) == expected_pct
 
 
-@pytest.mark.parametrize('hands, board, expected, expected_pct', ps_eval_hands)
-def test_evaluate_all_boards(hands, board, expected, expected_pct):
-    hands = cards_to_int(hands)
-    board = cards_to_int(board)
-    result = evaluate_all_boards(hands, board)
-    assert [round(i, 2) for i in result] == expected
-    ev_pct = results_to_ev_all_boards(result)
-    assert [round(i * 100, 2) for i in ev_pct] == expected_pct
+@pytest.mark.parametrize('hands, board, expected_pct', ps_eval_hands)
+def test_evaluate_hands(hands, board, expected_pct):
+    result = evaluate_hands(hands, board)
+    assert [round(i * 100, 2) for i in result] == expected_pct

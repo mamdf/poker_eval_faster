@@ -7,7 +7,7 @@ setup(
     packages=['twoplustwo_eval'],
     url='',
     license='',
-    author='marcos',
+    author='marcos masci',
     author_email='',
     description='evaluate poker hands',
     ext_modules=cythonize('twoplustwo_eval/*.pyx'),
