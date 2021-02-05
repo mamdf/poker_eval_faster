@@ -63,6 +63,20 @@ cpdef double results_to_ev(double[:] results):
         double won = results[0] + results[1]
     return won / total
 
+@cython.cdivision(True)
+cpdef list[float] results_to_ev_all_boards(double[:] results):
+    cdef:
+        double total = 0.0
+        int i
+        int len_results = len(results)
+        int len_equity = len_results // 2
+    equity = [0.0] * len_equity
+    for i in range(len_results):
+        total += results[i]
+    for i in range(len_equity):
+        equity[i] = (results[i] + results[i + len_equity]) / total
+    return equity
+
 
 cpdef stdint.uint32_t evaluate(h):
     """ Takes a hand as an array of strings (as above)

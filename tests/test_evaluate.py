@@ -1,4 +1,5 @@
-from twoplustwo_eval import evaluate_all_hands, cards_to_int, results_to_ev, evaluate_all_boards
+from twoplustwo_eval import evaluate_all_hands, results_to_ev, evaluate_all_boards, results_to_ev_all_boards
+from twoplustwo_eval import cards_to_int, int_to_cards
 import pytest
 
 ps_eval = [
@@ -23,9 +24,11 @@ ps_eval = [
 ]
 
 ps_eval_hands = [
-    [['9c', '8c', 'Tc', 'Td'], ['Qh', 'Jh', '8s'], [150.0, 834.0, 3.0, 3.0]],
-    [['Kc', 'Qc', '6c', '6d', '9s', '8s'], [], [564097.0, 384893.0, 417591.0, 1391.0, 1391.0, 1391.0]],
-    [['Kc', 'Qc', '6c', '6d', 'Kd', 'Kh'], [], [168597.0, 270982.0, 914557.0, 7596.67, 1424.67, 7596.67]]
+    [['9c', '8c', 'Tc', 'Td'], ['Qh', 'Jh', '8s'], [150.0, 834.0, 3.0, 3.0], [15.45, 84.55]],
+    [['Kc', 'Qc', '6c', '6d', '9s', '8s'], [], [564097.0, 384893.0, 417591.0, 1391.0, 1391.0, 1391.0],
+     [41.25, 28.18, 30.57]],
+    [['Kc', 'Qc', '6c', '6d', 'Kd', 'Kh'], [], [168597.0, 270982.0, 914557.0, 7596.67, 1424.67, 7596.67],
+     [12.85, 19.87, 67.27]]
     ]
 
 
@@ -38,9 +41,11 @@ def test_evaluate_all_hands(cards, expected, expected_pct):
     assert round(ev_pct * 100, 2) == expected_pct
 
 
-@pytest.mark.parametrize('hands, board, expected', ps_eval_hands)
-def test_evaluate_all_boards(hands, board, expected):
+@pytest.mark.parametrize('hands, board, expected, expected_pct', ps_eval_hands)
+def test_evaluate_all_boards(hands, board, expected, expected_pct):
     hands = cards_to_int(hands)
     board = cards_to_int(board)
     result = evaluate_all_boards(hands, board)
     assert [round(i, 2) for i in result] == expected
+    ev_pct = results_to_ev_all_boards(result)
+    assert [round(i * 100, 2) for i in ev_pct] == expected_pct
