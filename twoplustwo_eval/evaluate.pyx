@@ -57,14 +57,14 @@ cdef inline void eval_hands(stdint.uint32_t sum_hands[], int num_hands, double r
         results[win_id] += 1
 
 @cython.cdivision(True)
-cpdef double results_to_ev(double[:] results):
+cpdef double hand_to_equity(double[:] results):
     cdef:
         double total = results[0] + results[1] * 2 + results[2]
         double won = results[0] + results[1]
     return won / total
 
 @cython.cdivision(True)
-cpdef list[float] results_to_ev_all_boards(double[:] results):
+cpdef list[float] hands_to_equity(double[:] results):
     cdef:
         double total = 0.0
         int i
@@ -121,7 +121,7 @@ cdef int create_deck(int[:] dead_cards, int len_dead_cards, int results[]):
 
     return num_cards
 
-cdef void all_hands_create_boards(int[:] cards, int len_cards, stdint.uint32_t eval_hand, stdint.uint32_t eval_board,
+cdef void _all_hands_create_boards(int[:] cards, int len_cards, stdint.uint32_t eval_hand, stdint.uint32_t eval_board,
                              double[:] results):
     cdef:
         stdint.uint32_t eval_board_turn, eval_board_river
@@ -139,20 +139,20 @@ cdef void all_hands_create_boards(int[:] cards, int len_cards, stdint.uint32_t e
         eval_hand_turn = handdat[eval_hand + deck[a]]
         if len_cards == 6:
             dead_cards[6] = deck[a]
-            _evaluate_all_hands(dead_cards, 7, eval_hand_turn, eval_board_turn, results)
+            _evaluate_all_rival_hands(dead_cards, 7, eval_hand_turn, eval_board_turn, results)
         else:
             dead_cards[5] = deck[a]
             for b in range(a+1, len_deck):
                 eval_board_river = handdat[eval_board_turn + deck[b]]
                 eval_hand_river = handdat[eval_hand_turn + deck[b]]
                 dead_cards[6] = deck[b]
-                _evaluate_all_hands(dead_cards, 7, eval_hand_river, eval_board_river, results)
+                _evaluate_all_rival_hands(dead_cards, 7, eval_hand_river, eval_board_river, results)
 
     PyMem_Free(deck)
     return
 
 
-cdef void _evaluate_all_hands(int[:] dead_cards, int len_dead_cards, stdint.uint32_t eval_hand,
+cdef void _evaluate_all_rival_hands(int[:] dead_cards, int len_dead_cards, stdint.uint32_t eval_hand,
                                    stdint.uint32_t eval_board, double[:] results):
     """
     Evaluate all rival hands vs eval_hand in one board
@@ -187,7 +187,7 @@ cdef void _evaluate_all_hands(int[:] dead_cards, int len_dead_cards, stdint.uint
     return
 
 
-cpdef double[:] evaluate_all_hands(int[:] cards):
+cpdef double[:] evaluate_one_hand_vs_all_c(int[:] cards):
     """
     Evaluate one hand vs all other hands in one specific board
     :param cards: Array int where hand[:2] and board[2:]
@@ -210,9 +210,9 @@ cpdef double[:] evaluate_all_hands(int[:] cards):
         eval_hand = handdat[tmp_sum]
 
     if len_cards == 7:
-        _evaluate_all_hands(cards, len_cards, eval_hand, eval_board, results)
+        _evaluate_all_rival_hands(cards, len_cards, eval_hand, eval_board, results)
     else:
-        all_hands_create_boards(cards, len_cards, eval_hand, eval_board, results)
+        _all_hands_create_boards(cards, len_cards, eval_hand, eval_board, results)
 
     return results
 
@@ -258,7 +258,7 @@ cdef void create_boards(int deck[], int len_deck, stdint.uint32_t sum_hands[],
     return
 
 
-cpdef double[:] evaluate_all_boards(int[:] hands, int[:] board=array('i', [])):
+cpdef double[:] evaluate_hands_c(int[:] hands, int[:] board=array('i', [])):
     """
     Evaluate hands vs Board, if board is incomplete (< 5) complete it with all possible cards and eval it.
     :return: [win hand 1, win hand 2, tie hand 1, tie hand 2 ... ]

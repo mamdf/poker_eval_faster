@@ -1,7 +1,5 @@
 from __future__ import absolute_import
 
-# from .evaluate import evaluate_all_hands, evaluate_all_boards, results_to_ev, evaluate, results_to_ev_all_boards
-# from .helper import cards_to_int, int_to_cards
-# from . import equity
-# from . import evaluate
-# from . import helper
+from .evaluate import evaluate
+from .equity import evaluate_hands, evaluate_one_hand_vs_all
+
