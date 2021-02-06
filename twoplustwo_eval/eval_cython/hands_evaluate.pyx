@@ -1,15 +1,10 @@
-import numpy as np
 from cpython.mem cimport PyMem_Malloc, PyMem_Free
-from pathlib import Path
-import cython
 from array import array
 from libc cimport stdint
 
-
-path = Path("/home/extra/Data/poker")
-dat = np.fromfile(path / Path('HandRanks.dat'), dtype=np.uint32)  # eval file two plus two
-# np.array to C(memory views)
-cdef stdint.uint32_t[:] handdat = dat[:]
+cimport cython
+from twoplustwo_eval.eval_cython.main cimport handdat
+from twoplustwo_eval.eval_cython.main cimport create_deck
 
 
 cdef inline void sum_new_card(int new_card, stdint.uint32_t sum_hands[], int num_hands, stdint.uint32_t new_sum_hands[]):
@@ -56,12 +51,6 @@ cdef inline void eval_hands(stdint.uint32_t sum_hands[], int num_hands, double r
     else:
         results[win_id] += 1
 
-@cython.cdivision(True)
-cpdef double hand_to_equity(double[:] results):
-    cdef:
-        double total = results[0] + results[1] * 2 + results[2]
-        double won = results[0] + results[1]
-    return won / total
 
 @cython.cdivision(True)
 cpdef list[float] hands_to_equity(double[:] results):
@@ -78,147 +67,9 @@ cpdef list[float] hands_to_equity(double[:] results):
     return equity
 
 
-cpdef stdint.uint32_t evaluate(h):
-    """ Takes a hand as an array of strings (as above)
-    Returns a dict of the hand's stats.
-    value is an integer whose value that can be compared to other hand values.
-	Larger number = better hand"""
-    cdef stdint.uint32_t p = 53
-    cdef stdint.uint32_t suma
-    cdef unsigned short i
-    cdef unsigned short len_h = len(h)
-    for i in range(len_h):
-        suma = p + h[i]
-        p = handdat[suma]
-
-    if len_h==5 or len_h==6:
-        p = handdat[p]
-
-    return p
-
-
-cdef int create_deck(int[:] dead_cards, int len_dead_cards, int results[]):
-    """
-    Create all deck cards (int 1 to 53) less dead cards.
-    :param dead_cards: memoryview
-    :param len_dead_cards: int length dead_cards
-    :param results: C array will be append deck cards
-    :return: len deck
-    """
-    cdef:
-        int i, j
-        int num_cards = 0
-        bint flag
-    for i in range(1, 53):
-        flag = True
-        for j in range(len_dead_cards):
-            if dead_cards[j] == i:
-                flag = False
-                break
-        if flag:
-            results[num_cards] = i
-            num_cards += 1
-
-    return num_cards
-
-cdef void _all_hands_create_boards(int[:] cards, int len_cards, stdint.uint32_t eval_hand, stdint.uint32_t eval_board,
-                             double[:] results):
-    cdef:
-        stdint.uint32_t eval_board_turn, eval_board_river
-        stdint.uint32_t eval_hand_turn, eval_hand_river
-        int [7] dead_cards = [0,0,0,0,0,0,0]
-        int *deck = <int *> PyMem_Malloc((52 - len_cards) * sizeof(int))
-        int len_deck = create_deck(cards, len_cards, deck)  # call func to create deck (rival_cards)
-        int a, b, i
-        double n_simulations = 46.0 if len_cards == 6 else 47.0  # number simulations (turn or river)
-    for i in range(len_cards):
-        dead_cards[i] = cards[i]
-
-    for a in range(len_deck):
-        eval_board_turn = handdat[eval_board + deck[a]]
-        eval_hand_turn = handdat[eval_hand + deck[a]]
-        if len_cards == 6:
-            dead_cards[6] = deck[a]
-            _evaluate_all_rival_hands(dead_cards, 7, eval_hand_turn, eval_board_turn, results)
-        else:
-            dead_cards[5] = deck[a]
-            for b in range(a+1, len_deck):
-                eval_board_river = handdat[eval_board_turn + deck[b]]
-                eval_hand_river = handdat[eval_hand_turn + deck[b]]
-                dead_cards[6] = deck[b]
-                _evaluate_all_rival_hands(dead_cards, 7, eval_hand_river, eval_board_river, results)
-
-    PyMem_Free(deck)
-    return
-
-
-cdef void _evaluate_all_rival_hands(int[:] dead_cards, int len_dead_cards, stdint.uint32_t eval_hand,
-                                   stdint.uint32_t eval_board, double[:] results):
-    """
-    Evaluate all rival hands vs eval_hand in one board
-    """
-    cdef:
-        stdint.uint32_t tmp_sum, first_eval_rival, eval_rival
-        double win=0.0, loss=0.0, tie=0.0
-        int c1, c2, card1, card2
-        int *rival_cards = <int *> PyMem_Malloc((52 - len_dead_cards) * sizeof(int))
-        int num_cards = create_deck(dead_cards, len_dead_cards, rival_cards)  # call func to create deck (rival_cards)
-    # evaluate all rival hands possibles
-    for c1 in range(num_cards):
-        card1 = rival_cards[c1]
-        tmp_sum = eval_board + card1
-        first_eval_rival = handdat[tmp_sum]  # sum only first card
-        for c2 in range(c1 + 1, num_cards):
-            card2 = rival_cards[c2]
-            tmp_sum = first_eval_rival + card2
-            eval_rival = handdat[tmp_sum]
-            # evaluate counter
-            if eval_hand > eval_rival:
-                win += 1
-            elif eval_hand == eval_rival:
-                tie += 1
-            else:
-                loss += 1
-
-    PyMem_Free(rival_cards)
-    results[0] += win
-    results[1] += tie / 2
-    results[2] += loss
-    return
-
-
-cpdef double[:] evaluate_one_hand_vs_all_c(int[:] cards):
-    """
-    Evaluate one hand vs all other hands in one specific board
-    :param cards: Array int where hand[:2] and board[2:]
-    :return: probabilities to [win, tie]
-    """
-    cdef:
-        stdint.uint32_t tmp_sum, eval_board, eval_hand
-        int i
-        int len_cards = cards.shape[0]
-        double[3] results = [0.0, 0.0, 0.0]
-    # eval board
-    eval_board = 53
-    for i in range(2, len_cards):  # board is the same for all hands, store sum
-        tmp_sum = eval_board + cards[i]
-        eval_board = handdat[tmp_sum]
-    # eval hand
-    eval_hand = eval_board  # starting in board sum
-    for i in range(2):
-        tmp_sum = eval_hand + cards[i]
-        eval_hand = handdat[tmp_sum]
-
-    if len_cards == 7:
-        _evaluate_all_rival_hands(cards, len_cards, eval_hand, eval_board, results)
-    else:
-        _all_hands_create_boards(cards, len_cards, eval_hand, eval_board, results)
-
-    return results
-
-cdef void create_boards(int deck[], int len_deck, stdint.uint32_t sum_hands[],
-                        int num_hands, int len_board,
-                        double results[]):
+cdef void _create_boards(int deck[], int len_deck, stdint.uint32_t sum_hands[],
+                         int num_hands, int len_board,
+                         double results[]):
     """
     combinations throughout twoplustwo array, create all combinations of board cards (5 - len_board).
     Evaluate hands and save results array [win, tie]
@@ -298,7 +149,7 @@ cpdef double[:] evaluate_hands_c(int[:] hands, int[:] board=array('i', [])):
         sum_hands[i] = handdat[tmp_sum]
     # brute force fill board with all cards and eval it
     if len_board < 5:
-        create_boards(deck, len_deck, sum_hands, num_hands, len_board, results)
+        _create_boards(deck, len_deck, sum_hands, num_hands, len_board, results)
     else:  # eval board, each hand in results
         eval_hands(sum_hands, num_hands, results)
 
@@ -307,4 +158,3 @@ cpdef double[:] evaluate_hands_c(int[:] hands, int[:] board=array('i', [])):
 
     cdef double[:] results_py = <double[:len_hands]> results  # C array to memory view
     return results_py
-

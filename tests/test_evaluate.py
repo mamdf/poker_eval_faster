@@ -1,4 +1,4 @@
-from twoplustwo_eval.equity import evaluate_hands, evaluate_one_hand_vs_all
+from twoplustwo_eval import evaluate_hands, evaluate_one_hand_vs_all
 import pytest
 
 ps_hand_vs_all = [

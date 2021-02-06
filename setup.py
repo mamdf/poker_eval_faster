@@ -10,6 +10,6 @@ setup(
     author='marcos masci',
     author_email='',
     description='evaluate poker hands',
-    ext_modules=cythonize('twoplustwo_eval/*.pyx'),
+    ext_modules=cythonize('twoplustwo_eval/eval_cython/*.pyx'),
     install_requires=['cython', 'numpy', 'future', 'pytest'],
 )

@@ -1,5 +1,18 @@
-from twoplustwo_eval.evaluate import evaluate_one_hand_vs_all_c, evaluate_hands_c, hand_to_equity, hands_to_equity
-from twoplustwo_eval.helper import cards_to_int, int_to_cards
+from twoplustwo_eval import evaluate_one_hand_vs_all_c, hand_to_equity
+from twoplustwo_eval import evaluate_hands_c, hands_to_equity
+from typing import List, Tuple
+from array import array
+
+DECK = [r + s for r in '23456789TJQKA' for s in 'cdhs']
+CARDS_TO_INT = {card: i for i, card in enumerate(DECK, start=1)}
+
+
+def cards_to_int(cards: List[str]):
+    return array('i', [CARDS_TO_INT[c] for c in cards])
+
+
+def int_to_cards(cards: List[int]):
+    return [DECK[i-1] for i in cards]
 
 
 def evaluate_hands(hands, board=None):
