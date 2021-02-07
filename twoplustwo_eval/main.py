@@ -1,14 +1,18 @@
 from twoplustwo_eval import evaluate_one_hand_vs_all_c, hand_to_equity
 from twoplustwo_eval import evaluate_hands_c, hands_to_equity
 from typing import List, Tuple
-from array import array
+import numpy as np
 
 DECK = [r + s for r in '23456789TJQKA' for s in 'cdhs']
 CARDS_TO_INT = {card: i for i, card in enumerate(DECK, start=1)}
 
 
-def cards_to_int(cards: List[str]):
-    return array('i', [CARDS_TO_INT[c] for c in cards])
+def cards_to_int_array(cards: List[str]):
+    return np.array([CARDS_TO_INT[c] for c in cards], dtype='int32')
+
+
+def cards_to_array(cards: List[int]):
+    return np.array(cards, dtype='int32')
 
 
 def int_to_cards(cards: List[int]):
@@ -17,18 +21,34 @@ def int_to_cards(cards: List[int]):
 
 def evaluate_hands(hands, board=None, eq=True) -> List[float]:
     """
-    :param hands: List[List[str, str]]
-    :param board: List[str]
+    :param hands: List[List[str, str]] or List[List[int, int]]
+    :param board: List[str] or List[int] or None
     :param eq: return equity or combos (win, win... tie, tie...)
     :return: List[float] equity hands or combos
     """
     hands_cards = [card for hand in hands for card in hand]
-    hands_cards = cards_to_int(hands_cards)
+    if type(hands_cards[0]) is str:  # ex. Ac, Kc
+        hands_cards = cards_to_int_array(hands_cards)
+    else:  # ex. 45, 50
+        hands_cards = cards_to_array(hands_cards)
+    len_cards = hands_cards.size
+
     if board:
-        board_cards = cards_to_int(board)
-        ev = evaluate_hands_c(hands_cards, board_cards)
+        if type(board[0]) is str:  # ex. Ac
+            board_cards = cards_to_int_array(board)
+        else:  # ex. 45
+            board_cards = cards_to_array(board)
+        len_cards += board_cards.size
+        if np.unique(hands_cards).size + np.unique(board_cards).size != len_cards:  # repeated cards
+            ev = np.zeros(len_cards)
+        else:
+            ev = evaluate_hands_c(hands_cards, board_cards)
     else:
-        ev = evaluate_hands_c(hands_cards)
+        if np.unique(hands_cards).size != len_cards:   # repeated cards
+            ev = np.zeros(len_cards)
+        else:
+            ev = evaluate_hands_c(hands_cards)
+
     if eq:
         return hands_to_equity(ev)
     else:
@@ -37,12 +57,15 @@ def evaluate_hands(hands, board=None, eq=True) -> List[float]:
 
 def evaluate_one_hand_vs_all(hand, board, eq=True):
     """
-    :param hand: List[str, str]
-    :param board: List[str]
+    :param hand: List[str, str] or List[int, int]
+    :param board: List[str] or List[int]
     :param eq: return equity or combos (win, tie, lose)
     :return: List[float] equity hand or combos
     """
-    cards = cards_to_int(hand + board)
+    if type(hand[0]) is str:
+        cards = cards_to_int_array(hand + board)
+    else:
+        cards = cards_to_array(hand + board)
     ev = evaluate_one_hand_vs_all_c(cards)
     if eq:
         return hand_to_equity(ev)
