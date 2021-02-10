@@ -11,5 +11,9 @@ setup(
     author_email='',
     description='evaluate poker hands',
     ext_modules=cythonize('twoplustwo_eval/eval_cython/*.pyx'),
-    install_requires=['cython', 'numpy', 'future', 'pytest'],
+    entry_points='''
+        [console_scripts]
+        poker-eval=twoplustwo_eval.script:run
+    ''',
+    install_requires=['cython', 'numpy', 'future', 'pytest', 'click'],
 )

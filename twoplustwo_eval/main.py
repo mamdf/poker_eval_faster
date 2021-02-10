@@ -19,7 +19,7 @@ def int_to_cards(cards: List[int]):
     return [DECK[i-1] for i in cards]
 
 
-def evaluate_hands(hands, board=None, eq=True) -> List[float]:
+def evaluate_hands(hands, board=None, eq=True, incomplete_board=False) -> List[float]:
     """
     :param hands: List[List[str, str]] or List[List[int, int]]
     :param board: List[str] or List[int] or None
@@ -55,18 +55,19 @@ def evaluate_hands(hands, board=None, eq=True) -> List[float]:
         return list(ev)
 
 
-def evaluate_one_hand_vs_all(hand, board, eq=True):
+def evaluate_one_hand_vs_all(hand, board, eq=True, incomplete_board=False):
     """
     :param hand: List[str, str] or List[int, int]
     :param board: List[str] or List[int]
     :param eq: return equity or combos (win, tie, lose)
+    :param incomplete_board: if False and board < 5 cards, complete it with all possible combinations
     :return: List[float] equity hand or combos
     """
     if type(hand[0]) is str:
         cards = cards_to_int_array(hand + board)
     else:
         cards = cards_to_array(hand + board)
-    ev = evaluate_one_hand_vs_all_c(cards)
+    ev = evaluate_one_hand_vs_all_c(cards, incomplete_board)
     if eq:
         return hand_to_equity(ev)
     else:

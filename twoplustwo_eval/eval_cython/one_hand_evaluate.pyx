@@ -65,13 +65,15 @@ cdef void _evaluate_all_rival_hands(int[:] dead_cards, int len_dead_cards, stdin
             card2 = rival_cards[c2]
             tmp_sum = first_eval_rival + card2
             eval_rival = handdat[tmp_sum]
+            if len_dead_cards < 7:  # or len board si le sumo rangos a dead cards
+                eval_rival = handdat[eval_rival]
             # evaluate counter
             if eval_hand > eval_rival:
-                win += 1
+                win += 1.0
             elif eval_hand == eval_rival:
-                tie += 1
+                tie += 1.0
             else:
-                loss += 1
+                loss += 1.0
 
     PyMem_Free(rival_cards)
     results[0] += win
@@ -80,10 +82,11 @@ cdef void _evaluate_all_rival_hands(int[:] dead_cards, int len_dead_cards, stdin
     return
 
 
-cpdef double[:] evaluate_one_hand_vs_all_c(int[:] cards):
+cpdef double[:] evaluate_one_hand_vs_all_c(int[:] cards, bint incomplete_board=False):
     """
     Evaluate one hand vs all other hands in one specific board
     :param cards: Array int where hand[:2] and board[2:]
+    :param incomplete_board: if False and board < 5 cards, complete it with all possible combinations
     :return: probabilities to [win, tie]
     """
     cdef:
@@ -102,7 +105,10 @@ cpdef double[:] evaluate_one_hand_vs_all_c(int[:] cards):
         tmp_sum = eval_hand + cards[i]
         eval_hand = handdat[tmp_sum]
 
-    if len_cards == 7:
+    if len_cards < 7 and incomplete_board:  # evaluate hands strength on current board
+        eval_hand = handdat[eval_hand]
+        _evaluate_all_rival_hands(cards, len_cards, eval_hand, eval_board, results)
+    elif len_cards == 7:
         _evaluate_all_rival_hands(cards, len_cards, eval_hand, eval_board, results)
     else:
         _all_hands_create_boards(cards, len_cards, eval_hand, eval_board, results)
