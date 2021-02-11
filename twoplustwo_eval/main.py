@@ -67,9 +67,22 @@ def evaluate_one_hand_vs_all(hand, board, eq=True, incomplete_board=False):
         cards = cards_to_int_array(hand + board)
     else:
         cards = cards_to_array(hand + board)
-    ev = evaluate_one_hand_vs_all_c(cards, incomplete_board)
+    distributions = np.zeros([53, 53])
+    ev = evaluate_one_hand_vs_all_c(cards, distributions, incomplete_board)
     if eq:
-        return hand_to_equity(ev)
+        result = hand_to_equity(ev)
     else:
-        return list(ev)
+        result = list(ev)
+
+    if len(board) == 3 and not incomplete_board:
+        for i in range(len(distributions)):  # equity in each turn card (mean rivers)
+            dist_turn = distributions[i]
+            valid_cards = dist_turn[dist_turn.nonzero()]
+            if valid_cards.size:
+                distributions[0][i] = valid_cards.mean()
+        return result, distributions
+    elif len(board) == 4 and not incomplete_board:
+        return result, distributions[0]
+    else:
+        return result, []
 

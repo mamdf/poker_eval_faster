@@ -15,7 +15,7 @@ cpdef double hand_to_equity(double[:] results):
 
 
 cdef void _all_hands_create_boards(int[:] cards, int len_cards, stdint.uint32_t eval_hand, stdint.uint32_t eval_board,
-                             double[:] results):
+                             double[:] results, double[:,:] distributions):
     cdef:
         stdint.uint32_t eval_board_turn, eval_board_river
         stdint.uint32_t eval_hand_turn, eval_hand_river
@@ -24,29 +24,40 @@ cdef void _all_hands_create_boards(int[:] cards, int len_cards, stdint.uint32_t 
         int len_deck = create_deck(cards, len_cards, deck)  # call func to create deck (rival_cards)
         int a, b, i
         double n_simulations = 46.0 if len_cards == 6 else 47.0  # number simulations (turn or river)
+        double[:] tmp_results
     for i in range(len_cards):
         dead_cards[i] = cards[i]
 
     for a in range(len_deck):
         eval_board_turn = handdat[eval_board + deck[a]]
         eval_hand_turn = handdat[eval_hand + deck[a]]
-        if len_cards == 6:
-            dead_cards[6] = deck[a]
-            _evaluate_all_rival_hands(dead_cards, 7, eval_hand_turn, eval_board_turn, results)
-        else:
-            dead_cards[5] = deck[a]
-            for b in range(a+1, len_deck):
-                eval_board_river = handdat[eval_board_turn + deck[b]]
-                eval_hand_river = handdat[eval_hand_turn + deck[b]]
-                dead_cards[6] = deck[b]
-                _evaluate_all_rival_hands(dead_cards, 7, eval_hand_river, eval_board_river, results)
+        if len_cards == 6:  # just complete river card
+            dead_cards[6] = deck[a]  # add river card
+            tmp_results = _evaluate_all_rival_hands(dead_cards, 7, eval_hand_turn, eval_board_turn)
+            distributions[0, deck[a]] = hand_to_equity(tmp_results)
+            results[0] += tmp_results[0]
+            results[1] += tmp_results[1]
+            results[2] += tmp_results[2]
+            continue
+
+        dead_cards[5] = deck[a]  # add turn card
+        for b in range(a+1, len_deck):  # complete river after simulate turn
+            eval_board_river = handdat[eval_board_turn + deck[b]]
+            eval_hand_river = handdat[eval_hand_turn + deck[b]]
+            dead_cards[6] = deck[b]  # add river card
+            tmp_results = _evaluate_all_rival_hands(dead_cards, 7, eval_hand_river, eval_board_river)
+            distributions[deck[a], deck[b]] = hand_to_equity(tmp_results)
+            distributions[deck[b], deck[a]] = distributions[deck[a], deck[b]]  # repeated is not simulate (4h5h == 5h4h)
+            results[0] += tmp_results[0]
+            results[1] += tmp_results[1]
+            results[2] += tmp_results[2]
 
     PyMem_Free(deck)
     return
 
 
-cdef void _evaluate_all_rival_hands(int[:] dead_cards, int len_dead_cards, stdint.uint32_t eval_hand,
-                                   stdint.uint32_t eval_board, double[:] results):
+cdef double[:] _evaluate_all_rival_hands(int[:] dead_cards, int len_dead_cards, stdint.uint32_t eval_hand,
+                                   stdint.uint32_t eval_board):
     """
     Evaluate all rival hands vs eval_hand in one board
     """
@@ -56,6 +67,7 @@ cdef void _evaluate_all_rival_hands(int[:] dead_cards, int len_dead_cards, stdin
         int c1, c2, card1, card2
         int *rival_cards = <int *> PyMem_Malloc((52 - len_dead_cards) * sizeof(int))
         int num_cards = create_deck(dead_cards, len_dead_cards, rival_cards)  # call func to create deck (rival_cards)
+        double[3] tmp_results = [0.0, 0.0, 0.0]
     # evaluate all rival hands possibles
     for c1 in range(num_cards):
         card1 = rival_cards[c1]
@@ -76,18 +88,20 @@ cdef void _evaluate_all_rival_hands(int[:] dead_cards, int len_dead_cards, stdin
                 loss += 1.0
 
     PyMem_Free(rival_cards)
-    results[0] += win
-    results[1] += tie / 2
-    results[2] += loss
-    return
+    tmp_results[0] += win
+    tmp_results[1] += tie / 2
+    tmp_results[2] += loss
+
+    return tmp_results
 
 
-cpdef double[:] evaluate_one_hand_vs_all_c(int[:] cards, bint incomplete_board=False):
+cpdef double[:] evaluate_one_hand_vs_all_c(int[:] cards, double[:,:] distributions, incomplete_board=False):
     """
     Evaluate one hand vs all other hands in one specific board
     :param cards: Array int where hand[:2] and board[2:]
+    :param distributions: np.zeros([53,53]) distribution equity per round per card
     :param incomplete_board: if False and board < 5 cards, complete it with all possible combinations
-    :return: probabilities to [win, tie]
+    :return: probabilities to [win, tie], distributions
     """
     cdef:
         stdint.uint32_t tmp_sum, eval_board, eval_hand
@@ -107,11 +121,11 @@ cpdef double[:] evaluate_one_hand_vs_all_c(int[:] cards, bint incomplete_board=F
 
     if len_cards < 7 and incomplete_board:  # evaluate hands strength on current board
         eval_hand = handdat[eval_hand]
-        _evaluate_all_rival_hands(cards, len_cards, eval_hand, eval_board, results)
+        return _evaluate_all_rival_hands(cards, len_cards, eval_hand, eval_board)
     elif len_cards == 7:
-        _evaluate_all_rival_hands(cards, len_cards, eval_hand, eval_board, results)
+        return _evaluate_all_rival_hands(cards, len_cards, eval_hand, eval_board)
     else:
-        _all_hands_create_boards(cards, len_cards, eval_hand, eval_board, results)
+        _all_hands_create_boards(cards, len_cards, eval_hand, eval_board, results, distributions)
 
     return results
 

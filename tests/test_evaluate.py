@@ -1,4 +1,5 @@
 from twoplustwo_eval import evaluate_hands, evaluate_one_hand_vs_all
+import numpy as np
 import pytest
 
 ps_hand_vs_all = [
@@ -31,8 +32,50 @@ ps_eval_hands = [
 
 @pytest.mark.parametrize('hand, board, expected_pct', ps_hand_vs_all)
 def test_evaluate_one_hand_vs_all(hand, board, expected_pct):
-    result = evaluate_one_hand_vs_all(hand, board)
+    result = evaluate_one_hand_vs_all(hand, board)[0]
     assert round(result * 100, 2) == expected_pct
+
+
+def test_distributions():
+    result, distributions = evaluate_one_hand_vs_all(['2s', '6s'], ['Qs', 'Ks', '7c', 'Ah'])
+    assert round(result * 100, 1) == 29.8
+    expected = [0,  # rivers
+                43.94, 43.94, 43.94, 0,  # 2 (cdhs)
+                5.71,  5.71,  5.71,  97.27,  # 3
+                5.71,  5.71,  5.71,  97.27,  # 4
+                5.71,  5.71,  5.71,  97.27,  # 5
+                46.06,  46.06,  46.06,  0,  # 6
+                0, 25.10, 25.10, 94.65,  # 7
+                6.52, 6.52, 6.52, 97.47,  # 8
+                6.52, 6.52, 6.52, 97.47,  # 9
+                6.52, 6.52, 6.52, 97.47,  # T
+                6.52, 6.52, 6.52, 97.47,  # J
+                6.52, 6.52, 6.52, 0,  # Q
+                6.52, 6.52, 6.52, 0,  # K
+                6.52, 6.52, 0, 94.65]  # A
+    for i in range(len(distributions)):
+        card_res = distributions[i]
+        assert round(card_res * 100, 2) == expected[i]
+
+    result, distributions = evaluate_one_hand_vs_all(['2s', '6s'], ['Qs', 'Ks', '7c'])
+    assert round(result * 100, 1) == 46.0
+    expected = [0,   # mean river
+                61.05, 61.79, 61.79, 0,  # 2 (cdhs)
+                28.25, 28.45, 28.45, 93.15,  # 3
+                28.11, 28.31, 28.31, 93.15,  # 4
+                28.01, 28.20, 28.20, 93.15,   # 5
+                63.01, 63.72, 63.72, 0,  # 6
+                0, 35.67, 35.67, 88.60,  # 7
+                28.39, 28.60, 28.60, 93.93,  # 8
+                28.58, 28.79, 28.79, 93.93,  # 9
+                28.76, 28.97, 28.97, 93.93,  # T
+                29.11, 29.32, 29.32, 93.93,  # J
+                31.03, 31.29, 31.29, 0,  # Q
+                31.03, 31.29, 31.29, 0,  # K
+                29.63, 29.85, 29.85, 93.93  # A
+                ]
+    for i, river_mean in enumerate(distributions[0]):
+        assert round(river_mean * 100, 2) == expected[i]
 
 
 @pytest.mark.parametrize('hands, board, expected_pct', ps_eval_hands)
