@@ -15,7 +15,7 @@ def parser_evaluate_hands(hands, board, incomplete_board):
 
 
 def parser_evaluate_one_hand_vs_all(hand, board, incomplete_board):
-    res_combos = evaluate_one_hand_vs_all(hand, board, eq=False, incomplete_board=incomplete_board)[0]
+    res_combos = evaluate_one_hand_vs_all(hand, board, eq=False, incomplete_board=incomplete_board)
     eq: float = hand_to_equity(np.array(res_combos))
     click.echo(f"The hand {''.join(hand)} vs all hands has {round(eq * 100, 4)} % equity "
                f"{tuple(res_combos)}")
