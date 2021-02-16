@@ -82,28 +82,40 @@ def distribution_one_hand_vs_all(hand, board, sort_distributions=False):
         cards = cards_to_int_array(hand + board)
     else:
         cards = cards_to_array(hand + board)
-    distributions = np.zeros([53, 53])
+    distributions = np.zeros([53, 53])  # dim 0 is used in flop to fill turn means
     distributions_flop = []
+    # create mask for no cards in sort equity
+    mask = np.ones(53, dtype='bool')
+    mask[cards] = False
+    mask[0] = False  # (cards 1-53)
+    # evaluate
     ev = evaluate_one_hand_vs_all_c(cards, distributions, incomplete_board=False)
 
     if len(board) == 3:
-        for i in range(len(distributions)):  # equity in each turn card (mean rivers)
+        for i in range(1, len(distributions)):  # equity in each turn card (mean rivers)
+            if i in cards:  # dist_turn = zeros
+                continue
             dist_turn = distributions[i]
-            valid_cards = dist_turn[dist_turn.nonzero()]
-            if valid_cards.size:
-                distributions[0][i] = valid_cards.mean()
-                if sort_distributions:
-                    distributions_flop.append(np.sort(valid_cards))
+            mask_turn = mask.copy()
+            mask_turn[i] = False
+            valid_cards = dist_turn[mask_turn]
+            distributions[0][i] = valid_cards.mean()
+            if sort_distributions:
+                distributions_flop.append(np.sort(valid_cards))
 
         if sort_distributions:
-            arg_mean = np.argsort(distributions[0][distributions[0].nonzero()])
+            arg_mean = np.argsort(distributions[0][mask])
             return np.array(distributions_flop)[arg_mean]
         else:
             return distributions
     elif len(board) == 4:
         if sort_distributions:
-            return np.sort(distributions[0][distributions[0].nonzero()])
+            return np.sort(distributions[0][mask])
         else:
             return distributions[0]
     else:
         return ev
+
+
+if __name__ == '__main__':
+    distribution_one_hand_vs_all(['2s', '6s'], ['Qs', 'Ks', '7c'], sort_distributions=True)

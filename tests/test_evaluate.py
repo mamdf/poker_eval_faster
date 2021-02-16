@@ -60,6 +60,9 @@ def test_distributions():
     assert round(distributions[-1] * 100, 2) == 97.47
     assert len(distributions) == 46
 
+    distributions = distribution_one_hand_vs_all(['3c', '3d'], ['2c', '2h', '3h', '2s'], sort_distributions=True)
+    assert len(distributions) == 46
+    # flop
     distributions = distribution_one_hand_vs_all(['2s', '6s'], ['Qs', 'Ks', '7c'])
     expected = [0,   # mean river
                 61.05, 61.79, 61.79, 0,  # 2 (cdhs)
@@ -86,6 +89,7 @@ def test_distributions():
     assert round(distributions[23][0] * 100, 2) == 5.71
     assert round(distributions[23][-1] * 100, 2) == 97.47
     assert len(distributions[23]) == 46
+
 
 
 @pytest.mark.parametrize('hands, board, expected_pct', ps_eval_hands)
