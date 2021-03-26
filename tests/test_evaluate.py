@@ -1,4 +1,5 @@
-from twoplustwo_eval import evaluate_hands, evaluate_one_hand_vs_all, distribution_one_hand_vs_all
+from twoplustwo_eval import evaluate_hands, evaluate_one_hand_vs_all, distribution_one_hand_vs_all, evaluate_rank
+from twoplustwo_eval import ranking_to_category
 import pytest
 
 ps_hand_vs_all = [
@@ -91,8 +92,16 @@ def test_distributions():
     assert len(distributions[23]) == 46
 
 
-
 @pytest.mark.parametrize('hands, board, expected_pct', ps_eval_hands)
 def test_evaluate_hands(hands, board, expected_pct):
     result = evaluate_hands(hands, board)
     assert [round(i * 100, 2) for i in result] == expected_pct
+
+
+@pytest.mark.parametrize('cards, exp_rank, exp_cat', [[["Th", "Jh", "Qh", "Kh", "Ah"], 36874, 9]])
+def test_evaluate_rank(cards, exp_rank, exp_cat):
+    rank = evaluate_rank(cards[:2], cards[2:])
+    category = ranking_to_category(rank)[0]
+    assert rank == exp_rank
+    assert category == exp_cat
+

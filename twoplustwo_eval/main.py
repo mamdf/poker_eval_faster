@@ -1,10 +1,12 @@
 from twoplustwo_eval import evaluate_one_hand_vs_all_c, hand_to_equity
 from twoplustwo_eval import evaluate_hands_c, hands_to_equity
+from twoplustwo_eval import evaluate_c
 from typing import List, Tuple
 import numpy as np
 
 DECK = [r + s for r in '23456789TJQKA' for s in 'cdhs']
 CARDS_TO_INT = {card: i for i, card in enumerate(DECK, start=1)}
+RANKING = [None, "NOPAIR", "PAIR", "DOUBLES", "TRIPS", "STRAIGHT", "FLUSH", "FULL", "QUADS", "STRAIGHT_FLUSH"]
 
 
 def cards_to_int_array(cards: List[str]):
@@ -17,6 +19,20 @@ def cards_to_array(cards: List[int]):
 
 def int_to_cards(cards: List[int]):
     return [DECK[i-1] for i in cards]
+
+
+def ranking_to_category(rank: int) -> Tuple[int, str]:
+    rank = rank >> 12  # rank to num category
+    return rank, RANKING[rank]
+
+
+def evaluate_rank(hand, board):
+    if type(hand[0]) is str:
+        cards = cards_to_int_array(hand + board)
+    else:
+        cards = cards_to_array(hand + board)
+    rank = evaluate_c(cards)
+    return rank
 
 
 def evaluate_hands(hands, board=None, eq=True, incomplete_board=False) -> List[float]:

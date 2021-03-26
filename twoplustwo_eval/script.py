@@ -1,6 +1,7 @@
 import click
 import numpy as np
 from twoplustwo_eval import evaluate_hands, evaluate_one_hand_vs_all, hand_to_equity, hands_to_equity
+from twoplustwo_eval import evaluate_rank, ranking_to_category
 
 
 def parser_evaluate_hands(hands, board, incomplete_board):
@@ -21,12 +22,20 @@ def parser_evaluate_one_hand_vs_all(hand, board, incomplete_board):
                f"{tuple(res_combos)}")
 
 
+def parser_evaluate_rank(hand, board):
+    rank = evaluate_rank(hand, board)
+    category = ranking_to_category(rank)
+    click.echo(f"The hand is ranking {rank}, category {category[0]}: {category[1]}")
+
+
 @click.command()
 @click.argument('hands', nargs=-1)
 @click.option('--board', default='', help='board cards to evaluate, Ex. AcQc9d')
 @click.option('-i', '--incomplete-board', default=False, is_flag=True,
               help='evaluate on the current board, no autocomplete')
-def run(hands: str, board: str, incomplete_board: bool):
+@click.option('-e', '--evaluate', default=False, is_flag=True,
+              help='evaluate only the rank hand (no vs hands). working just with one hand')
+def run(hands: str, board: str, incomplete_board: bool, evaluate: bool):
     """
     :arg hands: to evaluate, separate by whitespace (ex: AcKc QdQh)
     """
@@ -36,7 +45,10 @@ def run(hands: str, board: str, incomplete_board: bool):
     if len(hands) > 1:
         parser_evaluate_hands(hands, board, incomplete_board)
     else:
-        parser_evaluate_one_hand_vs_all(hands[0], board, incomplete_board)
+        if evaluate:
+            parser_evaluate_rank(hands[0], board)
+        else:
+            parser_evaluate_one_hand_vs_all(hands[0], board, incomplete_board)
 
 
 if __name__ == '__main__':
