@@ -26,8 +26,8 @@ def ranking_to_category(rank: int) -> Tuple[int, str]:
     return rank, RANKING[rank]
 
 
-def evaluate_rank(hand, board):
-    if type(hand[0]) is str:
+def evaluate_rank(board: List, hand: List = []):
+    if type(board[0]) is str:
         cards = cards_to_int_array(hand + board)
     else:
         cards = cards_to_array(hand + board)

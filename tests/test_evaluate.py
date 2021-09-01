@@ -100,7 +100,7 @@ def test_evaluate_hands(hands, board, expected_pct):
 
 @pytest.mark.parametrize('cards, exp_rank, exp_cat', [[["Th", "Jh", "Qh", "Kh", "Ah"], 36874, 9]])
 def test_evaluate_rank(cards, exp_rank, exp_cat):
-    rank = evaluate_rank(cards[:2], cards[2:])
+    rank = evaluate_rank(cards[2:], cards[:2])
     category = ranking_to_category(rank)[0]
     assert rank == exp_rank
     assert category == exp_cat

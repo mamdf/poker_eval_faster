@@ -23,7 +23,7 @@ def parser_evaluate_one_hand_vs_all(hand, board, incomplete_board):
 
 
 def parser_evaluate_rank(hand, board):
-    rank = evaluate_rank(hand, board)
+    rank = evaluate_rank(board, hand)
     category = ranking_to_category(rank)
     click.echo(f"The hand is ranking {rank}, category {category[0]}: {category[1]}")
 
