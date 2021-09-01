@@ -9,6 +9,10 @@ CARDS_TO_INT = {card: i for i, card in enumerate(DECK, start=1)}
 RANKING = [None, "NOPAIR", "PAIR", "DOUBLES", "TRIPS", "STRAIGHT", "FLUSH", "FULL", "QUADS", "STRAIGHT_FLUSH"]
 
 
+def card_to_int(card: str):
+    return CARDS_TO_INT[card]
+
+
 def cards_to_int_array(cards: List[str]):
     return np.array([CARDS_TO_INT[c] for c in cards], dtype='int32')
 
