@@ -1,5 +1,5 @@
-from twoplustwo_eval import evaluate_hands, evaluate_one_hand_vs_all, distribution_one_hand_vs_all, evaluate_rank
-from twoplustwo_eval import ranking_to_category
+from poker_eval_faster import evaluate_hands, evaluate_one_hand_vs_all, distribution_one_hand_vs_all, evaluate_rank
+from poker_eval_faster import ranking_to_category
 import pytest
 
 ps_hand_vs_all = [

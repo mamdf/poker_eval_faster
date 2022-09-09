@@ -1,7 +1,7 @@
 import click
 import numpy as np
-from twoplustwo_eval import evaluate_hands, evaluate_one_hand_vs_all, hand_to_equity, hands_to_equity
-from twoplustwo_eval import evaluate_rank, ranking_to_category
+from poker_eval_faster import evaluate_hands, evaluate_one_hand_vs_all, hand_to_equity, hands_to_equity
+from poker_eval_faster import evaluate_rank, ranking_to_category
 
 
 def parser_evaluate_hands(hands, board, incomplete_board):

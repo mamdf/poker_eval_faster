@@ -2,18 +2,18 @@ from setuptools import setup
 from Cython.Build import cythonize
 
 setup(
-    name='twoplustwo_eval',
+    name='poker_eval_faster',
     version='1.0',
-    packages=['twoplustwo_eval'],
+    packages=['poker_eval_faster'],
     url='',
     license='',
     author='marcos masci',
     author_email='',
     description='evaluate poker hands',
-    ext_modules=cythonize('twoplustwo_eval/eval_cython/*.pyx'),
+    ext_modules=cythonize('poker_eval_faster/eval_cython/*.pyx'),
     entry_points='''
         [console_scripts]
-        poker-eval=twoplustwo_eval.script:run
+        poker-eval=poker_eval_faster.script:run
     ''',
     install_requires=['cython', 'numpy', 'future', 'pytest', 'click'],
 )

@@ -1,6 +1,6 @@
-from twoplustwo_eval import evaluate_one_hand_vs_all_c, hand_to_equity
-from twoplustwo_eval import evaluate_hands_c, hands_to_equity
-from twoplustwo_eval import evaluate_c
+from poker_eval_faster import evaluate_one_hand_vs_all_c, hand_to_equity
+from poker_eval_faster import evaluate_hands_c, hands_to_equity
+from poker_eval_faster import evaluate_c
 from typing import List, Tuple
 import numpy as np
 

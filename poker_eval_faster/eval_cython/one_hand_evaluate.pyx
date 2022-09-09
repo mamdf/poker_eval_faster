@@ -2,8 +2,8 @@ from cpython.mem cimport PyMem_Malloc, PyMem_Free
 cimport cython
 from libc cimport stdint
 
-from twoplustwo_eval.eval_cython.main cimport handdat
-from twoplustwo_eval.eval_cython.main cimport create_deck
+from poker_eval_faster.eval_cython.main cimport handdat
+from poker_eval_faster.eval_cython.main cimport create_deck
 
 
 @cython.cdivision(True)

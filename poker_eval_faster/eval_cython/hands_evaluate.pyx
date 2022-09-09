@@ -3,8 +3,8 @@ from array import array
 from libc cimport stdint
 
 cimport cython
-from twoplustwo_eval.eval_cython.main cimport handdat
-from twoplustwo_eval.eval_cython.main cimport create_deck
+from poker_eval_faster.eval_cython.main cimport handdat
+from poker_eval_faster.eval_cython.main cimport create_deck
 
 
 cdef inline void sum_new_card(int new_card, stdint.uint32_t sum_hands[], int num_hands, stdint.uint32_t new_sum_hands[]):
