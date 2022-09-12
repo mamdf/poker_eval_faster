@@ -3,7 +3,7 @@ from pathlib import Path
 from libc cimport stdint
 
 
-path = Path("/media/marcos/Elements/ExtraHome/Data/poker")
+path = Path(__file__).parent / '..' / 'data'
 dat = np.fromfile(path / Path('HandRanks.dat'), dtype=np.uint32)  # eval file two plus two
 # np.array to C(memory views)
 cdef stdint.uint32_t[:] handdat = dat[:]

@@ -10,6 +10,7 @@ setup(
     author='marcos masci',
     author_email='',
     description='evaluate poker hands',
+    package_data={'poker_eval_faster': ['data/*']},
     ext_modules=cythonize('poker_eval_faster/eval_cython/*.pyx'),
     entry_points='''
         [console_scripts]
