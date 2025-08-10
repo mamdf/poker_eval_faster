@@ -1,7 +1,8 @@
-from poker_eval_faster import evaluate_hands, evaluate_one_hand_vs_all, distribution_one_hand_vs_all, evaluate_rank
-from poker_eval_faster import ranking_to_category
 import pytest
 from typing import cast
+
+from poker_eval_faster import evaluate_one_hand_vs_all
+
 
 ps_hand_vs_all = [
     [['5c', '2d'], ['2c', '2h', '5h', '7h', '7s'], 88.99],
@@ -24,29 +25,10 @@ ps_hand_vs_all = [
     [['Kc', 'Jd'], ['2c', '4c', '2d'], 52.19],
 ]
 
-ps_eval_hands = [
-    [[['9c', '8c'], ['Tc', 'Td']], ['Qh', 'Jh', '8s'], [15.45, 84.55]],
-    [[['Kc', 'Qc'], ['6c', '6d'], ['9s', '8s']], [], [41.25, 28.18, 30.57]],
-    [[['Kc', 'Qc'], ['6c', '6d'], ['Kd', 'Kh']], [], [12.85, 19.87, 67.27]]
-    ]
 
+@pytest.mark.parametrize('hand, board, expected_pct', ps_hand_vs_all)
+def test_evaluate_one_hand_vs_all(hand, board, expected_pct):
+    result = evaluate_one_hand_vs_all(hand, board)
+    assert round(cast(float, result) * 100, 2) == expected_pct
 
-@pytest.mark.skip(reason="migrado a test_eval_one_hand_vs_all_py.py")
-def test_placeholder_migrated_1():
-    assert True
-
-
-@pytest.mark.skip(reason="migrado a test_distribution.py")
-def test_placeholder_migrated_2():
-    assert True
-
-
-@pytest.mark.skip(reason="migrado a test_evaluate_hands_c.py y wrappers")
-def test_placeholder_migrated_3():
-    assert True
-
-
-@pytest.mark.skip(reason="migrado a test_evaluate_rank.py")
-def test_placeholder_migrated_4():
-    assert True
 

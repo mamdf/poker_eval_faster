@@ -144,13 +144,13 @@ python benchmarks/benchmark_compare_eval7.py --iters 50000 --samples 2000
 ```
 If you want to include external packages:
 ```bash
-python -m pip install eval7 pyeval7
+python -m pip install eval7
 ```
 The script will use any that are available and print ops/s for side-by-side comparison.
 
 Notes:
 - The evaluator is table-driven and Cython-backed and should be very fast in typical workloads.
-- If you want to compare with a different approach, see `pyeval7` [repo](https://github.com/JulianAndrews/pyeval7). Exact numbers will vary by hardware and dataset.
+- If you want to compare with a different approach, see `eval7` [repo](https://github.com/JulianAndrews/pyeval7). Exact numbers will vary by hardware and dataset.
 
 ## Testing
 ```bash

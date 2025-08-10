@@ -1,24 +1,40 @@
+# cython: boundscheck=False, wraparound=False, nonecheck=False, cdivision=True
 from cpython.mem cimport PyMem_Malloc, PyMem_Free
 cimport cython
 from libc cimport stdint
+import numpy as np
 
 from poker_eval_faster.eval_cython.main cimport handdat
 from poker_eval_faster.eval_cython.main cimport create_deck
 
+cdef int EVAL_START = 53
+cdef int WIN = 0
+cdef int TIE = 1
+cdef int LOSS = 2
+
+cdef inline stdint.uint32_t fold_cards(stdint.uint32_t start_eval, int[:] cards, int start_idx, int end_idx) nogil:
+    cdef stdint.uint32_t p = start_eval
+    cdef int i
+    for i in range(start_idx, end_idx):
+        p = handdat[p + cards[i]]
+    return p
+
+
+@cython.cdivision(True)
+cdef inline double _hand_equity(double wins, double ties, double losses) nogil:
+    cdef double total = wins + 2.0 * ties + losses
+    if total == 0.0:
+        return 0.0
+    return (wins + ties) / total
+
 
 @cython.cdivision(True)
 cpdef double hand_to_equity(double[:] results):
-    cdef:
-        double total = results[0] + results[1] * 2 + results[2]
-        double won = results[0] + results[1]
-    return won / total
+    return _hand_equity(results[WIN], results[TIE], results[LOSS])
 
 @cython.cdivision(True)
-cdef double _hand_to_equity_c(double results[]):
-    cdef:
-        double total = results[0] + results[1] * 2 + results[2]
-        double won = results[0] + results[1]
-    return won / total
+cdef inline double _hand_to_equity_c(double results[]) nogil:
+    return _hand_equity(results[WIN], results[TIE], results[LOSS])
 
 
 cdef void _all_hands_create_boards(int[:] cards, int len_cards, stdint.uint32_t eval_hand, stdint.uint32_t eval_board,
@@ -31,8 +47,8 @@ cdef void _all_hands_create_boards(int[:] cards, int len_cards, stdint.uint32_t 
         int len_deck = create_deck(cards, len_cards, deck)  # call func to create deck (rival_cards)
         int a, b, i
         double n_simulations = 46.0 if len_cards == 6 else 47.0  # number simulations (turn or river)
-        double * tmp_results_turn = <double *> PyMem_Malloc(3 * sizeof(double))
-        double * tmp_results_river = <double *> PyMem_Malloc(3 * sizeof(double))
+        double tmp_results_turn[3]
+        double tmp_results_river[3]
     for i in range(len_cards):
         dead_cards[i] = cards[i]
 
@@ -41,7 +57,7 @@ cdef void _all_hands_create_boards(int[:] cards, int len_cards, stdint.uint32_t 
         eval_hand_turn = handdat[eval_hand + deck[a]]
         if len_cards == 6:  # just complete river card
             dead_cards[6] = deck[a]  # add river card
-            for i in range(3):  # reset to 0
+            for i in range(3):
                 tmp_results_turn[i] = 0.0
             _evaluate_all_rival_hands(dead_cards, 7, eval_hand_turn, eval_board_turn, tmp_results_turn)
             distributions[0, deck[a]] = _hand_to_equity_c(tmp_results_turn)
@@ -55,7 +71,7 @@ cdef void _all_hands_create_boards(int[:] cards, int len_cards, stdint.uint32_t 
             eval_board_river = handdat[eval_board_turn + deck[b]]
             eval_hand_river = handdat[eval_hand_turn + deck[b]]
             dead_cards[6] = deck[b]  # add river card
-            for i in range(3):  # reset to 0
+            for i in range(3):
                 tmp_results_river[i] = 0.0
             _evaluate_all_rival_hands(dead_cards, 7, eval_hand_river, eval_board_river,
                                                     tmp_results_river)
@@ -66,8 +82,6 @@ cdef void _all_hands_create_boards(int[:] cards, int len_cards, stdint.uint32_t 
             results[2] += tmp_results_river[2]
 
     PyMem_Free(deck)
-    PyMem_Free(tmp_results_turn)
-    PyMem_Free(tmp_results_river)
     return
 
 
@@ -104,12 +118,12 @@ cdef void _evaluate_all_rival_hands(int[:] dead_cards, int len_dead_cards, stdin
                 loss += 1.0
 
     PyMem_Free(rival_cards)
-    results[0] += win
-    results[1] += tie / 2
-    results[2] += loss
+    results[WIN] += win
+    results[TIE] += tie / 2
+    results[LOSS] += loss
 
 
-cpdef double[:] evaluate_one_hand_vs_all_c(int[:] cards, double[:,:] distributions, incomplete_board=False):
+cpdef object evaluate_one_hand_vs_all_c(int[:] cards, double[:,:] distributions, incomplete_board=False):
     """
     Evaluate one hand vs all other hands in one specific board
     :param cards: Array int where hand[:2] and board[2:]
@@ -121,27 +135,21 @@ cpdef double[:] evaluate_one_hand_vs_all_c(int[:] cards, double[:,:] distributio
         stdint.uint32_t tmp_sum, eval_board, eval_hand
         int i
         int len_cards = cards.shape[0]
-        double *results = <double *>PyMem_Malloc(3 * sizeof(double))
+        object results_np = np.zeros(3, dtype=np.float64)
+        cdef double[::1] results = results_np
     # eval board
-    eval_board = 53
+    eval_board = fold_cards(EVAL_START, cards, 2, len_cards)
     for i in range(3):
-        results[i] = 0.0  # start results to 0
-    for i in range(2, len_cards):  # board is the same for all hands, store sum
-        tmp_sum = eval_board + cards[i]
-        eval_board = handdat[tmp_sum]
-    # eval hand
-    eval_hand = eval_board  # starting in board sum
-    for i in range(2):
-        tmp_sum = eval_hand + cards[i]
-        eval_hand = handdat[tmp_sum]
+        results[i] = 0.0
+    # eval hand (sum hand over board)
+    eval_hand = fold_cards(eval_board, cards, 0, 2)
 
     if len_cards < 7 and incomplete_board:  # evaluate hands strength on current board
         eval_hand = handdat[eval_hand]
-        _evaluate_all_rival_hands(cards, len_cards, eval_hand, eval_board, results)
+        _evaluate_all_rival_hands(cards, len_cards, eval_hand, eval_board, &results[0])
     elif len_cards == 7:
-        _evaluate_all_rival_hands(cards, len_cards, eval_hand, eval_board, results)
+        _evaluate_all_rival_hands(cards, len_cards, eval_hand, eval_board, &results[0])
     else:
-        _all_hands_create_boards(cards, len_cards, eval_hand, eval_board, results, distributions)
+        _all_hands_create_boards(cards, len_cards, eval_hand, eval_board, &results[0], distributions)
 
-    cdef double[:] results_py = <double[:3]> results  # C array to memory view
-    return results_py
+    return results_np

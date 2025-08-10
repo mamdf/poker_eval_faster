@@ -1,10 +1,21 @@
+# cython: boundscheck=False, wraparound=False, nonecheck=False, cdivision=True
 from cpython.mem cimport PyMem_Malloc, PyMem_Free
 from array import array
 from libc cimport stdint
+import numpy as np
 
 cimport cython
 from poker_eval_faster.eval_cython.main cimport handdat
 from poker_eval_faster.eval_cython.main cimport create_deck
+
+cdef int EVAL_START = 53
+
+cdef inline stdint.uint32_t fold_cards(stdint.uint32_t start_eval, int[:] cards, int start_idx, int end_idx) nogil:
+    cdef stdint.uint32_t p = start_eval
+    cdef int i
+    for i in range(start_idx, end_idx):
+        p = handdat[p + cards[i]]
+    return p
 
 
 cdef inline void sum_new_card(int new_card, stdint.uint32_t sum_hands[], int num_hands, stdint.uint32_t new_sum_hands[]):
@@ -109,7 +120,7 @@ cdef void _create_boards(int deck[], int len_deck, stdint.uint32_t sum_hands[],
     return
 
 
-cpdef double[:] evaluate_hands_c(int[:] hands, int[:] board=array('i', [])):
+cpdef object evaluate_hands_c(int[:] hands, int[:] board=array('i', [])):
     """
     Evaluate hands vs Board, if board is incomplete (< 5) complete it with all possible cards and eval it.
     :return: [win hand 1, win hand 2, tie hand 1, tie hand 2 ... ]
@@ -123,11 +134,12 @@ cpdef double[:] evaluate_hands_c(int[:] hands, int[:] board=array('i', [])):
         stdint.uint32_t *sum_hands = <stdint.uint32_t *>PyMem_Malloc(num_hands * sizeof(stdint.uint32_t))
         int *deck = <int *>PyMem_Malloc((52 - len_total) * sizeof(int))
         int *dead_cards = <int *>PyMem_Malloc(len_total * sizeof(int))
-        double *results = <double *>PyMem_Malloc(len_hands * sizeof(double))  # array to fill with win,tie hands
+        # results gestionado por Python para evitar fugas al devolverlo
+        object results_np = np.zeros(len_hands, dtype=np.float64)
+        cdef double[::1] results = results_np
         int i
     # hands and board to one array dead cards
     for i in range(len_hands):
-        results[i] = 0.0  # start results to 0
         dead_cards[i] = hands[i]
     for i in range(len_board):
         dead_cards[len_hands + i] = board[i]
@@ -135,26 +147,18 @@ cpdef double[:] evaluate_hands_c(int[:] hands, int[:] board=array('i', [])):
     cdef int len_deck = create_deck(dead_cards_py, len_total, deck)  # create deck less dead cards
     PyMem_Free(dead_cards)
     # eval board
-    sum_board = 53
-    for i in range(len_board):
-        tmp_sum = sum_board + board[i]
-        sum_board = handdat[tmp_sum]
+    sum_board = fold_cards(EVAL_START, board, 0, len_board)
     # eval hands
     for i in range(num_hands):
-        # hand card 0
-        tmp_sum = sum_board + hands[i * 2]
-        sum_hands[i] = handdat[tmp_sum]
-        # hand card 1
-        tmp_sum = sum_hands[i] + hands[i * 2 + 1]
-        sum_hands[i] = handdat[tmp_sum]
+        # sumar dos cartas de la mano sobre el board
+        sum_hands[i] = handdat[handdat[sum_board + hands[i * 2]] + hands[i * 2 + 1]]
     # brute force fill board with all cards and eval it
     if len_board < 5:
-        _create_boards(deck, len_deck, sum_hands, num_hands, len_board, results)
+        _create_boards(deck, len_deck, sum_hands, num_hands, len_board, &results[0])
     else:  # eval board, each hand in results
-        eval_hands(sum_hands, num_hands, results)
+        eval_hands(sum_hands, num_hands, &results[0])
 
     PyMem_Free(sum_hands)
     PyMem_Free(deck)
 
-    cdef double[:] results_py = <double[:len_hands]> results  # C array to memory view
-    return results_py
+    return results_np
