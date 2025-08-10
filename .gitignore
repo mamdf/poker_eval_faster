@@ -3,4 +3,10 @@ build
 *.ipynb
 *.so
 *.c
-/twoplustwo_eval.egg-info/
+*.pyc
+*.egg-info/
+.idea/
+.vscode/
+.DS_Store
+__pycache__/
+.pytest_cache/
