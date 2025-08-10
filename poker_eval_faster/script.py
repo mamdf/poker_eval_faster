@@ -39,16 +39,16 @@ def run(hands: str, board: str, incomplete_board: bool, evaluate: bool):
     """
     :arg hands: to evaluate, separate by whitespace (ex: AcKc QdQh)
     """
-    hands = [[i[:2], i[2:]] for i in hands]
-    board = [board[i] + board[i + 1] for i in range(0, len(board), 2)]
+    hands_list = [[i[:2], i[2:]] for i in hands]
+    board_list = [board[i] + board[i + 1] for i in range(0, len(board), 2)]
     # select eval function and args
-    if len(hands) > 1:
-        parser_evaluate_hands(hands, board, incomplete_board)
+    if len(hands_list) > 1:
+        parser_evaluate_hands(hands_list, board_list, incomplete_board)
     else:
         if evaluate:
-            parser_evaluate_rank(hands[0], board)
+            parser_evaluate_rank(hands_list[0], board_list)
         else:
-            parser_evaluate_one_hand_vs_all(hands[0], board, incomplete_board)
+            parser_evaluate_one_hand_vs_all(hands_list[0], board_list, incomplete_board)
 
 
 if __name__ == '__main__':

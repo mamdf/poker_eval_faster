@@ -1,6 +1,7 @@
 from poker_eval_faster import evaluate_hands, evaluate_one_hand_vs_all, distribution_one_hand_vs_all, evaluate_rank
 from poker_eval_faster import ranking_to_category
 import pytest
+from typing import cast
 
 ps_hand_vs_all = [
     [['5c', '2d'], ['2c', '2h', '5h', '7h', '7s'], 88.99],
@@ -33,7 +34,7 @@ ps_eval_hands = [
 @pytest.mark.parametrize('hand, board, expected_pct', ps_hand_vs_all)
 def test_evaluate_one_hand_vs_all(hand, board, expected_pct):
     result = evaluate_one_hand_vs_all(hand, board)
-    assert round(result * 100, 2) == expected_pct
+    assert round(cast(float, result) * 100, 2) == expected_pct
 
 
 def test_distributions():

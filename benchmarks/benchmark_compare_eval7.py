@@ -73,53 +73,6 @@ def make_eval7_eval_fn(samples: List[List[str]], eval7_mod) -> Callable[[], None
     return run_once
 
 
-# ---- pyeval7 wrapper (best-effort; falls back to eval7-like API if available) ----
-
-def try_import_pyeval7():
-    try:
-        import pyeval7  # type: ignore
-        return pyeval7
-    except Exception:
-        return None
-
-
-def make_pyeval7_eval_fn(samples: List[List[str]], pe7_mod) -> Optional[Callable[[], None]]:
-    i = 0
-    n = len(samples)
-
-    # Try eval7-compatible API first (Card + evaluate)
-    if hasattr(pe7_mod, "Card") and hasattr(pe7_mod, "evaluate"):
-        def to_cards(cards: List[str]):
-            return [pe7_mod.Card(c) for c in cards]
-
-        def run_once() -> None:
-            nonlocal i
-            seven = samples[i]
-            i = (i + 1) % n
-            _ = pe7_mod.evaluate(to_cards(seven))
-
-        return run_once
-
-    # Otherwise, try a common rank function name over strings
-    candidate_funcs = [
-        "evaluate_7cards",
-        "rank_7cards",
-        "rank_7",
-        "evaluate",
-    ]
-    for fname in candidate_funcs:
-        fn = getattr(pe7_mod, fname, None)
-        if callable(fn):
-            def run_once(fn=fn):  # bind fn
-                nonlocal i
-                seven = samples[i]
-                i = (i + 1) % n
-                _ = fn(seven)
-            return run_once
-
-    return None
-
-
 def generate_samples(num_samples: int) -> List[List[str]]:
     rng = random.Random(1337)
     samples: List[List[str]] = []
@@ -149,17 +102,6 @@ def main() -> None:
         results.append(timeit("eval7", make_eval7_eval_fn(samples, eval7_mod), args.iters))
     else:
         print("eval7 not installed. Install with: pip install eval7")
-
-    # pyeval7
-    pe7_mod = try_import_pyeval7()
-    if pe7_mod is not None:
-        pe7_fn = make_pyeval7_eval_fn(samples, pe7_mod)
-        if pe7_fn is not None:
-            results.append(timeit("pyeval7", pe7_fn, args.iters))
-        else:
-            print("pyeval7 installed but API not recognized for 7-card ranking; skipping.")
-    else:
-        print("pyeval7 not installed. Install with: pip install pyeval7")
 
     # simple summary
     if results:
