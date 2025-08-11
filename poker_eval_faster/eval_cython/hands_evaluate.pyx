@@ -87,11 +87,12 @@ cdef void _create_boards(int deck[], int len_deck, stdint.uint32_t sum_hands[],
     """
     cdef:
         int a, b, c, d, e
-        stdint.uint32_t *new_sum_hands_a = <stdint.uint32_t *>PyMem_Malloc(num_hands * sizeof(stdint.uint32_t))
-        stdint.uint32_t *new_sum_hands_b = <stdint.uint32_t *>PyMem_Malloc(num_hands * sizeof(stdint.uint32_t))
-        stdint.uint32_t *new_sum_hands_c = <stdint.uint32_t *>PyMem_Malloc(num_hands * sizeof(stdint.uint32_t))
-        stdint.uint32_t *new_sum_hands_d = <stdint.uint32_t *>PyMem_Malloc(num_hands * sizeof(stdint.uint32_t))
-        stdint.uint32_t *new_sum_hands_e = <stdint.uint32_t *>PyMem_Malloc(num_hands * sizeof(stdint.uint32_t))
+        stdint.uint32_t *scratch = <stdint.uint32_t *>PyMem_Malloc(5 * num_hands * sizeof(stdint.uint32_t))
+        stdint.uint32_t *new_sum_hands_a = scratch
+        stdint.uint32_t *new_sum_hands_b = scratch + num_hands
+        stdint.uint32_t *new_sum_hands_c = scratch + (2 * num_hands)
+        stdint.uint32_t *new_sum_hands_d = scratch + (3 * num_hands)
+        stdint.uint32_t *new_sum_hands_e = scratch + (4 * num_hands)
 
     if len_board < 5:
         with nogil:
@@ -113,11 +114,7 @@ cdef void _create_boards(int deck[], int len_deck, stdint.uint32_t sum_hands[],
                                         sum_new_card(deck[e], new_sum_hands_d, num_hands, new_sum_hands_e)
                                         eval_hands(new_sum_hands_e, num_hands, results)
 
-    PyMem_Free(new_sum_hands_a)
-    PyMem_Free(new_sum_hands_b)
-    PyMem_Free(new_sum_hands_c)
-    PyMem_Free(new_sum_hands_d)
-    PyMem_Free(new_sum_hands_e)
+    PyMem_Free(scratch)
     return
 
 
