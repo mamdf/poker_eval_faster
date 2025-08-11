@@ -18,7 +18,7 @@ cdef inline stdint.uint32_t fold_cards(stdint.uint32_t start_eval, int[:] cards,
     return p
 
 
-cdef inline void sum_new_card(int new_card, stdint.uint32_t sum_hands[], int num_hands, stdint.uint32_t new_sum_hands[]) nogil:
+cdef inline void sum_new_card(int new_card, stdint.uint32_t sum_hands[], int num_hands, stdint.uint32_t new_sum_hands[]) noexcept nogil:
     """
     :param new_card: card rank (1,53) to sum to each eval hand value
     :param sum_hands: array with eval hands values
@@ -31,7 +31,7 @@ cdef inline void sum_new_card(int new_card, stdint.uint32_t sum_hands[], int num
         new_sum_hands[i] = handdat[sum_hands[i] + new_card]
 
 @cython.cdivision(True)
-cdef inline void eval_hands(stdint.uint32_t sum_hands[], int num_hands, double results[]) nogil:
+cdef inline void eval_hands(stdint.uint32_t sum_hands[], int num_hands, double results[]) noexcept nogil:
     """
     Compare two or more eval hands numbers and figured out winner (or ties)
     :param sum_hands: array with eval hands values

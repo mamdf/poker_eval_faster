@@ -52,6 +52,7 @@ cdef void _all_hands_create_boards(int[:] cards, int len_cards, stdint.uint32_t 
     for i in range(len_cards):
         dead_cards[i] = cards[i]
 
+    cdef double eq
     for a in range(len_deck):
         eval_board_turn = handdat[eval_board + deck[a]]
         eval_hand_turn = handdat[eval_hand + deck[a]]
@@ -60,7 +61,8 @@ cdef void _all_hands_create_boards(int[:] cards, int len_cards, stdint.uint32_t 
             for i in range(3):
                 tmp_results_turn[i] = 0.0
             _evaluate_all_rival_hands(dead_cards, 7, eval_hand_turn, eval_board_turn, tmp_results_turn)
-            distributions[0, deck[a]] = _hand_to_equity_c(tmp_results_turn)
+            eq = _hand_to_equity_c(tmp_results_turn)
+            distributions[0, deck[a]] = eq
             results[0] += tmp_results_turn[0]
             results[1] += tmp_results_turn[1]
             results[2] += tmp_results_turn[2]
@@ -75,8 +77,9 @@ cdef void _all_hands_create_boards(int[:] cards, int len_cards, stdint.uint32_t 
                 tmp_results_river[i] = 0.0
             _evaluate_all_rival_hands(dead_cards, 7, eval_hand_river, eval_board_river,
                                                     tmp_results_river)
-            distributions[deck[a], deck[b]] = _hand_to_equity_c(tmp_results_river)
-            distributions[deck[b], deck[a]] = distributions[deck[a], deck[b]]  # repeated is not simulate (4h5h == 5h4h)
+            eq = _hand_to_equity_c(tmp_results_river)
+            distributions[deck[a], deck[b]] = eq
+            distributions[deck[b], deck[a]] = eq
             results[0] += tmp_results_river[0]
             results[1] += tmp_results_river[1]
             results[2] += tmp_results_river[2]
