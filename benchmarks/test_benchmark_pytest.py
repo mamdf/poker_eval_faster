@@ -1,5 +1,10 @@
 import pytest
 
+import pytest
+
+# Salta benchmarks si no está instalado el plugin pytest-benchmark
+pytest.importorskip("pytest_benchmark")
+
 from poker_eval_faster import (
     evaluate_hands,
     evaluate_one_hand_vs_all,
