@@ -5,5 +5,6 @@ from .eval_cython.main import evaluate_c
 from .eval_cython.hands_evaluate import evaluate_hands_c, hands_to_equity
 from .eval_cython.one_hand_evaluate import evaluate_one_hand_vs_all_c, hand_to_equity
 from .main import evaluate_hands, evaluate_one_hand_vs_all, cards_to_int_array, int_to_cards, \
-    distribution_one_hand_vs_all, evaluate_rank, ranking_to_category, card_to_int
+    distribution_one_hand_vs_all, evaluate_rank, ranking_to_category, card_to_int, evaluate_ranges
 from .eval_cython.python_wrapper import create_deck_wrapper
+from .eval_cython.hands_evaluate import evaluate_range_vs_range_c

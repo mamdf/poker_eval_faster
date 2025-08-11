@@ -160,3 +160,59 @@ cpdef object evaluate_hands_c(int[:] hands, int[:] board=array('i', [])):
     PyMem_Free(deck)
 
     return results_np
+
+
+@cython.cdivision(True)
+cpdef double evaluate_range_vs_range_c(int[:,:] hero_combos, int[:,:] villain_combos, int[:] board=array('i', [])):
+    """
+    Evalúa equity agregada de un rango (lista de combos) vs otro rango.
+    Cada combo es un par de enteros (carta1, carta2) en hero_combos/villain_combos.
+    Devuelve la equity promedio del rango héroe contra el rango villano.
+    """
+    cdef:
+        Py_ssize_t i, j, k
+        int len_board = board.size
+        int h1, h2, v1, v2
+        # reutilizar buffers pequeños
+        object hands_np = np.empty(4, dtype=np.int32)
+        cdef int[:] hands_mv = hands_np
+        object ev_obj
+        cdef double[::1] ev
+        double total_hero = 0.0
+        double total_all = 0.0
+        bint ok
+    for i in range(hero_combos.shape[0]):
+        h1 = hero_combos[i, 0]
+        h2 = hero_combos[i, 1]
+        if h1 == h2:
+            continue
+        for j in range(villain_combos.shape[0]):
+            v1 = villain_combos[j, 0]
+            v2 = villain_combos[j, 1]
+            # validar cartas distintas entre sí y con la otra mano
+            if v1 == v2:
+                continue
+            if h1 == v1 or h1 == v2 or h2 == v1 or h2 == v2:
+                continue
+            # validar contra el board
+            ok = True
+            for k in range(len_board):
+                if board[k] == h1 or board[k] == h2 or board[k] == v1 or board[k] == v2:
+                    ok = False
+                    break
+            if not ok:
+                continue
+            # armar manos [hero, villain]
+            hands_mv[0] = h1
+            hands_mv[1] = h2
+            hands_mv[2] = v1
+            hands_mv[3] = v2
+            ev_obj = evaluate_hands_c(hands_mv, board)
+            ev = ev_obj
+            # para dos manos: ev = [win_H, win_V, tie_H, tie_V]
+            total_hero += ev[0] + ev[2]
+            total_all += ev[0] + ev[1] + ev[2] + ev[3]
+
+    if total_all == 0.0:
+        return 0.0
+    return total_hero / total_all

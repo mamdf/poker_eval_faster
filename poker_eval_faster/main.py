@@ -1,6 +1,7 @@
 from poker_eval_faster import evaluate_one_hand_vs_all_c, hand_to_equity
 from poker_eval_faster import evaluate_hands_c, hands_to_equity
 from poker_eval_faster import evaluate_c
+from typing import Iterable
 from typing import List, Tuple
 import numpy as np
 
@@ -135,6 +136,59 @@ def distribution_one_hand_vs_all(hand, board, sort_distributions=False):
             return distributions[0]
     else:
         return ev
+
+
+def parse_range_notation(range_str: str) -> List[Tuple[int, int]]:
+    """
+    Muy básico: admite formato explícito de combos como "AsKs,AdKd" o pares "TT".
+    Nota: implementación mínima para pruebas; no soporta A2+ aún.
+    """
+    tokens = [tok.strip() for tok in range_str.split(',') if tok.strip()]
+    combos: List[Tuple[int, int]] = []
+    for tok in tokens:
+        if len(tok) == 4:  # ex: AsKs
+            combos.append((CARDS_TO_INT[tok[:2]], CARDS_TO_INT[tok[2:]]))
+        elif len(tok) == 2 and tok[0] == tok[1]:  # ex: TT
+            r = tok[0]
+            # generar los 6 combos off-suit + 4 suited es más complejo; placeholder simple (mismo palo no permitido)
+            for s1 in 'cdhs':
+                for s2 in 'cdhs':
+                    if s1 == s2:
+                        continue
+                    c1 = r + s1
+                    c2 = r + s2
+                    combos.append((CARDS_TO_INT[c1], CARDS_TO_INT[c2]))
+        else:
+            raise ValueError(f"Token de rango no soportado: {tok}")
+    return combos
+
+
+def evaluate_ranges(hero_range: Iterable[Tuple[int, int]] | str,
+                    villain_range: Iterable[Tuple[int, int]] | str,
+                    board=None) -> float:
+    """
+    Evalúa equity de un rango contra otro.
+    Acepta iterables de pares (int,int) o un string simple (ver parse_range_notation).
+    """
+    from poker_eval_faster import evaluate_range_vs_range_c
+    if isinstance(hero_range, str):
+        hero_list = parse_range_notation(hero_range)
+    else:
+        hero_list = list(hero_range)
+    if isinstance(villain_range, str):
+        villain_list = parse_range_notation(villain_range)
+    else:
+        villain_list = list(villain_range)
+    hero_arr = np.array(hero_list, dtype='int32')
+    villain_arr = np.array(villain_list, dtype='int32')
+    if board:
+        if type(board[0]) is str:
+            board_cards = cards_to_int_array(board)
+        else:
+            board_cards = cards_to_array(board)
+    else:
+        board_cards = np.array([], dtype='int32')
+    return float(__import__('poker_eval_faster').evaluate_range_vs_range_c(hero_arr, villain_arr, board_cards))
 
 
 if __name__ == '__main__':
