@@ -1,4 +1,4 @@
-# cython: boundscheck=False, wraparound=False, nonecheck=False, cdivision=True
+# cython: boundscheck=False, wraparound=False, nonecheck=False, cdivision=True, infer_types=True
 from cpython.mem cimport PyMem_Malloc, PyMem_Free
 from array import array
 from libc cimport stdint
@@ -18,7 +18,7 @@ cdef inline stdint.uint32_t fold_cards(stdint.uint32_t start_eval, int[:] cards,
     return p
 
 
-cdef inline void sum_new_card(int new_card, stdint.uint32_t sum_hands[], int num_hands, stdint.uint32_t new_sum_hands[]):
+cdef inline void sum_new_card(int new_card, stdint.uint32_t sum_hands[], int num_hands, stdint.uint32_t new_sum_hands[]) nogil:
     """
     :param new_card: card rank (1,53) to sum to each eval hand value
     :param sum_hands: array with eval hands values
@@ -31,7 +31,7 @@ cdef inline void sum_new_card(int new_card, stdint.uint32_t sum_hands[], int num
         new_sum_hands[i] = handdat[sum_hands[i] + new_card]
 
 @cython.cdivision(True)
-cdef inline void eval_hands(stdint.uint32_t sum_hands[], int num_hands, double results[]):
+cdef inline void eval_hands(stdint.uint32_t sum_hands[], int num_hands, double results[]) nogil:
     """
     Compare two or more eval hands numbers and figured out winner (or ties)
     :param sum_hands: array with eval hands values
@@ -39,7 +39,7 @@ cdef inline void eval_hands(stdint.uint32_t sum_hands[], int num_hands, double r
     :param results: array to save number of win and tie per hand
     :return: None
     """
-    cdef int i, win_id
+    cdef int i, win_id = 0
     cdef double tie = 0.0
     cdef stdint.uint32_t max_eval = 0
     cdef bint possible_tie = False
@@ -51,7 +51,7 @@ cdef inline void eval_hands(stdint.uint32_t sum_hands[], int num_hands, double r
             possible_tie = True
 
     if possible_tie:
-        for i in range(num_hands):  # count tie only for win hands
+        for i in range(num_hands):
             if sum_hands[i] == max_eval:
                 tie += 1
 
@@ -94,23 +94,24 @@ cdef void _create_boards(int deck[], int len_deck, stdint.uint32_t sum_hands[],
         stdint.uint32_t *new_sum_hands_e = <stdint.uint32_t *>PyMem_Malloc(num_hands * sizeof(stdint.uint32_t))
 
     if len_board < 5:
-        for a in range(len_deck):
-            sum_new_card(deck[a], sum_hands, num_hands, new_sum_hands_a)
-            if len_board == 4:
-                eval_hands(new_sum_hands_a, num_hands, results)
-            if len_board < 4:
-                for b in range(a+1, len_deck):
-                    sum_new_card(deck[b], new_sum_hands_a, num_hands, new_sum_hands_b)
-                    if len_board == 3:
-                        eval_hands(new_sum_hands_b, num_hands, results)
-                    if len_board < 3:
-                        for c in range(b+1, len_deck):
-                            sum_new_card(deck[c], new_sum_hands_b, num_hands, new_sum_hands_c)
-                            for d in range(c+1, len_deck):
-                                sum_new_card(deck[d], new_sum_hands_c, num_hands, new_sum_hands_d)
-                                for e in range(d+1, len_deck):
-                                    sum_new_card(deck[e], new_sum_hands_d, num_hands, new_sum_hands_e)
-                                    eval_hands(new_sum_hands_e, num_hands, results)
+        with nogil:
+            for a in range(len_deck):
+                sum_new_card(deck[a], sum_hands, num_hands, new_sum_hands_a)
+                if len_board == 4:
+                    eval_hands(new_sum_hands_a, num_hands, results)
+                if len_board < 4:
+                    for b in range(a+1, len_deck):
+                        sum_new_card(deck[b], new_sum_hands_a, num_hands, new_sum_hands_b)
+                        if len_board == 3:
+                            eval_hands(new_sum_hands_b, num_hands, results)
+                        if len_board < 3:
+                            for c in range(b+1, len_deck):
+                                sum_new_card(deck[c], new_sum_hands_b, num_hands, new_sum_hands_c)
+                                for d in range(c+1, len_deck):
+                                    sum_new_card(deck[d], new_sum_hands_c, num_hands, new_sum_hands_d)
+                                    for e in range(d+1, len_deck):
+                                        sum_new_card(deck[e], new_sum_hands_d, num_hands, new_sum_hands_e)
+                                        eval_hands(new_sum_hands_e, num_hands, results)
 
     PyMem_Free(new_sum_hands_a)
     PyMem_Free(new_sum_hands_b)

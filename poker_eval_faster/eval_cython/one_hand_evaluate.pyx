@@ -1,4 +1,4 @@
-# cython: boundscheck=False, wraparound=False, nonecheck=False, cdivision=True
+# cython: boundscheck=False, wraparound=False, nonecheck=False, cdivision=True, infer_types=True
 from cpython.mem cimport PyMem_Malloc, PyMem_Free
 cimport cython
 from libc cimport stdint
@@ -99,23 +99,23 @@ cdef void _evaluate_all_rival_hands(int[:] dead_cards, int len_dead_cards, stdin
         int *rival_cards = <int *> PyMem_Malloc((52 - len_dead_cards) * sizeof(int))
         int num_cards = create_deck(dead_cards, len_dead_cards, rival_cards)  # call func to create deck (rival_cards)
     # evaluate all rival hands possibles
-    for c1 in range(num_cards):
-        card1 = rival_cards[c1]
-        tmp_sum = eval_board + card1
-        first_eval_rival = handdat[tmp_sum]  # sum only first card
-        for c2 in range(c1 + 1, num_cards):
-            card2 = rival_cards[c2]
-            tmp_sum = first_eval_rival + card2
-            eval_rival = handdat[tmp_sum]
-            if len_dead_cards < 7:  # or len board si le sumo rangos a dead cards
-                eval_rival = handdat[eval_rival]
-            # evaluate counter
-            if eval_hand > eval_rival:
-                win += 1.0
-            elif eval_hand == eval_rival:
-                tie += 1.0
-            else:
-                loss += 1.0
+    with nogil:
+        for c1 in range(num_cards):
+            card1 = rival_cards[c1]
+            tmp_sum = eval_board + card1
+            first_eval_rival = handdat[tmp_sum]
+            for c2 in range(c1 + 1, num_cards):
+                card2 = rival_cards[c2]
+                tmp_sum = first_eval_rival + card2
+                eval_rival = handdat[tmp_sum]
+                if len_dead_cards < 7:
+                    eval_rival = handdat[eval_rival]
+                if eval_hand > eval_rival:
+                    win += 1.0
+                elif eval_hand == eval_rival:
+                    tie += 1.0
+                else:
+                    loss += 1.0
 
     PyMem_Free(rival_cards)
     results[WIN] += win
