@@ -5,7 +5,9 @@ from typing import Iterable
 from typing import List, Tuple
 import numpy as np
 
-DECK = [r + s for r in '23456789TJQKA' for s in 'cdhs']
+RANKS_STR = '23456789TJQKA'
+SUITS_STR = 'cdhs'
+DECK = [r + s for r in RANKS_STR for s in SUITS_STR]
 CARDS_TO_INT = {card: i for i, card in enumerate(DECK, start=1)}
 RANKING = [None, "NOPAIR", "PAIR", "DOUBLES", "TRIPS", "STRAIGHT", "FLUSH", "FULL", "QUADS", "STRAIGHT_FLUSH"]
 
@@ -140,27 +142,183 @@ def distribution_one_hand_vs_all(hand, board, sort_distributions=False):
 
 def parse_range_notation(range_str: str) -> List[Tuple[int, int]]:
     """
-    Muy básico: admite formato explícito de combos como "AsKs,AdKd" o pares "TT".
-    Nota: implementación mínima para pruebas; no soporta A2+ aún.
+    Parser de rangos de mano (simplificado pero útil):
+    - Pares: "TT", con "+": "TT+" (TT, JJ, QQ, KK, AA)
+    - Conjuntos concretos: "AsKs,AdKd"
+    - No pares: "AK", "AKs", "AKo"
+    - Con "+" en el segundo rango: "A2+" (A2..AK), "A2s+", "K9o+".
+    Nota: No soporta aún rangos con "-" ni pesos.
     """
-    tokens = [tok.strip() for tok in range_str.split(',') if tok.strip()]
-    combos: List[Tuple[int, int]] = []
+    def rank_index(r: str) -> int:
+        return RANKS_STR.index(r)
+
+    def gen_pair_combos(rank: str) -> List[Tuple[int, int]]:
+        out: List[Tuple[int, int]] = []
+        for i, s1 in enumerate(SUITS_STR):
+            for j in range(i + 1, len(SUITS_STR)):
+                s2 = SUITS_STR[j]
+                c1 = CARDS_TO_INT[rank + s1]
+                c2 = CARDS_TO_INT[rank + s2]
+                out.append((c1, c2))
+        return out
+
+    def gen_suited(rank_hi: str, rank_lo: str) -> List[Tuple[int, int]]:
+        # Misma pinta para ambos
+        out: List[Tuple[int, int]] = []
+        for s in SUITS_STR:
+            c1 = CARDS_TO_INT[rank_hi + s]
+            c2 = CARDS_TO_INT[rank_lo + s]
+            out.append((c1, c2))
+        return out
+
+    def gen_offsuit(rank_hi: str, rank_lo: str) -> List[Tuple[int, int]]:
+        out: List[Tuple[int, int]] = []
+        for s1 in SUITS_STR:
+            for s2 in SUITS_STR:
+                if s1 == s2:
+                    continue
+                out.append((CARDS_TO_INT[rank_hi + s1], CARDS_TO_INT[rank_lo + s2]))
+        return out
+
+    def gen_both(rank_hi: str, rank_lo: str) -> List[Tuple[int, int]]:
+        return gen_suited(rank_hi, rank_lo) + gen_offsuit(rank_hi, rank_lo)
+
+    tokens = [tok.strip().upper() for tok in range_str.split(',') if tok.strip()]
+    result: List[Tuple[int, int]] = []
+    seen = set()
+
     for tok in tokens:
-        if len(tok) == 4:  # ex: AsKs
-            combos.append((CARDS_TO_INT[tok[:2]], CARDS_TO_INT[tok[2:]]))
-        elif len(tok) == 2 and tok[0] == tok[1]:  # ex: TT
-            r = tok[0]
-            # generar los 6 combos off-suit + 4 suited es más complejo; placeholder simple (mismo palo no permitido)
-            for s1 in 'cdhs':
-                for s2 in 'cdhs':
-                    if s1 == s2:
+        # Rango con guión (e.g., 66-99, ATs-A2s, K9-KQ)
+        if '-' in tok:
+            left, right = [part.strip() for part in tok.split('-', 1)]
+            # normalizar sufijos y extraer base de cada lado
+            def norm(part: str):
+                base = part
+                qualifier = None
+                plus = False
+                while True:
+                    if base.endswith('+'):
+                        plus = True
+                        base = base[:-1]
                         continue
-                    c1 = r + s1
-                    c2 = r + s2
-                    combos.append((CARDS_TO_INT[c1], CARDS_TO_INT[c2]))
-        else:
-            raise ValueError(f"Token de rango no soportado: {tok}")
-    return combos
+                    if base.endswith('S') or base.endswith('O'):
+                        qualifier = base[-1]
+                        base = base[:-1]
+                        continue
+                    break
+                return base, qualifier, plus
+
+            lbase, lq, lplus = norm(left)
+            rbase, rq, rplus = norm(right)
+            if lplus or rplus:
+                # no se soporta '+' combinado con '-' por ahora
+                raise ValueError(f"No se soporta '+' combinado con '-' en: {tok}")
+            # pares, e.g. 66-99
+            if (
+                len(lbase) == 2 and len(rbase) == 2
+                and lbase[0] == lbase[1] and rbase[0] == rbase[1]
+                and lbase[0] in RANKS_STR and rbase[0] in RANKS_STR
+            ):
+                start = min(rank_index(lbase[0]), rank_index(rbase[0]))
+                end = max(rank_index(lbase[0]), rank_index(rbase[0]))
+                for idx in range(start, end + 1):
+                    r = RANKS_STR[idx]
+                    for combo in gen_pair_combos(r):
+                        pair = (combo[0], combo[1]) if combo[0] < combo[1] else (combo[1], combo[0])
+                        if pair not in seen:
+                            seen.add(pair)
+                            result.append(pair)
+                continue
+            # no pares, e.g. ATs-A2s o K9-KQ (mismo alto en ambos lados)
+            if len(lbase) == 2 and len(rbase) == 2 and lbase[0] == rbase[0] and lbase[0] in RANKS_STR and lbase[1] in RANKS_STR and rbase[1] in RANKS_STR:
+                hi = lbase[0]
+                lo1 = lbase[1]
+                lo2 = rbase[1]
+                q = lq or rq  # si uno especifica s/o, usamos ese
+                start = min(rank_index(lo1), rank_index(lo2))
+                end = max(rank_index(lo1), rank_index(lo2))
+                for idx in range(start, end + 1):
+                    lo = RANKS_STR[idx]
+                    if lo == hi:
+                        continue
+                    if q == 'S':
+                        combos = gen_suited(hi, lo)
+                    elif q == 'O':
+                        combos = gen_offsuit(hi, lo)
+                    else:
+                        combos = gen_both(hi, lo)
+                    for combo in combos:
+                        pair = (combo[0], combo[1]) if combo[0] < combo[1] else (combo[1], combo[0])
+                        if pair not in seen:
+                            seen.add(pair)
+                            result.append(pair)
+                continue
+            raise ValueError(f"Rango con '-' no soportado: {tok}")
+
+        # Casos explícitos de 4 chars, e.g., AsKs
+        if len(tok) == 4 and tok[0] in RANKS_STR and tok[2] in RANKS_STR:
+            c1 = CARDS_TO_INT[tok[0] + tok[1].lower()]
+            c2 = CARDS_TO_INT[tok[2] + tok[3].lower()]
+            pair = (c1, c2) if c1 < c2 else (c2, c1)
+            if pair not in seen:
+                seen.add(pair)
+                result.append(pair)
+            continue
+
+        # Pares con o sin + (e.g., TT, TT+)
+        if len(tok) in (2, 3) and tok[0] == tok[1] and tok[0] in RANKS_STR:
+            plus = tok.endswith('+')
+            start_idx = rank_index(tok[0])
+            end_idx = len(RANKS_STR)  # hasta As
+            ranks = RANKS_STR[start_idx:end_idx] if plus else tok[0]
+            for r in ranks:
+                for combo in gen_pair_combos(r):
+                    pair = (combo[0], combo[1]) if combo[0] < combo[1] else (combo[1], combo[0])
+                    if pair not in seen:
+                        seen.add(pair)
+                        result.append(pair)
+            continue
+
+        # No pares: AK / AKs / AKo, con opcional + en el segundo rango (A2+, A2s+, A2o+)
+        base = tok
+        qualifier = None
+        plus = False
+        # Manejar sufijos en cualquier orden: 'A2S+', 'A2+S', 'A2s+', 'A2+o'
+        # Normalizamos a: base sin sufijos, y flags 'qualifier' y 'plus'
+        while True:
+            if base.endswith('+'):
+                plus = True
+                base = base[:-1]
+                continue
+            if base.endswith('S') or base.endswith('O'):
+                qualifier = base[-1]
+                base = base[:-1]
+                continue
+            break
+
+        if len(base) == 2 and base[0] in RANKS_STR and base[1] in RANKS_STR and base[0] != base[1]:
+            hi = base[0]
+            lo_start = base[1]
+            lo_candidates = RANKS_STR[rank_index(lo_start):rank_index('A')] if plus else lo_start
+            for lo in lo_candidates:
+                if hi == lo:
+                    continue
+                if qualifier == 'S':
+                    combos = gen_suited(hi, lo)
+                elif qualifier == 'O':
+                    combos = gen_offsuit(hi, lo)
+                else:
+                    combos = gen_both(hi, lo)
+                for combo in combos:
+                    pair = (combo[0], combo[1]) if combo[0] < combo[1] else (combo[1], combo[0])
+                    if pair not in seen:
+                        seen.add(pair)
+                        result.append(pair)
+            continue
+
+        raise ValueError(f"Token de rango no soportado: {tok}")
+
+    return result
 
 
 def evaluate_ranges(hero_range: Iterable[Tuple[int, int]] | str,
