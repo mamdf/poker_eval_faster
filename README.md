@@ -5,6 +5,9 @@ High-performance poker hand evaluation for Texas Hold’em using Cython-backed e
 ## Features
 - Evaluate one hand vs the entire range of possible opponents
 - Evaluate multiple hands against each other on a given board
+- Get exact heads-up win/tie/total counts for two specific combos
+- Build exact preflop heads-up lookup tables from canonical combo ids
+- Aggregate combo-level HU lookups into hand classes such as `AA`, `AKs`, `AKo`
 - Compute exact hand ranking and translate to category (e.g., PAIR, FLUSH)
 - Get equity distributions across possible turn/river cards
 - Fast core implemented in Cython (`poker_eval_faster/eval_cython`)
@@ -68,9 +71,30 @@ category_id, category_name = ranking_to_category(rank)
 print(rank, category_id, category_name)  # e.g., 36874 9 STRAIGHT_FLUSH
 ```
 
-### Distributions (turn/river)
+### Exact heads-up counts
 ```python
-from poker_eval_faster import distribution_one_hand_vs_all
+from poker_eval_faster import evaluate_heads_up_counts
+
+counts = evaluate_heads_up_counts(['As', 'Ah'], ['Ks', 'Kh'])
+print(counts.wins, counts.ties, counts.total)
+print(round(counts.equity * 100, 2), '%')
+```
+
+### Build a heads-up lookup table
+```python
+from poker_eval_faster import (
+    aggregate_heads_up_lookup_by_class,
+    build_heads_up_lookup,
+)
+
+lookup = build_heads_up_lookup(combo_indices=[0, 1, 2])  # subset for quick generation/tests
+class_counts = aggregate_heads_up_lookup_by_class(lookup)
+print(class_counts[('AA', 'KK')].equity)
+```
+
+### Distributions (turn/river, experimental)
+```python
+from poker_eval_faster.experimental import distribution_one_hand_vs_all
 
 dists = distribution_one_hand_vs_all(['2s', '6s'], ['Qs', 'Ks', '7c'], sort_distributions=True)
 # dists is a sorted array of equity distributions over valid next cards
@@ -81,6 +105,8 @@ The package also exposes helpers for conversions:
 - `cards_to_int_array(cards: list[str]) -> np.ndarray`
 - `int_to_cards(cards: list[int]) -> list[str]`
 - `card_to_int(card: str) -> int`
+- `canonical_combos() -> np.ndarray` returns the 1326 canonical combo ids used by the lookup builder
+- `combo_to_hand_class(combo) -> str` returns labels such as `AA`, `AKs`, `AKo`
 
 ## Command Line Interface (CLI)
 After installation, the `poker-eval` command is available.
@@ -112,7 +138,10 @@ CLI options:
 ## API Reference (selected)
 - `evaluate_one_hand_vs_all(hand, board, eq=True, incomplete_board=False) -> float | list[int]`
 - `evaluate_hands(hands, board=None, eq=True, incomplete_board=False) -> list[float] | list[int]`
-- `distribution_one_hand_vs_all(hand, board, sort_distributions=False)`
+- `evaluate_heads_up_counts(hero_hand, villain_hand, board=None) -> HeadsUpCounts`
+- `build_heads_up_lookup(board=None, combo_indices=None) -> HeadsUpLookupTable`
+- `aggregate_heads_up_lookup_by_class(lookup) -> dict[(str, str), HeadsUpCounts]`
+- `distribution_one_hand_vs_all(hand, board, sort_distributions=False)` (also available from `poker_eval_faster.experimental`)
 - `evaluate_rank(board, hand) -> int`
 - `ranking_to_category(rank) -> tuple[int, str]`
 - `hands_to_equity(np_array)` / `hand_to_equity(np_array)` (from Cython wrapper)
@@ -161,6 +190,7 @@ python -m pytest tests/ -v
 
 ## Development Notes
 - Cython sources live under `poker_eval_faster/eval_cython/` (`.pyx`, `.pxd`).
+- Heads-up range/lookup work now uses a dedicated exact-count kernel instead of routing every combo pair through the generic multi-hand path.
 - If you need to rebuild the extensions in place:
 ```bash
 python setup.py build_ext --inplace

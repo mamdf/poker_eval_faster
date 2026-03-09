@@ -1,15 +1,69 @@
-from poker_eval_faster import evaluate_one_hand_vs_all_c, hand_to_equity
-from poker_eval_faster import evaluate_hands_c, hands_to_equity
-from poker_eval_faster import evaluate_c
-from typing import Iterable
-from typing import List, Tuple
+from dataclasses import dataclass
+from functools import lru_cache
+from math import comb
+from typing import Iterable, List, Sequence, Tuple
 import numpy as np
+
+from .eval_cython.hands_evaluate import (
+    evaluate_hands_c,
+    evaluate_heads_up_counts_c,
+    evaluate_range_vs_range_c,
+    hands_to_equity,
+)
+from .eval_cython.main import evaluate_c
+from .eval_cython.one_hand_evaluate import evaluate_one_hand_vs_all_c, hand_to_equity
 
 RANKS_STR = '23456789TJQKA'
 SUITS_STR = 'cdhs'
 DECK = [r + s for r in RANKS_STR for s in SUITS_STR]
 CARDS_TO_INT = {card: i for i, card in enumerate(DECK, start=1)}
 RANKING = [None, "NOPAIR", "PAIR", "DOUBLES", "TRIPS", "STRAIGHT", "FLUSH", "FULL", "QUADS", "STRAIGHT_FLUSH"]
+
+
+@dataclass(frozen=True)
+class HeadsUpCounts:
+    wins: int
+    ties: int
+    total: int
+
+    @property
+    def losses(self) -> int:
+        return max(self.total - self.wins - self.ties, 0)
+
+    @property
+    def equity(self) -> float:
+        if self.total == 0:
+            return 0.0
+        return (self.wins + (self.ties / 2.0)) / self.total
+
+
+@dataclass(frozen=True)
+class HeadsUpLookupTable:
+    combo_indices: np.ndarray
+    combo_cards: np.ndarray
+    win_tie_counts: np.ndarray
+    valid_mask: np.ndarray
+    board: Tuple[int, ...]
+    total: int
+
+    def pair_index(self, first_idx: int, second_idx: int) -> int:
+        local_a = int(np.where(self.combo_indices == first_idx)[0][0])
+        local_b = int(np.where(self.combo_indices == second_idx)[0][0])
+        if local_a == local_b:
+            raise ValueError("A lookup pair needs two distinct combo ids.")
+        return packed_pair_index(local_a, local_b, self.combo_indices.size)
+
+    def counts_for_ids(self, first_idx: int, second_idx: int) -> HeadsUpCounts:
+        pair_idx = self.pair_index(first_idx, second_idx)
+        if not bool(self.valid_mask[pair_idx]):
+            return HeadsUpCounts(0, 0, 0)
+
+        counts = self.win_tie_counts[pair_idx]
+        if first_idx < second_idx:
+            wins = int(counts[0])
+        else:
+            wins = self.total - int(counts[0]) - int(counts[1])
+        return HeadsUpCounts(wins=wins, ties=int(counts[1]), total=self.total)
 
 
 def card_to_int(card: str):
@@ -28,18 +82,93 @@ def int_to_cards(cards: List[int]):
     return [DECK[i-1] for i in cards]
 
 
+def _cards_are_strings(cards: Sequence) -> bool:
+    return len(cards) > 0 and isinstance(cards[0], str)
+
+
+def _normalize_cards(cards: Sequence) -> np.ndarray:
+    if _cards_are_strings(cards):
+        return cards_to_int_array(list(cards))
+    return cards_to_array(list(cards))
+
+
+def _normalize_board(board) -> np.ndarray:
+    if board is None:
+        return np.array([], dtype='int32')
+    return _normalize_cards(board)
+
+
+def _cards_have_duplicates(cards: np.ndarray) -> bool:
+    return np.unique(cards).size != cards.size
+
+
+def _cards_mask(cards: Sequence[int]) -> np.uint64:
+    mask = np.uint64(0)
+    for card in cards:
+        mask |= np.uint64(1) << np.uint64(int(card) - 1)
+    return mask
+
+
+def _normalize_combo(combo: Sequence) -> np.ndarray:
+    if len(combo) != 2:
+        raise ValueError(f"A combo must contain exactly 2 cards, got {combo!r}")
+    return _normalize_cards(combo)
+
+
+@lru_cache(maxsize=1)
+def canonical_combos() -> np.ndarray:
+    return np.array([(a, b) for a in range(1, 53) for b in range(a + 1, 53)], dtype='int32')
+
+
+@lru_cache(maxsize=1)
+def canonical_combo_masks() -> np.ndarray:
+    combos = canonical_combos()
+    masks = np.zeros(combos.shape[0], dtype=np.uint64)
+    for idx, (first, second) in enumerate(combos):
+        masks[idx] = _cards_mask((int(first), int(second)))
+    return masks
+
+
+def packed_pair_index(first_idx: int, second_idx: int, num_items: int) -> int:
+    if first_idx == second_idx:
+        raise ValueError("A packed pair index needs two distinct items.")
+    if first_idx > second_idx:
+        first_idx, second_idx = second_idx, first_idx
+    return (first_idx * num_items) - ((first_idx * (first_idx + 1)) // 2) + (second_idx - first_idx - 1)
+
+
+def combo_to_hand_class(combo: Sequence[int] | Sequence[str]) -> str:
+    combo_arr = _normalize_combo(combo)
+    first = int(combo_arr[0]) - 1
+    second = int(combo_arr[1]) - 1
+    rank_one = RANKS_STR[first // len(SUITS_STR)]
+    suit_one = SUITS_STR[first % len(SUITS_STR)]
+    rank_two = RANKS_STR[second // len(SUITS_STR)]
+    suit_two = SUITS_STR[second % len(SUITS_STR)]
+
+    if rank_one == rank_two:
+        return rank_one + rank_two
+
+    idx_one = RANKS_STR.index(rank_one)
+    idx_two = RANKS_STR.index(rank_two)
+    if idx_one > idx_two:
+        hi_rank, hi_suit = rank_one, suit_one
+        lo_rank, lo_suit = rank_two, suit_two
+    else:
+        hi_rank, hi_suit = rank_two, suit_two
+        lo_rank, lo_suit = rank_one, suit_one
+    suffix = 's' if hi_suit == lo_suit else 'o'
+    return hi_rank + lo_rank + suffix
+
+
 def ranking_to_category(rank: int) -> Tuple[int, str]:
     rank = rank >> 12  # rank to num category
     return rank, RANKING[rank]
 
 
 def evaluate_rank(board: List, hand: List = []):
-    if type(board[0]) is str:
-        cards = cards_to_int_array(hand + board)
-    else:
-        cards = cards_to_array(hand + board)
-    rank = evaluate_c(cards)
-    return rank
+    cards = _normalize_cards(list(hand) + list(board))
+    return evaluate_c(cards)
 
 
 def evaluate_hands(hands, board=None, eq=True, incomplete_board=False) -> List[float]:
@@ -49,20 +178,13 @@ def evaluate_hands(hands, board=None, eq=True, incomplete_board=False) -> List[f
     :param eq: return equity or combos (win, win... tie, tie...)
     :return: List[float] equity hands or combos
     """
-    hands_cards = [card for hand in hands for card in hand]
-    if type(hands_cards[0]) is str:  # ex. Ac, Kc
-        hands_cards = cards_to_int_array(hands_cards)
-    else:  # ex. 45, 50
-        hands_cards = cards_to_array(hands_cards)
+    hands_cards = _normalize_cards([card for hand in hands for card in hand])
     len_cards = hands_cards.size
 
     if board:
-        if type(board[0]) is str:  # ex. Ac
-            board_cards = cards_to_int_array(board)
-        else:  # ex. 45
-            board_cards = cards_to_array(board)
+        board_cards = _normalize_cards(board)
         len_cards += board_cards.size
-        if np.unique(hands_cards).size + np.unique(board_cards).size != len_cards:  # repeated cards
+        if _cards_have_duplicates(np.concatenate((hands_cards, board_cards))):
             ev = np.zeros(len_cards)
         else:
             ev = evaluate_hands_c(hands_cards, board_cards)
@@ -86,10 +208,9 @@ def evaluate_one_hand_vs_all(hand, board, eq=True, incomplete_board=False):
     :param incomplete_board: if False and board < 5 cards, complete it with all possible combinations
     :return: List[float] equity hand or combos
     """
-    if type(hand[0]) is str:
-        cards = cards_to_int_array(hand + board)
-    else:
-        cards = cards_to_array(hand + board)
+    cards = _normalize_cards(list(hand) + list(board))
+    if _cards_have_duplicates(cards):
+        return 0.0 if eq else [0.0, 0.0, 0.0]
     distributions = np.zeros([53, 53])
     ev = evaluate_one_hand_vs_all_c(cards, distributions, incomplete_board)
     if eq:
@@ -138,6 +259,95 @@ def distribution_one_hand_vs_all(hand, board, sort_distributions=False):
             return distributions[0]
     else:
         return ev
+
+
+def evaluate_heads_up_counts(hero_hand, villain_hand, board=None) -> HeadsUpCounts:
+    hero_cards = _normalize_combo(hero_hand)
+    villain_cards = _normalize_combo(villain_hand)
+    board_cards = _normalize_board(board)
+    all_cards = np.concatenate((hero_cards, villain_cards, board_cards))
+    if _cards_have_duplicates(all_cards):
+        return HeadsUpCounts(0, 0, 0)
+
+    counts = evaluate_heads_up_counts_c(hero_cards, villain_cards, board_cards)
+    return HeadsUpCounts(wins=int(counts[0]), ties=int(counts[1]), total=int(counts[2]))
+
+
+def build_heads_up_lookup(board=None, combo_indices: Iterable[int] | None = None) -> HeadsUpLookupTable:
+    board_cards = _normalize_board(board)
+    if _cards_have_duplicates(board_cards):
+        raise ValueError("Board cards must be unique.")
+
+    combos = canonical_combos()
+    masks = canonical_combo_masks()
+    if combo_indices is None:
+        selected = np.arange(combos.shape[0], dtype=np.int32)
+    else:
+        selected = np.array(sorted(set(int(idx) for idx in combo_indices)), dtype=np.int32)
+
+    num_selected = selected.size
+    num_pairs = (num_selected * (num_selected - 1)) // 2
+    win_tie_counts = np.zeros((num_pairs, 2), dtype=np.uint32)
+    valid_mask = np.zeros(num_pairs, dtype=bool)
+    board_mask = _cards_mask(board_cards)
+    total = comb(48 - board_cards.size, 5 - board_cards.size)
+
+    for local_first, combo_first_idx in enumerate(selected):
+        first_mask = int(masks[int(combo_first_idx)])
+        if first_mask & int(board_mask):
+            continue
+        for local_second in range(local_first + 1, num_selected):
+            combo_second_idx = int(selected[local_second])
+            second_mask = int(masks[combo_second_idx])
+            if second_mask & int(board_mask):
+                continue
+            pair_idx = packed_pair_index(local_first, local_second, num_selected)
+            if first_mask & second_mask:
+                continue
+
+            counts = evaluate_heads_up_counts_c(combos[int(combo_first_idx)], combos[combo_second_idx], board_cards)
+            win_tie_counts[pair_idx, 0] = counts[0]
+            win_tie_counts[pair_idx, 1] = counts[1]
+            valid_mask[pair_idx] = True
+
+    return HeadsUpLookupTable(
+        combo_indices=selected,
+        combo_cards=combos[selected],
+        win_tie_counts=win_tie_counts,
+        valid_mask=valid_mask,
+        board=tuple(int(card) for card in board_cards.tolist()),
+        total=total,
+    )
+
+
+def aggregate_heads_up_lookup_by_class(lookup: HeadsUpLookupTable) -> dict[Tuple[str, str], HeadsUpCounts]:
+    aggregated: dict[Tuple[str, str], list[int]] = {}
+
+    for local_first, combo_first_idx in enumerate(lookup.combo_indices):
+        hero_class = combo_to_hand_class(lookup.combo_cards[local_first])
+        for local_second in range(local_first + 1, lookup.combo_indices.size):
+            pair_idx = packed_pair_index(local_first, local_second, lookup.combo_indices.size)
+            if not bool(lookup.valid_mask[pair_idx]):
+                continue
+
+            villain_class = combo_to_hand_class(lookup.combo_cards[local_second])
+            counts = lookup.win_tie_counts[pair_idx]
+            key = (hero_class, villain_class)
+            bucket = aggregated.setdefault(key, [0, 0, 0])
+            bucket[0] += int(counts[0])
+            bucket[1] += int(counts[1])
+            bucket[2] += lookup.total
+
+            reverse_key = (villain_class, hero_class)
+            reverse_bucket = aggregated.setdefault(reverse_key, [0, 0, 0])
+            reverse_bucket[0] += lookup.total - int(counts[0]) - int(counts[1])
+            reverse_bucket[1] += int(counts[1])
+            reverse_bucket[2] += lookup.total
+
+    return {
+        key: HeadsUpCounts(wins=value[0], ties=value[1], total=value[2])
+        for key, value in aggregated.items()
+    }
 
 
 def parse_range_notation(range_str: str) -> List[Tuple[int, int]]:
@@ -328,7 +538,6 @@ def evaluate_ranges(hero_range: Iterable[Tuple[int, int]] | str,
     Evalúa equity de un rango contra otro.
     Acepta iterables de pares (int,int) o un string simple (ver parse_range_notation).
     """
-    from poker_eval_faster import evaluate_range_vs_range_c
     if isinstance(hero_range, str):
         hero_list = parse_range_notation(hero_range)
     else:
@@ -339,14 +548,8 @@ def evaluate_ranges(hero_range: Iterable[Tuple[int, int]] | str,
         villain_list = list(villain_range)
     hero_arr = np.array(hero_list, dtype='int32')
     villain_arr = np.array(villain_list, dtype='int32')
-    if board:
-        if type(board[0]) is str:
-            board_cards = cards_to_int_array(board)
-        else:
-            board_cards = cards_to_array(board)
-    else:
-        board_cards = np.array([], dtype='int32')
-    return float(__import__('poker_eval_faster').evaluate_range_vs_range_c(hero_arr, villain_arr, board_cards))
+    board_cards = _normalize_board(board)
+    return float(evaluate_range_vs_range_c(hero_arr, villain_arr, board_cards))
 
 
 if __name__ == '__main__':

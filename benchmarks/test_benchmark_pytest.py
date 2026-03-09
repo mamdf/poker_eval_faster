@@ -7,7 +7,8 @@ from poker_eval_faster import (
     evaluate_hands,
     evaluate_one_hand_vs_all,
     evaluate_rank,
-    evaluate_ranges
+    evaluate_ranges,
+    evaluate_heads_up_counts
 )
 
 
@@ -47,3 +48,8 @@ def test_benchmark_evaluate_rank(benchmark):
 @pytest.mark.benchmark(group="evaluate_simple_ranges_preflop")
 def test_benchmark_evaluate_simple_ranges_preflop(benchmark):
     benchmark(lambda: evaluate_ranges("AA", "KK"))
+
+
+@pytest.mark.benchmark(group="evaluate_evaluate_heads_up_counts")
+def test_benchmark_evaluate_heads_up_counts(benchmark):
+    benchmark(lambda: evaluate_heads_up_counts(['As', 'Ah'], ['Ks', 'Kh'], []))
