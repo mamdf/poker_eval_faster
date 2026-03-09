@@ -4,20 +4,14 @@ cimport cython
 from libc cimport stdint
 import numpy as np
 
-from poker_eval_faster.eval_cython.main cimport handdat
 from poker_eval_faster.eval_cython.main cimport create_deck
+from poker_eval_faster.eval_cython.main cimport handdat
+from poker_eval_faster.eval_cython.common cimport fold_cards
 
 cdef int EVAL_START = 53
 cdef int WIN = 0
 cdef int TIE = 1
 cdef int LOSS = 2
-
-cdef inline stdint.uint32_t fold_cards(stdint.uint32_t start_eval, int[:] cards, int start_idx, int end_idx) nogil:
-    cdef stdint.uint32_t p = start_eval
-    cdef int i
-    for i in range(start_idx, end_idx):
-        p = handdat[p + cards[i]]
-    return p
 
 
 @cython.cdivision(True)

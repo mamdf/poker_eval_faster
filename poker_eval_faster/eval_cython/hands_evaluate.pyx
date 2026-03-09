@@ -7,15 +7,9 @@ import numpy as np
 cimport cython
 from poker_eval_faster.eval_cython.main cimport handdat
 from poker_eval_faster.eval_cython.main cimport create_deck
+from poker_eval_faster.eval_cython.common cimport fold_cards
 
 cdef int EVAL_START = 53
-
-cdef inline stdint.uint32_t fold_cards(stdint.uint32_t start_eval, int[:] cards, int start_idx, int end_idx) nogil:
-    cdef stdint.uint32_t p = start_eval
-    cdef int i
-    for i in range(start_idx, end_idx):
-        p = handdat[p + cards[i]]
-    return p
 
 
 cdef inline void sum_new_card(int new_card, stdint.uint32_t sum_hands[], int num_hands, stdint.uint32_t new_sum_hands[]) noexcept nogil:
