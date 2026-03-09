@@ -82,12 +82,15 @@ cpdef list[float] hands_to_equity(double[:] results):
     return equity
 
 
-cdef void _create_boards(int deck[], int len_deck, stdint.uint32_t sum_hands[],
-                         int num_hands, int len_board,
-                         double results[]):
+cdef void _enumerate_multi_hand_boards(int deck[], int len_deck, stdint.uint32_t sum_hands[],
+                                       int num_hands, int len_board,
+                                       double results[]):
     """
-    combinations throughout twoplustwo array, create all combinations of board cards (5 - len_board).
-    Evaluate hands and save results array [win, tie]
+    Complete the missing board cards for a fixed set of hands.
+
+    `sum_hands` already contains each hand folded over the current board. This
+    kernel only enumerates the remaining board combinations, updates those
+    partial hand states, and records wins/ties across the known players.
     """
     cdef:
         int a, b, c, d, e
@@ -122,11 +125,18 @@ cdef void _create_boards(int deck[], int len_deck, stdint.uint32_t sum_hands[],
     return
 
 
-cdef void _create_heads_up_boards(int deck[], int len_deck,
-                                  stdint.uint32_t hero_sum,
-                                  stdint.uint32_t villain_sum,
-                                  int len_board,
-                                  stdint.uint64_t results[]) noexcept:
+cdef void _enumerate_heads_up_boards(int deck[], int len_deck,
+                                     stdint.uint32_t hero_sum,
+                                     stdint.uint32_t villain_sum,
+                                     int len_board,
+                                     stdint.uint64_t results[]) noexcept:
+    """
+    Complete the missing board cards for one exact heads-up matchup.
+
+    This is separate from the multi-hand enumerator because it only needs to
+    track hero/villain states and exact counts [wins, ties, total], which is
+    cheaper than routing through the generic N-hand comparison path.
+    """
     cdef:
         int a, b, c, d, e
         stdint.uint32_t hero_a, hero_b, hero_c, hero_d, hero_e
@@ -167,6 +177,12 @@ cdef void _evaluate_heads_up_counts(int hero1, int hero2,
                                     int villain1, int villain2,
                                     int[:] board,
                                     stdint.uint64_t results[]):
+    """
+    Evaluate one exact combo-vs-combo heads-up matchup on the given board.
+
+    If the board is incomplete, enumerate the remaining board runouts and
+    accumulate exact [wins, ties, total] counts for the hero hand.
+    """
     cdef:
         int len_board = board.size
         int len_total = len_board + 4
@@ -193,7 +209,7 @@ cdef void _evaluate_heads_up_counts(int hero1, int hero2,
     villain_sum = handdat[handdat[sum_board + villain1] + villain2]
 
     if len_board < 5:
-        _create_heads_up_boards(deck, len_deck, hero_sum, villain_sum, len_board, results)
+        _enumerate_heads_up_boards(deck, len_deck, hero_sum, villain_sum, len_board, results)
     else:
         with nogil:
             eval_heads_up(hero_sum, villain_sum, results)
@@ -235,7 +251,7 @@ cpdef object evaluate_hands_c(int[:] hands, int[:] board=array('i', [])):
         sum_hands[i] = handdat[handdat[sum_board + hands[i * 2]] + hands[i * 2 + 1]]
     # brute force fill board with all cards and eval it
     if len_board < 5:
-        _create_boards(deck, len_deck, sum_hands, num_hands, len_board, &results[0])
+        _enumerate_multi_hand_boards(deck, len_deck, sum_hands, num_hands, len_board, &results[0])
     else:  # eval board, each hand in results
         eval_hands(sum_hands, num_hands, &results[0])
 
