@@ -350,7 +350,8 @@ def aggregate_heads_up_lookup_by_class(lookup: HeadsUpLookupTable) -> dict[Tuple
     }
 
 
-def parse_range_notation(range_str: str) -> List[Tuple[int, int]]:
+@lru_cache(maxsize=256)
+def _parse_range_notation_cached(range_str: str) -> Tuple[Tuple[int, int], ...]:
     """
     Parser de rangos de mano (simplificado pero útil):
     - Pares: "TT", con "+": "TT+" (TT, JJ, QQ, KK, AA)
@@ -528,7 +529,16 @@ def parse_range_notation(range_str: str) -> List[Tuple[int, int]]:
 
         raise ValueError(f"Token de rango no soportado: {tok}")
 
-    return result
+    return tuple(result)
+
+
+def parse_range_notation(range_str: str) -> List[Tuple[int, int]]:
+    return list(_parse_range_notation_cached(range_str))
+
+
+@lru_cache(maxsize=256)
+def _range_array_from_string(range_str: str) -> np.ndarray:
+    return np.array(_parse_range_notation_cached(range_str), dtype='int32')
 
 
 def evaluate_ranges(hero_range: Iterable[Tuple[int, int]] | str,
@@ -539,15 +549,13 @@ def evaluate_ranges(hero_range: Iterable[Tuple[int, int]] | str,
     Acepta iterables de pares (int,int) o un string simple (ver parse_range_notation).
     """
     if isinstance(hero_range, str):
-        hero_list = parse_range_notation(hero_range)
+        hero_arr = _range_array_from_string(hero_range)
     else:
-        hero_list = list(hero_range)
+        hero_arr = np.array(list(hero_range), dtype='int32')
     if isinstance(villain_range, str):
-        villain_list = parse_range_notation(villain_range)
+        villain_arr = _range_array_from_string(villain_range)
     else:
-        villain_list = list(villain_range)
-    hero_arr = np.array(hero_list, dtype='int32')
-    villain_arr = np.array(villain_list, dtype='int32')
+        villain_arr = np.array(list(villain_range), dtype='int32')
     board_cards = _normalize_board(board)
     return float(evaluate_range_vs_range_c(hero_arr, villain_arr, board_cards))
 

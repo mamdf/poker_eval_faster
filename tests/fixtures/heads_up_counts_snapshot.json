@@ -1,0 +1,90 @@
+{
+  "source": "PokerStove ps-eval exact counts",
+  "notes": "wins and ties are normalized to the local API. ps-eval prints tie/2, so ties here are doubled back to exact tie counts.",
+  "cases": [
+    {
+      "id": "aa_vs_kk_preflop",
+      "hero": ["As", "Ah"],
+      "villain": ["Ks", "Kh"],
+      "board": [],
+      "expected": {"wins": 1410336, "ties": 9308, "total": 1712304, "equity": 0.826366112559}
+    },
+    {
+      "id": "aks_vs_qq_preflop",
+      "hero": ["As", "Ks"],
+      "villain": ["Qh", "Qd"],
+      "board": [],
+      "expected": {"wins": 787966, "ties": 6732, "total": 1712304, "equity": 0.462144572459}
+    },
+    {
+      "id": "tcqc_vs_9c8c_flop",
+      "hero": ["Tc", "Qc"],
+      "villain": ["9c", "8c"],
+      "board": ["Qh", "Jh", "8s"],
+      "expected": {"wins": 790, "ties": 9, "total": 990, "equity": 0.802525252525}
+    },
+    {
+      "id": "ackd_vs_qcqd_turn",
+      "hero": ["Ac", "Kd"],
+      "villain": ["Qc", "Qd"],
+      "board": ["Ah", "7s", "2c", "Jd"],
+      "expected": {"wins": 42, "ties": 0, "total": 44, "equity": 0.954545454545}
+    },
+    {
+      "id": "shared_royal_flush_tie",
+      "hero": ["2c", "3d"],
+      "villain": ["4s", "5c"],
+      "board": ["Ah", "Kh", "Qh", "Jh", "Th"],
+      "expected": {"wins": 0, "ties": 1, "total": 1, "equity": 0.5}
+    },
+    {
+      "id": "top_set_vs_combo_draw_flop",
+      "hero": ["Ah", "Ad"],
+      "villain": ["Kh", "Qh"],
+      "board": ["As", "Jh", "Th"],
+      "expected": {"wins": 352, "ties": 9, "total": 990, "equity": 0.360101010101}
+    },
+    {
+      "id": "set_vs_open_ender_flop",
+      "hero": ["9s", "9d"],
+      "villain": ["8c", "7c"],
+      "board": ["9h", "6d", "5s"],
+      "expected": {"wins": 341, "ties": 9, "total": 990, "equity": 0.34898989899}
+    },
+    {
+      "id": "full_house_board_split_but_hero_kicker_improves",
+      "hero": ["Ac", "Kd"],
+      "villain": ["Qs", "Jh"],
+      "board": ["Ah", "Ad", "Kc", "Kh", "2s"],
+      "expected": {"wins": 1, "ties": 0, "total": 1, "equity": 1.0}
+    },
+    {
+      "id": "quads_on_board_kicker_plays",
+      "hero": ["Ac", "Kd"],
+      "villain": ["Qs", "Jh"],
+      "board": ["9c", "9d", "9h", "9s", "2c"],
+      "expected": {"wins": 1, "ties": 0, "total": 1, "equity": 1.0}
+    },
+    {
+      "id": "nut_flush_vs_set_turn",
+      "hero": ["Ah", "Kh"],
+      "villain": ["Qc", "Qd"],
+      "board": ["Th", "7h", "2s", "Jh"],
+      "expected": {"wins": 44, "ties": 0, "total": 44, "equity": 1.0}
+    },
+    {
+      "id": "wheel_vs_overpair_flop",
+      "hero": ["Ac", "2c"],
+      "villain": ["Kc", "Kd"],
+      "board": ["3d", "4h", "5s"],
+      "expected": {"wins": 925, "ties": 37, "total": 990, "equity": 0.95303030303}
+    },
+    {
+      "id": "dominated_top_pair_river",
+      "hero": ["As", "Jd"],
+      "villain": ["Ah", "Qd"],
+      "board": ["Ad", "7c", "4s", "2h", "9c"],
+      "expected": {"wins": 0, "ties": 0, "total": 1, "equity": 0.0}
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "source": "PokerStove snapshots",
+  "cases": [
+    {"id": "52o_on_full_house_board", "hand": ["5c", "2d"], "board": ["2c", "2h", "5h", "7h", "7s"], "expected_equity_pct": 88.99},
+    {"id": "q2o_on_rainbow_river", "hand": ["Qc", "2d"], "board": ["5c", "Tc", "3d", "4d", "9h"], "expected_equity_pct": 12.17},
+    {"id": "a4o_mid_equity_river", "hand": ["Ac", "4d"], "board": ["8c", "4h", "5h", "Jh", "2s"], "expected_equity_pct": 50.61},
+    {"id": "45o_second_pair_losing", "hand": ["4c", "5d"], "board": ["2c", "7c", "Qc", "Qh", "6s"], "expected_equity_pct": 2.22},
+    {"id": "86o_two_pair_board", "hand": ["6c", "8d"], "board": ["9c", "2h", "Th", "2s", "9s"], "expected_equity_pct": 10.15},
+    {"id": "66_set_on_river", "hand": ["6c", "6d"], "board": ["9c", "7d", "Jh", "Ah", "6s"], "expected_equity_pct": 95.56},
+    {"id": "j9cc_open_ender_turn", "hand": ["9c", "Jc"], "board": ["5d", "9d", "Kd", "4h"], "expected_equity_pct": 65.48},
+    {"id": "34cc_backdoor_draw_turn", "hand": ["3c", "4c"], "board": ["6c", "6d", "Kd", "7h"], "expected_equity_pct": 19.37},
+    {"id": "j3o_ace_high_turn", "hand": ["Jc", "3d"], "board": ["Ac", "9d", "7h", "Qh"], "expected_equity_pct": 31.12},
+    {"id": "k6o_overcards_turn", "hand": ["6c", "Kd"], "board": ["3c", "Qc", "5h", "7h"], "expected_equity_pct": 37.3},
+    {"id": "t9o_gutshot_turn", "hand": ["Tc", "9d"], "board": ["2c", "Ac", "Qh", "7s"], "expected_equity_pct": 28.87},
+    {"id": "85o_pair_plus_draw_turn", "hand": ["5c", "8d"], "board": ["8c", "Tc", "3h", "Jh"], "expected_equity_pct": 57.26},
+    {"id": "tcqc_broadway_combo_draw_flop", "hand": ["Tc", "Qc"], "board": ["Ad", "Jh", "3s"], "expected_equity_pct": 52.4},
+    {"id": "86o_open_ender_flop", "hand": ["8c", "6d"], "board": ["9c", "5d", "3h"], "expected_equity_pct": 36.16},
+    {"id": "95o_pair_plus_gutshot_flop", "hand": ["5c", "9d"], "board": ["9c", "Qc", "Jh"], "expected_equity_pct": 58.99},
+    {"id": "k7cc_top_pair_flop", "hand": ["7c", "Kc"], "board": ["7d", "Jd", "6h"], "expected_equity_pct": 67.11},
+    {"id": "75o_two_pair_flop", "hand": ["5c", "7d"], "board": ["Ac", "5h", "7h"], "expected_equity_pct": 82.59},
+    {"id": "kjo_trips_board_flop", "hand": ["Kc", "Jd"], "board": ["2c", "4c", "2d"], "expected_equity_pct": 52.19}
+  ]
+}
