@@ -92,6 +92,18 @@ class_counts = aggregate_heads_up_lookup_by_class(lookup)
 print(class_counts[('AA', 'KK')].equity)
 ```
 
+### Persist a preflop HU artifact
+```python
+from poker_eval_faster import read_hu_preflop_lookup, write_hu_preflop_lookup
+
+write_hu_preflop_lookup("artifacts/hu_preflop.bin")  # full 1326-combo artifact
+artifact = read_hu_preflop_lookup("artifacts/hu_preflop.bin")
+print(artifact.lookup_combo_ids_ordered(1325, 1311))
+```
+
+Pass `combo_indices=[...]` only when you want a smaller subset for tests or smoke builds.
+See [docs/hu_lookup.md](/home/marcos/Dropbox%20(Maestral)/Projects/poker_apps/pluribus_apps/poker_eval_faster/docs/hu_lookup.md) for the binary layout, combo metadata, and pair indexing rules.
+
 ### Distributions (turn/river, experimental)
 ```python
 from poker_eval_faster.experimental import distribution_one_hand_vs_all
@@ -106,6 +118,7 @@ The package also exposes helpers for conversions:
 - `int_to_cards(cards: list[int]) -> list[str]`
 - `card_to_int(card: str) -> int`
 - `canonical_combos() -> np.ndarray` returns the 1326 canonical combo ids used by the lookup builder
+- `combo_id_to_str(combo_id) -> str` returns strings such as `AhAs`
 - `combo_to_hand_class(combo) -> str` returns labels such as `AA`, `AKs`, `AKo`
 
 ## Command Line Interface (CLI)
@@ -141,6 +154,8 @@ CLI options:
 - `evaluate_heads_up_counts(hero_hand, villain_hand, board=None) -> HeadsUpCounts`
 - `build_heads_up_lookup(board=None, combo_indices=None) -> HeadsUpLookupTable`
 - `aggregate_heads_up_lookup_by_class(lookup) -> dict[(str, str), HeadsUpCounts]`
+- `write_hu_preflop_lookup(path, combo_indices=None)` writes a stable triangular binary artifact with sentinels for dead-card pairs
+- `read_hu_preflop_lookup(path) -> HuLookupArtifact`
 - `distribution_one_hand_vs_all(hand, board, sort_distributions=False)` (also available from `poker_eval_faster.experimental`)
 - `evaluate_rank(board, hand) -> int`
 - `ranking_to_category(rank) -> tuple[int, str]`
@@ -191,6 +206,7 @@ python -m pytest tests/ -v
 ## Development Notes
 - Cython sources live under `poker_eval_faster/eval_cython/` (`.pyx`, `.pxd`).
 - Heads-up range/lookup work now uses a dedicated exact-count kernel instead of routing every combo pair through the generic multi-hand path.
+- `scripts/build_hu_preflop_lookup.py` builds a disk artifact for preflop HU combo-vs-combo win/tie counts.
 - If you need to rebuild the extensions in place:
 ```bash
 python setup.py build_ext --inplace

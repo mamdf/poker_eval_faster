@@ -82,6 +82,15 @@ def int_to_cards(cards: List[int]):
     return [DECK[i-1] for i in cards]
 
 
+def combo_id_to_cards(combo_id: int) -> List[str]:
+    combo = canonical_combos()[int(combo_id)]
+    return int_to_cards(combo.tolist())
+
+
+def combo_id_to_str(combo_id: int) -> str:
+    return "".join(combo_id_to_cards(combo_id))
+
+
 def _cards_are_strings(cards: Sequence) -> bool:
     return len(cards) > 0 and isinstance(cards[0], str)
 
