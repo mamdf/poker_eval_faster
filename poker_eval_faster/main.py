@@ -129,6 +129,72 @@ def canonical_combo_masks() -> np.ndarray:
     return masks
 
 
+@lru_cache(maxsize=1)
+def _combo_index_map() -> dict[Tuple[int, int], int]:
+    combos = canonical_combos()
+    return {
+        (int(first), int(second)): idx
+        for idx, (first, second) in enumerate(combos)
+    }
+
+
+def _combo_ids_from_array(combo_arr: np.ndarray) -> Tuple[int, ...]:
+    index_map = _combo_index_map()
+    combo_ids = []
+    for first, second in combo_arr.tolist():
+        first_i = int(first)
+        second_i = int(second)
+        if first_i > second_i:
+            first_i, second_i = second_i, first_i
+        combo_ids.append(index_map[(first_i, second_i)])
+    return tuple(combo_ids)
+
+
+@lru_cache(maxsize=256)
+def _range_combo_ids_from_string(range_str: str) -> Tuple[int, ...]:
+    return _combo_ids_from_array(_range_array_from_string(range_str))
+
+
+@lru_cache(maxsize=200000)
+def _preflop_combo_pair_counts(combo_a_idx: int, combo_b_idx: int) -> Tuple[int, int, int]:
+    if combo_a_idx == combo_b_idx:
+        return 0, 0, 0
+    if combo_a_idx > combo_b_idx:
+        combo_a_idx, combo_b_idx = combo_b_idx, combo_a_idx
+
+    masks = canonical_combo_masks()
+    if int(masks[combo_a_idx]) & int(masks[combo_b_idx]):
+        return 0, 0, 0
+
+    combos = canonical_combos()
+    counts = evaluate_heads_up_counts_c(combos[combo_a_idx], combos[combo_b_idx], np.array([], dtype='int32'))
+    return int(counts[0]), int(counts[1]), int(counts[2])
+
+
+def _evaluate_ranges_preflop_cached(hero_combo_ids: Tuple[int, ...], villain_combo_ids: Tuple[int, ...]) -> float:
+    total_hero = 0.0
+    total_all = 0
+
+    for hero_idx in hero_combo_ids:
+        for villain_idx in villain_combo_ids:
+            if hero_idx <= villain_idx:
+                wins, ties, total = _preflop_combo_pair_counts(hero_idx, villain_idx)
+                hero_wins = wins
+            else:
+                wins, ties, total = _preflop_combo_pair_counts(villain_idx, hero_idx)
+                hero_wins = total - wins - ties
+
+            if total == 0:
+                continue
+
+            total_hero += hero_wins + (ties / 2.0)
+            total_all += total
+
+    if total_all == 0:
+        return 0.0
+    return total_hero / total_all
+
+
 def packed_pair_index(first_idx: int, second_idx: int, num_items: int) -> int:
     if first_idx == second_idx:
         raise ValueError("A packed pair index needs two distinct items.")
@@ -548,15 +614,25 @@ def evaluate_ranges(hero_range: Iterable[Tuple[int, int]] | str,
     Evalúa equity de un rango contra otro.
     Acepta iterables de pares (int,int) o un string simple (ver parse_range_notation).
     """
+    hero_combo_ids: Tuple[int, ...] | None = None
+    villain_combo_ids: Tuple[int, ...] | None = None
     if isinstance(hero_range, str):
         hero_arr = _range_array_from_string(hero_range)
+        hero_combo_ids = _range_combo_ids_from_string(hero_range)
     else:
         hero_arr = np.array(list(hero_range), dtype='int32')
     if isinstance(villain_range, str):
         villain_arr = _range_array_from_string(villain_range)
+        villain_combo_ids = _range_combo_ids_from_string(villain_range)
     else:
         villain_arr = np.array(list(villain_range), dtype='int32')
     board_cards = _normalize_board(board)
+    if board_cards.size == 0:
+        if hero_combo_ids is None:
+            hero_combo_ids = _combo_ids_from_array(hero_arr)
+        if villain_combo_ids is None:
+            villain_combo_ids = _combo_ids_from_array(villain_arr)
+        return _evaluate_ranges_preflop_cached(hero_combo_ids, villain_combo_ids)
     return float(evaluate_range_vs_range_c(hero_arr, villain_arr, board_cards))
 
 

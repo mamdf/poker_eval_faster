@@ -10,6 +10,7 @@ from poker_eval_faster import (
     evaluate_ranges,
     evaluate_heads_up_counts
 )
+from poker_eval_faster.main import _parse_range_notation_cached, parse_range_notation
 
 
 @pytest.mark.benchmark(group="evaluate_hands")
@@ -53,3 +54,26 @@ def test_benchmark_evaluate_simple_ranges_preflop(benchmark):
 @pytest.mark.benchmark(group="evaluate_evaluate_heads_up_counts")
 def test_benchmark_evaluate_heads_up_counts(benchmark):
     benchmark(lambda: evaluate_heads_up_counts(['As', 'Ah'], ['Ks', 'Kh'], []))
+
+
+@pytest.mark.benchmark(group="parse_simple_range_cold")
+def test_benchmark_parse_simple_range_cold(benchmark):
+    def run():
+        _parse_range_notation_cached.cache_clear()
+        parse_range_notation("AA")
+
+    benchmark(run)
+
+
+@pytest.mark.benchmark(group="parse_complex_range_cold")
+def test_benchmark_parse_complex_range_cold(benchmark):
+    def run():
+        _parse_range_notation_cached.cache_clear()
+        parse_range_notation("JJ+,AQs+,AQo+")
+
+    benchmark(run)
+
+
+@pytest.mark.benchmark(group="evaluate_complex_ranges_preflop")
+def test_benchmark_evaluate_complex_ranges_preflop(benchmark):
+    benchmark(lambda: evaluate_ranges("99+,AQs+,AQo+", "JJ-77,AQs-A9s,KJs+,QJs,AQo-AJo,KQo"))
