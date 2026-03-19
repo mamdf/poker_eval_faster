@@ -48,7 +48,7 @@ setup(
     packages=find_packages(include=["poker_eval_faster", "poker_eval_faster.*"]),
     include_package_data=True,
     package_data={
-        "poker_eval_faster": ["data/*.dat", "data/*.bin"],
+        "poker_eval_faster": ["data/*.dat", "data/*.dat.gz", "data/*.bin"],
         "poker_eval_faster.eval_cython": ["*.pxd", "*.pyx", "*.c"],
     },
     ext_modules=build_extensions(),

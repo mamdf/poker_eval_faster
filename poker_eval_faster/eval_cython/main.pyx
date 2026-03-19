@@ -4,7 +4,25 @@ from libc cimport stdint
 
 
 path = Path(__file__).parent / '..' / 'data'
-dat = np.fromfile(path / Path('HandRanks.dat'), dtype=np.uint32)  # eval file two plus two
+
+
+def _load_handranks_table(base_path: Path):
+    data_path = base_path / 'HandRanks.dat'
+    if data_path.exists():
+        return np.fromfile(data_path, dtype=np.uint32)
+
+    gzip_path = base_path / 'HandRanks.dat.gz'
+    if gzip_path.exists():
+        import gzip
+        with gzip.open(gzip_path, 'rb') as file_obj:
+            return np.frombuffer(file_obj.read(), dtype=np.uint32).copy()
+
+    raise FileNotFoundError(
+        f"Missing HandRanks table in {base_path}. Expected HandRanks.dat or HandRanks.dat.gz"
+    )
+
+
+dat = _load_handranks_table(path)  # eval file two plus two
 # np.array to C(memory views)
 cdef stdint.uint32_t[:] handdat = dat[:]
 

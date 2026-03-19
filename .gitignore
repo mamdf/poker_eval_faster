@@ -16,4 +16,7 @@ __pycache__/
 .venv/
 poker_eval_faster/data/HandRanks.dat
 poker_eval_faster/data/*
+!poker_eval_faster/data/HandRanks.dat.gz
+!poker_eval_faster/data/subset.bin
+!poker_eval_faster/eval_cython/*.c
 .cursorignore

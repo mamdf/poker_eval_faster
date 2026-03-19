@@ -1,3 +1,3 @@
 include README.md
-recursive-include poker_eval_faster/data *.dat *.bin
+recursive-include poker_eval_faster/data *.dat *.dat.gz *.bin
 recursive-include poker_eval_faster/eval_cython *.c *.pxd *.pyx
