@@ -210,6 +210,28 @@ pytest -v
 python -m pytest tests/ -v
 ```
 
+## Releases
+GitHub Actions builds wheels and an `sdist` automatically for release tags that start with `v`.
+
+Release flow:
+```bash
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+That triggers `.github/workflows/release.yml`, which:
+- builds wheels for Linux, macOS, and Windows
+- builds an `sdist`
+- creates a GitHub Release for the tag
+- uploads the generated artifacts to that release
+
+To install from a tagged Git revision:
+```bash
+uv add "git+https://github.com/mamdf/poker_eval_faster.git@v1.0.0"
+```
+
+To install from a GitHub Release artifact, download the matching wheel for your OS/Python version and install it with `pip install <wheel-file>`.
+
 ## Development Notes
 - Cython sources live under `poker_eval_faster/eval_cython/` (`.pyx`, `.pxd`).
 - Heads-up range/lookup work now uses a dedicated exact-count kernel instead of routing every combo pair through the generic multi-hand path.
