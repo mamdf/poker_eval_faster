@@ -119,6 +119,18 @@ print(artifact.lookup_combo_ids_ordered(1325, 1311))
 Pass `combo_indices=[...]` only when you want a smaller subset for tests or smoke builds.
 See [docs/hu_lookup.md](docs/hu_lookup.md) for the binary layout, combo metadata, and pair indexing rules.
 
+### Persist a preflop 3-way class artifact
+```python
+from poker_eval_faster import read_three_way_class_lookup, write_three_way_class_lookup
+
+write_three_way_class_lookup("artifacts/three_way_preflop.bin")  # full 169-class artifact
+artifact = read_three_way_class_lookup("artifacts/three_way_preflop.bin")
+print(artifact.lookup_labels_ordered("AA", "KK", "QQ").equities)
+```
+
+Pass `class_indices=[...]` only when you want a smaller subset for tests or smoke builds.
+See [docs/three_way_class_lookup.md](docs/three_way_class_lookup.md) for the binary layout, class metadata, and multiset indexing rules.
+
 ### Distributions (turn/river, experimental)
 ```python
 from poker_eval_faster.experimental import distribution_one_hand_vs_all
@@ -135,6 +147,7 @@ The package also exposes helpers for conversions:
 - `canonical_combos() -> np.ndarray` returns the 1326 canonical combo ids used by the lookup builder
 - `combo_id_to_str(combo_id) -> str` returns strings such as `AhAs`
 - `combo_to_hand_class(combo) -> str` returns labels such as `AA`, `AKs`, `AKo`
+- `HAND_CLASSES_169` exposes the stable 169-class ordering used by the 3-way artifact
 
 ## Command Line Interface (CLI)
 After installation, the `poker-eval` command is available.
@@ -173,6 +186,8 @@ CLI options:
 - `aggregate_heads_up_lookup_by_class(lookup) -> dict[(str, str), HeadsUpCounts]`
 - `write_hu_preflop_lookup(path, combo_indices=None)` writes a stable triangular binary artifact with sentinels for dead-card pairs
 - `read_hu_preflop_lookup(path) -> HuLookupArtifact`
+- `write_three_way_class_lookup(path, class_indices=None, processes=None, chunk_size=4096)` writes a stable 3-way preflop class artifact
+- `read_three_way_class_lookup(path) -> ThreeWayClassLookupArtifact`
 - `distribution_one_hand_vs_all(hand, board, sort_distributions=False)` (also available from `poker_eval_faster.experimental`)
 - `evaluate_rank(board, hand) -> int`
 - `ranking_to_category(rank) -> tuple[int, str]`
@@ -202,6 +217,11 @@ This reports:
 - legal preflop triples
 - canonical preflop matchups after suit-isomorphism grouping
 - cold/warm timings for `evaluate_three_way_ranges`
+
+- Run a subset benchmark for the 3-way class artifact builder:
+```bash
+python benchmarks/benchmark_three_way_class_lookup.py --classes AA,KK,QQ,AKs,AKo,KQs,KQo --chunk-size 64
+```
 
 - Optional: run with pytest-benchmark (install the plugin first):
 ```bash

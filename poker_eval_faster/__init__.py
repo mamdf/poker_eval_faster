@@ -19,6 +19,24 @@ from .hu_lookup import (
     triangular_pair_count,
     write_hu_preflop_lookup,
 )
+from .three_way_class_lookup import (
+    HAND_CLASSES_169,
+    THREE_WAY_CLASS_LOOKUP_MAGIC,
+    THREE_WAY_CLASS_LOOKUP_TOTAL_RUNOUTS,
+    THREE_WAY_CLASS_LOOKUP_VERSION,
+    ThreeWayClassLookupArtifact,
+    ThreeWayClassLookupBuildSummary,
+    ThreeWayClassLookupHeader,
+    build_three_way_class_lookup,
+    class_combo_ids,
+    class_id_to_label,
+    class_label_to_id,
+    multiset_triple_count,
+    packed_class_triple_index,
+    read_three_way_class_lookup,
+    unpack_class_triple_index,
+    write_three_way_class_lookup,
+)
 from .main import (
     HeadsUpCounts,
     HeadsUpLookupTable,
