@@ -10,7 +10,20 @@ from poker_eval_faster import (
     evaluate_ranges,
     evaluate_heads_up_counts
 )
-from poker_eval_faster.main import _parse_range_notation_cached, parse_range_notation
+from poker_eval_faster.main import (
+    _clear_preflop_caches,
+    _parse_range_notation_cached,
+    parse_range_notation,
+)
+
+
+COMPLEX_HERO_RANGE = "99+,AQs+,AQo+"
+COMPLEX_VILLAIN_RANGE = "JJ-77,AQs-A9s,KJs+,QJs,AQo-AJo,KQo"
+
+
+def _benchmark_cold_range(hero: str, villain: str) -> None:
+    _clear_preflop_caches()
+    evaluate_ranges(hero, villain)
 
 
 @pytest.mark.benchmark(group="evaluate_hands")
@@ -48,7 +61,13 @@ def test_benchmark_evaluate_rank(benchmark):
 
 @pytest.mark.benchmark(group="evaluate_simple_ranges_preflop")
 def test_benchmark_evaluate_simple_ranges_preflop(benchmark):
+    evaluate_ranges("AA", "KK")
     benchmark(lambda: evaluate_ranges("AA", "KK"))
+
+
+@pytest.mark.benchmark(group="evaluate_simple_ranges_preflop_cold")
+def test_benchmark_evaluate_simple_ranges_preflop_cold(benchmark):
+    benchmark(lambda: _benchmark_cold_range("AA", "KK"))
 
 
 @pytest.mark.benchmark(group="evaluate_evaluate_heads_up_counts")
@@ -74,6 +93,12 @@ def test_benchmark_parse_complex_range_cold(benchmark):
     benchmark(run)
 
 
-@pytest.mark.benchmark(group="evaluate_complex_ranges_preflop")
-def test_benchmark_evaluate_complex_ranges_preflop(benchmark):
-    benchmark(lambda: evaluate_ranges("99+,AQs+,AQo+", "JJ-77,AQs-A9s,KJs+,QJs,AQo-AJo,KQo"))
+@pytest.mark.benchmark(group="evaluate_complex_ranges_preflop_warm")
+def test_benchmark_evaluate_complex_ranges_preflop_warm(benchmark):
+    evaluate_ranges(COMPLEX_HERO_RANGE, COMPLEX_VILLAIN_RANGE)
+    benchmark(lambda: evaluate_ranges(COMPLEX_HERO_RANGE, COMPLEX_VILLAIN_RANGE))
+
+
+@pytest.mark.benchmark(group="evaluate_complex_ranges_preflop_cold")
+def test_benchmark_evaluate_complex_ranges_preflop_cold(benchmark):
+    benchmark(lambda: _benchmark_cold_range(COMPLEX_HERO_RANGE, COMPLEX_VILLAIN_RANGE))

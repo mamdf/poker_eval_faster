@@ -1,11 +1,23 @@
 import numpy as np
 import pytest
 
-from poker_eval_faster import evaluate_ranges, cards_to_int_array
-from poker_eval_faster.main import parse_range_notation, int_to_cards, SUITS_STR
+from poker_eval_faster import canonical_combos, evaluate_ranges, cards_to_int_array
+from poker_eval_faster.main import (
+    SUITS_STR,
+    _canonical_preflop_matchup,
+    _preflop_canonical_counts,
+    _preflop_range_matchup_profile,
+    _range_combo_ids_from_string,
+    int_to_cards,
+    parse_range_notation,
+)
 
 
-import pytest
+def _combo_id(cards):
+    combo = sorted(cards_to_int_array(cards).tolist())
+    combos = canonical_combos()
+    matches = ((combos[:, 0] == combo[0]) & (combos[:, 1] == combo[1])).nonzero()[0]
+    return int(matches[0])
 
 @pytest.mark.parametrize(
     "hero, villain, board,esperado",
@@ -110,4 +122,21 @@ def test_parse_plus_notations():
     combos = parse_range_notation("TT+")
     assert len(combos) > 0
 
+
+def test_preflop_canonical_matchup_reuses_suit_isomorphisms():
+    first_key = _canonical_preflop_matchup(_combo_id(["As", "Kd"]), _combo_id(["Qc", "Jh"]))
+    second_key = _canonical_preflop_matchup(_combo_id(["Ah", "Kc"]), _combo_id(["Qd", "Js"]))
+
+    assert first_key == second_key
+    assert _preflop_canonical_counts(first_key) == _preflop_canonical_counts(second_key)
+
+
+def test_preflop_range_matchup_profile_groups_duplicate_pairs():
+    hero_ids = _range_combo_ids_from_string("99+,AQs+,AQo+")
+    villain_ids = _range_combo_ids_from_string("JJ-77,AQs-A9s,KJs+,QJs,AQo-AJo,KQo")
+    profile = _preflop_range_matchup_profile(hero_ids, villain_ids)
+    legal_pairs = sum(multiplicity for _, multiplicity in profile)
+
+    assert legal_pairs == 5390
+    assert len(profile) < legal_pairs
 
