@@ -4,12 +4,12 @@
 {
     "distutils": {
         "depends": [],
-        "name": "poker_eval_faster.eval_cython.three_way_orders",
+        "name": "poker_eval_faster.eval_cython.three_way_class_lookup_builder",
         "sources": [
-            "poker_eval_faster/eval_cython/three_way_orders.pyx"
+            "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx"
         ]
     },
-    "module_name": "poker_eval_faster.eval_cython.three_way_orders"
+    "module_name": "poker_eval_faster.eval_cython.three_way_class_lookup_builder"
 }
 END: Cython Metadata */
 
@@ -1127,13 +1127,14 @@ static int __Pyx_init_co_variables(void) {
   #endif
 #endif
 
-#define __PYX_HAVE__poker_eval_faster__eval_cython__three_way_orders
-#define __PYX_HAVE_API__poker_eval_faster__eval_cython__three_way_orders
+#define __PYX_HAVE__poker_eval_faster__eval_cython__three_way_class_lookup_builder
+#define __PYX_HAVE_API__poker_eval_faster__eval_cython__three_way_class_lookup_builder
 /* Early includes */
 #include <stdint.h>
-#include "pythread.h"
+#include <stddef.h>
 #include <string.h>
 #include <stdlib.h>
+#include "pythread.h"
 #ifdef _OPENMP
 #include <omp.h>
 #endif /* _OPENMP */
@@ -1350,7 +1351,7 @@ static const char *__pyx_filename;
 /* #### Code section: filename_table ### */
 
 static const char* const __pyx_f[] = {
-  "poker_eval_faster/eval_cython/three_way_orders.pyx",
+  "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx",
   "<stringsource>",
 };
 /* #### Code section: utility_code_proto_before_types ### */
@@ -1610,19 +1611,6 @@ struct __pyx_array_obj;
 struct __pyx_MemviewEnum_obj;
 struct __pyx_memoryview_obj;
 struct __pyx_memoryviewslice_obj;
-struct __pyx_opt_args_17poker_eval_faster_11eval_cython_16three_way_orders_evaluate_three_way_orders_c;
-
-/* "poker_eval_faster/eval_cython/three_way_orders.pyx":165
- * 
- * 
- * cpdef object evaluate_three_way_orders_c(int[:] hands, int[:] board=array('i', [])):             # <<<<<<<<<<<<<<
- *     if hands.size != 6:
- *         raise ValueError(f"Three-way evaluation expects exactly 6 cards, got {hands.size}")
-*/
-struct __pyx_opt_args_17poker_eval_faster_11eval_cython_16three_way_orders_evaluate_three_way_orders_c {
-  int __pyx_n;
-  __Pyx_memviewslice board;
-};
 
 /* "View.MemoryView":110
  * 
@@ -2435,6 +2423,39 @@ static void __Pyx_RaiseUnboundLocalError(const char *varname);
 /* DivInt[long].proto */
 static CYTHON_INLINE long __Pyx_div_long(long, long, int b_is_constant);
 
+/* PyObjectVectorCallKwBuilder.proto */
+CYTHON_UNUSED static int __Pyx_VectorcallBuilder_AddArg_Check(PyObject *key, PyObject *value, PyObject *builder, PyObject **args, int n);
+#if CYTHON_VECTORCALL
+#if PY_VERSION_HEX >= 0x03090000
+#define __Pyx_Object_Vectorcall_CallFromBuilder PyObject_Vectorcall
+#else
+#define __Pyx_Object_Vectorcall_CallFromBuilder _PyObject_Vectorcall
+#endif
+#define __Pyx_MakeVectorcallBuilderKwds(n) PyTuple_New(n)
+static int __Pyx_VectorcallBuilder_AddArg(PyObject *key, PyObject *value, PyObject *builder, PyObject **args, int n);
+static int __Pyx_VectorcallBuilder_AddArgStr(const char *key, PyObject *value, PyObject *builder, PyObject **args, int n);
+#else
+#define __Pyx_Object_Vectorcall_CallFromBuilder __Pyx_PyObject_FastCallDict
+#define __Pyx_MakeVectorcallBuilderKwds(n) __Pyx_PyDict_NewPresized(n)
+#define __Pyx_VectorcallBuilder_AddArg(key, value, builder, args, n) PyDict_SetItem(builder, key, value)
+#define __Pyx_VectorcallBuilder_AddArgStr(key, value, builder, args, n) PyDict_SetItemString(builder, key, value)
+#endif
+
+/* dict_getitem_default.proto */
+static PyObject* __Pyx_PyDict_GetItemDefault(PyObject* d, PyObject* key, PyObject* default_value);
+
+/* PyObjectCall2Args.proto (used by CallUnboundCMethod1) */
+static CYTHON_INLINE PyObject* __Pyx_PyObject_Call2Args(PyObject* function, PyObject* arg1, PyObject* arg2);
+
+/* CallUnboundCMethod1.proto */
+CYTHON_UNUSED
+static PyObject* __Pyx__CallUnboundCMethod1(__Pyx_CachedCFunction* cfunc, PyObject* self, PyObject* arg);
+#if CYTHON_COMPILING_IN_CPYTHON
+static CYTHON_INLINE PyObject* __Pyx_CallUnboundCMethod1(__Pyx_CachedCFunction* cfunc, PyObject* self, PyObject* arg);
+#else
+#define __Pyx_CallUnboundCMethod1(cfunc, self, arg)  __Pyx__CallUnboundCMethod1(cfunc, self, arg)
+#endif
+
 /* ListAppend.proto */
 #if CYTHON_USE_PYLIST_INTERNALS && CYTHON_ASSUME_SAFE_MACROS
 static CYTHON_INLINE int __Pyx_PyList_Append(PyObject* list, PyObject* x) {
@@ -2456,57 +2477,8 @@ static CYTHON_INLINE int __Pyx_PyList_Append(PyObject* list, PyObject* x) {
 #define __Pyx_PyList_Append(L,x) PyList_Append(L,x)
 #endif
 
-/* PyObjectCall2Args.proto (used by PyObjectCallMethod1) */
-static CYTHON_INLINE PyObject* __Pyx_PyObject_Call2Args(PyObject* function, PyObject* arg1, PyObject* arg2);
-
-/* PyObjectGetMethod.proto (used by PyObjectCallMethod1) */
-#if !(CYTHON_VECTORCALL && (__PYX_LIMITED_VERSION_HEX >= 0x030C0000 || (!CYTHON_COMPILING_IN_LIMITED_API && PY_VERSION_HEX >= 0x03090000)))
-static int __Pyx_PyObject_GetMethod(PyObject *obj, PyObject *name, PyObject **method);
-#endif
-
-/* PyObjectCallMethod1.proto (used by StringJoin) */
-static PyObject* __Pyx_PyObject_CallMethod1(PyObject* obj, PyObject* method_name, PyObject* arg);
-
-/* StringJoin.proto */
-static CYTHON_INLINE PyObject* __Pyx_PyBytes_Join(PyObject* sep, PyObject* values);
-
-/* CIntToPyUnicode.proto */
-#define __Pyx_PyUnicode_From_size_t(value, width, padding_char, format_char) (\
-    ((format_char) == ('c')) ?\
-        __Pyx_uchar___Pyx_PyUnicode_From_size_t(value, width, padding_char) :\
-        __Pyx____Pyx_PyUnicode_From_size_t(value, width, padding_char, format_char)\
-    )
-static CYTHON_INLINE PyObject* __Pyx_uchar___Pyx_PyUnicode_From_size_t(size_t value, Py_ssize_t width, char padding_char);
-static CYTHON_INLINE PyObject* __Pyx____Pyx_PyUnicode_From_size_t(size_t value, Py_ssize_t width, char padding_char, char format_char);
-
-/* RaiseUnboundLocalErrorNogil.proto */
-static void __Pyx_RaiseUnboundLocalErrorNogil(const char *varname);
-
-/* WriteUnraisableException.proto */
-static void __Pyx_WriteUnraisable(const char *name, int clineno,
-                                  int lineno, const char *filename,
-                                  int full_traceback, int nogil);
-
-/* PyLongCompare.proto */
-static CYTHON_INLINE int __Pyx_PyLong_BoolNeObjC(PyObject *op1, PyObject *op2, long intval, long inplace);
-
-/* PyObjectVectorCallKwBuilder.proto */
-CYTHON_UNUSED static int __Pyx_VectorcallBuilder_AddArg_Check(PyObject *key, PyObject *value, PyObject *builder, PyObject **args, int n);
-#if CYTHON_VECTORCALL
-#if PY_VERSION_HEX >= 0x03090000
-#define __Pyx_Object_Vectorcall_CallFromBuilder PyObject_Vectorcall
-#else
-#define __Pyx_Object_Vectorcall_CallFromBuilder _PyObject_Vectorcall
-#endif
-#define __Pyx_MakeVectorcallBuilderKwds(n) PyTuple_New(n)
-static int __Pyx_VectorcallBuilder_AddArg(PyObject *key, PyObject *value, PyObject *builder, PyObject **args, int n);
-static int __Pyx_VectorcallBuilder_AddArgStr(const char *key, PyObject *value, PyObject *builder, PyObject **args, int n);
-#else
-#define __Pyx_Object_Vectorcall_CallFromBuilder __Pyx_PyObject_FastCallDict
-#define __Pyx_MakeVectorcallBuilderKwds(n) __Pyx_PyDict_NewPresized(n)
-#define __Pyx_VectorcallBuilder_AddArg(key, value, builder, args, n) PyDict_SetItem(builder, key, value)
-#define __Pyx_VectorcallBuilder_AddArgStr(key, value, builder, args, n) PyDict_SetItemString(builder, key, value)
-#endif
+/* py_dict_clear.proto */
+#define __Pyx_PyDict_Clear(d) (PyDict_Clear(d), 0)
 
 /* AllocateExtensionType.proto */
 static PyObject *__Pyx_AllocateExtensionType(PyTypeObject *t, int is_final);
@@ -2517,12 +2489,6 @@ static PyObject *__Pyx_AllocateExtensionType(PyTypeObject *t, int is_final);
 #else
 static int __Pyx_call_type_traverse(PyObject *o, int always_call, visitproc visit, void *arg);
 #endif
-
-/* FunctionExport.proto */
-static int __Pyx_ExportFunction(PyObject *api_dict, const char *name, void (*f)(void), const char *sig);
-
-/* GetApiDict.proto */
-static PyObject *__Pyx_ApiExport_GetApiDict(void);
 
 /* LimitedApiGetTypeDict.proto (used by SetItemOnTypeDict) */
 #if CYTHON_COMPILING_IN_LIMITED_API
@@ -2538,6 +2504,11 @@ static CYTHON_INLINE int __Pyx_fix_up_extension_type_from_spec(PyType_Spec *spec
 
 /* PyObjectCallNoArg.proto (used by PyObjectCallMethod0) */
 static CYTHON_INLINE PyObject* __Pyx_PyObject_CallNoArg(PyObject *func);
+
+/* PyObjectGetMethod.proto (used by PyObjectCallMethod0) */
+#if !(CYTHON_VECTORCALL && (__PYX_LIMITED_VERSION_HEX >= 0x030C0000 || (!CYTHON_COMPILING_IN_LIMITED_API && PY_VERSION_HEX >= 0x03090000)))
+static int __Pyx_PyObject_GetMethod(PyObject *obj, PyObject *name, PyObject **method);
+#endif
 
 /* PyObjectCallMethod0.proto (used by PyType_Ready) */
 static PyObject* __Pyx_PyObject_CallMethod0(PyObject* obj, PyObject* method_name);
@@ -2565,9 +2536,6 @@ static int __Pyx__DelItemOnTypeDict(PyTypeObject *tp, PyObject *k);
 
 /* SetupReduce.proto */
 static int __Pyx_setup_reduce(PyObject* type_obj);
-
-/* VoidPtrImport.proto */
-static int __Pyx_ImportVoidPtr_3_2_4(PyObject *module, const char *name, void **p, const char *sig);
 
 /* FunctionImport.proto */
 static int __Pyx_ImportFunction_3_2_4(PyObject *module, const char *funcname, void (**f)(void), const char *sig);
@@ -2800,12 +2768,18 @@ static int __Pyx_ValidateAndInit_memviewslice(
 /* ObjectToMemviewSlice.proto */
 static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_ds_int(PyObject *, int writable_flag);
 
-/* MemviewDtypeToObject.proto */
-static CYTHON_INLINE PyObject *__pyx_memview_get_int(const char *itemp);
-static CYTHON_INLINE int __pyx_memview_set_int(char *itemp, PyObject *obj);
+/* ObjectToMemviewSlice.proto */
+static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_ds_nn_uint64_t(PyObject *, int writable_flag);
+
+/* ObjectToMemviewSlice.proto */
+static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_dsdsds_unsigned_char(PyObject *, int writable_flag);
 
 /* ObjectToMemviewSlice.proto */
 static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_dc_nn_uint64_t(PyObject *, int writable_flag);
+
+/* MemviewDtypeToObject.proto */
+static CYTHON_INLINE PyObject *__pyx_memview_get_int(const char *itemp);
+static CYTHON_INLINE int __pyx_memview_set_int(char *itemp, PyObject *obj);
 
 /* MemviewSliceCopy.proto */
 static __Pyx_memviewslice
@@ -2817,17 +2791,14 @@ __pyx_memoryview_copy_new_contig(const __Pyx_memviewslice *from_mvs,
 /* CIntToPy.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyLong_From_int(int value);
 
-/* TypeInfoToFormat.proto */
-struct __pyx_typeinfo_string {
-    char string[3];
-};
-static struct __pyx_typeinfo_string __Pyx_TypeInfoToFormat(const __Pyx_TypeInfo *type);
-
 /* CIntFromPy.proto */
 static CYTHON_INLINE int __Pyx_PyLong_As_int(PyObject *);
 
 /* CIntToPy.proto */
-static CYTHON_INLINE PyObject* __Pyx_PyLong_From_long(long value);
+static CYTHON_INLINE PyObject* __Pyx_PyLong_From_uint64_t(uint64_t value);
+
+/* PyObjectCallMethod1.proto (used by UpdateUnpickledDict) */
+static PyObject* __Pyx_PyObject_CallMethod1(PyObject* obj, PyObject* method_name, PyObject* arg);
 
 /* UpdateUnpickledDict.proto */
 static int __Pyx_UpdateUnpickledDict(PyObject *obj, PyObject *state, Py_ssize_t index);
@@ -2837,6 +2808,9 @@ static CYTHON_INLINE int __Pyx_CheckUnpickleChecksum(long checksum, long checksu
 
 /* CIntFromPy.proto */
 static CYTHON_INLINE long __Pyx_PyLong_As_long(PyObject *);
+
+/* CIntToPy.proto */
+static CYTHON_INLINE PyObject* __Pyx_PyLong_From_long(long value);
 
 /* CIntFromPy.proto */
 static CYTHON_INLINE char __Pyx_PyLong_As_char(PyObject *);
@@ -2933,43 +2907,29 @@ static PyObject *__pyx_memoryviewslice_convert_item_to_object(struct __pyx_memor
 static PyObject *__pyx_memoryviewslice_assign_item_from_object(struct __pyx_memoryviewslice_obj *__pyx_v_self, char *__pyx_v_itemp, PyObject *__pyx_v_value); /* proto*/
 static PyObject *__pyx_memoryviewslice__get_base(struct __pyx_memoryviewslice_obj *__pyx_v_self); /* proto*/
 
+/* Module declarations from "cpython.mem" */
+
 /* Module declarations from "libc" */
 
 /* Module declarations from "libc.stdint" */
 
-/* Module declarations from "cpython.mem" */
+/* Module declarations from "libc.stddef" */
 
-/* Module declarations from "cython.view" */
-static struct __pyx_array_obj *__pyx_array_new(PyObject *, Py_ssize_t, char *, char const *, char *); /*proto*/
+/* Module declarations from "libc.string" */
 
-/* Module declarations from "cython.dataclasses" */
-
-/* Module declarations from "cython" */
-
-/* Module declarations from "poker_eval_faster.eval_cython.main" */
-static __Pyx_memviewslice *__pyx_vp_17poker_eval_faster_11eval_cython_4main_handdat = 0;
-#define __pyx_v_17poker_eval_faster_11eval_cython_4main_handdat (*__pyx_vp_17poker_eval_faster_11eval_cython_4main_handdat)
-static int (*__pyx_f_17poker_eval_faster_11eval_cython_4main_create_deck)(__Pyx_memviewslice, int, int *); /*proto*/
-
-/* Module declarations from "poker_eval_faster.eval_cython.common" */
-static uint32_t (*__pyx_f_17poker_eval_faster_11eval_cython_6common_fold_cards)(uint32_t, __Pyx_memviewslice, int, int); /*proto*/
+/* Module declarations from "libc.stdlib" */
 
 /* Module declarations from "poker_eval_faster.eval_cython.three_way_orders" */
-static int __pyx_v_17poker_eval_faster_11eval_cython_16three_way_orders_EVAL_START;
-static int __pyx_v_17poker_eval_faster_11eval_cython_16three_way_orders_ORDER_A_B_C;
-static int __pyx_v_17poker_eval_faster_11eval_cython_16three_way_orders_ORDER_A_C_B;
-static int __pyx_v_17poker_eval_faster_11eval_cython_16three_way_orders_ORDER_B_A_C;
-static int __pyx_v_17poker_eval_faster_11eval_cython_16three_way_orders_ORDER_B_C_A;
-static int __pyx_v_17poker_eval_faster_11eval_cython_16three_way_orders_ORDER_C_A_B;
-static int __pyx_v_17poker_eval_faster_11eval_cython_16three_way_orders_ORDER_C_B_A;
-static int __pyx_v_17poker_eval_faster_11eval_cython_16three_way_orders_ORDER_A_EQ_B_GT_C;
-static int __pyx_v_17poker_eval_faster_11eval_cython_16three_way_orders_ORDER_A_EQ_C_GT_B;
-static int __pyx_v_17poker_eval_faster_11eval_cython_16three_way_orders_ORDER_B_EQ_C_GT_A;
-static int __pyx_v_17poker_eval_faster_11eval_cython_16three_way_orders_ORDER_A_GT_B_EQ_C;
-static int __pyx_v_17poker_eval_faster_11eval_cython_16three_way_orders_ORDER_B_GT_A_EQ_C;
-static int __pyx_v_17poker_eval_faster_11eval_cython_16three_way_orders_ORDER_C_GT_A_EQ_B;
-static int __pyx_v_17poker_eval_faster_11eval_cython_16three_way_orders_ORDER_A_EQ_B_EQ_C;
-static int __pyx_v_17poker_eval_faster_11eval_cython_16three_way_orders_NUM_THREE_WAY_ORDERS;
+static void (*__pyx_f_17poker_eval_faster_11eval_cython_16three_way_orders__evaluate_three_way_orders)(int, int, int, int, int, int, __Pyx_memviewslice, uint64_t *); /*proto*/
+
+/* Module declarations from "poker_eval_faster.eval_cython.three_way_class_lookup_builder" */
+static int __pyx_v_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder_NUM_THREE_WAY_ORDERS;
+static int __pyx_v_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder_NUM_SUIT_PERMUTATIONS;
+static int __pyx_v_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder_MAX_CANONICAL_COUNT_CACHE_SIZE;
+static PyObject *__pyx_v_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder__EMPTY_BOARD = 0;
+static PyObject *__pyx_v_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder__COMBO_MASKS_OBJ = 0;
+static PyObject *__pyx_v_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder__COMBO_SUIT_REMAPS_OBJ = 0;
+static PyObject *__pyx_v_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder__CANONICAL_COUNT_CACHE = 0;
 static PyObject *__pyx_collections_abc_Sequence = 0;
 static PyObject *generic = 0;
 static PyObject *strided = 0;
@@ -2978,10 +2938,12 @@ static PyObject *contiguous = 0;
 static PyObject *indirect_contiguous = 0;
 static int __pyx_memoryview_thread_locks_used;
 static PyThread_type_lock __pyx_memoryview_thread_locks[8];
-static void __pyx_f_17poker_eval_faster_11eval_cython_16three_way_orders__evaluate_three_way_orders(int, int, int, int, int, int, __Pyx_memviewslice, uint64_t *); /*proto*/
-static CYTHON_INLINE void __pyx_f_17poker_eval_faster_11eval_cython_16three_way_orders_classify_three_way(uint32_t, uint32_t, uint32_t, uint64_t *); /*proto*/
-static void __pyx_f_17poker_eval_faster_11eval_cython_16three_way_orders__enumerate_three_way_boards(int *, int, uint32_t, uint32_t, uint32_t, int, uint64_t *); /*proto*/
-static PyObject *__pyx_f_17poker_eval_faster_11eval_cython_16three_way_orders_evaluate_three_way_orders_c(__Pyx_memviewslice, int __pyx_skip_dispatch, struct __pyx_opt_args_17poker_eval_faster_11eval_cython_16three_way_orders_evaluate_three_way_orders_c *__pyx_optional_args); /*proto*/
+static CYTHON_INLINE void __pyx_f_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder__ensure_lookup_tables(void); /*proto*/
+static CYTHON_INLINE uint64_t __pyx_f_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder__pack_matchup_key(unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char); /*proto*/
+static CYTHON_INLINE uint64_t __pyx_f_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder__canonical_three_way_matchup_key(int, int, int, __Pyx_memviewslice); /*proto*/
+static int __pyx_f_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder__compare_uint64(void const *, void const *); /*proto*/
+static PyObject *__pyx_f_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder_evaluate_three_way_class_counts_c(__Pyx_memviewslice, __Pyx_memviewslice, __Pyx_memviewslice, int __pyx_skip_dispatch); /*proto*/
+static PyObject *__pyx_f_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder_clear_three_way_class_builder_cache_c(int __pyx_skip_dispatch); /*proto*/
 static int __pyx_array_allocate_buffer(struct __pyx_array_obj *); /*proto*/
 static struct __pyx_array_obj *__pyx_array_new(PyObject *, Py_ssize_t, char *, char const *, char *); /*proto*/
 static PyObject *__pyx_memoryview_new(PyObject *, int, int, __Pyx_TypeInfo const *); /*proto*/
@@ -3016,16 +2978,16 @@ static void __pyx_memoryview_refcount_objects_in_slice(char *, Py_ssize_t *, Py_
 static void __pyx_memoryview_slice_assign_scalar(__Pyx_memviewslice *, int, size_t, void *, int); /*proto*/
 static void __pyx_memoryview__slice_assign_scalar(char *, Py_ssize_t *, Py_ssize_t *, int, size_t, void *); /*proto*/
 static PyObject *__pyx_unpickle_Enum__set_state(struct __pyx_MemviewEnum_obj *, PyObject *); /*proto*/
-static PyObject *__pyx_format_from_typeinfo(__Pyx_TypeInfo const *); /*proto*/
 /* #### Code section: typeinfo ### */
 static const __Pyx_TypeInfo __Pyx_TypeInfo_int = { "int", NULL, sizeof(int), { 0 }, 0, __PYX_IS_UNSIGNED(int) ? 'U' : 'I', __PYX_IS_UNSIGNED(int), 0 };
 static const __Pyx_TypeInfo __Pyx_TypeInfo_nn_uint64_t = { "uint64_t", NULL, sizeof(uint64_t), { 0 }, 0, __PYX_IS_UNSIGNED(uint64_t) ? 'U' : 'I', __PYX_IS_UNSIGNED(uint64_t), 0 };
+static const __Pyx_TypeInfo __Pyx_TypeInfo_unsigned_char = { "unsigned char", NULL, sizeof(unsigned char), { 0 }, 0, __PYX_IS_UNSIGNED(unsigned char) ? 'U' : 'I', __PYX_IS_UNSIGNED(unsigned char), 0 };
 /* #### Code section: before_global_var ### */
-#define __Pyx_MODULE_NAME "poker_eval_faster.eval_cython.three_way_orders"
-extern int __pyx_module_is_main_poker_eval_faster__eval_cython__three_way_orders;
-int __pyx_module_is_main_poker_eval_faster__eval_cython__three_way_orders = 0;
+#define __Pyx_MODULE_NAME "poker_eval_faster.eval_cython.three_way_class_lookup_builder"
+extern int __pyx_module_is_main_poker_eval_faster__eval_cython__three_way_class_lookup_builder;
+int __pyx_module_is_main_poker_eval_faster__eval_cython__three_way_class_lookup_builder = 0;
 
-/* Implementation of "poker_eval_faster.eval_cython.three_way_orders" */
+/* Implementation of "poker_eval_faster.eval_cython.three_way_class_lookup_builder" */
 /* #### Code section: global_var ### */
 static PyObject *__pyx_builtin___import__;
 static PyObject *__pyx_builtin_enumerate;
@@ -3077,7 +3039,8 @@ static void __pyx_memoryviewslice___pyx_pf_15View_dot_MemoryView_16_memoryviewsl
 static PyObject *__pyx_pf___pyx_memoryviewslice___reduce_cython__(CYTHON_UNUSED struct __pyx_memoryviewslice_obj *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf___pyx_memoryviewslice_2__setstate_cython__(CYTHON_UNUSED struct __pyx_memoryviewslice_obj *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
 static PyObject *__pyx_pf_15View_dot_MemoryView___pyx_unpickle_Enum(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state); /* proto */
-static PyObject *__pyx_pf_17poker_eval_faster_11eval_cython_16three_way_orders_evaluate_three_way_orders_c(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_hands, __Pyx_memviewslice __pyx_v_board); /* proto */
+static PyObject *__pyx_pf_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder_evaluate_three_way_class_counts_c(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_class_a_combo_ids, __Pyx_memviewslice __pyx_v_class_b_combo_ids, __Pyx_memviewslice __pyx_v_class_c_combo_ids); /* proto */
+static PyObject *__pyx_pf_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder_2clear_three_way_class_builder_cache_c(CYTHON_UNUSED PyObject *__pyx_self); /* proto */
 static PyObject *__pyx_tp_new_array(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_Enum(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_memoryview(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
@@ -3110,15 +3073,15 @@ typedef struct {
   PyTypeObject *__pyx_MemviewEnum_type;
   PyTypeObject *__pyx_memoryview_type;
   PyTypeObject *__pyx_memoryviewslice_type;
+  __Pyx_CachedCFunction __pyx_umethod_PyDict_Type_get;
   __Pyx_CachedCFunction __pyx_umethod_PyDict_Type_items;
   __Pyx_CachedCFunction __pyx_umethod_PyDict_Type_pop;
   __Pyx_CachedCFunction __pyx_umethod_PyDict_Type_values;
-  __Pyx_memviewslice __pyx_k__12;
   PyObject *__pyx_slice[1];
   PyObject *__pyx_tuple[1];
-  PyObject *__pyx_codeobj_tab[1];
-  PyObject *__pyx_string_tab[138];
-  PyObject *__pyx_number_tab[5];
+  PyObject *__pyx_codeobj_tab[2];
+  PyObject *__pyx_string_tab[132];
+  PyObject *__pyx_number_tab[4];
 /* #### Code section: module_state_contents ### */
 /* CommonTypesMetaclass.module_state_decls */
 PyTypeObject *__pyx_CommonTypesMetaclassType;
@@ -3177,131 +3140,124 @@ static __pyx_mstatetype * const __pyx_mstate_global = &__pyx_mstate_global_stati
 #define __pyx_kp_u_Note_that_Cython_is_deliberately __pyx_string_tab[15]
 #define __pyx_kp_u_Out_of_bounds_on_buffer_access_a __pyx_string_tab[16]
 #define __pyx_kp_u_Step_may_not_be_zero_axis_d __pyx_string_tab[17]
-#define __pyx_kp_u_Three_way_evaluation_expects_exa __pyx_string_tab[18]
-#define __pyx_kp_u_Unable_to_convert_item_to_object __pyx_string_tab[19]
-#define __pyx_kp_u__10 __pyx_string_tab[20]
-#define __pyx_kp_u__11 __pyx_string_tab[21]
-#define __pyx_kp_u__13 __pyx_string_tab[22]
-#define __pyx_kp_u__2 __pyx_string_tab[23]
-#define __pyx_kp_u__3 __pyx_string_tab[24]
-#define __pyx_kp_u__4 __pyx_string_tab[25]
-#define __pyx_kp_u__5 __pyx_string_tab[26]
-#define __pyx_kp_u_add_note __pyx_string_tab[27]
-#define __pyx_kp_u_and __pyx_string_tab[28]
-#define __pyx_kp_u_at_0x __pyx_string_tab[29]
-#define __pyx_kp_u_collections_abc __pyx_string_tab[30]
-#define __pyx_kp_u_contiguous_and_direct __pyx_string_tab[31]
-#define __pyx_kp_u_contiguous_and_indirect __pyx_string_tab[32]
-#define __pyx_kp_u_disable __pyx_string_tab[33]
-#define __pyx_kp_u_enable __pyx_string_tab[34]
-#define __pyx_kp_u_gc __pyx_string_tab[35]
-#define __pyx_kp_u_got __pyx_string_tab[36]
-#define __pyx_kp_u_got_differing_extents_in_dimensi __pyx_string_tab[37]
-#define __pyx_kp_u_isenabled __pyx_string_tab[38]
-#define __pyx_kp_u_itemsize_0_for_cython_array __pyx_string_tab[39]
-#define __pyx_kp_u_no_default___reduce___due_to_non __pyx_string_tab[40]
-#define __pyx_kp_u_object __pyx_string_tab[41]
-#define __pyx_kp_u_poker_eval_faster_eval_cython_th_2 __pyx_string_tab[42]
-#define __pyx_kp_u_strided_and_direct __pyx_string_tab[43]
-#define __pyx_kp_u_strided_and_direct_or_indirect __pyx_string_tab[44]
-#define __pyx_kp_u_strided_and_indirect __pyx_string_tab[45]
-#define __pyx_kp_u_unable_to_allocate_array_data __pyx_string_tab[46]
-#define __pyx_kp_u_unable_to_allocate_shape_and_str __pyx_string_tab[47]
-#define __pyx_n_u_ASCII __pyx_string_tab[48]
-#define __pyx_n_u_Ellipsis __pyx_string_tab[49]
-#define __pyx_n_u_Pyx_PyDict_NextRef __pyx_string_tab[50]
-#define __pyx_n_u_Sequence __pyx_string_tab[51]
-#define __pyx_n_u_View_MemoryView __pyx_string_tab[52]
-#define __pyx_n_u_abc __pyx_string_tab[53]
-#define __pyx_n_u_allocate_buffer __pyx_string_tab[54]
-#define __pyx_n_u_array __pyx_string_tab[55]
-#define __pyx_n_u_asyncio_coroutines __pyx_string_tab[56]
-#define __pyx_n_u_base __pyx_string_tab[57]
-#define __pyx_n_u_board __pyx_string_tab[58]
-#define __pyx_n_u_c __pyx_string_tab[59]
-#define __pyx_n_u_class __pyx_string_tab[60]
+#define __pyx_kp_u_Unable_to_convert_item_to_object __pyx_string_tab[18]
+#define __pyx_kp_u__2 __pyx_string_tab[19]
+#define __pyx_kp_u__3 __pyx_string_tab[20]
+#define __pyx_kp_u__4 __pyx_string_tab[21]
+#define __pyx_kp_u__5 __pyx_string_tab[22]
+#define __pyx_kp_u__6 __pyx_string_tab[23]
+#define __pyx_kp_u_add_note __pyx_string_tab[24]
+#define __pyx_kp_u_and __pyx_string_tab[25]
+#define __pyx_kp_u_at_0x __pyx_string_tab[26]
+#define __pyx_kp_u_collections_abc __pyx_string_tab[27]
+#define __pyx_kp_u_contiguous_and_direct __pyx_string_tab[28]
+#define __pyx_kp_u_contiguous_and_indirect __pyx_string_tab[29]
+#define __pyx_kp_u_disable __pyx_string_tab[30]
+#define __pyx_kp_u_enable __pyx_string_tab[31]
+#define __pyx_kp_u_gc __pyx_string_tab[32]
+#define __pyx_kp_u_got __pyx_string_tab[33]
+#define __pyx_kp_u_got_differing_extents_in_dimensi __pyx_string_tab[34]
+#define __pyx_kp_u_isenabled __pyx_string_tab[35]
+#define __pyx_kp_u_itemsize_0_for_cython_array __pyx_string_tab[36]
+#define __pyx_kp_u_no_default___reduce___due_to_non __pyx_string_tab[37]
+#define __pyx_kp_u_object __pyx_string_tab[38]
+#define __pyx_kp_u_poker_eval_faster_eval_cython_th_2 __pyx_string_tab[39]
+#define __pyx_kp_u_strided_and_direct __pyx_string_tab[40]
+#define __pyx_kp_u_strided_and_direct_or_indirect __pyx_string_tab[41]
+#define __pyx_kp_u_strided_and_indirect __pyx_string_tab[42]
+#define __pyx_kp_u_unable_to_allocate_array_data __pyx_string_tab[43]
+#define __pyx_kp_u_unable_to_allocate_shape_and_str __pyx_string_tab[44]
+#define __pyx_n_u_ASCII __pyx_string_tab[45]
+#define __pyx_n_u_Ellipsis __pyx_string_tab[46]
+#define __pyx_n_u_Pyx_PyDict_NextRef __pyx_string_tab[47]
+#define __pyx_n_u_Sequence __pyx_string_tab[48]
+#define __pyx_n_u_View_MemoryView __pyx_string_tab[49]
+#define __pyx_n_u_abc __pyx_string_tab[50]
+#define __pyx_n_u_allocate_buffer __pyx_string_tab[51]
+#define __pyx_n_u_array __pyx_string_tab[52]
+#define __pyx_n_u_asyncio_coroutines __pyx_string_tab[53]
+#define __pyx_n_u_base __pyx_string_tab[54]
+#define __pyx_n_u_c __pyx_string_tab[55]
+#define __pyx_n_u_canonical_combo_masks __pyx_string_tab[56]
+#define __pyx_n_u_class __pyx_string_tab[57]
+#define __pyx_n_u_class_a_combo_ids __pyx_string_tab[58]
+#define __pyx_n_u_class_b_combo_ids __pyx_string_tab[59]
+#define __pyx_n_u_class_c_combo_ids __pyx_string_tab[60]
 #define __pyx_n_u_class_getitem __pyx_string_tab[61]
-#define __pyx_n_u_cline_in_traceback __pyx_string_tab[62]
-#define __pyx_n_u_count __pyx_string_tab[63]
-#define __pyx_n_u_dict __pyx_string_tab[64]
-#define __pyx_n_u_dtype __pyx_string_tab[65]
-#define __pyx_n_u_dtype_is_object __pyx_string_tab[66]
-#define __pyx_n_u_encode __pyx_string_tab[67]
-#define __pyx_n_u_enumerate __pyx_string_tab[68]
-#define __pyx_n_u_error __pyx_string_tab[69]
-#define __pyx_n_u_evaluate_three_way_orders_c __pyx_string_tab[70]
-#define __pyx_n_u_flags __pyx_string_tab[71]
-#define __pyx_n_u_format __pyx_string_tab[72]
-#define __pyx_n_u_fortran __pyx_string_tab[73]
-#define __pyx_n_u_func __pyx_string_tab[74]
-#define __pyx_n_u_getstate __pyx_string_tab[75]
-#define __pyx_n_u_hands __pyx_string_tab[76]
-#define __pyx_n_u_i __pyx_string_tab[77]
-#define __pyx_n_u_id __pyx_string_tab[78]
-#define __pyx_n_u_import __pyx_string_tab[79]
-#define __pyx_n_u_index __pyx_string_tab[80]
-#define __pyx_n_u_is_coroutine __pyx_string_tab[81]
-#define __pyx_n_u_items __pyx_string_tab[82]
-#define __pyx_n_u_itemsize __pyx_string_tab[83]
-#define __pyx_n_u_join __pyx_string_tab[84]
-#define __pyx_n_u_main __pyx_string_tab[85]
-#define __pyx_n_u_memview __pyx_string_tab[86]
-#define __pyx_n_u_mode __pyx_string_tab[87]
-#define __pyx_n_u_module __pyx_string_tab[88]
-#define __pyx_n_u_name __pyx_string_tab[89]
-#define __pyx_n_u_name_2 __pyx_string_tab[90]
-#define __pyx_n_u_ndim __pyx_string_tab[91]
-#define __pyx_n_u_new __pyx_string_tab[92]
-#define __pyx_n_u_np __pyx_string_tab[93]
-#define __pyx_n_u_numpy __pyx_string_tab[94]
-#define __pyx_n_u_obj __pyx_string_tab[95]
-#define __pyx_n_u_pack __pyx_string_tab[96]
-#define __pyx_n_u_poker_eval_faster_eval_cython_th __pyx_string_tab[97]
-#define __pyx_n_u_pop __pyx_string_tab[98]
-#define __pyx_n_u_pyx_capi __pyx_string_tab[99]
-#define __pyx_n_u_pyx_checksum __pyx_string_tab[100]
-#define __pyx_n_u_pyx_state __pyx_string_tab[101]
-#define __pyx_n_u_pyx_type __pyx_string_tab[102]
-#define __pyx_n_u_pyx_unpickle_Enum __pyx_string_tab[103]
-#define __pyx_n_u_pyx_vtable __pyx_string_tab[104]
-#define __pyx_n_u_qualname __pyx_string_tab[105]
-#define __pyx_n_u_reduce __pyx_string_tab[106]
-#define __pyx_n_u_reduce_cython __pyx_string_tab[107]
-#define __pyx_n_u_reduce_ex __pyx_string_tab[108]
-#define __pyx_n_u_register __pyx_string_tab[109]
-#define __pyx_n_u_set_name __pyx_string_tab[110]
-#define __pyx_n_u_setdefault __pyx_string_tab[111]
-#define __pyx_n_u_setstate __pyx_string_tab[112]
-#define __pyx_n_u_setstate_cython __pyx_string_tab[113]
-#define __pyx_n_u_shape __pyx_string_tab[114]
-#define __pyx_n_u_size __pyx_string_tab[115]
-#define __pyx_n_u_start __pyx_string_tab[116]
-#define __pyx_n_u_step __pyx_string_tab[117]
-#define __pyx_n_u_stop __pyx_string_tab[118]
-#define __pyx_n_u_struct __pyx_string_tab[119]
-#define __pyx_n_u_test __pyx_string_tab[120]
-#define __pyx_n_u_uint64 __pyx_string_tab[121]
-#define __pyx_n_u_unpack __pyx_string_tab[122]
-#define __pyx_n_u_update __pyx_string_tab[123]
-#define __pyx_n_u_values __pyx_string_tab[124]
-#define __pyx_n_u_x __pyx_string_tab[125]
-#define __pyx_n_u_zeros __pyx_string_tab[126]
-#define __pyx_kp_b_Pyx_memviewslice_handdat __pyx_string_tab[127]
-#define __pyx_kp_b_T __pyx_string_tab[128]
-#define __pyx_kp_b__6 __pyx_string_tab[129]
-#define __pyx_kp_b__7 __pyx_string_tab[130]
-#define __pyx_kp_b__8 __pyx_string_tab[131]
-#define __pyx_kp_b__9 __pyx_string_tab[132]
-#define __pyx_kp_b_int___Pyx_memviewslice_int_int_c __pyx_string_tab[133]
-#define __pyx_kp_b_iso88591_DE_q_uF_Q_j_MQeST_BfA_6_1_q_a_Q __pyx_string_tab[134]
-#define __pyx_kp_b_uint32_t_uint32_t___Pyx_memviews __pyx_string_tab[135]
-#define __pyx_kp_b_void_int_int_int_int_int_int___P __pyx_string_tab[136]
-#define __pyx_n_b_O __pyx_string_tab[137]
+#define __pyx_n_u_clear_three_way_class_builder_ca __pyx_string_tab[62]
+#define __pyx_n_u_cline_in_traceback __pyx_string_tab[63]
+#define __pyx_n_u_combo_suit_remaps __pyx_string_tab[64]
+#define __pyx_n_u_count __pyx_string_tab[65]
+#define __pyx_n_u_dict __pyx_string_tab[66]
+#define __pyx_n_u_dtype __pyx_string_tab[67]
+#define __pyx_n_u_dtype_is_object __pyx_string_tab[68]
+#define __pyx_n_u_encode __pyx_string_tab[69]
+#define __pyx_n_u_enumerate __pyx_string_tab[70]
+#define __pyx_n_u_error __pyx_string_tab[71]
+#define __pyx_n_u_evaluate_three_way_class_counts __pyx_string_tab[72]
+#define __pyx_n_u_flags __pyx_string_tab[73]
+#define __pyx_n_u_format __pyx_string_tab[74]
+#define __pyx_n_u_fortran __pyx_string_tab[75]
+#define __pyx_n_u_func __pyx_string_tab[76]
+#define __pyx_n_u_get __pyx_string_tab[77]
+#define __pyx_n_u_getstate __pyx_string_tab[78]
+#define __pyx_n_u_i __pyx_string_tab[79]
+#define __pyx_n_u_id __pyx_string_tab[80]
+#define __pyx_n_u_import __pyx_string_tab[81]
+#define __pyx_n_u_index __pyx_string_tab[82]
+#define __pyx_n_u_is_coroutine __pyx_string_tab[83]
+#define __pyx_n_u_items __pyx_string_tab[84]
+#define __pyx_n_u_itemsize __pyx_string_tab[85]
+#define __pyx_n_u_main __pyx_string_tab[86]
+#define __pyx_n_u_memview __pyx_string_tab[87]
+#define __pyx_n_u_mode __pyx_string_tab[88]
+#define __pyx_n_u_module __pyx_string_tab[89]
+#define __pyx_n_u_name __pyx_string_tab[90]
+#define __pyx_n_u_name_2 __pyx_string_tab[91]
+#define __pyx_n_u_ndim __pyx_string_tab[92]
+#define __pyx_n_u_new __pyx_string_tab[93]
+#define __pyx_n_u_np __pyx_string_tab[94]
+#define __pyx_n_u_numpy __pyx_string_tab[95]
+#define __pyx_n_u_obj __pyx_string_tab[96]
+#define __pyx_n_u_pack __pyx_string_tab[97]
+#define __pyx_n_u_poker_eval_faster_eval_cython_th __pyx_string_tab[98]
+#define __pyx_n_u_poker_eval_faster_preflop_canoni __pyx_string_tab[99]
+#define __pyx_n_u_pop __pyx_string_tab[100]
+#define __pyx_n_u_pyx_checksum __pyx_string_tab[101]
+#define __pyx_n_u_pyx_state __pyx_string_tab[102]
+#define __pyx_n_u_pyx_type __pyx_string_tab[103]
+#define __pyx_n_u_pyx_unpickle_Enum __pyx_string_tab[104]
+#define __pyx_n_u_pyx_vtable __pyx_string_tab[105]
+#define __pyx_n_u_qualname __pyx_string_tab[106]
+#define __pyx_n_u_reduce __pyx_string_tab[107]
+#define __pyx_n_u_reduce_cython __pyx_string_tab[108]
+#define __pyx_n_u_reduce_ex __pyx_string_tab[109]
+#define __pyx_n_u_register __pyx_string_tab[110]
+#define __pyx_n_u_set_name __pyx_string_tab[111]
+#define __pyx_n_u_setdefault __pyx_string_tab[112]
+#define __pyx_n_u_setstate __pyx_string_tab[113]
+#define __pyx_n_u_setstate_cython __pyx_string_tab[114]
+#define __pyx_n_u_shape __pyx_string_tab[115]
+#define __pyx_n_u_size __pyx_string_tab[116]
+#define __pyx_n_u_start __pyx_string_tab[117]
+#define __pyx_n_u_step __pyx_string_tab[118]
+#define __pyx_n_u_stop __pyx_string_tab[119]
+#define __pyx_n_u_struct __pyx_string_tab[120]
+#define __pyx_n_u_test __pyx_string_tab[121]
+#define __pyx_n_u_uint64 __pyx_string_tab[122]
+#define __pyx_n_u_unpack __pyx_string_tab[123]
+#define __pyx_n_u_update __pyx_string_tab[124]
+#define __pyx_n_u_values __pyx_string_tab[125]
+#define __pyx_n_u_x __pyx_string_tab[126]
+#define __pyx_n_u_zeros __pyx_string_tab[127]
+#define __pyx_kp_b_iso88591__7 __pyx_string_tab[128]
+#define __pyx_kp_b_iso88591_a_Q_V1A_V1A_V1A_1_BfA_6_1_q_Ba __pyx_string_tab[129]
+#define __pyx_kp_b_void_int_int_int_int_int_int___P __pyx_string_tab[130]
+#define __pyx_n_b_O __pyx_string_tab[131]
 #define __pyx_int_0 __pyx_number_tab[0]
 #define __pyx_int_neg_1 __pyx_number_tab[1]
 #define __pyx_int_1 __pyx_number_tab[2]
-#define __pyx_int_6 __pyx_number_tab[3]
-#define __pyx_int_136983863 __pyx_number_tab[4]
+#define __pyx_int_136983863 __pyx_number_tab[3]
 /* #### Code section: module_state_clear ### */
 #if CYTHON_USE_MODULE_STATE
 static CYTHON_SMALL_CODE int __pyx_m_clear(PyObject *m) {
@@ -3324,13 +3280,11 @@ static CYTHON_SMALL_CODE int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_type___pyx_memoryview);
   Py_CLEAR(clear_module_state->__pyx_memoryviewslice_type);
   Py_CLEAR(clear_module_state->__pyx_type___pyx_memoryviewslice);
-  __PYX_XCLEAR_MEMVIEW(&clear_module_state->__pyx_k__12, 1);
-  clear_module_state->__pyx_k__12.memview = NULL; clear_module_state->__pyx_k__12.data = NULL;
   for (int i=0; i<1; ++i) { Py_CLEAR(clear_module_state->__pyx_slice[i]); }
   for (int i=0; i<1; ++i) { Py_CLEAR(clear_module_state->__pyx_tuple[i]); }
-  for (int i=0; i<1; ++i) { Py_CLEAR(clear_module_state->__pyx_codeobj_tab[i]); }
-  for (int i=0; i<138; ++i) { Py_CLEAR(clear_module_state->__pyx_string_tab[i]); }
-  for (int i=0; i<5; ++i) { Py_CLEAR(clear_module_state->__pyx_number_tab[i]); }
+  for (int i=0; i<2; ++i) { Py_CLEAR(clear_module_state->__pyx_codeobj_tab[i]); }
+  for (int i=0; i<132; ++i) { Py_CLEAR(clear_module_state->__pyx_string_tab[i]); }
+  for (int i=0; i<4; ++i) { Py_CLEAR(clear_module_state->__pyx_number_tab[i]); }
 /* #### Code section: module_state_clear_contents ### */
 /* CommonTypesMetaclass.module_state_clear */
 Py_CLEAR(clear_module_state->__pyx_CommonTypesMetaclassType);
@@ -3361,12 +3315,11 @@ static CYTHON_SMALL_CODE int __pyx_m_traverse(PyObject *m, visitproc visit, void
   Py_VISIT(traverse_module_state->__pyx_type___pyx_memoryview);
   Py_VISIT(traverse_module_state->__pyx_memoryviewslice_type);
   Py_VISIT(traverse_module_state->__pyx_type___pyx_memoryviewslice);
-  Py_VISIT(traverse_module_state->__pyx_k__12->memview);
   for (int i=0; i<1; ++i) { __Pyx_VISIT_CONST(traverse_module_state->__pyx_slice[i]); }
   for (int i=0; i<1; ++i) { __Pyx_VISIT_CONST(traverse_module_state->__pyx_tuple[i]); }
-  for (int i=0; i<1; ++i) { __Pyx_VISIT_CONST(traverse_module_state->__pyx_codeobj_tab[i]); }
-  for (int i=0; i<138; ++i) { __Pyx_VISIT_CONST(traverse_module_state->__pyx_string_tab[i]); }
-  for (int i=0; i<5; ++i) { __Pyx_VISIT_CONST(traverse_module_state->__pyx_number_tab[i]); }
+  for (int i=0; i<2; ++i) { __Pyx_VISIT_CONST(traverse_module_state->__pyx_codeobj_tab[i]); }
+  for (int i=0; i<132; ++i) { __Pyx_VISIT_CONST(traverse_module_state->__pyx_string_tab[i]); }
+  for (int i=0; i<4; ++i) { __Pyx_VISIT_CONST(traverse_module_state->__pyx_number_tab[i]); }
 /* #### Code section: module_state_traverse_contents ### */
 /* CommonTypesMetaclass.module_state_traverse */
 Py_VISIT(traverse_module_state->__pyx_CommonTypesMetaclassType);
@@ -16647,1726 +16600,209 @@ static PyObject *__pyx_unpickle_Enum__set_state(struct __pyx_MemviewEnum_obj *__
   return __pyx_r;
 }
 
-/* "BufferFormatFromTypeInfo":1450
+/* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":23
  * 
  * 
- * @cname('__pyx_format_from_typeinfo')             # <<<<<<<<<<<<<<
- * cdef bytes format_from_typeinfo(const __Pyx_TypeInfo *type):
- *     cdef const __Pyx_StructField *field
+ * cdef inline void _ensure_lookup_tables():             # <<<<<<<<<<<<<<
+ *     global _COMBO_MASKS_OBJ, _COMBO_SUIT_REMAPS_OBJ
+ *     if _COMBO_MASKS_OBJ is None:
 */
 
-static PyObject *__pyx_format_from_typeinfo(__Pyx_TypeInfo const *__pyx_v_type) {
-  __Pyx_StructField const *__pyx_v_field;
-  struct __pyx_typeinfo_string __pyx_v_fmt;
-  PyObject *__pyx_v_part = 0;
-  PyObject *__pyx_v_result = 0;
-  PyObject *__pyx_v_alignment = NULL;
-  PyObject *__pyx_v_parts = NULL;
-  PyObject *__pyx_v_extents = NULL;
-  Py_ssize_t __pyx_7genexpr__pyx_v_i;
-  PyObject *__pyx_r = NULL;
+static CYTHON_INLINE void __pyx_f_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder__ensure_lookup_tables(void) {
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
   PyObject *__pyx_t_2 = NULL;
-  __Pyx_StructField const *__pyx_t_3;
+  PyObject *__pyx_t_3 = NULL;
   PyObject *__pyx_t_4 = NULL;
-  PyObject *__pyx_t_5 = NULL;
-  int __pyx_t_6;
-  int __pyx_t_7;
-  int __pyx_t_8;
-  Py_ssize_t __pyx_t_9;
-  PyObject *__pyx_t_10[3];
+  size_t __pyx_t_5;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("format_from_typeinfo", 0);
+  __Pyx_RefNannySetupContext("_ensure_lookup_tables", 0);
 
-  /* "BufferFormatFromTypeInfo":1457
- *     cdef Py_ssize_t i
- * 
- *     if type.typegroup == 'S':             # <<<<<<<<<<<<<<
- *         assert type.fields != NULL
- *         assert type.fields.type != NULL
+  /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":25
+ * cdef inline void _ensure_lookup_tables():
+ *     global _COMBO_MASKS_OBJ, _COMBO_SUIT_REMAPS_OBJ
+ *     if _COMBO_MASKS_OBJ is None:             # <<<<<<<<<<<<<<
+ *         _COMBO_MASKS_OBJ = canonical_combo_masks()
+ *     if _COMBO_SUIT_REMAPS_OBJ is None:
 */
-  __pyx_t_1 = (__pyx_v_type->typegroup == 'S');
+  __pyx_t_1 = (__pyx_v_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder__COMBO_MASKS_OBJ == Py_None);
   if (__pyx_t_1) {
 
-    /* "BufferFormatFromTypeInfo":1458
- * 
- *     if type.typegroup == 'S':
- *         assert type.fields != NULL             # <<<<<<<<<<<<<<
- *         assert type.fields.type != NULL
- * 
+    /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":26
+ *     global _COMBO_MASKS_OBJ, _COMBO_SUIT_REMAPS_OBJ
+ *     if _COMBO_MASKS_OBJ is None:
+ *         _COMBO_MASKS_OBJ = canonical_combo_masks()             # <<<<<<<<<<<<<<
+ *     if _COMBO_SUIT_REMAPS_OBJ is None:
+ *         _COMBO_SUIT_REMAPS_OBJ = _combo_suit_remaps()
 */
-    #ifndef CYTHON_WITHOUT_ASSERTIONS
-    if (unlikely(__pyx_assertions_enabled())) {
-      __pyx_t_1 = (__pyx_v_type->fields != NULL);
-      if (unlikely(!__pyx_t_1)) {
-        __Pyx_Raise(((PyObject *)(((PyTypeObject*)PyExc_AssertionError))), 0, 0, 0);
-        __PYX_ERR(1, 1458, __pyx_L1_error)
-      }
+    __pyx_t_3 = NULL;
+    __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_mstate_global->__pyx_n_u_canonical_combo_masks); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 26, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_5 = 1;
+    #if CYTHON_UNPACK_METHODS
+    if (unlikely(PyMethod_Check(__pyx_t_4))) {
+      __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_4);
+      assert(__pyx_t_3);
+      PyObject* __pyx__function = PyMethod_GET_FUNCTION(__pyx_t_4);
+      __Pyx_INCREF(__pyx_t_3);
+      __Pyx_INCREF(__pyx__function);
+      __Pyx_DECREF_SET(__pyx_t_4, __pyx__function);
+      __pyx_t_5 = 0;
     }
-    #else
-    if ((1)); else __PYX_ERR(1, 1458, __pyx_L1_error)
     #endif
-
-    /* "BufferFormatFromTypeInfo":1459
- *     if type.typegroup == 'S':
- *         assert type.fields != NULL
- *         assert type.fields.type != NULL             # <<<<<<<<<<<<<<
- * 
- *         if type.flags & __PYX_BUF_FLAGS_PACKED_STRUCT:
-*/
-    #ifndef CYTHON_WITHOUT_ASSERTIONS
-    if (unlikely(__pyx_assertions_enabled())) {
-      __pyx_t_1 = (__pyx_v_type->fields->type != NULL);
-      if (unlikely(!__pyx_t_1)) {
-        __Pyx_Raise(((PyObject *)(((PyTypeObject*)PyExc_AssertionError))), 0, 0, 0);
-        __PYX_ERR(1, 1459, __pyx_L1_error)
-      }
+    {
+      PyObject *__pyx_callargs[2] = {__pyx_t_3, NULL};
+      __pyx_t_2 = __Pyx_PyObject_FastCall((PyObject*)__pyx_t_4, __pyx_callargs+__pyx_t_5, (1-__pyx_t_5) | (__pyx_t_5*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
+      __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 26, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_2);
     }
-    #else
-    if ((1)); else __PYX_ERR(1, 1459, __pyx_L1_error)
-    #endif
-
-    /* "BufferFormatFromTypeInfo":1461
- *         assert type.fields.type != NULL
- * 
- *         if type.flags & __PYX_BUF_FLAGS_PACKED_STRUCT:             # <<<<<<<<<<<<<<
- *             alignment = b'^'
- *         else:
-*/
-    __pyx_t_1 = ((__pyx_v_type->flags & __PYX_BUF_FLAGS_PACKED_STRUCT) != 0);
-    if (__pyx_t_1) {
-
-      /* "BufferFormatFromTypeInfo":1462
- * 
- *         if type.flags & __PYX_BUF_FLAGS_PACKED_STRUCT:
- *             alignment = b'^'             # <<<<<<<<<<<<<<
- *         else:
- *             alignment = b''
-*/
-      __Pyx_INCREF(__pyx_mstate_global->__pyx_kp_b__6);
-      __pyx_v_alignment = __pyx_mstate_global->__pyx_kp_b__6;
-
-      /* "BufferFormatFromTypeInfo":1461
- *         assert type.fields.type != NULL
- * 
- *         if type.flags & __PYX_BUF_FLAGS_PACKED_STRUCT:             # <<<<<<<<<<<<<<
- *             alignment = b'^'
- *         else:
-*/
-      goto __pyx_L4;
-    }
-
-    /* "BufferFormatFromTypeInfo":1464
- *             alignment = b'^'
- *         else:
- *             alignment = b''             # <<<<<<<<<<<<<<
- * 
- *         parts = [b"T{"]
-*/
-    /*else*/ {
-      __Pyx_INCREF(__pyx_mstate_global->__pyx_kp_b__7);
-      __pyx_v_alignment = __pyx_mstate_global->__pyx_kp_b__7;
-    }
-    __pyx_L4:;
-
-    /* "BufferFormatFromTypeInfo":1466
- *             alignment = b''
- * 
- *         parts = [b"T{"]             # <<<<<<<<<<<<<<
- *         field = type.fields
- * 
-*/
-    __pyx_t_2 = PyList_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 1466, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __Pyx_INCREF(__pyx_mstate_global->__pyx_kp_b_T);
-    __Pyx_GIVEREF(__pyx_mstate_global->__pyx_kp_b_T);
-    if (__Pyx_PyList_SET_ITEM(__pyx_t_2, 0, __pyx_mstate_global->__pyx_kp_b_T) != (0)) __PYX_ERR(1, 1466, __pyx_L1_error);
-    __pyx_v_parts = ((PyObject*)__pyx_t_2);
+    __Pyx_XGOTREF(__pyx_v_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder__COMBO_MASKS_OBJ);
+    __Pyx_DECREF_SET(__pyx_v_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder__COMBO_MASKS_OBJ, __pyx_t_2);
+    __Pyx_GIVEREF(__pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "BufferFormatFromTypeInfo":1467
- * 
- *         parts = [b"T{"]
- *         field = type.fields             # <<<<<<<<<<<<<<
- * 
- *         while field.type:
+    /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":25
+ * cdef inline void _ensure_lookup_tables():
+ *     global _COMBO_MASKS_OBJ, _COMBO_SUIT_REMAPS_OBJ
+ *     if _COMBO_MASKS_OBJ is None:             # <<<<<<<<<<<<<<
+ *         _COMBO_MASKS_OBJ = canonical_combo_masks()
+ *     if _COMBO_SUIT_REMAPS_OBJ is None:
 */
-    __pyx_t_3 = __pyx_v_type->fields;
-    __pyx_v_field = __pyx_t_3;
-
-    /* "BufferFormatFromTypeInfo":1469
- *         field = type.fields
- * 
- *         while field.type:             # <<<<<<<<<<<<<<
- *             part = format_from_typeinfo(field.type)
- *             parts.append(part + b':' + field.name + b':')
-*/
-    while (1) {
-      __pyx_t_1 = (__pyx_v_field->type != 0);
-      if (!__pyx_t_1) break;
-
-      /* "BufferFormatFromTypeInfo":1470
- * 
- *         while field.type:
- *             part = format_from_typeinfo(field.type)             # <<<<<<<<<<<<<<
- *             parts.append(part + b':' + field.name + b':')
- *             field += 1
-*/
-      __pyx_t_2 = __pyx_format_from_typeinfo(__pyx_v_field->type); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 1470, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_2);
-      __Pyx_XDECREF_SET(__pyx_v_part, ((PyObject*)__pyx_t_2));
-      __pyx_t_2 = 0;
-
-      /* "BufferFormatFromTypeInfo":1471
- *         while field.type:
- *             part = format_from_typeinfo(field.type)
- *             parts.append(part + b':' + field.name + b':')             # <<<<<<<<<<<<<<
- *             field += 1
- * 
-*/
-      __pyx_t_2 = PyNumber_Add(__pyx_v_part, __pyx_mstate_global->__pyx_kp_b__8); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 1471, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_4 = __Pyx_PyBytes_FromString(__pyx_v_field->name); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 1471, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_5 = PyNumber_Add(__pyx_t_2, __pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 1471, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_5);
-      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __pyx_t_4 = PyNumber_Add(__pyx_t_5, __pyx_mstate_global->__pyx_kp_b__8); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 1471, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __pyx_t_6 = __Pyx_PyList_Append(__pyx_v_parts, __pyx_t_4); if (unlikely(__pyx_t_6 == ((int)-1))) __PYX_ERR(1, 1471, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-
-      /* "BufferFormatFromTypeInfo":1472
- *             part = format_from_typeinfo(field.type)
- *             parts.append(part + b':' + field.name + b':')
- *             field += 1             # <<<<<<<<<<<<<<
- * 
- *         result = alignment.join(parts) + b'}'
-*/
-      __pyx_v_field = (__pyx_v_field + 1);
-    }
-
-    /* "BufferFormatFromTypeInfo":1474
- *             field += 1
- * 
- *         result = alignment.join(parts) + b'}'             # <<<<<<<<<<<<<<
- *     else:
- *         fmt = __Pyx_TypeInfoToFormat(type)
-*/
-    __pyx_t_4 = __Pyx_PyBytes_Join(__pyx_v_alignment, __pyx_v_parts); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 1474, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_5 = PyNumber_Add(__pyx_t_4, __pyx_mstate_global->__pyx_kp_b__9); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 1474, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_v_result = ((PyObject*)__pyx_t_5);
-    __pyx_t_5 = 0;
-
-    /* "BufferFormatFromTypeInfo":1457
- *     cdef Py_ssize_t i
- * 
- *     if type.typegroup == 'S':             # <<<<<<<<<<<<<<
- *         assert type.fields != NULL
- *         assert type.fields.type != NULL
-*/
-    goto __pyx_L3;
   }
 
-  /* "BufferFormatFromTypeInfo":1476
- *         result = alignment.join(parts) + b'}'
- *     else:
- *         fmt = __Pyx_TypeInfoToFormat(type)             # <<<<<<<<<<<<<<
- *         result = fmt.string
- *         if type.arraysize[0]:
-*/
-  /*else*/ {
-    __pyx_v_fmt = __Pyx_TypeInfoToFormat(__pyx_v_type);
-
-    /* "BufferFormatFromTypeInfo":1477
- *     else:
- *         fmt = __Pyx_TypeInfoToFormat(type)
- *         result = fmt.string             # <<<<<<<<<<<<<<
- *         if type.arraysize[0]:
- *             extents = [f"{type.arraysize[i]}" for i in range(type.ndim)]
-*/
-    __pyx_t_5 = __Pyx_PyBytes_FromString(__pyx_v_fmt.string); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 1477, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    __pyx_v_result = ((PyObject*)__pyx_t_5);
-    __pyx_t_5 = 0;
-
-    /* "BufferFormatFromTypeInfo":1478
- *         fmt = __Pyx_TypeInfoToFormat(type)
- *         result = fmt.string
- *         if type.arraysize[0]:             # <<<<<<<<<<<<<<
- *             extents = [f"{type.arraysize[i]}" for i in range(type.ndim)]
- *             result = f"({u','.join(extents)})".encode('ascii') + result
-*/
-    __pyx_t_1 = ((__pyx_v_type->arraysize[0]) != 0);
-    if (__pyx_t_1) {
-
-      /* "BufferFormatFromTypeInfo":1479
- *         result = fmt.string
- *         if type.arraysize[0]:
- *             extents = [f"{type.arraysize[i]}" for i in range(type.ndim)]             # <<<<<<<<<<<<<<
- *             result = f"({u','.join(extents)})".encode('ascii') + result
+  /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":27
+ *     if _COMBO_MASKS_OBJ is None:
+ *         _COMBO_MASKS_OBJ = canonical_combo_masks()
+ *     if _COMBO_SUIT_REMAPS_OBJ is None:             # <<<<<<<<<<<<<<
+ *         _COMBO_SUIT_REMAPS_OBJ = _combo_suit_remaps()
  * 
 */
-      { /* enter inner scope */
-        __pyx_t_5 = PyList_New(0); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 1479, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_5);
-        __pyx_t_7 = __pyx_v_type->ndim;
-        __pyx_t_8 = __pyx_t_7;
-        for (__pyx_t_9 = 0; __pyx_t_9 < __pyx_t_8; __pyx_t_9+=1) {
-          __pyx_7genexpr__pyx_v_i = __pyx_t_9;
-          __pyx_t_4 = __Pyx_PyUnicode_From_size_t((__pyx_v_type->arraysize[__pyx_7genexpr__pyx_v_i]), 0, ' ', 'd'); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 1479, __pyx_L1_error)
-          __Pyx_GOTREF(__pyx_t_4);
-          if (unlikely(__Pyx_ListComp_Append(__pyx_t_5, (PyObject*)__pyx_t_4))) __PYX_ERR(1, 1479, __pyx_L1_error)
-          __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-        }
-      } /* exit inner scope */
-      __pyx_v_extents = ((PyObject*)__pyx_t_5);
+  __pyx_t_1 = (__pyx_v_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder__COMBO_SUIT_REMAPS_OBJ == Py_None);
+  if (__pyx_t_1) {
+
+    /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":28
+ *         _COMBO_MASKS_OBJ = canonical_combo_masks()
+ *     if _COMBO_SUIT_REMAPS_OBJ is None:
+ *         _COMBO_SUIT_REMAPS_OBJ = _combo_suit_remaps()             # <<<<<<<<<<<<<<
+ * 
+ * 
+*/
+    __pyx_t_4 = NULL;
+    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_mstate_global->__pyx_n_u_combo_suit_remaps); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 28, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_t_5 = 1;
+    #if CYTHON_UNPACK_METHODS
+    if (unlikely(PyMethod_Check(__pyx_t_3))) {
+      __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
+      assert(__pyx_t_4);
+      PyObject* __pyx__function = PyMethod_GET_FUNCTION(__pyx_t_3);
+      __Pyx_INCREF(__pyx_t_4);
+      __Pyx_INCREF(__pyx__function);
+      __Pyx_DECREF_SET(__pyx_t_3, __pyx__function);
       __pyx_t_5 = 0;
-
-      /* "BufferFormatFromTypeInfo":1480
- *         if type.arraysize[0]:
- *             extents = [f"{type.arraysize[i]}" for i in range(type.ndim)]
- *             result = f"({u','.join(extents)})".encode('ascii') + result             # <<<<<<<<<<<<<<
- * 
- *     return result
-*/
-      __pyx_t_5 = PyUnicode_Join(__pyx_mstate_global->__pyx_kp_u__11, __pyx_v_extents); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 1480, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_5);
-      __pyx_t_10[0] = __pyx_mstate_global->__pyx_kp_u__10;
-      __pyx_t_10[1] = __pyx_t_5;
-      __pyx_t_10[2] = __pyx_mstate_global->__pyx_kp_u__5;
-      __pyx_t_4 = __Pyx_PyUnicode_Join(__pyx_t_10, 3, 1 * 2 + __Pyx_PyUnicode_GET_LENGTH(__pyx_t_5), 127 | __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_5));
-      if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 1480, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __pyx_t_5 = PyUnicode_AsASCIIString(((PyObject*)__pyx_t_4)); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 1480, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_5);
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __pyx_t_4 = PyNumber_Add(__pyx_t_5, __pyx_v_result); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 1480, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __Pyx_DECREF_SET(__pyx_v_result, ((PyObject*)__pyx_t_4));
-      __pyx_t_4 = 0;
-
-      /* "BufferFormatFromTypeInfo":1478
- *         fmt = __Pyx_TypeInfoToFormat(type)
- *         result = fmt.string
- *         if type.arraysize[0]:             # <<<<<<<<<<<<<<
- *             extents = [f"{type.arraysize[i]}" for i in range(type.ndim)]
- *             result = f"({u','.join(extents)})".encode('ascii') + result
-*/
     }
-  }
-  __pyx_L3:;
+    #endif
+    {
+      PyObject *__pyx_callargs[2] = {__pyx_t_4, NULL};
+      __pyx_t_2 = __Pyx_PyObject_FastCall((PyObject*)__pyx_t_3, __pyx_callargs+__pyx_t_5, (1-__pyx_t_5) | (__pyx_t_5*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
+      __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 28, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_2);
+    }
+    __Pyx_XGOTREF(__pyx_v_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder__COMBO_SUIT_REMAPS_OBJ);
+    __Pyx_DECREF_SET(__pyx_v_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder__COMBO_SUIT_REMAPS_OBJ, __pyx_t_2);
+    __Pyx_GIVEREF(__pyx_t_2);
+    __pyx_t_2 = 0;
 
-  /* "BufferFormatFromTypeInfo":1482
- *             result = f"({u','.join(extents)})".encode('ascii') + result
+    /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":27
+ *     if _COMBO_MASKS_OBJ is None:
+ *         _COMBO_MASKS_OBJ = canonical_combo_masks()
+ *     if _COMBO_SUIT_REMAPS_OBJ is None:             # <<<<<<<<<<<<<<
+ *         _COMBO_SUIT_REMAPS_OBJ = _combo_suit_remaps()
  * 
- *     return result             # <<<<<<<<<<<<<<
 */
-  __Pyx_XDECREF(__pyx_r);
-  __Pyx_INCREF(__pyx_v_result);
-  __pyx_r = __pyx_v_result;
-  goto __pyx_L0;
+  }
 
-  /* "BufferFormatFromTypeInfo":1450
+  /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":23
  * 
  * 
- * @cname('__pyx_format_from_typeinfo')             # <<<<<<<<<<<<<<
- * cdef bytes format_from_typeinfo(const __Pyx_TypeInfo *type):
- *     cdef const __Pyx_StructField *field
+ * cdef inline void _ensure_lookup_tables():             # <<<<<<<<<<<<<<
+ *     global _COMBO_MASKS_OBJ, _COMBO_SUIT_REMAPS_OBJ
+ *     if _COMBO_MASKS_OBJ is None:
 */
 
   /* function exit code */
+  goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_AddTraceback("BufferFormatFromTypeInfo.format_from_typeinfo", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = 0;
+  __Pyx_AddTraceback("poker_eval_faster.eval_cython.three_way_class_lookup_builder._ensure_lookup_tables", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_L0:;
-  __Pyx_XDECREF(__pyx_v_part);
-  __Pyx_XDECREF(__pyx_v_result);
-  __Pyx_XDECREF(__pyx_v_alignment);
-  __Pyx_XDECREF(__pyx_v_parts);
-  __Pyx_XDECREF(__pyx_v_extents);
-  __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
+}
+
+/* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":31
+ * 
+ * 
+ * cdef inline stdint.uint64_t _pack_matchup_key(unsigned char a1,             # <<<<<<<<<<<<<<
+ *                                               unsigned char a2,
+ *                                               unsigned char b1,
+*/
+
+static CYTHON_INLINE uint64_t __pyx_f_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder__pack_matchup_key(unsigned char __pyx_v_a1, unsigned char __pyx_v_a2, unsigned char __pyx_v_b1, unsigned char __pyx_v_b2, unsigned char __pyx_v_c1, unsigned char __pyx_v_c2) {
+  uint64_t __pyx_r;
+
+  /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":43
+ *         | (<stdint.uint64_t>b2 << 16)
+ *         | (<stdint.uint64_t>c1 << 8)
+ *         | <stdint.uint64_t>c2             # <<<<<<<<<<<<<<
+ *     )
+ * 
+*/
+  __pyx_r = ((((((((uint64_t)__pyx_v_a1) << 40) | (((uint64_t)__pyx_v_a2) << 32)) | (((uint64_t)__pyx_v_b1) << 24)) | (((uint64_t)__pyx_v_b2) << 16)) | (((uint64_t)__pyx_v_c1) << 8)) | ((uint64_t)__pyx_v_c2));
+  goto __pyx_L0;
+
+  /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":31
+ * 
+ * 
+ * cdef inline stdint.uint64_t _pack_matchup_key(unsigned char a1,             # <<<<<<<<<<<<<<
+ *                                               unsigned char a2,
+ *                                               unsigned char b1,
+*/
+
+  /* function exit code */
+  __pyx_L0:;
   return __pyx_r;
 }
 
-/* "poker_eval_faster/eval_cython/three_way_orders.pyx":30
+/* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":47
  * 
  * 
- * cdef inline void classify_three_way(stdint.uint32_t eval_a,             # <<<<<<<<<<<<<<
- *                                     stdint.uint32_t eval_b,
- *                                     stdint.uint32_t eval_c,
+ * cdef inline stdint.uint64_t _canonical_three_way_matchup_key(             # <<<<<<<<<<<<<<
+ *     int combo_a_idx,
+ *     int combo_b_idx,
 */
 
-static CYTHON_INLINE void __pyx_f_17poker_eval_faster_11eval_cython_16three_way_orders_classify_three_way(uint32_t __pyx_v_eval_a, uint32_t __pyx_v_eval_b, uint32_t __pyx_v_eval_c, uint64_t *__pyx_v_results) {
-  int __pyx_t_1;
-  int __pyx_t_2;
-
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":34
- *                                     stdint.uint32_t eval_c,
- *                                     stdint.uint64_t results[]) noexcept nogil:
- *     if eval_a == eval_b:             # <<<<<<<<<<<<<<
- *         if eval_b == eval_c:
- *             results[ORDER_A_EQ_B_EQ_C] += 1
-*/
-  __pyx_t_1 = (__pyx_v_eval_a == __pyx_v_eval_b);
-  if (__pyx_t_1) {
-
-    /* "poker_eval_faster/eval_cython/three_way_orders.pyx":35
- *                                     stdint.uint64_t results[]) noexcept nogil:
- *     if eval_a == eval_b:
- *         if eval_b == eval_c:             # <<<<<<<<<<<<<<
- *             results[ORDER_A_EQ_B_EQ_C] += 1
- *         elif eval_a > eval_c:
-*/
-    __pyx_t_1 = (__pyx_v_eval_b == __pyx_v_eval_c);
-    if (__pyx_t_1) {
-
-      /* "poker_eval_faster/eval_cython/three_way_orders.pyx":36
- *     if eval_a == eval_b:
- *         if eval_b == eval_c:
- *             results[ORDER_A_EQ_B_EQ_C] += 1             # <<<<<<<<<<<<<<
- *         elif eval_a > eval_c:
- *             results[ORDER_A_EQ_B_GT_C] += 1
-*/
-      __pyx_t_2 = __pyx_v_17poker_eval_faster_11eval_cython_16three_way_orders_ORDER_A_EQ_B_EQ_C;
-      (__pyx_v_results[__pyx_t_2]) = ((__pyx_v_results[__pyx_t_2]) + 1);
-
-      /* "poker_eval_faster/eval_cython/three_way_orders.pyx":35
- *                                     stdint.uint64_t results[]) noexcept nogil:
- *     if eval_a == eval_b:
- *         if eval_b == eval_c:             # <<<<<<<<<<<<<<
- *             results[ORDER_A_EQ_B_EQ_C] += 1
- *         elif eval_a > eval_c:
-*/
-      goto __pyx_L4;
-    }
-
-    /* "poker_eval_faster/eval_cython/three_way_orders.pyx":37
- *         if eval_b == eval_c:
- *             results[ORDER_A_EQ_B_EQ_C] += 1
- *         elif eval_a > eval_c:             # <<<<<<<<<<<<<<
- *             results[ORDER_A_EQ_B_GT_C] += 1
- *         else:
-*/
-    __pyx_t_1 = (__pyx_v_eval_a > __pyx_v_eval_c);
-    if (__pyx_t_1) {
-
-      /* "poker_eval_faster/eval_cython/three_way_orders.pyx":38
- *             results[ORDER_A_EQ_B_EQ_C] += 1
- *         elif eval_a > eval_c:
- *             results[ORDER_A_EQ_B_GT_C] += 1             # <<<<<<<<<<<<<<
- *         else:
- *             results[ORDER_C_GT_A_EQ_B] += 1
-*/
-      __pyx_t_2 = __pyx_v_17poker_eval_faster_11eval_cython_16three_way_orders_ORDER_A_EQ_B_GT_C;
-      (__pyx_v_results[__pyx_t_2]) = ((__pyx_v_results[__pyx_t_2]) + 1);
-
-      /* "poker_eval_faster/eval_cython/three_way_orders.pyx":37
- *         if eval_b == eval_c:
- *             results[ORDER_A_EQ_B_EQ_C] += 1
- *         elif eval_a > eval_c:             # <<<<<<<<<<<<<<
- *             results[ORDER_A_EQ_B_GT_C] += 1
- *         else:
-*/
-      goto __pyx_L4;
-    }
-
-    /* "poker_eval_faster/eval_cython/three_way_orders.pyx":40
- *             results[ORDER_A_EQ_B_GT_C] += 1
- *         else:
- *             results[ORDER_C_GT_A_EQ_B] += 1             # <<<<<<<<<<<<<<
- *         return
- * 
-*/
-    /*else*/ {
-      __pyx_t_2 = __pyx_v_17poker_eval_faster_11eval_cython_16three_way_orders_ORDER_C_GT_A_EQ_B;
-      (__pyx_v_results[__pyx_t_2]) = ((__pyx_v_results[__pyx_t_2]) + 1);
-    }
-    __pyx_L4:;
-
-    /* "poker_eval_faster/eval_cython/three_way_orders.pyx":41
- *         else:
- *             results[ORDER_C_GT_A_EQ_B] += 1
- *         return             # <<<<<<<<<<<<<<
- * 
- *     if eval_a == eval_c:
-*/
-    goto __pyx_L0;
-
-    /* "poker_eval_faster/eval_cython/three_way_orders.pyx":34
- *                                     stdint.uint32_t eval_c,
- *                                     stdint.uint64_t results[]) noexcept nogil:
- *     if eval_a == eval_b:             # <<<<<<<<<<<<<<
- *         if eval_b == eval_c:
- *             results[ORDER_A_EQ_B_EQ_C] += 1
-*/
-  }
-
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":43
- *         return
- * 
- *     if eval_a == eval_c:             # <<<<<<<<<<<<<<
- *         if eval_a > eval_b:
- *             results[ORDER_A_EQ_C_GT_B] += 1
-*/
-  __pyx_t_1 = (__pyx_v_eval_a == __pyx_v_eval_c);
-  if (__pyx_t_1) {
-
-    /* "poker_eval_faster/eval_cython/three_way_orders.pyx":44
- * 
- *     if eval_a == eval_c:
- *         if eval_a > eval_b:             # <<<<<<<<<<<<<<
- *             results[ORDER_A_EQ_C_GT_B] += 1
- *         else:
-*/
-    __pyx_t_1 = (__pyx_v_eval_a > __pyx_v_eval_b);
-    if (__pyx_t_1) {
-
-      /* "poker_eval_faster/eval_cython/three_way_orders.pyx":45
- *     if eval_a == eval_c:
- *         if eval_a > eval_b:
- *             results[ORDER_A_EQ_C_GT_B] += 1             # <<<<<<<<<<<<<<
- *         else:
- *             results[ORDER_B_GT_A_EQ_C] += 1
-*/
-      __pyx_t_2 = __pyx_v_17poker_eval_faster_11eval_cython_16three_way_orders_ORDER_A_EQ_C_GT_B;
-      (__pyx_v_results[__pyx_t_2]) = ((__pyx_v_results[__pyx_t_2]) + 1);
-
-      /* "poker_eval_faster/eval_cython/three_way_orders.pyx":44
- * 
- *     if eval_a == eval_c:
- *         if eval_a > eval_b:             # <<<<<<<<<<<<<<
- *             results[ORDER_A_EQ_C_GT_B] += 1
- *         else:
-*/
-      goto __pyx_L6;
-    }
-
-    /* "poker_eval_faster/eval_cython/three_way_orders.pyx":47
- *             results[ORDER_A_EQ_C_GT_B] += 1
- *         else:
- *             results[ORDER_B_GT_A_EQ_C] += 1             # <<<<<<<<<<<<<<
- *         return
- * 
-*/
-    /*else*/ {
-      __pyx_t_2 = __pyx_v_17poker_eval_faster_11eval_cython_16three_way_orders_ORDER_B_GT_A_EQ_C;
-      (__pyx_v_results[__pyx_t_2]) = ((__pyx_v_results[__pyx_t_2]) + 1);
-    }
-    __pyx_L6:;
-
-    /* "poker_eval_faster/eval_cython/three_way_orders.pyx":48
- *         else:
- *             results[ORDER_B_GT_A_EQ_C] += 1
- *         return             # <<<<<<<<<<<<<<
- * 
- *     if eval_b == eval_c:
-*/
-    goto __pyx_L0;
-
-    /* "poker_eval_faster/eval_cython/three_way_orders.pyx":43
- *         return
- * 
- *     if eval_a == eval_c:             # <<<<<<<<<<<<<<
- *         if eval_a > eval_b:
- *             results[ORDER_A_EQ_C_GT_B] += 1
-*/
-  }
-
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":50
- *         return
- * 
- *     if eval_b == eval_c:             # <<<<<<<<<<<<<<
- *         if eval_b > eval_a:
- *             results[ORDER_B_EQ_C_GT_A] += 1
-*/
-  __pyx_t_1 = (__pyx_v_eval_b == __pyx_v_eval_c);
-  if (__pyx_t_1) {
-
-    /* "poker_eval_faster/eval_cython/three_way_orders.pyx":51
- * 
- *     if eval_b == eval_c:
- *         if eval_b > eval_a:             # <<<<<<<<<<<<<<
- *             results[ORDER_B_EQ_C_GT_A] += 1
- *         else:
-*/
-    __pyx_t_1 = (__pyx_v_eval_b > __pyx_v_eval_a);
-    if (__pyx_t_1) {
-
-      /* "poker_eval_faster/eval_cython/three_way_orders.pyx":52
- *     if eval_b == eval_c:
- *         if eval_b > eval_a:
- *             results[ORDER_B_EQ_C_GT_A] += 1             # <<<<<<<<<<<<<<
- *         else:
- *             results[ORDER_A_GT_B_EQ_C] += 1
-*/
-      __pyx_t_2 = __pyx_v_17poker_eval_faster_11eval_cython_16three_way_orders_ORDER_B_EQ_C_GT_A;
-      (__pyx_v_results[__pyx_t_2]) = ((__pyx_v_results[__pyx_t_2]) + 1);
-
-      /* "poker_eval_faster/eval_cython/three_way_orders.pyx":51
- * 
- *     if eval_b == eval_c:
- *         if eval_b > eval_a:             # <<<<<<<<<<<<<<
- *             results[ORDER_B_EQ_C_GT_A] += 1
- *         else:
-*/
-      goto __pyx_L8;
-    }
-
-    /* "poker_eval_faster/eval_cython/three_way_orders.pyx":54
- *             results[ORDER_B_EQ_C_GT_A] += 1
- *         else:
- *             results[ORDER_A_GT_B_EQ_C] += 1             # <<<<<<<<<<<<<<
- *         return
- * 
-*/
-    /*else*/ {
-      __pyx_t_2 = __pyx_v_17poker_eval_faster_11eval_cython_16three_way_orders_ORDER_A_GT_B_EQ_C;
-      (__pyx_v_results[__pyx_t_2]) = ((__pyx_v_results[__pyx_t_2]) + 1);
-    }
-    __pyx_L8:;
-
-    /* "poker_eval_faster/eval_cython/three_way_orders.pyx":55
- *         else:
- *             results[ORDER_A_GT_B_EQ_C] += 1
- *         return             # <<<<<<<<<<<<<<
- * 
- *     if eval_a > eval_b:
-*/
-    goto __pyx_L0;
-
-    /* "poker_eval_faster/eval_cython/three_way_orders.pyx":50
- *         return
- * 
- *     if eval_b == eval_c:             # <<<<<<<<<<<<<<
- *         if eval_b > eval_a:
- *             results[ORDER_B_EQ_C_GT_A] += 1
-*/
-  }
-
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":57
- *         return
- * 
- *     if eval_a > eval_b:             # <<<<<<<<<<<<<<
- *         if eval_b > eval_c:
- *             results[ORDER_A_B_C] += 1
-*/
-  __pyx_t_1 = (__pyx_v_eval_a > __pyx_v_eval_b);
-  if (__pyx_t_1) {
-
-    /* "poker_eval_faster/eval_cython/three_way_orders.pyx":58
- * 
- *     if eval_a > eval_b:
- *         if eval_b > eval_c:             # <<<<<<<<<<<<<<
- *             results[ORDER_A_B_C] += 1
- *         elif eval_a > eval_c:
-*/
-    __pyx_t_1 = (__pyx_v_eval_b > __pyx_v_eval_c);
-    if (__pyx_t_1) {
-
-      /* "poker_eval_faster/eval_cython/three_way_orders.pyx":59
- *     if eval_a > eval_b:
- *         if eval_b > eval_c:
- *             results[ORDER_A_B_C] += 1             # <<<<<<<<<<<<<<
- *         elif eval_a > eval_c:
- *             results[ORDER_A_C_B] += 1
-*/
-      __pyx_t_2 = __pyx_v_17poker_eval_faster_11eval_cython_16three_way_orders_ORDER_A_B_C;
-      (__pyx_v_results[__pyx_t_2]) = ((__pyx_v_results[__pyx_t_2]) + 1);
-
-      /* "poker_eval_faster/eval_cython/three_way_orders.pyx":58
- * 
- *     if eval_a > eval_b:
- *         if eval_b > eval_c:             # <<<<<<<<<<<<<<
- *             results[ORDER_A_B_C] += 1
- *         elif eval_a > eval_c:
-*/
-      goto __pyx_L10;
-    }
-
-    /* "poker_eval_faster/eval_cython/three_way_orders.pyx":60
- *         if eval_b > eval_c:
- *             results[ORDER_A_B_C] += 1
- *         elif eval_a > eval_c:             # <<<<<<<<<<<<<<
- *             results[ORDER_A_C_B] += 1
- *         else:
-*/
-    __pyx_t_1 = (__pyx_v_eval_a > __pyx_v_eval_c);
-    if (__pyx_t_1) {
-
-      /* "poker_eval_faster/eval_cython/three_way_orders.pyx":61
- *             results[ORDER_A_B_C] += 1
- *         elif eval_a > eval_c:
- *             results[ORDER_A_C_B] += 1             # <<<<<<<<<<<<<<
- *         else:
- *             results[ORDER_C_A_B] += 1
-*/
-      __pyx_t_2 = __pyx_v_17poker_eval_faster_11eval_cython_16three_way_orders_ORDER_A_C_B;
-      (__pyx_v_results[__pyx_t_2]) = ((__pyx_v_results[__pyx_t_2]) + 1);
-
-      /* "poker_eval_faster/eval_cython/three_way_orders.pyx":60
- *         if eval_b > eval_c:
- *             results[ORDER_A_B_C] += 1
- *         elif eval_a > eval_c:             # <<<<<<<<<<<<<<
- *             results[ORDER_A_C_B] += 1
- *         else:
-*/
-      goto __pyx_L10;
-    }
-
-    /* "poker_eval_faster/eval_cython/three_way_orders.pyx":63
- *             results[ORDER_A_C_B] += 1
- *         else:
- *             results[ORDER_C_A_B] += 1             # <<<<<<<<<<<<<<
- *         return
- * 
-*/
-    /*else*/ {
-      __pyx_t_2 = __pyx_v_17poker_eval_faster_11eval_cython_16three_way_orders_ORDER_C_A_B;
-      (__pyx_v_results[__pyx_t_2]) = ((__pyx_v_results[__pyx_t_2]) + 1);
-    }
-    __pyx_L10:;
-
-    /* "poker_eval_faster/eval_cython/three_way_orders.pyx":64
- *         else:
- *             results[ORDER_C_A_B] += 1
- *         return             # <<<<<<<<<<<<<<
- * 
- *     if eval_a > eval_c:
-*/
-    goto __pyx_L0;
-
-    /* "poker_eval_faster/eval_cython/three_way_orders.pyx":57
- *         return
- * 
- *     if eval_a > eval_b:             # <<<<<<<<<<<<<<
- *         if eval_b > eval_c:
- *             results[ORDER_A_B_C] += 1
-*/
-  }
-
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":66
- *         return
- * 
- *     if eval_a > eval_c:             # <<<<<<<<<<<<<<
- *         results[ORDER_B_A_C] += 1
- *     elif eval_b > eval_c:
-*/
-  __pyx_t_1 = (__pyx_v_eval_a > __pyx_v_eval_c);
-  if (__pyx_t_1) {
-
-    /* "poker_eval_faster/eval_cython/three_way_orders.pyx":67
- * 
- *     if eval_a > eval_c:
- *         results[ORDER_B_A_C] += 1             # <<<<<<<<<<<<<<
- *     elif eval_b > eval_c:
- *         results[ORDER_B_C_A] += 1
-*/
-    __pyx_t_2 = __pyx_v_17poker_eval_faster_11eval_cython_16three_way_orders_ORDER_B_A_C;
-    (__pyx_v_results[__pyx_t_2]) = ((__pyx_v_results[__pyx_t_2]) + 1);
-
-    /* "poker_eval_faster/eval_cython/three_way_orders.pyx":66
- *         return
- * 
- *     if eval_a > eval_c:             # <<<<<<<<<<<<<<
- *         results[ORDER_B_A_C] += 1
- *     elif eval_b > eval_c:
-*/
-    goto __pyx_L11;
-  }
-
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":68
- *     if eval_a > eval_c:
- *         results[ORDER_B_A_C] += 1
- *     elif eval_b > eval_c:             # <<<<<<<<<<<<<<
- *         results[ORDER_B_C_A] += 1
- *     else:
-*/
-  __pyx_t_1 = (__pyx_v_eval_b > __pyx_v_eval_c);
-  if (__pyx_t_1) {
-
-    /* "poker_eval_faster/eval_cython/three_way_orders.pyx":69
- *         results[ORDER_B_A_C] += 1
- *     elif eval_b > eval_c:
- *         results[ORDER_B_C_A] += 1             # <<<<<<<<<<<<<<
- *     else:
- *         results[ORDER_C_B_A] += 1
-*/
-    __pyx_t_2 = __pyx_v_17poker_eval_faster_11eval_cython_16three_way_orders_ORDER_B_C_A;
-    (__pyx_v_results[__pyx_t_2]) = ((__pyx_v_results[__pyx_t_2]) + 1);
-
-    /* "poker_eval_faster/eval_cython/three_way_orders.pyx":68
- *     if eval_a > eval_c:
- *         results[ORDER_B_A_C] += 1
- *     elif eval_b > eval_c:             # <<<<<<<<<<<<<<
- *         results[ORDER_B_C_A] += 1
- *     else:
-*/
-    goto __pyx_L11;
-  }
-
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":71
- *         results[ORDER_B_C_A] += 1
- *     else:
- *         results[ORDER_C_B_A] += 1             # <<<<<<<<<<<<<<
- * 
- * 
-*/
-  /*else*/ {
-    __pyx_t_2 = __pyx_v_17poker_eval_faster_11eval_cython_16three_way_orders_ORDER_C_B_A;
-    (__pyx_v_results[__pyx_t_2]) = ((__pyx_v_results[__pyx_t_2]) + 1);
-  }
-  __pyx_L11:;
-
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":30
- * 
- * 
- * cdef inline void classify_three_way(stdint.uint32_t eval_a,             # <<<<<<<<<<<<<<
- *                                     stdint.uint32_t eval_b,
- *                                     stdint.uint32_t eval_c,
-*/
-
-  /* function exit code */
-  __pyx_L0:;
-}
-
-/* "poker_eval_faster/eval_cython/three_way_orders.pyx":74
- * 
- * 
- * cdef void _enumerate_three_way_boards(int deck[], int len_deck,             # <<<<<<<<<<<<<<
- *                                       stdint.uint32_t sum_a,
- *                                       stdint.uint32_t sum_b,
-*/
-
-static void __pyx_f_17poker_eval_faster_11eval_cython_16three_way_orders__enumerate_three_way_boards(int *__pyx_v_deck, int __pyx_v_len_deck, uint32_t __pyx_v_sum_a, uint32_t __pyx_v_sum_b, uint32_t __pyx_v_sum_c, int __pyx_v_len_board, uint64_t *__pyx_v_results) {
-  int __pyx_v_a;
-  int __pyx_v_b;
-  int __pyx_v_c;
-  int __pyx_v_d;
-  int __pyx_v_e;
-  uint32_t __pyx_v_eval_a_a;
-  uint32_t __pyx_v_eval_a_b;
-  uint32_t __pyx_v_eval_a_c;
-  uint32_t __pyx_v_eval_a_d;
-  uint32_t __pyx_v_eval_a_e;
-  uint32_t __pyx_v_eval_b_a;
-  uint32_t __pyx_v_eval_b_b;
-  uint32_t __pyx_v_eval_b_c;
-  uint32_t __pyx_v_eval_b_d;
-  uint32_t __pyx_v_eval_b_e;
-  uint32_t __pyx_v_eval_c_a;
-  uint32_t __pyx_v_eval_c_b;
-  uint32_t __pyx_v_eval_c_c;
-  uint32_t __pyx_v_eval_c_d;
-  uint32_t __pyx_v_eval_c_e;
+static CYTHON_INLINE uint64_t __pyx_f_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder__canonical_three_way_matchup_key(int __pyx_v_combo_a_idx, int __pyx_v_combo_b_idx, int __pyx_v_combo_c_idx, __Pyx_memviewslice __pyx_v_combo_remaps) {
+  int __pyx_v_perm_idx;
+  uint64_t __pyx_v_best_key;
+  uint64_t __pyx_v_candidate;
+  uint64_t __pyx_r;
   int __pyx_t_1;
   int __pyx_t_2;
   int __pyx_t_3;
-  size_t __pyx_t_4;
-  int __pyx_t_5;
-  int __pyx_t_6;
-  int __pyx_t_7;
-  int __pyx_t_8;
-  int __pyx_t_9;
-  int __pyx_t_10;
-  int __pyx_t_11;
-  int __pyx_t_12;
-  int __pyx_t_13;
-  int __pyx_t_14;
-  int __pyx_t_15;
-  int __pyx_t_16;
-  int __pyx_t_17;
-  int __pyx_lineno = 0;
-  const char *__pyx_filename = NULL;
-  int __pyx_clineno = 0;
-
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":86
- *         stdint.uint32_t eval_c_a, eval_c_b, eval_c_c, eval_c_d, eval_c_e
- * 
- *     with nogil:             # <<<<<<<<<<<<<<
- *         for a in range(len_deck):
- *             eval_a_a = handdat[sum_a + deck[a]]
-*/
-  {
-      PyThreadState * _save;
-      _save = PyEval_SaveThread();
-      __Pyx_FastGIL_Remember();
-      /*try:*/ {
-
-        /* "poker_eval_faster/eval_cython/three_way_orders.pyx":87
- * 
- *     with nogil:
- *         for a in range(len_deck):             # <<<<<<<<<<<<<<
- *             eval_a_a = handdat[sum_a + deck[a]]
- *             eval_b_a = handdat[sum_b + deck[a]]
-*/
-        __pyx_t_1 = __pyx_v_len_deck;
-        __pyx_t_2 = __pyx_t_1;
-        for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
-          __pyx_v_a = __pyx_t_3;
-
-          /* "poker_eval_faster/eval_cython/three_way_orders.pyx":88
- *     with nogil:
- *         for a in range(len_deck):
- *             eval_a_a = handdat[sum_a + deck[a]]             # <<<<<<<<<<<<<<
- *             eval_b_a = handdat[sum_b + deck[a]]
- *             eval_c_a = handdat[sum_c + deck[a]]
-*/
-          if (unlikely(!__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.memview)) { __Pyx_RaiseUnboundLocalErrorNogil("handdat"); __PYX_ERR(0, 88, __pyx_L4_error) }
-          __pyx_t_4 = (__pyx_v_sum_a + (__pyx_v_deck[__pyx_v_a]));
-          __pyx_v_eval_a_a = (*((uint32_t const  *) ( /* dim=0 */ (__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.data + __pyx_t_4 * __pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.strides[0]) )));
-
-          /* "poker_eval_faster/eval_cython/three_way_orders.pyx":89
- *         for a in range(len_deck):
- *             eval_a_a = handdat[sum_a + deck[a]]
- *             eval_b_a = handdat[sum_b + deck[a]]             # <<<<<<<<<<<<<<
- *             eval_c_a = handdat[sum_c + deck[a]]
- *             if len_board == 4:
-*/
-          if (unlikely(!__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.memview)) { __Pyx_RaiseUnboundLocalErrorNogil("handdat"); __PYX_ERR(0, 89, __pyx_L4_error) }
-          __pyx_t_4 = (__pyx_v_sum_b + (__pyx_v_deck[__pyx_v_a]));
-          __pyx_v_eval_b_a = (*((uint32_t const  *) ( /* dim=0 */ (__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.data + __pyx_t_4 * __pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.strides[0]) )));
-
-          /* "poker_eval_faster/eval_cython/three_way_orders.pyx":90
- *             eval_a_a = handdat[sum_a + deck[a]]
- *             eval_b_a = handdat[sum_b + deck[a]]
- *             eval_c_a = handdat[sum_c + deck[a]]             # <<<<<<<<<<<<<<
- *             if len_board == 4:
- *                 classify_three_way(eval_a_a, eval_b_a, eval_c_a, results)
-*/
-          if (unlikely(!__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.memview)) { __Pyx_RaiseUnboundLocalErrorNogil("handdat"); __PYX_ERR(0, 90, __pyx_L4_error) }
-          __pyx_t_4 = (__pyx_v_sum_c + (__pyx_v_deck[__pyx_v_a]));
-          __pyx_v_eval_c_a = (*((uint32_t const  *) ( /* dim=0 */ (__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.data + __pyx_t_4 * __pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.strides[0]) )));
-
-          /* "poker_eval_faster/eval_cython/three_way_orders.pyx":91
- *             eval_b_a = handdat[sum_b + deck[a]]
- *             eval_c_a = handdat[sum_c + deck[a]]
- *             if len_board == 4:             # <<<<<<<<<<<<<<
- *                 classify_three_way(eval_a_a, eval_b_a, eval_c_a, results)
- *             elif len_board < 4:
-*/
-          __pyx_t_5 = (__pyx_v_len_board == 4);
-          if (__pyx_t_5) {
-
-            /* "poker_eval_faster/eval_cython/three_way_orders.pyx":92
- *             eval_c_a = handdat[sum_c + deck[a]]
- *             if len_board == 4:
- *                 classify_three_way(eval_a_a, eval_b_a, eval_c_a, results)             # <<<<<<<<<<<<<<
- *             elif len_board < 4:
- *                 for b in range(a + 1, len_deck):
-*/
-            __pyx_f_17poker_eval_faster_11eval_cython_16three_way_orders_classify_three_way(__pyx_v_eval_a_a, __pyx_v_eval_b_a, __pyx_v_eval_c_a, __pyx_v_results);
-
-            /* "poker_eval_faster/eval_cython/three_way_orders.pyx":91
- *             eval_b_a = handdat[sum_b + deck[a]]
- *             eval_c_a = handdat[sum_c + deck[a]]
- *             if len_board == 4:             # <<<<<<<<<<<<<<
- *                 classify_three_way(eval_a_a, eval_b_a, eval_c_a, results)
- *             elif len_board < 4:
-*/
-            goto __pyx_L8;
-          }
-
-          /* "poker_eval_faster/eval_cython/three_way_orders.pyx":93
- *             if len_board == 4:
- *                 classify_three_way(eval_a_a, eval_b_a, eval_c_a, results)
- *             elif len_board < 4:             # <<<<<<<<<<<<<<
- *                 for b in range(a + 1, len_deck):
- *                     eval_a_b = handdat[eval_a_a + deck[b]]
-*/
-          __pyx_t_5 = (__pyx_v_len_board < 4);
-          if (__pyx_t_5) {
-
-            /* "poker_eval_faster/eval_cython/three_way_orders.pyx":94
- *                 classify_three_way(eval_a_a, eval_b_a, eval_c_a, results)
- *             elif len_board < 4:
- *                 for b in range(a + 1, len_deck):             # <<<<<<<<<<<<<<
- *                     eval_a_b = handdat[eval_a_a + deck[b]]
- *                     eval_b_b = handdat[eval_b_a + deck[b]]
-*/
-            __pyx_t_6 = __pyx_v_len_deck;
-            __pyx_t_7 = __pyx_t_6;
-            for (__pyx_t_8 = (__pyx_v_a + 1); __pyx_t_8 < __pyx_t_7; __pyx_t_8+=1) {
-              __pyx_v_b = __pyx_t_8;
-
-              /* "poker_eval_faster/eval_cython/three_way_orders.pyx":95
- *             elif len_board < 4:
- *                 for b in range(a + 1, len_deck):
- *                     eval_a_b = handdat[eval_a_a + deck[b]]             # <<<<<<<<<<<<<<
- *                     eval_b_b = handdat[eval_b_a + deck[b]]
- *                     eval_c_b = handdat[eval_c_a + deck[b]]
-*/
-              if (unlikely(!__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.memview)) { __Pyx_RaiseUnboundLocalErrorNogil("handdat"); __PYX_ERR(0, 95, __pyx_L4_error) }
-              __pyx_t_4 = (__pyx_v_eval_a_a + (__pyx_v_deck[__pyx_v_b]));
-              __pyx_v_eval_a_b = (*((uint32_t const  *) ( /* dim=0 */ (__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.data + __pyx_t_4 * __pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.strides[0]) )));
-
-              /* "poker_eval_faster/eval_cython/three_way_orders.pyx":96
- *                 for b in range(a + 1, len_deck):
- *                     eval_a_b = handdat[eval_a_a + deck[b]]
- *                     eval_b_b = handdat[eval_b_a + deck[b]]             # <<<<<<<<<<<<<<
- *                     eval_c_b = handdat[eval_c_a + deck[b]]
- *                     if len_board == 3:
-*/
-              if (unlikely(!__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.memview)) { __Pyx_RaiseUnboundLocalErrorNogil("handdat"); __PYX_ERR(0, 96, __pyx_L4_error) }
-              __pyx_t_4 = (__pyx_v_eval_b_a + (__pyx_v_deck[__pyx_v_b]));
-              __pyx_v_eval_b_b = (*((uint32_t const  *) ( /* dim=0 */ (__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.data + __pyx_t_4 * __pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.strides[0]) )));
-
-              /* "poker_eval_faster/eval_cython/three_way_orders.pyx":97
- *                     eval_a_b = handdat[eval_a_a + deck[b]]
- *                     eval_b_b = handdat[eval_b_a + deck[b]]
- *                     eval_c_b = handdat[eval_c_a + deck[b]]             # <<<<<<<<<<<<<<
- *                     if len_board == 3:
- *                         classify_three_way(eval_a_b, eval_b_b, eval_c_b, results)
-*/
-              if (unlikely(!__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.memview)) { __Pyx_RaiseUnboundLocalErrorNogil("handdat"); __PYX_ERR(0, 97, __pyx_L4_error) }
-              __pyx_t_4 = (__pyx_v_eval_c_a + (__pyx_v_deck[__pyx_v_b]));
-              __pyx_v_eval_c_b = (*((uint32_t const  *) ( /* dim=0 */ (__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.data + __pyx_t_4 * __pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.strides[0]) )));
-
-              /* "poker_eval_faster/eval_cython/three_way_orders.pyx":98
- *                     eval_b_b = handdat[eval_b_a + deck[b]]
- *                     eval_c_b = handdat[eval_c_a + deck[b]]
- *                     if len_board == 3:             # <<<<<<<<<<<<<<
- *                         classify_three_way(eval_a_b, eval_b_b, eval_c_b, results)
- *                     elif len_board < 3:
-*/
-              __pyx_t_5 = (__pyx_v_len_board == 3);
-              if (__pyx_t_5) {
-
-                /* "poker_eval_faster/eval_cython/three_way_orders.pyx":99
- *                     eval_c_b = handdat[eval_c_a + deck[b]]
- *                     if len_board == 3:
- *                         classify_three_way(eval_a_b, eval_b_b, eval_c_b, results)             # <<<<<<<<<<<<<<
- *                     elif len_board < 3:
- *                         for c in range(b + 1, len_deck):
-*/
-                __pyx_f_17poker_eval_faster_11eval_cython_16three_way_orders_classify_three_way(__pyx_v_eval_a_b, __pyx_v_eval_b_b, __pyx_v_eval_c_b, __pyx_v_results);
-
-                /* "poker_eval_faster/eval_cython/three_way_orders.pyx":98
- *                     eval_b_b = handdat[eval_b_a + deck[b]]
- *                     eval_c_b = handdat[eval_c_a + deck[b]]
- *                     if len_board == 3:             # <<<<<<<<<<<<<<
- *                         classify_three_way(eval_a_b, eval_b_b, eval_c_b, results)
- *                     elif len_board < 3:
-*/
-                goto __pyx_L11;
-              }
-
-              /* "poker_eval_faster/eval_cython/three_way_orders.pyx":100
- *                     if len_board == 3:
- *                         classify_three_way(eval_a_b, eval_b_b, eval_c_b, results)
- *                     elif len_board < 3:             # <<<<<<<<<<<<<<
- *                         for c in range(b + 1, len_deck):
- *                             eval_a_c = handdat[eval_a_b + deck[c]]
-*/
-              __pyx_t_5 = (__pyx_v_len_board < 3);
-              if (__pyx_t_5) {
-
-                /* "poker_eval_faster/eval_cython/three_way_orders.pyx":101
- *                         classify_three_way(eval_a_b, eval_b_b, eval_c_b, results)
- *                     elif len_board < 3:
- *                         for c in range(b + 1, len_deck):             # <<<<<<<<<<<<<<
- *                             eval_a_c = handdat[eval_a_b + deck[c]]
- *                             eval_b_c = handdat[eval_b_b + deck[c]]
-*/
-                __pyx_t_9 = __pyx_v_len_deck;
-                __pyx_t_10 = __pyx_t_9;
-                for (__pyx_t_11 = (__pyx_v_b + 1); __pyx_t_11 < __pyx_t_10; __pyx_t_11+=1) {
-                  __pyx_v_c = __pyx_t_11;
-
-                  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":102
- *                     elif len_board < 3:
- *                         for c in range(b + 1, len_deck):
- *                             eval_a_c = handdat[eval_a_b + deck[c]]             # <<<<<<<<<<<<<<
- *                             eval_b_c = handdat[eval_b_b + deck[c]]
- *                             eval_c_c = handdat[eval_c_b + deck[c]]
-*/
-                  if (unlikely(!__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.memview)) { __Pyx_RaiseUnboundLocalErrorNogil("handdat"); __PYX_ERR(0, 102, __pyx_L4_error) }
-                  __pyx_t_4 = (__pyx_v_eval_a_b + (__pyx_v_deck[__pyx_v_c]));
-                  __pyx_v_eval_a_c = (*((uint32_t const  *) ( /* dim=0 */ (__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.data + __pyx_t_4 * __pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.strides[0]) )));
-
-                  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":103
- *                         for c in range(b + 1, len_deck):
- *                             eval_a_c = handdat[eval_a_b + deck[c]]
- *                             eval_b_c = handdat[eval_b_b + deck[c]]             # <<<<<<<<<<<<<<
- *                             eval_c_c = handdat[eval_c_b + deck[c]]
- *                             if len_board == 2:
-*/
-                  if (unlikely(!__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.memview)) { __Pyx_RaiseUnboundLocalErrorNogil("handdat"); __PYX_ERR(0, 103, __pyx_L4_error) }
-                  __pyx_t_4 = (__pyx_v_eval_b_b + (__pyx_v_deck[__pyx_v_c]));
-                  __pyx_v_eval_b_c = (*((uint32_t const  *) ( /* dim=0 */ (__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.data + __pyx_t_4 * __pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.strides[0]) )));
-
-                  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":104
- *                             eval_a_c = handdat[eval_a_b + deck[c]]
- *                             eval_b_c = handdat[eval_b_b + deck[c]]
- *                             eval_c_c = handdat[eval_c_b + deck[c]]             # <<<<<<<<<<<<<<
- *                             if len_board == 2:
- *                                 classify_three_way(eval_a_c, eval_b_c, eval_c_c, results)
-*/
-                  if (unlikely(!__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.memview)) { __Pyx_RaiseUnboundLocalErrorNogil("handdat"); __PYX_ERR(0, 104, __pyx_L4_error) }
-                  __pyx_t_4 = (__pyx_v_eval_c_b + (__pyx_v_deck[__pyx_v_c]));
-                  __pyx_v_eval_c_c = (*((uint32_t const  *) ( /* dim=0 */ (__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.data + __pyx_t_4 * __pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.strides[0]) )));
-
-                  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":105
- *                             eval_b_c = handdat[eval_b_b + deck[c]]
- *                             eval_c_c = handdat[eval_c_b + deck[c]]
- *                             if len_board == 2:             # <<<<<<<<<<<<<<
- *                                 classify_three_way(eval_a_c, eval_b_c, eval_c_c, results)
- *                             elif len_board < 2:
-*/
-                  __pyx_t_5 = (__pyx_v_len_board == 2);
-                  if (__pyx_t_5) {
-
-                    /* "poker_eval_faster/eval_cython/three_way_orders.pyx":106
- *                             eval_c_c = handdat[eval_c_b + deck[c]]
- *                             if len_board == 2:
- *                                 classify_three_way(eval_a_c, eval_b_c, eval_c_c, results)             # <<<<<<<<<<<<<<
- *                             elif len_board < 2:
- *                                 for d in range(c + 1, len_deck):
-*/
-                    __pyx_f_17poker_eval_faster_11eval_cython_16three_way_orders_classify_three_way(__pyx_v_eval_a_c, __pyx_v_eval_b_c, __pyx_v_eval_c_c, __pyx_v_results);
-
-                    /* "poker_eval_faster/eval_cython/three_way_orders.pyx":105
- *                             eval_b_c = handdat[eval_b_b + deck[c]]
- *                             eval_c_c = handdat[eval_c_b + deck[c]]
- *                             if len_board == 2:             # <<<<<<<<<<<<<<
- *                                 classify_three_way(eval_a_c, eval_b_c, eval_c_c, results)
- *                             elif len_board < 2:
-*/
-                    goto __pyx_L14;
-                  }
-
-                  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":107
- *                             if len_board == 2:
- *                                 classify_three_way(eval_a_c, eval_b_c, eval_c_c, results)
- *                             elif len_board < 2:             # <<<<<<<<<<<<<<
- *                                 for d in range(c + 1, len_deck):
- *                                     eval_a_d = handdat[eval_a_c + deck[d]]
-*/
-                  __pyx_t_5 = (__pyx_v_len_board < 2);
-                  if (__pyx_t_5) {
-
-                    /* "poker_eval_faster/eval_cython/three_way_orders.pyx":108
- *                                 classify_three_way(eval_a_c, eval_b_c, eval_c_c, results)
- *                             elif len_board < 2:
- *                                 for d in range(c + 1, len_deck):             # <<<<<<<<<<<<<<
- *                                     eval_a_d = handdat[eval_a_c + deck[d]]
- *                                     eval_b_d = handdat[eval_b_c + deck[d]]
-*/
-                    __pyx_t_12 = __pyx_v_len_deck;
-                    __pyx_t_13 = __pyx_t_12;
-                    for (__pyx_t_14 = (__pyx_v_c + 1); __pyx_t_14 < __pyx_t_13; __pyx_t_14+=1) {
-                      __pyx_v_d = __pyx_t_14;
-
-                      /* "poker_eval_faster/eval_cython/three_way_orders.pyx":109
- *                             elif len_board < 2:
- *                                 for d in range(c + 1, len_deck):
- *                                     eval_a_d = handdat[eval_a_c + deck[d]]             # <<<<<<<<<<<<<<
- *                                     eval_b_d = handdat[eval_b_c + deck[d]]
- *                                     eval_c_d = handdat[eval_c_c + deck[d]]
-*/
-                      if (unlikely(!__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.memview)) { __Pyx_RaiseUnboundLocalErrorNogil("handdat"); __PYX_ERR(0, 109, __pyx_L4_error) }
-                      __pyx_t_4 = (__pyx_v_eval_a_c + (__pyx_v_deck[__pyx_v_d]));
-                      __pyx_v_eval_a_d = (*((uint32_t const  *) ( /* dim=0 */ (__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.data + __pyx_t_4 * __pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.strides[0]) )));
-
-                      /* "poker_eval_faster/eval_cython/three_way_orders.pyx":110
- *                                 for d in range(c + 1, len_deck):
- *                                     eval_a_d = handdat[eval_a_c + deck[d]]
- *                                     eval_b_d = handdat[eval_b_c + deck[d]]             # <<<<<<<<<<<<<<
- *                                     eval_c_d = handdat[eval_c_c + deck[d]]
- *                                     if len_board == 1:
-*/
-                      if (unlikely(!__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.memview)) { __Pyx_RaiseUnboundLocalErrorNogil("handdat"); __PYX_ERR(0, 110, __pyx_L4_error) }
-                      __pyx_t_4 = (__pyx_v_eval_b_c + (__pyx_v_deck[__pyx_v_d]));
-                      __pyx_v_eval_b_d = (*((uint32_t const  *) ( /* dim=0 */ (__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.data + __pyx_t_4 * __pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.strides[0]) )));
-
-                      /* "poker_eval_faster/eval_cython/three_way_orders.pyx":111
- *                                     eval_a_d = handdat[eval_a_c + deck[d]]
- *                                     eval_b_d = handdat[eval_b_c + deck[d]]
- *                                     eval_c_d = handdat[eval_c_c + deck[d]]             # <<<<<<<<<<<<<<
- *                                     if len_board == 1:
- *                                         classify_three_way(eval_a_d, eval_b_d, eval_c_d, results)
-*/
-                      if (unlikely(!__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.memview)) { __Pyx_RaiseUnboundLocalErrorNogil("handdat"); __PYX_ERR(0, 111, __pyx_L4_error) }
-                      __pyx_t_4 = (__pyx_v_eval_c_c + (__pyx_v_deck[__pyx_v_d]));
-                      __pyx_v_eval_c_d = (*((uint32_t const  *) ( /* dim=0 */ (__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.data + __pyx_t_4 * __pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.strides[0]) )));
-
-                      /* "poker_eval_faster/eval_cython/three_way_orders.pyx":112
- *                                     eval_b_d = handdat[eval_b_c + deck[d]]
- *                                     eval_c_d = handdat[eval_c_c + deck[d]]
- *                                     if len_board == 1:             # <<<<<<<<<<<<<<
- *                                         classify_three_way(eval_a_d, eval_b_d, eval_c_d, results)
- *                                     elif len_board < 1:
-*/
-                      __pyx_t_5 = (__pyx_v_len_board == 1);
-                      if (__pyx_t_5) {
-
-                        /* "poker_eval_faster/eval_cython/three_way_orders.pyx":113
- *                                     eval_c_d = handdat[eval_c_c + deck[d]]
- *                                     if len_board == 1:
- *                                         classify_three_way(eval_a_d, eval_b_d, eval_c_d, results)             # <<<<<<<<<<<<<<
- *                                     elif len_board < 1:
- *                                         for e in range(d + 1, len_deck):
-*/
-                        __pyx_f_17poker_eval_faster_11eval_cython_16three_way_orders_classify_three_way(__pyx_v_eval_a_d, __pyx_v_eval_b_d, __pyx_v_eval_c_d, __pyx_v_results);
-
-                        /* "poker_eval_faster/eval_cython/three_way_orders.pyx":112
- *                                     eval_b_d = handdat[eval_b_c + deck[d]]
- *                                     eval_c_d = handdat[eval_c_c + deck[d]]
- *                                     if len_board == 1:             # <<<<<<<<<<<<<<
- *                                         classify_three_way(eval_a_d, eval_b_d, eval_c_d, results)
- *                                     elif len_board < 1:
-*/
-                        goto __pyx_L17;
-                      }
-
-                      /* "poker_eval_faster/eval_cython/three_way_orders.pyx":114
- *                                     if len_board == 1:
- *                                         classify_three_way(eval_a_d, eval_b_d, eval_c_d, results)
- *                                     elif len_board < 1:             # <<<<<<<<<<<<<<
- *                                         for e in range(d + 1, len_deck):
- *                                             eval_a_e = handdat[eval_a_d + deck[e]]
-*/
-                      __pyx_t_5 = (__pyx_v_len_board < 1);
-                      if (__pyx_t_5) {
-
-                        /* "poker_eval_faster/eval_cython/three_way_orders.pyx":115
- *                                         classify_three_way(eval_a_d, eval_b_d, eval_c_d, results)
- *                                     elif len_board < 1:
- *                                         for e in range(d + 1, len_deck):             # <<<<<<<<<<<<<<
- *                                             eval_a_e = handdat[eval_a_d + deck[e]]
- *                                             eval_b_e = handdat[eval_b_d + deck[e]]
-*/
-                        __pyx_t_15 = __pyx_v_len_deck;
-                        __pyx_t_16 = __pyx_t_15;
-                        for (__pyx_t_17 = (__pyx_v_d + 1); __pyx_t_17 < __pyx_t_16; __pyx_t_17+=1) {
-                          __pyx_v_e = __pyx_t_17;
-
-                          /* "poker_eval_faster/eval_cython/three_way_orders.pyx":116
- *                                     elif len_board < 1:
- *                                         for e in range(d + 1, len_deck):
- *                                             eval_a_e = handdat[eval_a_d + deck[e]]             # <<<<<<<<<<<<<<
- *                                             eval_b_e = handdat[eval_b_d + deck[e]]
- *                                             eval_c_e = handdat[eval_c_d + deck[e]]
-*/
-                          if (unlikely(!__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.memview)) { __Pyx_RaiseUnboundLocalErrorNogil("handdat"); __PYX_ERR(0, 116, __pyx_L4_error) }
-                          __pyx_t_4 = (__pyx_v_eval_a_d + (__pyx_v_deck[__pyx_v_e]));
-                          __pyx_v_eval_a_e = (*((uint32_t const  *) ( /* dim=0 */ (__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.data + __pyx_t_4 * __pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.strides[0]) )));
-
-                          /* "poker_eval_faster/eval_cython/three_way_orders.pyx":117
- *                                         for e in range(d + 1, len_deck):
- *                                             eval_a_e = handdat[eval_a_d + deck[e]]
- *                                             eval_b_e = handdat[eval_b_d + deck[e]]             # <<<<<<<<<<<<<<
- *                                             eval_c_e = handdat[eval_c_d + deck[e]]
- *                                             classify_three_way(eval_a_e, eval_b_e, eval_c_e, results)
-*/
-                          if (unlikely(!__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.memview)) { __Pyx_RaiseUnboundLocalErrorNogil("handdat"); __PYX_ERR(0, 117, __pyx_L4_error) }
-                          __pyx_t_4 = (__pyx_v_eval_b_d + (__pyx_v_deck[__pyx_v_e]));
-                          __pyx_v_eval_b_e = (*((uint32_t const  *) ( /* dim=0 */ (__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.data + __pyx_t_4 * __pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.strides[0]) )));
-
-                          /* "poker_eval_faster/eval_cython/three_way_orders.pyx":118
- *                                             eval_a_e = handdat[eval_a_d + deck[e]]
- *                                             eval_b_e = handdat[eval_b_d + deck[e]]
- *                                             eval_c_e = handdat[eval_c_d + deck[e]]             # <<<<<<<<<<<<<<
- *                                             classify_three_way(eval_a_e, eval_b_e, eval_c_e, results)
- * 
-*/
-                          if (unlikely(!__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.memview)) { __Pyx_RaiseUnboundLocalErrorNogil("handdat"); __PYX_ERR(0, 118, __pyx_L4_error) }
-                          __pyx_t_4 = (__pyx_v_eval_c_d + (__pyx_v_deck[__pyx_v_e]));
-                          __pyx_v_eval_c_e = (*((uint32_t const  *) ( /* dim=0 */ (__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.data + __pyx_t_4 * __pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.strides[0]) )));
-
-                          /* "poker_eval_faster/eval_cython/three_way_orders.pyx":119
- *                                             eval_b_e = handdat[eval_b_d + deck[e]]
- *                                             eval_c_e = handdat[eval_c_d + deck[e]]
- *                                             classify_three_way(eval_a_e, eval_b_e, eval_c_e, results)             # <<<<<<<<<<<<<<
- * 
- * 
-*/
-                          __pyx_f_17poker_eval_faster_11eval_cython_16three_way_orders_classify_three_way(__pyx_v_eval_a_e, __pyx_v_eval_b_e, __pyx_v_eval_c_e, __pyx_v_results);
-                        }
-
-                        /* "poker_eval_faster/eval_cython/three_way_orders.pyx":114
- *                                     if len_board == 1:
- *                                         classify_three_way(eval_a_d, eval_b_d, eval_c_d, results)
- *                                     elif len_board < 1:             # <<<<<<<<<<<<<<
- *                                         for e in range(d + 1, len_deck):
- *                                             eval_a_e = handdat[eval_a_d + deck[e]]
-*/
-                      }
-                      __pyx_L17:;
-                    }
-
-                    /* "poker_eval_faster/eval_cython/three_way_orders.pyx":107
- *                             if len_board == 2:
- *                                 classify_three_way(eval_a_c, eval_b_c, eval_c_c, results)
- *                             elif len_board < 2:             # <<<<<<<<<<<<<<
- *                                 for d in range(c + 1, len_deck):
- *                                     eval_a_d = handdat[eval_a_c + deck[d]]
-*/
-                  }
-                  __pyx_L14:;
-                }
-
-                /* "poker_eval_faster/eval_cython/three_way_orders.pyx":100
- *                     if len_board == 3:
- *                         classify_three_way(eval_a_b, eval_b_b, eval_c_b, results)
- *                     elif len_board < 3:             # <<<<<<<<<<<<<<
- *                         for c in range(b + 1, len_deck):
- *                             eval_a_c = handdat[eval_a_b + deck[c]]
-*/
-              }
-              __pyx_L11:;
-            }
-
-            /* "poker_eval_faster/eval_cython/three_way_orders.pyx":93
- *             if len_board == 4:
- *                 classify_three_way(eval_a_a, eval_b_a, eval_c_a, results)
- *             elif len_board < 4:             # <<<<<<<<<<<<<<
- *                 for b in range(a + 1, len_deck):
- *                     eval_a_b = handdat[eval_a_a + deck[b]]
-*/
-          }
-          __pyx_L8:;
-        }
-      }
-
-      /* "poker_eval_faster/eval_cython/three_way_orders.pyx":86
- *         stdint.uint32_t eval_c_a, eval_c_b, eval_c_c, eval_c_d, eval_c_e
- * 
- *     with nogil:             # <<<<<<<<<<<<<<
- *         for a in range(len_deck):
- *             eval_a_a = handdat[sum_a + deck[a]]
-*/
-      /*finally:*/ {
-        /*normal exit:*/{
-          __Pyx_FastGIL_Forget();
-          PyEval_RestoreThread(_save);
-          goto __pyx_L5;
-        }
-        __pyx_L4_error: {
-          __Pyx_FastGIL_Forget();
-          PyEval_RestoreThread(_save);
-          goto __pyx_L1_error;
-        }
-        __pyx_L5:;
-      }
-  }
-
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":74
- * 
- * 
- * cdef void _enumerate_three_way_boards(int deck[], int len_deck,             # <<<<<<<<<<<<<<
- *                                       stdint.uint32_t sum_a,
- *                                       stdint.uint32_t sum_b,
-*/
-
-  /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __Pyx_WriteUnraisable("poker_eval_faster.eval_cython.three_way_orders._enumerate_three_way_boards", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
-  __pyx_L0:;
-}
-
-/* "poker_eval_faster/eval_cython/three_way_orders.pyx":122
- * 
- * 
- * cdef void _evaluate_three_way_orders(int hand_a1, int hand_a2,             # <<<<<<<<<<<<<<
- *                                      int hand_b1, int hand_b2,
- *                                      int hand_c1, int hand_c2,
-*/
-
-static void __pyx_f_17poker_eval_faster_11eval_cython_16three_way_orders__evaluate_three_way_orders(int __pyx_v_hand_a1, int __pyx_v_hand_a2, int __pyx_v_hand_b1, int __pyx_v_hand_b2, int __pyx_v_hand_c1, int __pyx_v_hand_c2, __Pyx_memviewslice __pyx_v_board, uint64_t *__pyx_v_results) {
-  int __pyx_v_len_board;
-  int __pyx_v_len_total;
-  uint32_t __pyx_v_sum_board;
-  uint32_t __pyx_v_sum_a;
-  uint32_t __pyx_v_sum_b;
-  uint32_t __pyx_v_sum_c;
-  int *__pyx_v_dead_cards;
-  int *__pyx_v_deck;
-  int __pyx_v_i;
-  __Pyx_memviewslice __pyx_v_dead_cards_mv = { 0, 0, { 0 }, { 0 }, { 0 } };
-  int __pyx_v_len_deck;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  PyObject *__pyx_t_2 = NULL;
-  int __pyx_t_3;
-  int __pyx_t_4;
-  int __pyx_t_5;
+  Py_ssize_t __pyx_t_4;
+  Py_ssize_t __pyx_t_5;
   Py_ssize_t __pyx_t_6;
-  struct __pyx_array_obj *__pyx_t_7 = NULL;
-  char *__pyx_t_8;
-  __Pyx_memviewslice __pyx_t_9 = { 0, 0, { 0 }, { 0 }, { 0 } };
-  size_t __pyx_t_10;
-  size_t __pyx_t_11;
-  int __pyx_t_12;
-  int __pyx_lineno = 0;
-  const char *__pyx_filename = NULL;
-  int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("_evaluate_three_way_orders", 0);
-
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":128
- *                                      stdint.uint64_t results[]):
- *     cdef:
- *         int len_board = board.size             # <<<<<<<<<<<<<<
- *         int len_total = len_board + 6
- *         stdint.uint32_t sum_board
-*/
-  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_board, 1, (PyObject *(*)(char *)) __pyx_memview_get_int, (int (*)(char *, PyObject *)) __pyx_memview_set_int, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 128, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_mstate_global->__pyx_n_u_size); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 128, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_3 = __Pyx_PyLong_As_int(__pyx_t_2); if (unlikely((__pyx_t_3 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 128, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_v_len_board = __pyx_t_3;
-
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":129
- *     cdef:
- *         int len_board = board.size
- *         int len_total = len_board + 6             # <<<<<<<<<<<<<<
- *         stdint.uint32_t sum_board
- *         stdint.uint32_t sum_a
-*/
-  __pyx_v_len_total = (__pyx_v_len_board + 6);
-
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":134
- *         stdint.uint32_t sum_b
- *         stdint.uint32_t sum_c
- *         int *dead_cards = <int *>PyMem_Malloc(len_total * sizeof(int))             # <<<<<<<<<<<<<<
- *         int *deck = <int *>PyMem_Malloc((52 - len_total) * sizeof(int))
- *         int i
-*/
-  __pyx_v_dead_cards = ((int *)PyMem_Malloc((__pyx_v_len_total * (sizeof(int)))));
-
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":135
- *         stdint.uint32_t sum_c
- *         int *dead_cards = <int *>PyMem_Malloc(len_total * sizeof(int))
- *         int *deck = <int *>PyMem_Malloc((52 - len_total) * sizeof(int))             # <<<<<<<<<<<<<<
- *         int i
- * 
-*/
-  __pyx_v_deck = ((int *)PyMem_Malloc(((52 - __pyx_v_len_total) * (sizeof(int)))));
-
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":138
- *         int i
- * 
- *     dead_cards[0] = hand_a1             # <<<<<<<<<<<<<<
- *     dead_cards[1] = hand_a2
- *     dead_cards[2] = hand_b1
-*/
-  (__pyx_v_dead_cards[0]) = __pyx_v_hand_a1;
-
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":139
- * 
- *     dead_cards[0] = hand_a1
- *     dead_cards[1] = hand_a2             # <<<<<<<<<<<<<<
- *     dead_cards[2] = hand_b1
- *     dead_cards[3] = hand_b2
-*/
-  (__pyx_v_dead_cards[1]) = __pyx_v_hand_a2;
-
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":140
- *     dead_cards[0] = hand_a1
- *     dead_cards[1] = hand_a2
- *     dead_cards[2] = hand_b1             # <<<<<<<<<<<<<<
- *     dead_cards[3] = hand_b2
- *     dead_cards[4] = hand_c1
-*/
-  (__pyx_v_dead_cards[2]) = __pyx_v_hand_b1;
-
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":141
- *     dead_cards[1] = hand_a2
- *     dead_cards[2] = hand_b1
- *     dead_cards[3] = hand_b2             # <<<<<<<<<<<<<<
- *     dead_cards[4] = hand_c1
- *     dead_cards[5] = hand_c2
-*/
-  (__pyx_v_dead_cards[3]) = __pyx_v_hand_b2;
-
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":142
- *     dead_cards[2] = hand_b1
- *     dead_cards[3] = hand_b2
- *     dead_cards[4] = hand_c1             # <<<<<<<<<<<<<<
- *     dead_cards[5] = hand_c2
- *     for i in range(len_board):
-*/
-  (__pyx_v_dead_cards[4]) = __pyx_v_hand_c1;
-
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":143
- *     dead_cards[3] = hand_b2
- *     dead_cards[4] = hand_c1
- *     dead_cards[5] = hand_c2             # <<<<<<<<<<<<<<
- *     for i in range(len_board):
- *         dead_cards[6 + i] = board[i]
-*/
-  (__pyx_v_dead_cards[5]) = __pyx_v_hand_c2;
-
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":144
- *     dead_cards[4] = hand_c1
- *     dead_cards[5] = hand_c2
- *     for i in range(len_board):             # <<<<<<<<<<<<<<
- *         dead_cards[6 + i] = board[i]
- * 
-*/
-  __pyx_t_3 = __pyx_v_len_board;
-  __pyx_t_4 = __pyx_t_3;
-  for (__pyx_t_5 = 0; __pyx_t_5 < __pyx_t_4; __pyx_t_5+=1) {
-    __pyx_v_i = __pyx_t_5;
-
-    /* "poker_eval_faster/eval_cython/three_way_orders.pyx":145
- *     dead_cards[5] = hand_c2
- *     for i in range(len_board):
- *         dead_cards[6 + i] = board[i]             # <<<<<<<<<<<<<<
- * 
- *     cdef int[:] dead_cards_mv = <int[:len_total]> dead_cards
-*/
-    __pyx_t_6 = __pyx_v_i;
-    (__pyx_v_dead_cards[(6 + __pyx_v_i)]) = (*((int *) ( /* dim=0 */ (__pyx_v_board.data + __pyx_t_6 * __pyx_v_board.strides[0]) )));
-  }
-
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":147
- *         dead_cards[6 + i] = board[i]
- * 
- *     cdef int[:] dead_cards_mv = <int[:len_total]> dead_cards             # <<<<<<<<<<<<<<
- *     cdef int len_deck = create_deck(dead_cards_mv, len_total, deck)
- *     PyMem_Free(dead_cards)
-*/
-  if (!__pyx_v_dead_cards) {
-    PyErr_SetString(PyExc_ValueError,"Cannot create cython.array from NULL pointer");
-    __PYX_ERR(0, 147, __pyx_L1_error)
-  }
-  __pyx_t_1 = __pyx_format_from_typeinfo(&__Pyx_TypeInfo_int); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 147, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = Py_BuildValue("("  __PYX_BUILD_PY_SSIZE_T  ")", ((Py_ssize_t)__pyx_v_len_total)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 147, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  #if CYTHON_COMPILING_IN_LIMITED_API
-  __pyx_t_8 = PyBytes_AsString(__pyx_t_1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 147, __pyx_L1_error)
-  #else
-  __pyx_t_8 = PyBytes_AS_STRING(__pyx_t_1);
-  #endif
-  __pyx_t_7 = __pyx_array_new(__pyx_t_2, sizeof(int), __pyx_t_8, "c", (char *) __pyx_v_dead_cards); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 147, __pyx_L1_error)
-  __Pyx_GOTREF((PyObject *)__pyx_t_7);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_9 = __Pyx_PyObject_to_MemoryviewSlice_ds_int(((PyObject *)__pyx_t_7), PyBUF_WRITABLE); if (unlikely(!__pyx_t_9.memview)) __PYX_ERR(0, 147, __pyx_L1_error)
-  __Pyx_DECREF((PyObject *)__pyx_t_7); __pyx_t_7 = 0;
-  __pyx_v_dead_cards_mv = __pyx_t_9;
-  __pyx_t_9.memview = NULL;
-  __pyx_t_9.data = NULL;
-
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":148
- * 
- *     cdef int[:] dead_cards_mv = <int[:len_total]> dead_cards
- *     cdef int len_deck = create_deck(dead_cards_mv, len_total, deck)             # <<<<<<<<<<<<<<
- *     PyMem_Free(dead_cards)
- * 
-*/
-  __pyx_t_3 = __pyx_f_17poker_eval_faster_11eval_cython_4main_create_deck(__pyx_v_dead_cards_mv, __pyx_v_len_total, __pyx_v_deck); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 148, __pyx_L1_error)
-  __pyx_v_len_deck = __pyx_t_3;
-
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":149
- *     cdef int[:] dead_cards_mv = <int[:len_total]> dead_cards
- *     cdef int len_deck = create_deck(dead_cards_mv, len_total, deck)
- *     PyMem_Free(dead_cards)             # <<<<<<<<<<<<<<
- * 
- *     sum_board = fold_cards(EVAL_START, board, 0, len_board)
-*/
-  PyMem_Free(__pyx_v_dead_cards);
-
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":151
- *     PyMem_Free(dead_cards)
- * 
- *     sum_board = fold_cards(EVAL_START, board, 0, len_board)             # <<<<<<<<<<<<<<
- *     sum_a = handdat[handdat[sum_board + hand_a1] + hand_a2]
- *     sum_b = handdat[handdat[sum_board + hand_b1] + hand_b2]
-*/
-  __pyx_v_sum_board = __pyx_f_17poker_eval_faster_11eval_cython_6common_fold_cards(__pyx_v_17poker_eval_faster_11eval_cython_16three_way_orders_EVAL_START, __pyx_v_board, 0, __pyx_v_len_board);
-
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":152
- * 
- *     sum_board = fold_cards(EVAL_START, board, 0, len_board)
- *     sum_a = handdat[handdat[sum_board + hand_a1] + hand_a2]             # <<<<<<<<<<<<<<
- *     sum_b = handdat[handdat[sum_board + hand_b1] + hand_b2]
- *     sum_c = handdat[handdat[sum_board + hand_c1] + hand_c2]
-*/
-  if (unlikely(!__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.memview)) { __Pyx_RaiseUnboundLocalError("handdat"); __PYX_ERR(0, 152, __pyx_L1_error) }
-  if (unlikely(!__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.memview)) { __Pyx_RaiseUnboundLocalError("handdat"); __PYX_ERR(0, 152, __pyx_L1_error) }
-  __pyx_t_10 = (__pyx_v_sum_board + __pyx_v_hand_a1);
-  __pyx_t_11 = ((*((uint32_t const  *) ( /* dim=0 */ (__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.data + __pyx_t_10 * __pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.strides[0]) ))) + __pyx_v_hand_a2);
-  __pyx_v_sum_a = (*((uint32_t const  *) ( /* dim=0 */ (__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.data + __pyx_t_11 * __pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.strides[0]) )));
-
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":153
- *     sum_board = fold_cards(EVAL_START, board, 0, len_board)
- *     sum_a = handdat[handdat[sum_board + hand_a1] + hand_a2]
- *     sum_b = handdat[handdat[sum_board + hand_b1] + hand_b2]             # <<<<<<<<<<<<<<
- *     sum_c = handdat[handdat[sum_board + hand_c1] + hand_c2]
- * 
-*/
-  if (unlikely(!__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.memview)) { __Pyx_RaiseUnboundLocalError("handdat"); __PYX_ERR(0, 153, __pyx_L1_error) }
-  if (unlikely(!__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.memview)) { __Pyx_RaiseUnboundLocalError("handdat"); __PYX_ERR(0, 153, __pyx_L1_error) }
-  __pyx_t_10 = (__pyx_v_sum_board + __pyx_v_hand_b1);
-  __pyx_t_11 = ((*((uint32_t const  *) ( /* dim=0 */ (__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.data + __pyx_t_10 * __pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.strides[0]) ))) + __pyx_v_hand_b2);
-  __pyx_v_sum_b = (*((uint32_t const  *) ( /* dim=0 */ (__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.data + __pyx_t_11 * __pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.strides[0]) )));
-
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":154
- *     sum_a = handdat[handdat[sum_board + hand_a1] + hand_a2]
- *     sum_b = handdat[handdat[sum_board + hand_b1] + hand_b2]
- *     sum_c = handdat[handdat[sum_board + hand_c1] + hand_c2]             # <<<<<<<<<<<<<<
- * 
- *     if len_board < 5:
-*/
-  if (unlikely(!__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.memview)) { __Pyx_RaiseUnboundLocalError("handdat"); __PYX_ERR(0, 154, __pyx_L1_error) }
-  if (unlikely(!__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.memview)) { __Pyx_RaiseUnboundLocalError("handdat"); __PYX_ERR(0, 154, __pyx_L1_error) }
-  __pyx_t_10 = (__pyx_v_sum_board + __pyx_v_hand_c1);
-  __pyx_t_11 = ((*((uint32_t const  *) ( /* dim=0 */ (__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.data + __pyx_t_10 * __pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.strides[0]) ))) + __pyx_v_hand_c2);
-  __pyx_v_sum_c = (*((uint32_t const  *) ( /* dim=0 */ (__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.data + __pyx_t_11 * __pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.strides[0]) )));
-
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":156
- *     sum_c = handdat[handdat[sum_board + hand_c1] + hand_c2]
- * 
- *     if len_board < 5:             # <<<<<<<<<<<<<<
- *         _enumerate_three_way_boards(deck, len_deck, sum_a, sum_b, sum_c, len_board, results)
- *     else:
-*/
-  __pyx_t_12 = (__pyx_v_len_board < 5);
-  if (__pyx_t_12) {
-
-    /* "poker_eval_faster/eval_cython/three_way_orders.pyx":157
- * 
- *     if len_board < 5:
- *         _enumerate_three_way_boards(deck, len_deck, sum_a, sum_b, sum_c, len_board, results)             # <<<<<<<<<<<<<<
- *     else:
- *         with nogil:
-*/
-    __pyx_f_17poker_eval_faster_11eval_cython_16three_way_orders__enumerate_three_way_boards(__pyx_v_deck, __pyx_v_len_deck, __pyx_v_sum_a, __pyx_v_sum_b, __pyx_v_sum_c, __pyx_v_len_board, __pyx_v_results);
-
-    /* "poker_eval_faster/eval_cython/three_way_orders.pyx":156
- *     sum_c = handdat[handdat[sum_board + hand_c1] + hand_c2]
- * 
- *     if len_board < 5:             # <<<<<<<<<<<<<<
- *         _enumerate_three_way_boards(deck, len_deck, sum_a, sum_b, sum_c, len_board, results)
- *     else:
-*/
-    goto __pyx_L5;
-  }
-
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":159
- *         _enumerate_three_way_boards(deck, len_deck, sum_a, sum_b, sum_c, len_board, results)
- *     else:
- *         with nogil:             # <<<<<<<<<<<<<<
- *             classify_three_way(sum_a, sum_b, sum_c, results)
- * 
-*/
-  /*else*/ {
-    {
-        PyThreadState * _save;
-        _save = PyEval_SaveThread();
-        __Pyx_FastGIL_Remember();
-        /*try:*/ {
-
-          /* "poker_eval_faster/eval_cython/three_way_orders.pyx":160
- *     else:
- *         with nogil:
- *             classify_three_way(sum_a, sum_b, sum_c, results)             # <<<<<<<<<<<<<<
- * 
- *     PyMem_Free(deck)
-*/
-          __pyx_f_17poker_eval_faster_11eval_cython_16three_way_orders_classify_three_way(__pyx_v_sum_a, __pyx_v_sum_b, __pyx_v_sum_c, __pyx_v_results);
-        }
-
-        /* "poker_eval_faster/eval_cython/three_way_orders.pyx":159
- *         _enumerate_three_way_boards(deck, len_deck, sum_a, sum_b, sum_c, len_board, results)
- *     else:
- *         with nogil:             # <<<<<<<<<<<<<<
- *             classify_three_way(sum_a, sum_b, sum_c, results)
- * 
-*/
-        /*finally:*/ {
-          /*normal exit:*/{
-            __Pyx_FastGIL_Forget();
-            PyEval_RestoreThread(_save);
-            goto __pyx_L8;
-          }
-          __pyx_L8:;
-        }
-    }
-  }
-  __pyx_L5:;
-
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":162
- *             classify_three_way(sum_a, sum_b, sum_c, results)
- * 
- *     PyMem_Free(deck)             # <<<<<<<<<<<<<<
- * 
- * 
-*/
-  PyMem_Free(__pyx_v_deck);
-
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":122
- * 
- * 
- * cdef void _evaluate_three_way_orders(int hand_a1, int hand_a2,             # <<<<<<<<<<<<<<
- *                                      int hand_b1, int hand_b2,
- *                                      int hand_c1, int hand_c2,
-*/
-
-  /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_XDECREF((PyObject *)__pyx_t_7);
-  __PYX_XCLEAR_MEMVIEW(&__pyx_t_9, 1);
-  __Pyx_AddTraceback("poker_eval_faster.eval_cython.three_way_orders._evaluate_three_way_orders", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_L0:;
-  __PYX_XCLEAR_MEMVIEW(&__pyx_v_dead_cards_mv, 1);
-  __Pyx_RefNannyFinishContext();
-}
-
-/* "poker_eval_faster/eval_cython/three_way_orders.pyx":165
- * 
- * 
- * cpdef object evaluate_three_way_orders_c(int[:] hands, int[:] board=array('i', [])):             # <<<<<<<<<<<<<<
- *     if hands.size != 6:
- *         raise ValueError(f"Three-way evaluation expects exactly 6 cards, got {hands.size}")
-*/
-
-static PyObject *__pyx_pw_17poker_eval_faster_11eval_cython_16three_way_orders_1evaluate_three_way_orders_c(PyObject *__pyx_self, 
-#if CYTHON_METH_FASTCALL
-PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
-#else
-PyObject *__pyx_args, PyObject *__pyx_kwds
-#endif
-); /*proto*/
-static PyObject *__pyx_f_17poker_eval_faster_11eval_cython_16three_way_orders_evaluate_three_way_orders_c(__Pyx_memviewslice __pyx_v_hands, CYTHON_UNUSED int __pyx_skip_dispatch, struct __pyx_opt_args_17poker_eval_faster_11eval_cython_16three_way_orders_evaluate_three_way_orders_c *__pyx_optional_args) {
-  __Pyx_memviewslice __pyx_v_board = __pyx_mstate_global->__pyx_k__12;
-  PyObject *__pyx_v_results_np = 0;
-  __Pyx_memviewslice __pyx_v_results = { 0, 0, { 0 }, { 0 }, { 0 } };
-  PyObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  PyObject *__pyx_t_2 = NULL;
-  int __pyx_t_3;
-  PyObject *__pyx_t_4 = NULL;
-  PyObject *__pyx_t_5 = NULL;
-  size_t __pyx_t_6;
-  PyObject *__pyx_t_7 = NULL;
-  PyObject *__pyx_t_8 = NULL;
-  __Pyx_memviewslice __pyx_t_9 = { 0, 0, { 0 }, { 0 }, { 0 } };
+  Py_ssize_t __pyx_t_7;
+  Py_ssize_t __pyx_t_8;
+  Py_ssize_t __pyx_t_9;
   Py_ssize_t __pyx_t_10;
   Py_ssize_t __pyx_t_11;
   Py_ssize_t __pyx_t_12;
@@ -18374,212 +16810,1367 @@ static PyObject *__pyx_f_17poker_eval_faster_11eval_cython_16three_way_orders_ev
   Py_ssize_t __pyx_t_14;
   Py_ssize_t __pyx_t_15;
   Py_ssize_t __pyx_t_16;
+  Py_ssize_t __pyx_t_17;
+  Py_ssize_t __pyx_t_18;
+  Py_ssize_t __pyx_t_19;
+  Py_ssize_t __pyx_t_20;
+  Py_ssize_t __pyx_t_21;
+  int __pyx_t_22;
+  int __pyx_t_23;
+
+  /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":54
+ * ) noexcept nogil:
+ *     cdef int perm_idx
+ *     cdef stdint.uint64_t best_key = 0             # <<<<<<<<<<<<<<
+ *     cdef stdint.uint64_t candidate
+ * 
+*/
+  __pyx_v_best_key = 0;
+
+  /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":57
+ *     cdef stdint.uint64_t candidate
+ * 
+ *     for perm_idx in range(NUM_SUIT_PERMUTATIONS):             # <<<<<<<<<<<<<<
+ *         candidate = _pack_matchup_key(
+ *             combo_remaps[perm_idx, combo_a_idx, 0],
+*/
+  __pyx_t_1 = __pyx_v_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder_NUM_SUIT_PERMUTATIONS;
+  __pyx_t_2 = __pyx_t_1;
+  for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
+    __pyx_v_perm_idx = __pyx_t_3;
+
+    /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":59
+ *     for perm_idx in range(NUM_SUIT_PERMUTATIONS):
+ *         candidate = _pack_matchup_key(
+ *             combo_remaps[perm_idx, combo_a_idx, 0],             # <<<<<<<<<<<<<<
+ *             combo_remaps[perm_idx, combo_a_idx, 1],
+ *             combo_remaps[perm_idx, combo_b_idx, 0],
+*/
+    __pyx_t_4 = __pyx_v_perm_idx;
+    __pyx_t_5 = __pyx_v_combo_a_idx;
+    __pyx_t_6 = 0;
+
+    /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":60
+ *         candidate = _pack_matchup_key(
+ *             combo_remaps[perm_idx, combo_a_idx, 0],
+ *             combo_remaps[perm_idx, combo_a_idx, 1],             # <<<<<<<<<<<<<<
+ *             combo_remaps[perm_idx, combo_b_idx, 0],
+ *             combo_remaps[perm_idx, combo_b_idx, 1],
+*/
+    __pyx_t_7 = __pyx_v_perm_idx;
+    __pyx_t_8 = __pyx_v_combo_a_idx;
+    __pyx_t_9 = 1;
+
+    /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":61
+ *             combo_remaps[perm_idx, combo_a_idx, 0],
+ *             combo_remaps[perm_idx, combo_a_idx, 1],
+ *             combo_remaps[perm_idx, combo_b_idx, 0],             # <<<<<<<<<<<<<<
+ *             combo_remaps[perm_idx, combo_b_idx, 1],
+ *             combo_remaps[perm_idx, combo_c_idx, 0],
+*/
+    __pyx_t_10 = __pyx_v_perm_idx;
+    __pyx_t_11 = __pyx_v_combo_b_idx;
+    __pyx_t_12 = 0;
+
+    /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":62
+ *             combo_remaps[perm_idx, combo_a_idx, 1],
+ *             combo_remaps[perm_idx, combo_b_idx, 0],
+ *             combo_remaps[perm_idx, combo_b_idx, 1],             # <<<<<<<<<<<<<<
+ *             combo_remaps[perm_idx, combo_c_idx, 0],
+ *             combo_remaps[perm_idx, combo_c_idx, 1],
+*/
+    __pyx_t_13 = __pyx_v_perm_idx;
+    __pyx_t_14 = __pyx_v_combo_b_idx;
+    __pyx_t_15 = 1;
+
+    /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":63
+ *             combo_remaps[perm_idx, combo_b_idx, 0],
+ *             combo_remaps[perm_idx, combo_b_idx, 1],
+ *             combo_remaps[perm_idx, combo_c_idx, 0],             # <<<<<<<<<<<<<<
+ *             combo_remaps[perm_idx, combo_c_idx, 1],
+ *         )
+*/
+    __pyx_t_16 = __pyx_v_perm_idx;
+    __pyx_t_17 = __pyx_v_combo_c_idx;
+    __pyx_t_18 = 0;
+
+    /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":64
+ *             combo_remaps[perm_idx, combo_b_idx, 1],
+ *             combo_remaps[perm_idx, combo_c_idx, 0],
+ *             combo_remaps[perm_idx, combo_c_idx, 1],             # <<<<<<<<<<<<<<
+ *         )
+ *         if perm_idx == 0 or candidate < best_key:
+*/
+    __pyx_t_19 = __pyx_v_perm_idx;
+    __pyx_t_20 = __pyx_v_combo_c_idx;
+    __pyx_t_21 = 1;
+
+    /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":58
+ * 
+ *     for perm_idx in range(NUM_SUIT_PERMUTATIONS):
+ *         candidate = _pack_matchup_key(             # <<<<<<<<<<<<<<
+ *             combo_remaps[perm_idx, combo_a_idx, 0],
+ *             combo_remaps[perm_idx, combo_a_idx, 1],
+*/
+    __pyx_v_candidate = __pyx_f_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder__pack_matchup_key((*((unsigned char *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_combo_remaps.data + __pyx_t_4 * __pyx_v_combo_remaps.strides[0]) ) + __pyx_t_5 * __pyx_v_combo_remaps.strides[1]) ) + __pyx_t_6 * __pyx_v_combo_remaps.strides[2]) ))), (*((unsigned char *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_combo_remaps.data + __pyx_t_7 * __pyx_v_combo_remaps.strides[0]) ) + __pyx_t_8 * __pyx_v_combo_remaps.strides[1]) ) + __pyx_t_9 * __pyx_v_combo_remaps.strides[2]) ))), (*((unsigned char *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_combo_remaps.data + __pyx_t_10 * __pyx_v_combo_remaps.strides[0]) ) + __pyx_t_11 * __pyx_v_combo_remaps.strides[1]) ) + __pyx_t_12 * __pyx_v_combo_remaps.strides[2]) ))), (*((unsigned char *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_combo_remaps.data + __pyx_t_13 * __pyx_v_combo_remaps.strides[0]) ) + __pyx_t_14 * __pyx_v_combo_remaps.strides[1]) ) + __pyx_t_15 * __pyx_v_combo_remaps.strides[2]) ))), (*((unsigned char *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_combo_remaps.data + __pyx_t_16 * __pyx_v_combo_remaps.strides[0]) ) + __pyx_t_17 * __pyx_v_combo_remaps.strides[1]) ) + __pyx_t_18 * __pyx_v_combo_remaps.strides[2]) ))), (*((unsigned char *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_combo_remaps.data + __pyx_t_19 * __pyx_v_combo_remaps.strides[0]) ) + __pyx_t_20 * __pyx_v_combo_remaps.strides[1]) ) + __pyx_t_21 * __pyx_v_combo_remaps.strides[2]) ))));
+
+    /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":66
+ *             combo_remaps[perm_idx, combo_c_idx, 1],
+ *         )
+ *         if perm_idx == 0 or candidate < best_key:             # <<<<<<<<<<<<<<
+ *             best_key = candidate
+ *     return best_key
+*/
+    __pyx_t_23 = (__pyx_v_perm_idx == 0);
+    if (!__pyx_t_23) {
+    } else {
+      __pyx_t_22 = __pyx_t_23;
+      goto __pyx_L6_bool_binop_done;
+    }
+    __pyx_t_23 = (__pyx_v_candidate < __pyx_v_best_key);
+    __pyx_t_22 = __pyx_t_23;
+    __pyx_L6_bool_binop_done:;
+    if (__pyx_t_22) {
+
+      /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":67
+ *         )
+ *         if perm_idx == 0 or candidate < best_key:
+ *             best_key = candidate             # <<<<<<<<<<<<<<
+ *     return best_key
+ * 
+*/
+      __pyx_v_best_key = __pyx_v_candidate;
+
+      /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":66
+ *             combo_remaps[perm_idx, combo_c_idx, 1],
+ *         )
+ *         if perm_idx == 0 or candidate < best_key:             # <<<<<<<<<<<<<<
+ *             best_key = candidate
+ *     return best_key
+*/
+    }
+  }
+
+  /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":68
+ *         if perm_idx == 0 or candidate < best_key:
+ *             best_key = candidate
+ *     return best_key             # <<<<<<<<<<<<<<
+ * 
+ * 
+*/
+  __pyx_r = __pyx_v_best_key;
+  goto __pyx_L0;
+
+  /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":47
+ * 
+ * 
+ * cdef inline stdint.uint64_t _canonical_three_way_matchup_key(             # <<<<<<<<<<<<<<
+ *     int combo_a_idx,
+ *     int combo_b_idx,
+*/
+
+  /* function exit code */
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":71
+ * 
+ * 
+ * cdef int _compare_uint64(const void *left, const void *right) noexcept nogil:             # <<<<<<<<<<<<<<
+ *     cdef stdint.uint64_t left_value = (<stdint.uint64_t *> left)[0]
+ *     cdef stdint.uint64_t right_value = (<stdint.uint64_t *> right)[0]
+*/
+
+static int __pyx_f_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder__compare_uint64(void const *__pyx_v_left, void const *__pyx_v_right) {
+  uint64_t __pyx_v_left_value;
+  uint64_t __pyx_v_right_value;
+  int __pyx_r;
+  int __pyx_t_1;
+
+  /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":72
+ * 
+ * cdef int _compare_uint64(const void *left, const void *right) noexcept nogil:
+ *     cdef stdint.uint64_t left_value = (<stdint.uint64_t *> left)[0]             # <<<<<<<<<<<<<<
+ *     cdef stdint.uint64_t right_value = (<stdint.uint64_t *> right)[0]
+ *     if left_value < right_value:
+*/
+  __pyx_v_left_value = (((uint64_t *)__pyx_v_left)[0]);
+
+  /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":73
+ * cdef int _compare_uint64(const void *left, const void *right) noexcept nogil:
+ *     cdef stdint.uint64_t left_value = (<stdint.uint64_t *> left)[0]
+ *     cdef stdint.uint64_t right_value = (<stdint.uint64_t *> right)[0]             # <<<<<<<<<<<<<<
+ *     if left_value < right_value:
+ *         return -1
+*/
+  __pyx_v_right_value = (((uint64_t *)__pyx_v_right)[0]);
+
+  /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":74
+ *     cdef stdint.uint64_t left_value = (<stdint.uint64_t *> left)[0]
+ *     cdef stdint.uint64_t right_value = (<stdint.uint64_t *> right)[0]
+ *     if left_value < right_value:             # <<<<<<<<<<<<<<
+ *         return -1
+ *     if left_value > right_value:
+*/
+  __pyx_t_1 = (__pyx_v_left_value < __pyx_v_right_value);
+  if (__pyx_t_1) {
+
+    /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":75
+ *     cdef stdint.uint64_t right_value = (<stdint.uint64_t *> right)[0]
+ *     if left_value < right_value:
+ *         return -1             # <<<<<<<<<<<<<<
+ *     if left_value > right_value:
+ *         return 1
+*/
+    __pyx_r = -1;
+    goto __pyx_L0;
+
+    /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":74
+ *     cdef stdint.uint64_t left_value = (<stdint.uint64_t *> left)[0]
+ *     cdef stdint.uint64_t right_value = (<stdint.uint64_t *> right)[0]
+ *     if left_value < right_value:             # <<<<<<<<<<<<<<
+ *         return -1
+ *     if left_value > right_value:
+*/
+  }
+
+  /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":76
+ *     if left_value < right_value:
+ *         return -1
+ *     if left_value > right_value:             # <<<<<<<<<<<<<<
+ *         return 1
+ *     return 0
+*/
+  __pyx_t_1 = (__pyx_v_left_value > __pyx_v_right_value);
+  if (__pyx_t_1) {
+
+    /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":77
+ *         return -1
+ *     if left_value > right_value:
+ *         return 1             # <<<<<<<<<<<<<<
+ *     return 0
+ * 
+*/
+    __pyx_r = 1;
+    goto __pyx_L0;
+
+    /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":76
+ *     if left_value < right_value:
+ *         return -1
+ *     if left_value > right_value:             # <<<<<<<<<<<<<<
+ *         return 1
+ *     return 0
+*/
+  }
+
+  /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":78
+ *     if left_value > right_value:
+ *         return 1
+ *     return 0             # <<<<<<<<<<<<<<
+ * 
+ * 
+*/
+  __pyx_r = 0;
+  goto __pyx_L0;
+
+  /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":71
+ * 
+ * 
+ * cdef int _compare_uint64(const void *left, const void *right) noexcept nogil:             # <<<<<<<<<<<<<<
+ *     cdef stdint.uint64_t left_value = (<stdint.uint64_t *> left)[0]
+ *     cdef stdint.uint64_t right_value = (<stdint.uint64_t *> right)[0]
+*/
+
+  /* function exit code */
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":81
+ * 
+ * 
+ * cpdef object evaluate_three_way_class_counts_c(int[:] class_a_combo_ids,             # <<<<<<<<<<<<<<
+ *                                                int[:] class_b_combo_ids,
+ *                                                int[:] class_c_combo_ids):
+*/
+
+static PyObject *__pyx_pw_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder_1evaluate_three_way_class_counts_c(PyObject *__pyx_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+); /*proto*/
+static PyObject *__pyx_f_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder_evaluate_three_way_class_counts_c(__Pyx_memviewslice __pyx_v_class_a_combo_ids, __Pyx_memviewslice __pyx_v_class_b_combo_ids, __Pyx_memviewslice __pyx_v_class_c_combo_ids, CYTHON_UNUSED int __pyx_skip_dispatch) {
+  __Pyx_memviewslice __pyx_v_combo_masks = { 0, 0, { 0 }, { 0 }, { 0 } };
+  __Pyx_memviewslice __pyx_v_combo_remaps = { 0, 0, { 0 }, { 0 }, { 0 } };
+  __Pyx_memviewslice __pyx_v_empty_board = { 0, 0, { 0 }, { 0 }, { 0 } };
+  int __pyx_v_combo_a_idx;
+  int __pyx_v_combo_b_idx;
+  int __pyx_v_combo_c_idx;
+  int __pyx_v_len_a;
+  int __pyx_v_len_b;
+  int __pyx_v_len_c;
+  Py_ssize_t __pyx_v_max_matchups;
+  Py_ssize_t __pyx_v_matchup_count;
+  Py_ssize_t __pyx_v_matchup_idx;
+  uint64_t __pyx_v_mask_a;
+  uint64_t __pyx_v_mask_b;
+  uint64_t __pyx_v_mask_c;
+  uint64_t __pyx_v_mask_ab;
+  uint64_t __pyx_v_current_key;
+  uint64_t __pyx_v_multiplicity;
+  uint64_t __pyx_v_matchup_keys_tmp[1];
+  uint64_t *__pyx_v_matchup_keys;
+  uint64_t __pyx_v_order_counts_buffer[13];
+  PyObject *__pyx_v_cached_counts = 0;
+  PyObject *__pyx_v_cached_counts_list = 0;
+  int __pyx_v_cached_count;
+  PyObject *__pyx_v_results_np = 0;
+  __Pyx_memviewslice __pyx_v_results = { 0, 0, { 0 }, { 0 }, { 0 } };
+  int __pyx_v_order_idx;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  __Pyx_memviewslice __pyx_t_1 = { 0, 0, { 0 }, { 0 }, { 0 } };
+  __Pyx_memviewslice __pyx_t_2 = { 0, 0, { 0 }, { 0 }, { 0 } };
+  __Pyx_memviewslice __pyx_t_3 = { 0, 0, { 0 }, { 0 }, { 0 } };
+  PyObject *__pyx_t_4 = NULL;
+  PyObject *__pyx_t_5 = NULL;
+  PyObject *__pyx_t_6 = NULL;
+  PyObject *__pyx_t_7 = NULL;
+  PyObject *__pyx_t_8 = NULL;
+  PyObject *__pyx_t_9 = NULL;
+  size_t __pyx_t_10;
+  __Pyx_memviewslice __pyx_t_11 = { 0, 0, { 0 }, { 0 }, { 0 } };
+  int __pyx_t_12;
+  Py_ssize_t __pyx_t_13;
+  Py_ssize_t __pyx_t_14;
+  int __pyx_t_15;
+  Py_ssize_t __pyx_t_16;
+  __Pyx_memviewslice __pyx_t_17 = { 0, 0, { 0 }, { 0 }, { 0 } };
+  Py_ssize_t __pyx_t_18;
+  Py_ssize_t __pyx_t_19;
+  int __pyx_t_20;
+  __Pyx_memviewslice __pyx_t_21 = { 0, 0, { 0 }, { 0 }, { 0 } };
+  Py_ssize_t __pyx_t_22;
+  Py_ssize_t __pyx_t_23;
+  int __pyx_t_24;
+  int __pyx_t_25;
+  int __pyx_t_26;
+  int __pyx_t_27;
+  int __pyx_t_28;
+  int __pyx_t_29;
+  char const *__pyx_t_30;
+  PyObject *__pyx_t_31 = NULL;
+  PyObject *__pyx_t_32 = NULL;
+  PyObject *__pyx_t_33 = NULL;
+  PyObject *__pyx_t_34 = NULL;
+  PyObject *__pyx_t_35 = NULL;
+  PyObject *__pyx_t_36 = NULL;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("evaluate_three_way_orders_c", 0);
-  if (__pyx_optional_args) {
-    if (__pyx_optional_args->__pyx_n > 0) {
-      __pyx_v_board = __pyx_optional_args->board;
-    }
-  }
+  __Pyx_RefNannySetupContext("evaluate_three_way_class_counts_c", 0);
 
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":166
- * 
- * cpdef object evaluate_three_way_orders_c(int[:] hands, int[:] board=array('i', [])):
- *     if hands.size != 6:             # <<<<<<<<<<<<<<
- *         raise ValueError(f"Three-way evaluation expects exactly 6 cards, got {hands.size}")
- * 
-*/
-  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_hands, 1, (PyObject *(*)(char *)) __pyx_memview_get_int, (int (*)(char *, PyObject *)) __pyx_memview_set_int, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 166, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_mstate_global->__pyx_n_u_size); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 166, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_3 = (__Pyx_PyLong_BoolNeObjC(__pyx_t_2, __pyx_mstate_global->__pyx_int_6, 6, 0)); if (unlikely((__pyx_t_3 < 0))) __PYX_ERR(0, 166, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (unlikely(__pyx_t_3)) {
-
-    /* "poker_eval_faster/eval_cython/three_way_orders.pyx":167
- * cpdef object evaluate_three_way_orders_c(int[:] hands, int[:] board=array('i', [])):
- *     if hands.size != 6:
- *         raise ValueError(f"Three-way evaluation expects exactly 6 cards, got {hands.size}")             # <<<<<<<<<<<<<<
+  /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":84
+ *                                                int[:] class_b_combo_ids,
+ *                                                int[:] class_c_combo_ids):
+ *     _ensure_lookup_tables()             # <<<<<<<<<<<<<<
  * 
  *     cdef:
 */
-    __pyx_t_1 = NULL;
-    __pyx_t_4 = __pyx_memoryview_fromslice(__pyx_v_hands, 1, (PyObject *(*)(char *)) __pyx_memview_get_int, (int (*)(char *, PyObject *)) __pyx_memview_set_int, 0);; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 167, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_mstate_global->__pyx_n_u_size); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 167, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = __Pyx_PyObject_FormatSimple(__pyx_t_5, __pyx_mstate_global->__pyx_empty_unicode); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 167, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __pyx_t_5 = __Pyx_PyUnicode_Concat(__pyx_mstate_global->__pyx_kp_u_Three_way_evaluation_expects_exa, __pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 167, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_6 = 1;
-    {
-      PyObject *__pyx_callargs[2] = {__pyx_t_1, __pyx_t_5};
-      __pyx_t_2 = __Pyx_PyObject_FastCall((PyObject*)(((PyTypeObject*)PyExc_ValueError)), __pyx_callargs+__pyx_t_6, (2-__pyx_t_6) | (__pyx_t_6*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
-      __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 167, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_2);
-    }
-    __Pyx_Raise(__pyx_t_2, 0, 0, 0);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __PYX_ERR(0, 167, __pyx_L1_error)
+  __pyx_f_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder__ensure_lookup_tables(); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 84, __pyx_L1_error)
 
-    /* "poker_eval_faster/eval_cython/three_way_orders.pyx":166
- * 
- * cpdef object evaluate_three_way_orders_c(int[:] hands, int[:] board=array('i', [])):
- *     if hands.size != 6:             # <<<<<<<<<<<<<<
- *         raise ValueError(f"Three-way evaluation expects exactly 6 cards, got {hands.size}")
- * 
-*/
-  }
-
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":170
+  /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":87
  * 
  *     cdef:
+ *         stdint.uint64_t[:] combo_masks = _COMBO_MASKS_OBJ             # <<<<<<<<<<<<<<
+ *         unsigned char[:, :, :] combo_remaps = _COMBO_SUIT_REMAPS_OBJ
+ *         int[:] empty_board = _EMPTY_BOARD
+*/
+  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_ds_nn_uint64_t(__pyx_v_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder__COMBO_MASKS_OBJ, PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 87, __pyx_L1_error)
+  __pyx_v_combo_masks = __pyx_t_1;
+  __pyx_t_1.memview = NULL;
+  __pyx_t_1.data = NULL;
+
+  /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":88
+ *     cdef:
+ *         stdint.uint64_t[:] combo_masks = _COMBO_MASKS_OBJ
+ *         unsigned char[:, :, :] combo_remaps = _COMBO_SUIT_REMAPS_OBJ             # <<<<<<<<<<<<<<
+ *         int[:] empty_board = _EMPTY_BOARD
+ *         int combo_a_idx
+*/
+  __pyx_t_2 = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_unsigned_char(__pyx_v_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder__COMBO_SUIT_REMAPS_OBJ, PyBUF_WRITABLE); if (unlikely(!__pyx_t_2.memview)) __PYX_ERR(0, 88, __pyx_L1_error)
+  __pyx_v_combo_remaps = __pyx_t_2;
+  __pyx_t_2.memview = NULL;
+  __pyx_t_2.data = NULL;
+
+  /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":89
+ *         stdint.uint64_t[:] combo_masks = _COMBO_MASKS_OBJ
+ *         unsigned char[:, :, :] combo_remaps = _COMBO_SUIT_REMAPS_OBJ
+ *         int[:] empty_board = _EMPTY_BOARD             # <<<<<<<<<<<<<<
+ *         int combo_a_idx
+ *         int combo_b_idx
+*/
+  __pyx_t_3 = __Pyx_PyObject_to_MemoryviewSlice_ds_int(__pyx_v_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder__EMPTY_BOARD, PyBUF_WRITABLE); if (unlikely(!__pyx_t_3.memview)) __PYX_ERR(0, 89, __pyx_L1_error)
+  __pyx_v_empty_board = __pyx_t_3;
+  __pyx_t_3.memview = NULL;
+  __pyx_t_3.data = NULL;
+
+  /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":93
+ *         int combo_b_idx
+ *         int combo_c_idx
+ *         int len_a = class_a_combo_ids.shape[0]             # <<<<<<<<<<<<<<
+ *         int len_b = class_b_combo_ids.shape[0]
+ *         int len_c = class_c_combo_ids.shape[0]
+*/
+  __pyx_v_len_a = (__pyx_v_class_a_combo_ids.shape[0]);
+
+  /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":94
+ *         int combo_c_idx
+ *         int len_a = class_a_combo_ids.shape[0]
+ *         int len_b = class_b_combo_ids.shape[0]             # <<<<<<<<<<<<<<
+ *         int len_c = class_c_combo_ids.shape[0]
+ *         Py_ssize_t max_matchups = len_a * len_b * len_c
+*/
+  __pyx_v_len_b = (__pyx_v_class_b_combo_ids.shape[0]);
+
+  /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":95
+ *         int len_a = class_a_combo_ids.shape[0]
+ *         int len_b = class_b_combo_ids.shape[0]
+ *         int len_c = class_c_combo_ids.shape[0]             # <<<<<<<<<<<<<<
+ *         Py_ssize_t max_matchups = len_a * len_b * len_c
+ *         Py_ssize_t matchup_count = 0
+*/
+  __pyx_v_len_c = (__pyx_v_class_c_combo_ids.shape[0]);
+
+  /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":96
+ *         int len_b = class_b_combo_ids.shape[0]
+ *         int len_c = class_c_combo_ids.shape[0]
+ *         Py_ssize_t max_matchups = len_a * len_b * len_c             # <<<<<<<<<<<<<<
+ *         Py_ssize_t matchup_count = 0
+ *         Py_ssize_t matchup_idx
+*/
+  __pyx_v_max_matchups = ((__pyx_v_len_a * __pyx_v_len_b) * __pyx_v_len_c);
+
+  /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":97
+ *         int len_c = class_c_combo_ids.shape[0]
+ *         Py_ssize_t max_matchups = len_a * len_b * len_c
+ *         Py_ssize_t matchup_count = 0             # <<<<<<<<<<<<<<
+ *         Py_ssize_t matchup_idx
+ *         stdint.uint64_t mask_a
+*/
+  __pyx_v_matchup_count = 0;
+
+  /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":106
+ *         stdint.uint64_t multiplicity
+ *         stdint.uint64_t matchup_keys_tmp[1]
+ *         stdint.uint64_t *matchup_keys = matchup_keys_tmp             # <<<<<<<<<<<<<<
+ *         stdint.uint64_t order_counts_buffer[13]
+ *         object cached_counts
+*/
+  __pyx_v_matchup_keys = __pyx_v_matchup_keys_tmp;
+
+  /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":111
+ *         list cached_counts_list
+ *         int cached_count
  *         object results_np = np.zeros(NUM_THREE_WAY_ORDERS, dtype=np.uint64)             # <<<<<<<<<<<<<<
  *         stdint.uint64_t[::1] results = results_np
- * 
+ *         int order_idx
 */
   __pyx_t_5 = NULL;
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_mstate_global->__pyx_n_u_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 170, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_mstate_global->__pyx_n_u_zeros); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 170, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyLong_From_int(__pyx_v_17poker_eval_faster_11eval_cython_16three_way_orders_NUM_THREE_WAY_ORDERS); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 170, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_GetModuleGlobalName(__pyx_t_7, __pyx_mstate_global->__pyx_n_u_np); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 170, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_mstate_global->__pyx_n_u_np); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 111, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_mstate_global->__pyx_n_u_zeros); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 111, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_mstate_global->__pyx_n_u_uint64); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 170, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+  __pyx_t_6 = __Pyx_PyLong_From_int(__pyx_v_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder_NUM_THREE_WAY_ORDERS); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 111, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  __Pyx_GetModuleGlobalName(__pyx_t_8, __pyx_mstate_global->__pyx_n_u_np); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 111, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
-  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  __pyx_t_6 = 1;
+  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_mstate_global->__pyx_n_u_uint64); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 111, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_9);
+  __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+  __pyx_t_10 = 1;
   #if CYTHON_UNPACK_METHODS
-  if (unlikely(PyMethod_Check(__pyx_t_4))) {
-    __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_4);
+  if (unlikely(PyMethod_Check(__pyx_t_7))) {
+    __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_7);
     assert(__pyx_t_5);
-    PyObject* __pyx__function = PyMethod_GET_FUNCTION(__pyx_t_4);
+    PyObject* __pyx__function = PyMethod_GET_FUNCTION(__pyx_t_7);
     __Pyx_INCREF(__pyx_t_5);
     __Pyx_INCREF(__pyx__function);
-    __Pyx_DECREF_SET(__pyx_t_4, __pyx__function);
-    __pyx_t_6 = 0;
+    __Pyx_DECREF_SET(__pyx_t_7, __pyx__function);
+    __pyx_t_10 = 0;
   }
   #endif
   {
-    PyObject *__pyx_callargs[2 + ((CYTHON_VECTORCALL) ? 1 : 0)] = {__pyx_t_5, __pyx_t_1};
-    __pyx_t_7 = __Pyx_MakeVectorcallBuilderKwds(1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 170, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_7);
-    if (__Pyx_VectorcallBuilder_AddArg(__pyx_mstate_global->__pyx_n_u_dtype, __pyx_t_8, __pyx_t_7, __pyx_callargs+2, 0) < (0)) __PYX_ERR(0, 170, __pyx_L1_error)
-    __pyx_t_2 = __Pyx_Object_Vectorcall_CallFromBuilder((PyObject*)__pyx_t_4, __pyx_callargs+__pyx_t_6, (2-__pyx_t_6) | (__pyx_t_6*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET), __pyx_t_7);
+    PyObject *__pyx_callargs[2 + ((CYTHON_VECTORCALL) ? 1 : 0)] = {__pyx_t_5, __pyx_t_6};
+    __pyx_t_8 = __Pyx_MakeVectorcallBuilderKwds(1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 111, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_8);
+    if (__Pyx_VectorcallBuilder_AddArg(__pyx_mstate_global->__pyx_n_u_dtype, __pyx_t_9, __pyx_t_8, __pyx_callargs+2, 0) < (0)) __PYX_ERR(0, 111, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_Object_Vectorcall_CallFromBuilder((PyObject*)__pyx_t_7, __pyx_callargs+__pyx_t_10, (2-__pyx_t_10) | (__pyx_t_10*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET), __pyx_t_8);
     __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+    __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 170, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
+    if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 111, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
   }
-  __pyx_v_results_np = __pyx_t_2;
-  __pyx_t_2 = 0;
+  __pyx_v_results_np = __pyx_t_4;
+  __pyx_t_4 = 0;
 
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":171
- *     cdef:
+  /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":112
+ *         int cached_count
  *         object results_np = np.zeros(NUM_THREE_WAY_ORDERS, dtype=np.uint64)
  *         stdint.uint64_t[::1] results = results_np             # <<<<<<<<<<<<<<
+ *         int order_idx
  * 
- *     _evaluate_three_way_orders(
 */
-  __pyx_t_9 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn_uint64_t(__pyx_v_results_np, PyBUF_WRITABLE); if (unlikely(!__pyx_t_9.memview)) __PYX_ERR(0, 171, __pyx_L1_error)
-  __pyx_v_results = __pyx_t_9;
-  __pyx_t_9.memview = NULL;
-  __pyx_t_9.data = NULL;
+  __pyx_t_11 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn_uint64_t(__pyx_v_results_np, PyBUF_WRITABLE); if (unlikely(!__pyx_t_11.memview)) __PYX_ERR(0, 112, __pyx_L1_error)
+  __pyx_v_results = __pyx_t_11;
+  __pyx_t_11.memview = NULL;
+  __pyx_t_11.data = NULL;
 
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":174
+  /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":115
+ *         int order_idx
  * 
- *     _evaluate_three_way_orders(
- *         hands[0], hands[1],             # <<<<<<<<<<<<<<
- *         hands[2], hands[3],
- *         hands[4], hands[5],
+ *     if max_matchups > 0:             # <<<<<<<<<<<<<<
+ *         matchup_keys = <stdint.uint64_t *>PyMem_Malloc(max_matchups * sizeof(stdint.uint64_t))
+ *         if matchup_keys == NULL:
 */
-  __pyx_t_10 = 0;
-  __pyx_t_11 = 1;
+  __pyx_t_12 = (__pyx_v_max_matchups > 0);
+  if (__pyx_t_12) {
 
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":175
- *     _evaluate_three_way_orders(
- *         hands[0], hands[1],
- *         hands[2], hands[3],             # <<<<<<<<<<<<<<
- *         hands[4], hands[5],
- *         board,
-*/
-  __pyx_t_12 = 2;
-  __pyx_t_13 = 3;
-
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":176
- *         hands[0], hands[1],
- *         hands[2], hands[3],
- *         hands[4], hands[5],             # <<<<<<<<<<<<<<
- *         board,
- *         &results[0],
-*/
-  __pyx_t_14 = 4;
-  __pyx_t_15 = 5;
-
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":178
- *         hands[4], hands[5],
- *         board,
- *         &results[0],             # <<<<<<<<<<<<<<
- *     )
- *     return results_np
-*/
-  __pyx_t_16 = 0;
-
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":173
- *         stdint.uint64_t[::1] results = results_np
+    /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":116
  * 
- *     _evaluate_three_way_orders(             # <<<<<<<<<<<<<<
- *         hands[0], hands[1],
- *         hands[2], hands[3],
+ *     if max_matchups > 0:
+ *         matchup_keys = <stdint.uint64_t *>PyMem_Malloc(max_matchups * sizeof(stdint.uint64_t))             # <<<<<<<<<<<<<<
+ *         if matchup_keys == NULL:
+ *             raise MemoryError()
 */
-  __pyx_f_17poker_eval_faster_11eval_cython_16three_way_orders__evaluate_three_way_orders((*((int *) ( /* dim=0 */ (__pyx_v_hands.data + __pyx_t_10 * __pyx_v_hands.strides[0]) ))), (*((int *) ( /* dim=0 */ (__pyx_v_hands.data + __pyx_t_11 * __pyx_v_hands.strides[0]) ))), (*((int *) ( /* dim=0 */ (__pyx_v_hands.data + __pyx_t_12 * __pyx_v_hands.strides[0]) ))), (*((int *) ( /* dim=0 */ (__pyx_v_hands.data + __pyx_t_13 * __pyx_v_hands.strides[0]) ))), (*((int *) ( /* dim=0 */ (__pyx_v_hands.data + __pyx_t_14 * __pyx_v_hands.strides[0]) ))), (*((int *) ( /* dim=0 */ (__pyx_v_hands.data + __pyx_t_15 * __pyx_v_hands.strides[0]) ))), __pyx_v_board, (&(*((uint64_t *) ( /* dim=0 */ ((char *) (((uint64_t *) __pyx_v_results.data) + __pyx_t_16)) ))))); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 173, __pyx_L1_error)
+    __pyx_v_matchup_keys = ((uint64_t *)PyMem_Malloc((__pyx_v_max_matchups * (sizeof(uint64_t)))));
 
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":180
- *         &results[0],
- *     )
- *     return results_np             # <<<<<<<<<<<<<<
+    /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":117
+ *     if max_matchups > 0:
+ *         matchup_keys = <stdint.uint64_t *>PyMem_Malloc(max_matchups * sizeof(stdint.uint64_t))
+ *         if matchup_keys == NULL:             # <<<<<<<<<<<<<<
+ *             raise MemoryError()
+ * 
 */
-  __Pyx_XDECREF(__pyx_r);
-  __Pyx_INCREF(__pyx_v_results_np);
-  __pyx_r = __pyx_v_results_np;
-  goto __pyx_L0;
+    __pyx_t_12 = (__pyx_v_matchup_keys == NULL);
+    if (unlikely(__pyx_t_12)) {
 
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":165
+      /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":118
+ *         matchup_keys = <stdint.uint64_t *>PyMem_Malloc(max_matchups * sizeof(stdint.uint64_t))
+ *         if matchup_keys == NULL:
+ *             raise MemoryError()             # <<<<<<<<<<<<<<
+ * 
+ *     try:
+*/
+      PyErr_NoMemory(); __PYX_ERR(0, 118, __pyx_L1_error)
+
+      /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":117
+ *     if max_matchups > 0:
+ *         matchup_keys = <stdint.uint64_t *>PyMem_Malloc(max_matchups * sizeof(stdint.uint64_t))
+ *         if matchup_keys == NULL:             # <<<<<<<<<<<<<<
+ *             raise MemoryError()
+ * 
+*/
+    }
+
+    /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":115
+ *         int order_idx
+ * 
+ *     if max_matchups > 0:             # <<<<<<<<<<<<<<
+ *         matchup_keys = <stdint.uint64_t *>PyMem_Malloc(max_matchups * sizeof(stdint.uint64_t))
+ *         if matchup_keys == NULL:
+*/
+  }
+
+  /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":120
+ *             raise MemoryError()
+ * 
+ *     try:             # <<<<<<<<<<<<<<
+ *         for combo_a_idx in class_a_combo_ids:
+ *             mask_a = combo_masks[combo_a_idx]
+*/
+  /*try:*/ {
+
+    /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":121
+ * 
+ *     try:
+ *         for combo_a_idx in class_a_combo_ids:             # <<<<<<<<<<<<<<
+ *             mask_a = combo_masks[combo_a_idx]
+ *             for combo_b_idx in class_b_combo_ids:
+*/
+    if (unlikely(((PyObject *) __pyx_v_class_a_combo_ids.memview) == Py_None)) {
+      PyErr_SetString(PyExc_TypeError, "'NoneType' is not iterable");
+      __PYX_ERR(0, 121, __pyx_L6_error)
+    }
+    __PYX_INC_MEMVIEW(&__pyx_v_class_a_combo_ids, 1);
+    __pyx_t_3 = __pyx_v_class_a_combo_ids;
+    __pyx_t_13 = __Pyx_MemoryView_Len(__pyx_t_3); 
+    __pyx_t_12 = 1;
+    __pyx_t_14 = -1L;
+    while (1) {
+      if (!__pyx_t_12) break;
+      __pyx_t_14 = (__pyx_t_14 + 1);
+      __pyx_t_15 = (__pyx_t_14 < __pyx_t_13);
+      if (__pyx_t_15) {
+        __pyx_t_16 = __pyx_t_14;
+        __pyx_v_combo_a_idx = (*((int *) ( /* dim=0 */ (__pyx_t_3.data + __pyx_t_16 * __pyx_t_3.strides[0]) )));
+        goto __pyx_L10;
+      }
+      /*else*/ {
+        __pyx_t_12 = 0;
+        goto __pyx_L8_continue;
+      }
+      __pyx_L10:;
+
+      /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":122
+ *     try:
+ *         for combo_a_idx in class_a_combo_ids:
+ *             mask_a = combo_masks[combo_a_idx]             # <<<<<<<<<<<<<<
+ *             for combo_b_idx in class_b_combo_ids:
+ *                 mask_b = combo_masks[combo_b_idx]
+*/
+      __pyx_t_16 = __pyx_v_combo_a_idx;
+      __pyx_v_mask_a = (*((uint64_t *) ( /* dim=0 */ (__pyx_v_combo_masks.data + __pyx_t_16 * __pyx_v_combo_masks.strides[0]) )));
+
+      /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":123
+ *         for combo_a_idx in class_a_combo_ids:
+ *             mask_a = combo_masks[combo_a_idx]
+ *             for combo_b_idx in class_b_combo_ids:             # <<<<<<<<<<<<<<
+ *                 mask_b = combo_masks[combo_b_idx]
+ *                 if mask_a & mask_b:
+*/
+      if (unlikely(((PyObject *) __pyx_v_class_b_combo_ids.memview) == Py_None)) {
+        PyErr_SetString(PyExc_TypeError, "'NoneType' is not iterable");
+        __PYX_ERR(0, 123, __pyx_L6_error)
+      }
+      __PYX_INC_MEMVIEW(&__pyx_v_class_b_combo_ids, 1);
+      __pyx_t_17 = __pyx_v_class_b_combo_ids;
+      __pyx_t_18 = __Pyx_MemoryView_Len(__pyx_t_17); 
+      __pyx_t_15 = 1;
+      __pyx_t_19 = -1L;
+      while (1) {
+        if (!__pyx_t_15) break;
+        __pyx_t_19 = (__pyx_t_19 + 1);
+        __pyx_t_20 = (__pyx_t_19 < __pyx_t_18);
+        if (__pyx_t_20) {
+          __pyx_t_16 = __pyx_t_19;
+          __pyx_v_combo_b_idx = (*((int *) ( /* dim=0 */ (__pyx_t_17.data + __pyx_t_16 * __pyx_t_17.strides[0]) )));
+          goto __pyx_L13;
+        }
+        /*else*/ {
+          __pyx_t_15 = 0;
+          goto __pyx_L11_continue;
+        }
+        __pyx_L13:;
+
+        /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":124
+ *             mask_a = combo_masks[combo_a_idx]
+ *             for combo_b_idx in class_b_combo_ids:
+ *                 mask_b = combo_masks[combo_b_idx]             # <<<<<<<<<<<<<<
+ *                 if mask_a & mask_b:
+ *                     continue
+*/
+        __pyx_t_16 = __pyx_v_combo_b_idx;
+        __pyx_v_mask_b = (*((uint64_t *) ( /* dim=0 */ (__pyx_v_combo_masks.data + __pyx_t_16 * __pyx_v_combo_masks.strides[0]) )));
+
+        /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":125
+ *             for combo_b_idx in class_b_combo_ids:
+ *                 mask_b = combo_masks[combo_b_idx]
+ *                 if mask_a & mask_b:             # <<<<<<<<<<<<<<
+ *                     continue
+ *                 mask_ab = mask_a | mask_b
+*/
+        __pyx_t_20 = ((__pyx_v_mask_a & __pyx_v_mask_b) != 0);
+        if (__pyx_t_20) {
+
+          /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":126
+ *                 mask_b = combo_masks[combo_b_idx]
+ *                 if mask_a & mask_b:
+ *                     continue             # <<<<<<<<<<<<<<
+ *                 mask_ab = mask_a | mask_b
+ *                 for combo_c_idx in class_c_combo_ids:
+*/
+          goto __pyx_L11_continue;
+
+          /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":125
+ *             for combo_b_idx in class_b_combo_ids:
+ *                 mask_b = combo_masks[combo_b_idx]
+ *                 if mask_a & mask_b:             # <<<<<<<<<<<<<<
+ *                     continue
+ *                 mask_ab = mask_a | mask_b
+*/
+        }
+
+        /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":127
+ *                 if mask_a & mask_b:
+ *                     continue
+ *                 mask_ab = mask_a | mask_b             # <<<<<<<<<<<<<<
+ *                 for combo_c_idx in class_c_combo_ids:
+ *                     mask_c = combo_masks[combo_c_idx]
+*/
+        __pyx_v_mask_ab = (__pyx_v_mask_a | __pyx_v_mask_b);
+
+        /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":128
+ *                     continue
+ *                 mask_ab = mask_a | mask_b
+ *                 for combo_c_idx in class_c_combo_ids:             # <<<<<<<<<<<<<<
+ *                     mask_c = combo_masks[combo_c_idx]
+ *                     if mask_ab & mask_c:
+*/
+        if (unlikely(((PyObject *) __pyx_v_class_c_combo_ids.memview) == Py_None)) {
+          PyErr_SetString(PyExc_TypeError, "'NoneType' is not iterable");
+          __PYX_ERR(0, 128, __pyx_L6_error)
+        }
+        __PYX_INC_MEMVIEW(&__pyx_v_class_c_combo_ids, 1);
+        __pyx_t_21 = __pyx_v_class_c_combo_ids;
+        __pyx_t_22 = __Pyx_MemoryView_Len(__pyx_t_21); 
+        __pyx_t_20 = 1;
+        __pyx_t_23 = -1L;
+        while (1) {
+          if (!__pyx_t_20) break;
+          __pyx_t_23 = (__pyx_t_23 + 1);
+          __pyx_t_24 = (__pyx_t_23 < __pyx_t_22);
+          if (__pyx_t_24) {
+            __pyx_t_16 = __pyx_t_23;
+            __pyx_v_combo_c_idx = (*((int *) ( /* dim=0 */ (__pyx_t_21.data + __pyx_t_16 * __pyx_t_21.strides[0]) )));
+            goto __pyx_L17;
+          }
+          /*else*/ {
+            __pyx_t_20 = 0;
+            goto __pyx_L15_continue;
+          }
+          __pyx_L17:;
+
+          /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":129
+ *                 mask_ab = mask_a | mask_b
+ *                 for combo_c_idx in class_c_combo_ids:
+ *                     mask_c = combo_masks[combo_c_idx]             # <<<<<<<<<<<<<<
+ *                     if mask_ab & mask_c:
+ *                         continue
+*/
+          __pyx_t_16 = __pyx_v_combo_c_idx;
+          __pyx_v_mask_c = (*((uint64_t *) ( /* dim=0 */ (__pyx_v_combo_masks.data + __pyx_t_16 * __pyx_v_combo_masks.strides[0]) )));
+
+          /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":130
+ *                 for combo_c_idx in class_c_combo_ids:
+ *                     mask_c = combo_masks[combo_c_idx]
+ *                     if mask_ab & mask_c:             # <<<<<<<<<<<<<<
+ *                         continue
+ *                     matchup_keys[matchup_count] = _canonical_three_way_matchup_key(
+*/
+          __pyx_t_24 = ((__pyx_v_mask_ab & __pyx_v_mask_c) != 0);
+          if (__pyx_t_24) {
+
+            /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":131
+ *                     mask_c = combo_masks[combo_c_idx]
+ *                     if mask_ab & mask_c:
+ *                         continue             # <<<<<<<<<<<<<<
+ *                     matchup_keys[matchup_count] = _canonical_three_way_matchup_key(
+ *                         combo_a_idx,
+*/
+            goto __pyx_L15_continue;
+
+            /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":130
+ *                 for combo_c_idx in class_c_combo_ids:
+ *                     mask_c = combo_masks[combo_c_idx]
+ *                     if mask_ab & mask_c:             # <<<<<<<<<<<<<<
+ *                         continue
+ *                     matchup_keys[matchup_count] = _canonical_three_way_matchup_key(
+*/
+          }
+
+          /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":132
+ *                     if mask_ab & mask_c:
+ *                         continue
+ *                     matchup_keys[matchup_count] = _canonical_three_way_matchup_key(             # <<<<<<<<<<<<<<
+ *                         combo_a_idx,
+ *                         combo_b_idx,
+*/
+          (__pyx_v_matchup_keys[__pyx_v_matchup_count]) = __pyx_f_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder__canonical_three_way_matchup_key(__pyx_v_combo_a_idx, __pyx_v_combo_b_idx, __pyx_v_combo_c_idx, __pyx_v_combo_remaps);
+
+          /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":138
+ *                         combo_remaps,
+ *                     )
+ *                     matchup_count += 1             # <<<<<<<<<<<<<<
+ * 
+ *         if matchup_count == 0:
+*/
+          __pyx_v_matchup_count = (__pyx_v_matchup_count + 1);
+          __pyx_L15_continue:;
+        }
+        __PYX_XCLEAR_MEMVIEW(&__pyx_t_21, 1);
+        __pyx_t_21.memview = NULL; __pyx_t_21.data = NULL;
+        __pyx_L11_continue:;
+      }
+      __PYX_XCLEAR_MEMVIEW(&__pyx_t_17, 1);
+      __pyx_t_17.memview = NULL; __pyx_t_17.data = NULL;
+      __pyx_L8_continue:;
+    }
+    __PYX_XCLEAR_MEMVIEW(&__pyx_t_3, 1);
+    __pyx_t_3.memview = NULL; __pyx_t_3.data = NULL;
+
+    /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":140
+ *                     matchup_count += 1
+ * 
+ *         if matchup_count == 0:             # <<<<<<<<<<<<<<
+ *             return results_np
+ * 
+*/
+    __pyx_t_12 = (__pyx_v_matchup_count == 0);
+    if (__pyx_t_12) {
+
+      /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":141
+ * 
+ *         if matchup_count == 0:
+ *             return results_np             # <<<<<<<<<<<<<<
+ * 
+ *         qsort(matchup_keys, <size_t>matchup_count, sizeof(stdint.uint64_t), _compare_uint64)
+*/
+      __Pyx_XDECREF(__pyx_r);
+      __Pyx_INCREF(__pyx_v_results_np);
+      __pyx_r = __pyx_v_results_np;
+      goto __pyx_L5_return;
+
+      /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":140
+ *                     matchup_count += 1
+ * 
+ *         if matchup_count == 0:             # <<<<<<<<<<<<<<
+ *             return results_np
+ * 
+*/
+    }
+
+    /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":143
+ *             return results_np
+ * 
+ *         qsort(matchup_keys, <size_t>matchup_count, sizeof(stdint.uint64_t), _compare_uint64)             # <<<<<<<<<<<<<<
+ * 
+ *         current_key = matchup_keys[0]
+*/
+    qsort(__pyx_v_matchup_keys, ((size_t)__pyx_v_matchup_count), (sizeof(uint64_t)), __pyx_f_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder__compare_uint64);
+
+    /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":145
+ *         qsort(matchup_keys, <size_t>matchup_count, sizeof(stdint.uint64_t), _compare_uint64)
+ * 
+ *         current_key = matchup_keys[0]             # <<<<<<<<<<<<<<
+ *         multiplicity = 1
+ *         for matchup_idx in range(1, matchup_count + 1):
+*/
+    __pyx_v_current_key = (__pyx_v_matchup_keys[0]);
+
+    /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":146
+ * 
+ *         current_key = matchup_keys[0]
+ *         multiplicity = 1             # <<<<<<<<<<<<<<
+ *         for matchup_idx in range(1, matchup_count + 1):
+ *             if matchup_idx < matchup_count and matchup_keys[matchup_idx] == current_key:
+*/
+    __pyx_v_multiplicity = 1;
+
+    /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":147
+ *         current_key = matchup_keys[0]
+ *         multiplicity = 1
+ *         for matchup_idx in range(1, matchup_count + 1):             # <<<<<<<<<<<<<<
+ *             if matchup_idx < matchup_count and matchup_keys[matchup_idx] == current_key:
+ *                 multiplicity += 1
+*/
+    __pyx_t_13 = (__pyx_v_matchup_count + 1);
+    __pyx_t_14 = __pyx_t_13;
+    for (__pyx_t_18 = 1; __pyx_t_18 < __pyx_t_14; __pyx_t_18+=1) {
+      __pyx_v_matchup_idx = __pyx_t_18;
+
+      /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":148
+ *         multiplicity = 1
+ *         for matchup_idx in range(1, matchup_count + 1):
+ *             if matchup_idx < matchup_count and matchup_keys[matchup_idx] == current_key:             # <<<<<<<<<<<<<<
+ *                 multiplicity += 1
+ *                 continue
+*/
+      __pyx_t_15 = (__pyx_v_matchup_idx < __pyx_v_matchup_count);
+      if (__pyx_t_15) {
+      } else {
+        __pyx_t_12 = __pyx_t_15;
+        goto __pyx_L23_bool_binop_done;
+      }
+      __pyx_t_15 = ((__pyx_v_matchup_keys[__pyx_v_matchup_idx]) == __pyx_v_current_key);
+      __pyx_t_12 = __pyx_t_15;
+      __pyx_L23_bool_binop_done:;
+      if (__pyx_t_12) {
+
+        /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":149
+ *         for matchup_idx in range(1, matchup_count + 1):
+ *             if matchup_idx < matchup_count and matchup_keys[matchup_idx] == current_key:
+ *                 multiplicity += 1             # <<<<<<<<<<<<<<
+ *                 continue
+ * 
+*/
+        __pyx_v_multiplicity = (__pyx_v_multiplicity + 1);
+
+        /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":150
+ *             if matchup_idx < matchup_count and matchup_keys[matchup_idx] == current_key:
+ *                 multiplicity += 1
+ *                 continue             # <<<<<<<<<<<<<<
+ * 
+ *             cached_counts = _CANONICAL_COUNT_CACHE.get(current_key)
+*/
+        goto __pyx_L20_continue;
+
+        /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":148
+ *         multiplicity = 1
+ *         for matchup_idx in range(1, matchup_count + 1):
+ *             if matchup_idx < matchup_count and matchup_keys[matchup_idx] == current_key:             # <<<<<<<<<<<<<<
+ *                 multiplicity += 1
+ *                 continue
+*/
+      }
+
+      /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":152
+ *                 continue
+ * 
+ *             cached_counts = _CANONICAL_COUNT_CACHE.get(current_key)             # <<<<<<<<<<<<<<
+ *             if cached_counts is None:
+ *                 for order_idx in range(NUM_THREE_WAY_ORDERS):
+*/
+      if (unlikely(__pyx_v_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder__CANONICAL_COUNT_CACHE == Py_None)) {
+        PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "get");
+        __PYX_ERR(0, 152, __pyx_L6_error)
+      }
+      __pyx_t_4 = __Pyx_PyLong_From_uint64_t(__pyx_v_current_key); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 152, __pyx_L6_error)
+      __Pyx_GOTREF(__pyx_t_4);
+      __pyx_t_7 = __Pyx_PyDict_GetItemDefault(__pyx_v_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder__CANONICAL_COUNT_CACHE, __pyx_t_4, Py_None); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 152, __pyx_L6_error)
+      __Pyx_GOTREF(__pyx_t_7);
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+      __Pyx_XDECREF_SET(__pyx_v_cached_counts, __pyx_t_7);
+      __pyx_t_7 = 0;
+
+      /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":153
+ * 
+ *             cached_counts = _CANONICAL_COUNT_CACHE.get(current_key)
+ *             if cached_counts is None:             # <<<<<<<<<<<<<<
+ *                 for order_idx in range(NUM_THREE_WAY_ORDERS):
+ *                     order_counts_buffer[order_idx] = 0
+*/
+      __pyx_t_12 = (__pyx_v_cached_counts == Py_None);
+      if (__pyx_t_12) {
+
+        /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":154
+ *             cached_counts = _CANONICAL_COUNT_CACHE.get(current_key)
+ *             if cached_counts is None:
+ *                 for order_idx in range(NUM_THREE_WAY_ORDERS):             # <<<<<<<<<<<<<<
+ *                     order_counts_buffer[order_idx] = 0
+ * 
+*/
+        __pyx_t_25 = __pyx_v_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder_NUM_THREE_WAY_ORDERS;
+        __pyx_t_26 = __pyx_t_25;
+        for (__pyx_t_27 = 0; __pyx_t_27 < __pyx_t_26; __pyx_t_27+=1) {
+          __pyx_v_order_idx = __pyx_t_27;
+
+          /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":155
+ *             if cached_counts is None:
+ *                 for order_idx in range(NUM_THREE_WAY_ORDERS):
+ *                     order_counts_buffer[order_idx] = 0             # <<<<<<<<<<<<<<
+ * 
+ *                 _evaluate_three_way_orders(
+*/
+          (__pyx_v_order_counts_buffer[__pyx_v_order_idx]) = 0;
+        }
+
+        /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":157
+ *                     order_counts_buffer[order_idx] = 0
+ * 
+ *                 _evaluate_three_way_orders(             # <<<<<<<<<<<<<<
+ *                     <int>((current_key >> 40) & 0xFF),
+ *                     <int>((current_key >> 32) & 0xFF),
+*/
+        __pyx_f_17poker_eval_faster_11eval_cython_16three_way_orders__evaluate_three_way_orders(((int)((__pyx_v_current_key >> 40) & 0xFF)), ((int)((__pyx_v_current_key >> 32) & 0xFF)), ((int)((__pyx_v_current_key >> 24) & 0xFF)), ((int)((__pyx_v_current_key >> 16) & 0xFF)), ((int)((__pyx_v_current_key >> 8) & 0xFF)), ((int)(__pyx_v_current_key & 0xFF)), __pyx_v_empty_board, __pyx_v_order_counts_buffer); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 157, __pyx_L6_error)
+
+        /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":167
+ *                     order_counts_buffer,
+ *                 )
+ *                 cached_counts_list = []             # <<<<<<<<<<<<<<
+ *                 for order_idx in range(NUM_THREE_WAY_ORDERS):
+ *                     cached_counts_list.append(int(order_counts_buffer[order_idx]))
+*/
+        __pyx_t_7 = PyList_New(0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 167, __pyx_L6_error)
+        __Pyx_GOTREF(__pyx_t_7);
+        __Pyx_XDECREF_SET(__pyx_v_cached_counts_list, ((PyObject*)__pyx_t_7));
+        __pyx_t_7 = 0;
+
+        /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":168
+ *                 )
+ *                 cached_counts_list = []
+ *                 for order_idx in range(NUM_THREE_WAY_ORDERS):             # <<<<<<<<<<<<<<
+ *                     cached_counts_list.append(int(order_counts_buffer[order_idx]))
+ *                 cached_counts = tuple(cached_counts_list)
+*/
+        __pyx_t_25 = __pyx_v_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder_NUM_THREE_WAY_ORDERS;
+        __pyx_t_26 = __pyx_t_25;
+        for (__pyx_t_27 = 0; __pyx_t_27 < __pyx_t_26; __pyx_t_27+=1) {
+          __pyx_v_order_idx = __pyx_t_27;
+
+          /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":169
+ *                 cached_counts_list = []
+ *                 for order_idx in range(NUM_THREE_WAY_ORDERS):
+ *                     cached_counts_list.append(int(order_counts_buffer[order_idx]))             # <<<<<<<<<<<<<<
+ *                 cached_counts = tuple(cached_counts_list)
+ *                 if len(_CANONICAL_COUNT_CACHE) >= MAX_CANONICAL_COUNT_CACHE_SIZE:
+*/
+          __pyx_t_4 = NULL;
+          __pyx_t_8 = __Pyx_PyLong_From_uint64_t((__pyx_v_order_counts_buffer[__pyx_v_order_idx])); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 169, __pyx_L6_error)
+          __Pyx_GOTREF(__pyx_t_8);
+          __pyx_t_10 = 1;
+          {
+            PyObject *__pyx_callargs[2] = {__pyx_t_4, __pyx_t_8};
+            __pyx_t_7 = __Pyx_PyObject_FastCall((PyObject*)(&PyLong_Type), __pyx_callargs+__pyx_t_10, (2-__pyx_t_10) | (__pyx_t_10*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
+            __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+            __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+            if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 169, __pyx_L6_error)
+            __Pyx_GOTREF(__pyx_t_7);
+          }
+          __pyx_t_28 = __Pyx_PyList_Append(__pyx_v_cached_counts_list, __pyx_t_7); if (unlikely(__pyx_t_28 == ((int)-1))) __PYX_ERR(0, 169, __pyx_L6_error)
+          __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+        }
+
+        /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":170
+ *                 for order_idx in range(NUM_THREE_WAY_ORDERS):
+ *                     cached_counts_list.append(int(order_counts_buffer[order_idx]))
+ *                 cached_counts = tuple(cached_counts_list)             # <<<<<<<<<<<<<<
+ *                 if len(_CANONICAL_COUNT_CACHE) >= MAX_CANONICAL_COUNT_CACHE_SIZE:
+ *                     _CANONICAL_COUNT_CACHE.clear()
+*/
+        __pyx_t_7 = PyList_AsTuple(__pyx_v_cached_counts_list); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 170, __pyx_L6_error)
+        __Pyx_GOTREF(__pyx_t_7);
+        __Pyx_DECREF_SET(__pyx_v_cached_counts, __pyx_t_7);
+        __pyx_t_7 = 0;
+
+        /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":171
+ *                     cached_counts_list.append(int(order_counts_buffer[order_idx]))
+ *                 cached_counts = tuple(cached_counts_list)
+ *                 if len(_CANONICAL_COUNT_CACHE) >= MAX_CANONICAL_COUNT_CACHE_SIZE:             # <<<<<<<<<<<<<<
+ *                     _CANONICAL_COUNT_CACHE.clear()
+ *                 _CANONICAL_COUNT_CACHE[current_key] = cached_counts
+*/
+        __pyx_t_7 = __pyx_v_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder__CANONICAL_COUNT_CACHE;
+        __Pyx_INCREF(__pyx_t_7);
+        if (unlikely(__pyx_t_7 == Py_None)) {
+          PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
+          __PYX_ERR(0, 171, __pyx_L6_error)
+        }
+        __pyx_t_19 = PyDict_Size(__pyx_t_7); if (unlikely(__pyx_t_19 == ((Py_ssize_t)-1))) __PYX_ERR(0, 171, __pyx_L6_error)
+        __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+        __pyx_t_12 = (__pyx_t_19 >= __pyx_v_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder_MAX_CANONICAL_COUNT_CACHE_SIZE);
+        if (__pyx_t_12) {
+
+          /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":172
+ *                 cached_counts = tuple(cached_counts_list)
+ *                 if len(_CANONICAL_COUNT_CACHE) >= MAX_CANONICAL_COUNT_CACHE_SIZE:
+ *                     _CANONICAL_COUNT_CACHE.clear()             # <<<<<<<<<<<<<<
+ *                 _CANONICAL_COUNT_CACHE[current_key] = cached_counts
+ * 
+*/
+          if (unlikely(__pyx_v_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder__CANONICAL_COUNT_CACHE == Py_None)) {
+            PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "clear");
+            __PYX_ERR(0, 172, __pyx_L6_error)
+          }
+          __pyx_t_28 = __Pyx_PyDict_Clear(__pyx_v_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder__CANONICAL_COUNT_CACHE); if (unlikely(__pyx_t_28 == ((int)-1))) __PYX_ERR(0, 172, __pyx_L6_error)
+
+          /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":171
+ *                     cached_counts_list.append(int(order_counts_buffer[order_idx]))
+ *                 cached_counts = tuple(cached_counts_list)
+ *                 if len(_CANONICAL_COUNT_CACHE) >= MAX_CANONICAL_COUNT_CACHE_SIZE:             # <<<<<<<<<<<<<<
+ *                     _CANONICAL_COUNT_CACHE.clear()
+ *                 _CANONICAL_COUNT_CACHE[current_key] = cached_counts
+*/
+        }
+
+        /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":173
+ *                 if len(_CANONICAL_COUNT_CACHE) >= MAX_CANONICAL_COUNT_CACHE_SIZE:
+ *                     _CANONICAL_COUNT_CACHE.clear()
+ *                 _CANONICAL_COUNT_CACHE[current_key] = cached_counts             # <<<<<<<<<<<<<<
+ * 
+ *             for order_idx in range(NUM_THREE_WAY_ORDERS):
+*/
+        if (unlikely(__pyx_v_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder__CANONICAL_COUNT_CACHE == Py_None)) {
+          PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
+          __PYX_ERR(0, 173, __pyx_L6_error)
+        }
+        __pyx_t_7 = __Pyx_PyLong_From_uint64_t(__pyx_v_current_key); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 173, __pyx_L6_error)
+        __Pyx_GOTREF(__pyx_t_7);
+        if (unlikely((PyDict_SetItem(__pyx_v_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder__CANONICAL_COUNT_CACHE, __pyx_t_7, __pyx_v_cached_counts) < 0))) __PYX_ERR(0, 173, __pyx_L6_error)
+        __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+
+        /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":153
+ * 
+ *             cached_counts = _CANONICAL_COUNT_CACHE.get(current_key)
+ *             if cached_counts is None:             # <<<<<<<<<<<<<<
+ *                 for order_idx in range(NUM_THREE_WAY_ORDERS):
+ *                     order_counts_buffer[order_idx] = 0
+*/
+      }
+
+      /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":175
+ *                 _CANONICAL_COUNT_CACHE[current_key] = cached_counts
+ * 
+ *             for order_idx in range(NUM_THREE_WAY_ORDERS):             # <<<<<<<<<<<<<<
+ *                 cached_count = cached_counts[order_idx]
+ *                 if cached_count != 0:
+*/
+      __pyx_t_25 = __pyx_v_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder_NUM_THREE_WAY_ORDERS;
+      __pyx_t_26 = __pyx_t_25;
+      for (__pyx_t_27 = 0; __pyx_t_27 < __pyx_t_26; __pyx_t_27+=1) {
+        __pyx_v_order_idx = __pyx_t_27;
+
+        /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":176
+ * 
+ *             for order_idx in range(NUM_THREE_WAY_ORDERS):
+ *                 cached_count = cached_counts[order_idx]             # <<<<<<<<<<<<<<
+ *                 if cached_count != 0:
+ *                     results[order_idx] += multiplicity * cached_count
+*/
+        __pyx_t_7 = __Pyx_GetItemInt(__pyx_v_cached_counts, __pyx_v_order_idx, int, 1, __Pyx_PyLong_From_int, 0, 0, 0, 1, __Pyx_ReferenceSharing_OwnStrongReference); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 176, __pyx_L6_error)
+        __Pyx_GOTREF(__pyx_t_7);
+        __pyx_t_29 = __Pyx_PyLong_As_int(__pyx_t_7); if (unlikely((__pyx_t_29 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 176, __pyx_L6_error)
+        __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+        __pyx_v_cached_count = __pyx_t_29;
+
+        /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":177
+ *             for order_idx in range(NUM_THREE_WAY_ORDERS):
+ *                 cached_count = cached_counts[order_idx]
+ *                 if cached_count != 0:             # <<<<<<<<<<<<<<
+ *                     results[order_idx] += multiplicity * cached_count
+ * 
+*/
+        __pyx_t_12 = (__pyx_v_cached_count != 0);
+        if (__pyx_t_12) {
+
+          /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":178
+ *                 cached_count = cached_counts[order_idx]
+ *                 if cached_count != 0:
+ *                     results[order_idx] += multiplicity * cached_count             # <<<<<<<<<<<<<<
+ * 
+ *             if matchup_idx < matchup_count:
+*/
+          __pyx_t_16 = __pyx_v_order_idx;
+          *((uint64_t *) ( /* dim=0 */ ((char *) (((uint64_t *) __pyx_v_results.data) + __pyx_t_16)) )) += (__pyx_v_multiplicity * __pyx_v_cached_count);
+
+          /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":177
+ *             for order_idx in range(NUM_THREE_WAY_ORDERS):
+ *                 cached_count = cached_counts[order_idx]
+ *                 if cached_count != 0:             # <<<<<<<<<<<<<<
+ *                     results[order_idx] += multiplicity * cached_count
+ * 
+*/
+        }
+      }
+
+      /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":180
+ *                     results[order_idx] += multiplicity * cached_count
+ * 
+ *             if matchup_idx < matchup_count:             # <<<<<<<<<<<<<<
+ *                 current_key = matchup_keys[matchup_idx]
+ *                 multiplicity = 1
+*/
+      __pyx_t_12 = (__pyx_v_matchup_idx < __pyx_v_matchup_count);
+      if (__pyx_t_12) {
+
+        /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":181
+ * 
+ *             if matchup_idx < matchup_count:
+ *                 current_key = matchup_keys[matchup_idx]             # <<<<<<<<<<<<<<
+ *                 multiplicity = 1
+ * 
+*/
+        __pyx_v_current_key = (__pyx_v_matchup_keys[__pyx_v_matchup_idx]);
+
+        /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":182
+ *             if matchup_idx < matchup_count:
+ *                 current_key = matchup_keys[matchup_idx]
+ *                 multiplicity = 1             # <<<<<<<<<<<<<<
+ * 
+ *         return results_np
+*/
+        __pyx_v_multiplicity = 1;
+
+        /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":180
+ *                     results[order_idx] += multiplicity * cached_count
+ * 
+ *             if matchup_idx < matchup_count:             # <<<<<<<<<<<<<<
+ *                 current_key = matchup_keys[matchup_idx]
+ *                 multiplicity = 1
+*/
+      }
+      __pyx_L20_continue:;
+    }
+
+    /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":184
+ *                 multiplicity = 1
+ * 
+ *         return results_np             # <<<<<<<<<<<<<<
+ *     finally:
+ *         if max_matchups > 0 and matchup_keys != matchup_keys_tmp:
+*/
+    __Pyx_XDECREF(__pyx_r);
+    __Pyx_INCREF(__pyx_v_results_np);
+    __pyx_r = __pyx_v_results_np;
+    goto __pyx_L5_return;
+  }
+
+  /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":186
+ *         return results_np
+ *     finally:
+ *         if max_matchups > 0 and matchup_keys != matchup_keys_tmp:             # <<<<<<<<<<<<<<
+ *             PyMem_Free(matchup_keys)
+ * 
+*/
+  /*finally:*/ {
+    __pyx_L6_error:;
+    /*exception exit:*/{
+      __Pyx_PyThreadState_declare
+      __Pyx_PyThreadState_assign
+      __pyx_t_31 = 0; __pyx_t_32 = 0; __pyx_t_33 = 0; __pyx_t_34 = 0; __pyx_t_35 = 0; __pyx_t_36 = 0;
+      __PYX_XCLEAR_MEMVIEW(&__pyx_t_1, 1);
+      __pyx_t_1.memview = NULL; __pyx_t_1.data = NULL;
+      __PYX_XCLEAR_MEMVIEW(&__pyx_t_11, 1);
+      __pyx_t_11.memview = NULL; __pyx_t_11.data = NULL;
+      __PYX_XCLEAR_MEMVIEW(&__pyx_t_17, 1);
+      __pyx_t_17.memview = NULL; __pyx_t_17.data = NULL;
+      __PYX_XCLEAR_MEMVIEW(&__pyx_t_2, 1);
+      __pyx_t_2.memview = NULL; __pyx_t_2.data = NULL;
+      __PYX_XCLEAR_MEMVIEW(&__pyx_t_21, 1);
+      __pyx_t_21.memview = NULL; __pyx_t_21.data = NULL;
+      __PYX_XCLEAR_MEMVIEW(&__pyx_t_3, 1);
+      __pyx_t_3.memview = NULL; __pyx_t_3.data = NULL;
+      __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+      __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
+      __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
+      __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
+      __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
+      __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
+       __Pyx_ExceptionSwap(&__pyx_t_34, &__pyx_t_35, &__pyx_t_36);
+      if ( unlikely(__Pyx_GetException(&__pyx_t_31, &__pyx_t_32, &__pyx_t_33) < 0)) __Pyx_ErrFetch(&__pyx_t_31, &__pyx_t_32, &__pyx_t_33);
+      __Pyx_XGOTREF(__pyx_t_31);
+      __Pyx_XGOTREF(__pyx_t_32);
+      __Pyx_XGOTREF(__pyx_t_33);
+      __Pyx_XGOTREF(__pyx_t_34);
+      __Pyx_XGOTREF(__pyx_t_35);
+      __Pyx_XGOTREF(__pyx_t_36);
+      __pyx_t_25 = __pyx_lineno; __pyx_t_26 = __pyx_clineno; __pyx_t_30 = __pyx_filename;
+      {
+        __pyx_t_15 = (__pyx_v_max_matchups > 0);
+        if (__pyx_t_15) {
+        } else {
+          __pyx_t_12 = __pyx_t_15;
+          goto __pyx_L38_bool_binop_done;
+        }
+        __pyx_t_15 = (__pyx_v_matchup_keys != __pyx_v_matchup_keys_tmp);
+        __pyx_t_12 = __pyx_t_15;
+        __pyx_L38_bool_binop_done:;
+        if (__pyx_t_12) {
+
+          /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":187
+ *     finally:
+ *         if max_matchups > 0 and matchup_keys != matchup_keys_tmp:
+ *             PyMem_Free(matchup_keys)             # <<<<<<<<<<<<<<
  * 
  * 
- * cpdef object evaluate_three_way_orders_c(int[:] hands, int[:] board=array('i', [])):             # <<<<<<<<<<<<<<
- *     if hands.size != 6:
- *         raise ValueError(f"Three-way evaluation expects exactly 6 cards, got {hands.size}")
+*/
+          PyMem_Free(__pyx_v_matchup_keys);
+
+          /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":186
+ *         return results_np
+ *     finally:
+ *         if max_matchups > 0 and matchup_keys != matchup_keys_tmp:             # <<<<<<<<<<<<<<
+ *             PyMem_Free(matchup_keys)
+ * 
+*/
+        }
+      }
+      __Pyx_XGIVEREF(__pyx_t_34);
+      __Pyx_XGIVEREF(__pyx_t_35);
+      __Pyx_XGIVEREF(__pyx_t_36);
+      __Pyx_ExceptionReset(__pyx_t_34, __pyx_t_35, __pyx_t_36);
+      __Pyx_XGIVEREF(__pyx_t_31);
+      __Pyx_XGIVEREF(__pyx_t_32);
+      __Pyx_XGIVEREF(__pyx_t_33);
+      __Pyx_ErrRestore(__pyx_t_31, __pyx_t_32, __pyx_t_33);
+      __pyx_t_31 = 0; __pyx_t_32 = 0; __pyx_t_33 = 0; __pyx_t_34 = 0; __pyx_t_35 = 0; __pyx_t_36 = 0;
+      __pyx_lineno = __pyx_t_25; __pyx_clineno = __pyx_t_26; __pyx_filename = __pyx_t_30;
+      goto __pyx_L1_error;
+    }
+    __pyx_L5_return: {
+      __pyx_t_36 = __pyx_r;
+      __pyx_r = 0;
+      __pyx_t_15 = (__pyx_v_max_matchups > 0);
+      if (__pyx_t_15) {
+      } else {
+        __pyx_t_12 = __pyx_t_15;
+        goto __pyx_L41_bool_binop_done;
+      }
+      __pyx_t_15 = (__pyx_v_matchup_keys != __pyx_v_matchup_keys_tmp);
+      __pyx_t_12 = __pyx_t_15;
+      __pyx_L41_bool_binop_done:;
+      if (__pyx_t_12) {
+
+        /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":187
+ *     finally:
+ *         if max_matchups > 0 and matchup_keys != matchup_keys_tmp:
+ *             PyMem_Free(matchup_keys)             # <<<<<<<<<<<<<<
+ * 
+ * 
+*/
+        PyMem_Free(__pyx_v_matchup_keys);
+
+        /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":186
+ *         return results_np
+ *     finally:
+ *         if max_matchups > 0 and matchup_keys != matchup_keys_tmp:             # <<<<<<<<<<<<<<
+ *             PyMem_Free(matchup_keys)
+ * 
+*/
+      }
+      __pyx_r = __pyx_t_36;
+      __pyx_t_36 = 0;
+      goto __pyx_L0;
+    }
+  }
+
+  /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":81
+ * 
+ * 
+ * cpdef object evaluate_three_way_class_counts_c(int[:] class_a_combo_ids,             # <<<<<<<<<<<<<<
+ *                                                int[:] class_b_combo_ids,
+ *                                                int[:] class_c_combo_ids):
 */
 
   /* function exit code */
   __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_2);
+  __PYX_XCLEAR_MEMVIEW(&__pyx_t_1, 1);
+  __PYX_XCLEAR_MEMVIEW(&__pyx_t_2, 1);
+  __PYX_XCLEAR_MEMVIEW(&__pyx_t_3, 1);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
+  __Pyx_XDECREF(__pyx_t_6);
   __Pyx_XDECREF(__pyx_t_7);
   __Pyx_XDECREF(__pyx_t_8);
-  __PYX_XCLEAR_MEMVIEW(&__pyx_t_9, 1);
-  __Pyx_AddTraceback("poker_eval_faster.eval_cython.three_way_orders.evaluate_three_way_orders_c", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_XDECREF(__pyx_t_9);
+  __PYX_XCLEAR_MEMVIEW(&__pyx_t_11, 1);
+  __PYX_XCLEAR_MEMVIEW(&__pyx_t_17, 1);
+  __PYX_XCLEAR_MEMVIEW(&__pyx_t_21, 1);
+  __Pyx_AddTraceback("poker_eval_faster.eval_cython.three_way_class_lookup_builder.evaluate_three_way_class_counts_c", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
+  __PYX_XCLEAR_MEMVIEW(&__pyx_v_combo_masks, 1);
+  __PYX_XCLEAR_MEMVIEW(&__pyx_v_combo_remaps, 1);
+  __PYX_XCLEAR_MEMVIEW(&__pyx_v_empty_board, 1);
+  __Pyx_XDECREF(__pyx_v_cached_counts);
+  __Pyx_XDECREF(__pyx_v_cached_counts_list);
   __Pyx_XDECREF(__pyx_v_results_np);
   __PYX_XCLEAR_MEMVIEW(&__pyx_v_results, 1);
   __Pyx_XGIVEREF(__pyx_r);
@@ -18588,34 +18179,35 @@ static PyObject *__pyx_f_17poker_eval_faster_11eval_cython_16three_way_orders_ev
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_17poker_eval_faster_11eval_cython_16three_way_orders_1evaluate_three_way_orders_c(PyObject *__pyx_self, 
+static PyObject *__pyx_pw_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder_1evaluate_three_way_class_counts_c(PyObject *__pyx_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_17poker_eval_faster_11eval_cython_16three_way_orders_1evaluate_three_way_orders_c = {"evaluate_three_way_orders_c", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_17poker_eval_faster_11eval_cython_16three_way_orders_1evaluate_three_way_orders_c, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_17poker_eval_faster_11eval_cython_16three_way_orders_1evaluate_three_way_orders_c(PyObject *__pyx_self, 
+static PyMethodDef __pyx_mdef_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder_1evaluate_three_way_class_counts_c = {"evaluate_three_way_class_counts_c", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder_1evaluate_three_way_class_counts_c, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder_1evaluate_three_way_class_counts_c(PyObject *__pyx_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ) {
-  __Pyx_memviewslice __pyx_v_hands = { 0, 0, { 0 }, { 0 }, { 0 } };
-  __Pyx_memviewslice __pyx_v_board = { 0, 0, { 0 }, { 0 }, { 0 } };
+  __Pyx_memviewslice __pyx_v_class_a_combo_ids = { 0, 0, { 0 }, { 0 }, { 0 } };
+  __Pyx_memviewslice __pyx_v_class_b_combo_ids = { 0, 0, { 0 }, { 0 }, { 0 } };
+  __Pyx_memviewslice __pyx_v_class_c_combo_ids = { 0, 0, { 0 }, { 0 }, { 0 } };
   #if !CYTHON_METH_FASTCALL
   CYTHON_UNUSED Py_ssize_t __pyx_nargs;
   #endif
   CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
-  PyObject* values[2] = {0,0};
+  PyObject* values[3] = {0,0,0};
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("evaluate_three_way_orders_c (wrapper)", 0);
+  __Pyx_RefNannySetupContext("evaluate_three_way_class_counts_c (wrapper)", 0);
   #if !CYTHON_METH_FASTCALL
   #if CYTHON_ASSUME_SAFE_SIZE
   __pyx_nargs = PyTuple_GET_SIZE(__pyx_args);
@@ -18625,90 +18217,87 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   #endif
   __pyx_kwvalues = __Pyx_KwValues_FASTCALL(__pyx_args, __pyx_nargs);
   {
-    PyObject ** const __pyx_pyargnames[] = {&__pyx_mstate_global->__pyx_n_u_hands,&__pyx_mstate_global->__pyx_n_u_board,0};
+    PyObject ** const __pyx_pyargnames[] = {&__pyx_mstate_global->__pyx_n_u_class_a_combo_ids,&__pyx_mstate_global->__pyx_n_u_class_b_combo_ids,&__pyx_mstate_global->__pyx_n_u_class_c_combo_ids,0};
     const Py_ssize_t __pyx_kwds_len = (__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL(__pyx_kwds) : 0;
-    if (unlikely(__pyx_kwds_len) < 0) __PYX_ERR(0, 165, __pyx_L3_error)
+    if (unlikely(__pyx_kwds_len) < 0) __PYX_ERR(0, 81, __pyx_L3_error)
     if (__pyx_kwds_len > 0) {
       switch (__pyx_nargs) {
+        case  3:
+        values[2] = __Pyx_ArgRef_FASTCALL(__pyx_args, 2);
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[2])) __PYX_ERR(0, 81, __pyx_L3_error)
+        CYTHON_FALLTHROUGH;
         case  2:
         values[1] = __Pyx_ArgRef_FASTCALL(__pyx_args, 1);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[1])) __PYX_ERR(0, 165, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[1])) __PYX_ERR(0, 81, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  1:
         values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 165, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 81, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  0: break;
         default: goto __pyx_L5_argtuple_error;
       }
       const Py_ssize_t kwd_pos_args = __pyx_nargs;
-      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "evaluate_three_way_orders_c", 0) < (0)) __PYX_ERR(0, 165, __pyx_L3_error)
-      for (Py_ssize_t i = __pyx_nargs; i < 1; i++) {
-        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("evaluate_three_way_orders_c", 0, 1, 2, i); __PYX_ERR(0, 165, __pyx_L3_error) }
+      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "evaluate_three_way_class_counts_c", 0) < (0)) __PYX_ERR(0, 81, __pyx_L3_error)
+      for (Py_ssize_t i = __pyx_nargs; i < 3; i++) {
+        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("evaluate_three_way_class_counts_c", 1, 3, 3, i); __PYX_ERR(0, 81, __pyx_L3_error) }
       }
+    } else if (unlikely(__pyx_nargs != 3)) {
+      goto __pyx_L5_argtuple_error;
     } else {
-      switch (__pyx_nargs) {
-        case  2:
-        values[1] = __Pyx_ArgRef_FASTCALL(__pyx_args, 1);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[1])) __PYX_ERR(0, 165, __pyx_L3_error)
-        CYTHON_FALLTHROUGH;
-        case  1:
-        values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 165, __pyx_L3_error)
-        break;
-        default: goto __pyx_L5_argtuple_error;
-      }
+      values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
+      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 81, __pyx_L3_error)
+      values[1] = __Pyx_ArgRef_FASTCALL(__pyx_args, 1);
+      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[1])) __PYX_ERR(0, 81, __pyx_L3_error)
+      values[2] = __Pyx_ArgRef_FASTCALL(__pyx_args, 2);
+      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[2])) __PYX_ERR(0, 81, __pyx_L3_error)
     }
-    __pyx_v_hands = __Pyx_PyObject_to_MemoryviewSlice_ds_int(values[0], PyBUF_WRITABLE); if (unlikely(!__pyx_v_hands.memview)) __PYX_ERR(0, 165, __pyx_L3_error)
-    if (values[1]) {
-      __pyx_v_board = __Pyx_PyObject_to_MemoryviewSlice_ds_int(values[1], PyBUF_WRITABLE); if (unlikely(!__pyx_v_board.memview)) __PYX_ERR(0, 165, __pyx_L3_error)
-    } else {
-      __pyx_v_board = __pyx_mstate_global->__pyx_k__12;
-      __PYX_INC_MEMVIEW(&__pyx_v_board, 1);
-    }
+    __pyx_v_class_a_combo_ids = __Pyx_PyObject_to_MemoryviewSlice_ds_int(values[0], PyBUF_WRITABLE); if (unlikely(!__pyx_v_class_a_combo_ids.memview)) __PYX_ERR(0, 81, __pyx_L3_error)
+    __pyx_v_class_b_combo_ids = __Pyx_PyObject_to_MemoryviewSlice_ds_int(values[1], PyBUF_WRITABLE); if (unlikely(!__pyx_v_class_b_combo_ids.memview)) __PYX_ERR(0, 82, __pyx_L3_error)
+    __pyx_v_class_c_combo_ids = __Pyx_PyObject_to_MemoryviewSlice_ds_int(values[2], PyBUF_WRITABLE); if (unlikely(!__pyx_v_class_c_combo_ids.memview)) __PYX_ERR(0, 83, __pyx_L3_error)
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("evaluate_three_way_orders_c", 0, 1, 2, __pyx_nargs); __PYX_ERR(0, 165, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("evaluate_three_way_class_counts_c", 1, 3, 3, __pyx_nargs); __PYX_ERR(0, 81, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
   for (Py_ssize_t __pyx_temp=0; __pyx_temp < (Py_ssize_t)(sizeof(values)/sizeof(values[0])); ++__pyx_temp) {
     Py_XDECREF(values[__pyx_temp]);
   }
-  __PYX_XCLEAR_MEMVIEW(&__pyx_v_hands, 1);
-  __PYX_XCLEAR_MEMVIEW(&__pyx_v_board, 1);
-  __Pyx_AddTraceback("poker_eval_faster.eval_cython.three_way_orders.evaluate_three_way_orders_c", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __PYX_XCLEAR_MEMVIEW(&__pyx_v_class_a_combo_ids, 1);
+  __PYX_XCLEAR_MEMVIEW(&__pyx_v_class_b_combo_ids, 1);
+  __PYX_XCLEAR_MEMVIEW(&__pyx_v_class_c_combo_ids, 1);
+  __Pyx_AddTraceback("poker_eval_faster.eval_cython.three_way_class_lookup_builder.evaluate_three_way_class_counts_c", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_17poker_eval_faster_11eval_cython_16three_way_orders_evaluate_three_way_orders_c(__pyx_self, __pyx_v_hands, __pyx_v_board);
+  __pyx_r = __pyx_pf_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder_evaluate_three_way_class_counts_c(__pyx_self, __pyx_v_class_a_combo_ids, __pyx_v_class_b_combo_ids, __pyx_v_class_c_combo_ids);
 
   /* function exit code */
   for (Py_ssize_t __pyx_temp=0; __pyx_temp < (Py_ssize_t)(sizeof(values)/sizeof(values[0])); ++__pyx_temp) {
     Py_XDECREF(values[__pyx_temp]);
   }
-  __PYX_XCLEAR_MEMVIEW(&__pyx_v_hands, 1);
-  __PYX_XCLEAR_MEMVIEW(&__pyx_v_board, 1);
+  __PYX_XCLEAR_MEMVIEW(&__pyx_v_class_a_combo_ids, 1);
+  __PYX_XCLEAR_MEMVIEW(&__pyx_v_class_b_combo_ids, 1);
+  __PYX_XCLEAR_MEMVIEW(&__pyx_v_class_c_combo_ids, 1);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_17poker_eval_faster_11eval_cython_16three_way_orders_evaluate_three_way_orders_c(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_hands, __Pyx_memviewslice __pyx_v_board) {
+static PyObject *__pyx_pf_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder_evaluate_three_way_class_counts_c(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_class_a_combo_ids, __Pyx_memviewslice __pyx_v_class_b_combo_ids, __Pyx_memviewslice __pyx_v_class_c_combo_ids) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
-  struct __pyx_opt_args_17poker_eval_faster_11eval_cython_16three_way_orders_evaluate_three_way_orders_c __pyx_t_2;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("evaluate_three_way_orders_c", 0);
+  __Pyx_RefNannySetupContext("evaluate_three_way_class_counts_c", 0);
   __Pyx_XDECREF(__pyx_r);
-  if (unlikely(!__pyx_v_hands.memview)) { __Pyx_RaiseUnboundLocalError("hands"); __PYX_ERR(0, 165, __pyx_L1_error) }
-  if (unlikely(!__pyx_v_board.memview)) { __Pyx_RaiseUnboundLocalError("board"); __PYX_ERR(0, 165, __pyx_L1_error) }
-  __pyx_t_2.__pyx_n = 1;
-  __pyx_t_2.board = __pyx_v_board;
-  __pyx_t_1 = __pyx_f_17poker_eval_faster_11eval_cython_16three_way_orders_evaluate_three_way_orders_c(__pyx_v_hands, 1, &__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 165, __pyx_L1_error)
+  if (unlikely(!__pyx_v_class_a_combo_ids.memview)) { __Pyx_RaiseUnboundLocalError("class_a_combo_ids"); __PYX_ERR(0, 81, __pyx_L1_error) }
+  if (unlikely(!__pyx_v_class_b_combo_ids.memview)) { __Pyx_RaiseUnboundLocalError("class_b_combo_ids"); __PYX_ERR(0, 81, __pyx_L1_error) }
+  if (unlikely(!__pyx_v_class_c_combo_ids.memview)) { __Pyx_RaiseUnboundLocalError("class_c_combo_ids"); __PYX_ERR(0, 81, __pyx_L1_error) }
+  __pyx_t_1 = __pyx_f_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder_evaluate_three_way_class_counts_c(__pyx_v_class_a_combo_ids, __pyx_v_class_b_combo_ids, __pyx_v_class_c_combo_ids, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 81, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -18717,7 +18306,96 @@ static PyObject *__pyx_pf_17poker_eval_faster_11eval_cython_16three_way_orders_e
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("poker_eval_faster.eval_cython.three_way_orders.evaluate_three_way_orders_c", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("poker_eval_faster.eval_cython.three_way_class_lookup_builder.evaluate_three_way_class_counts_c", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":190
+ * 
+ * 
+ * cpdef clear_three_way_class_builder_cache_c():             # <<<<<<<<<<<<<<
+ *     _CANONICAL_COUNT_CACHE.clear()
+*/
+
+static PyObject *__pyx_pw_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder_3clear_three_way_class_builder_cache_c(PyObject *__pyx_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_f_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder_clear_three_way_class_builder_cache_c(CYTHON_UNUSED int __pyx_skip_dispatch) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  int __pyx_t_1;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("clear_three_way_class_builder_cache_c", 0);
+
+  /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":191
+ * 
+ * cpdef clear_three_way_class_builder_cache_c():
+ *     _CANONICAL_COUNT_CACHE.clear()             # <<<<<<<<<<<<<<
+*/
+  if (unlikely(__pyx_v_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder__CANONICAL_COUNT_CACHE == Py_None)) {
+    PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "clear");
+    __PYX_ERR(0, 191, __pyx_L1_error)
+  }
+  __pyx_t_1 = __Pyx_PyDict_Clear(__pyx_v_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder__CANONICAL_COUNT_CACHE); if (unlikely(__pyx_t_1 == ((int)-1))) __PYX_ERR(0, 191, __pyx_L1_error)
+
+  /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":190
+ * 
+ * 
+ * cpdef clear_three_way_class_builder_cache_c():             # <<<<<<<<<<<<<<
+ *     _CANONICAL_COUNT_CACHE.clear()
+*/
+
+  /* function exit code */
+  __pyx_r = Py_None; __Pyx_INCREF(Py_None);
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __Pyx_AddTraceback("poker_eval_faster.eval_cython.three_way_class_lookup_builder.clear_three_way_class_builder_cache_c", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* Python wrapper */
+static PyObject *__pyx_pw_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder_3clear_three_way_class_builder_cache_c(PyObject *__pyx_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyMethodDef __pyx_mdef_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder_3clear_three_way_class_builder_cache_c = {"clear_three_way_class_builder_cache_c", (PyCFunction)__pyx_pw_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder_3clear_three_way_class_builder_cache_c, METH_NOARGS, 0};
+static PyObject *__pyx_pw_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder_3clear_three_way_class_builder_cache_c(PyObject *__pyx_self, CYTHON_UNUSED PyObject *unused) {
+  CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("clear_three_way_class_builder_cache_c (wrapper)", 0);
+  __pyx_kwvalues = __Pyx_KwValues_VARARGS(__pyx_args, __pyx_nargs);
+  __pyx_r = __pyx_pf_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder_2clear_three_way_class_builder_cache_c(__pyx_self);
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder_2clear_three_way_class_builder_cache_c(CYTHON_UNUSED PyObject *__pyx_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("clear_three_way_class_builder_cache_c", 0);
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __pyx_f_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder_clear_three_way_class_builder_cache_c(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 190, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("poker_eval_faster.eval_cython.three_way_class_lookup_builder.clear_three_way_class_builder_cache_c", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -18851,7 +18529,7 @@ static PyType_Slot __pyx_type___pyx_array_slots[] = {
   {0, 0},
 };
 static PyType_Spec __pyx_type___pyx_array_spec = {
-  "poker_eval_faster.eval_cython.three_way_orders.array",
+  "poker_eval_faster.eval_cython.three_way_class_lookup_builder.array",
   sizeof(struct __pyx_array_obj),
   0,
   Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_CHECKTYPES|Py_TPFLAGS_HAVE_NEWBUFFER|Py_TPFLAGS_BASETYPE|Py_TPFLAGS_SEQUENCE,
@@ -18885,7 +18563,7 @@ static PyBufferProcs __pyx_tp_as_buffer_array = {
 
 static PyTypeObject __pyx_type___pyx_array = {
   PyVarObject_HEAD_INIT(0, 0)
-  "poker_eval_faster.eval_cython.three_way_orders.""array", /*tp_name*/
+  "poker_eval_faster.eval_cython.three_way_class_lookup_builder.""array", /*tp_name*/
   sizeof(struct __pyx_array_obj), /*tp_basicsize*/
   0, /*tp_itemsize*/
   __pyx_tp_dealloc_array, /*tp_dealloc*/
@@ -19030,7 +18708,7 @@ static PyType_Slot __pyx_type___pyx_MemviewEnum_slots[] = {
   {0, 0},
 };
 static PyType_Spec __pyx_type___pyx_MemviewEnum_spec = {
-  "poker_eval_faster.eval_cython.three_way_orders.Enum",
+  "poker_eval_faster.eval_cython.three_way_class_lookup_builder.Enum",
   sizeof(struct __pyx_MemviewEnum_obj),
   0,
   Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_CHECKTYPES|Py_TPFLAGS_HAVE_NEWBUFFER|Py_TPFLAGS_BASETYPE|Py_TPFLAGS_HAVE_GC,
@@ -19040,7 +18718,7 @@ static PyType_Spec __pyx_type___pyx_MemviewEnum_spec = {
 
 static PyTypeObject __pyx_type___pyx_MemviewEnum = {
   PyVarObject_HEAD_INIT(0, 0)
-  "poker_eval_faster.eval_cython.three_way_orders.""Enum", /*tp_name*/
+  "poker_eval_faster.eval_cython.three_way_class_lookup_builder.""Enum", /*tp_name*/
   sizeof(struct __pyx_MemviewEnum_obj), /*tp_basicsize*/
   0, /*tp_itemsize*/
   __pyx_tp_dealloc_Enum, /*tp_dealloc*/
@@ -19307,7 +18985,7 @@ static PyType_Slot __pyx_type___pyx_memoryview_slots[] = {
   {0, 0},
 };
 static PyType_Spec __pyx_type___pyx_memoryview_spec = {
-  "poker_eval_faster.eval_cython.three_way_orders.memoryview",
+  "poker_eval_faster.eval_cython.three_way_class_lookup_builder.memoryview",
   sizeof(struct __pyx_memoryview_obj),
   0,
   Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_CHECKTYPES|Py_TPFLAGS_HAVE_NEWBUFFER|Py_TPFLAGS_BASETYPE|Py_TPFLAGS_HAVE_GC,
@@ -19341,7 +19019,7 @@ static PyBufferProcs __pyx_tp_as_buffer_memoryview = {
 
 static PyTypeObject __pyx_type___pyx_memoryview = {
   PyVarObject_HEAD_INIT(0, 0)
-  "poker_eval_faster.eval_cython.three_way_orders.""memoryview", /*tp_name*/
+  "poker_eval_faster.eval_cython.three_way_class_lookup_builder.""memoryview", /*tp_name*/
   sizeof(struct __pyx_memoryview_obj), /*tp_basicsize*/
   0, /*tp_itemsize*/
   __pyx_tp_dealloc_memoryview, /*tp_dealloc*/
@@ -19484,7 +19162,7 @@ static PyType_Slot __pyx_type___pyx_memoryviewslice_slots[] = {
   {0, 0},
 };
 static PyType_Spec __pyx_type___pyx_memoryviewslice_spec = {
-  "poker_eval_faster.eval_cython.three_way_orders._memoryviewslice",
+  "poker_eval_faster.eval_cython.three_way_class_lookup_builder._memoryviewslice",
   sizeof(struct __pyx_memoryviewslice_obj),
   0,
   Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_CHECKTYPES|Py_TPFLAGS_HAVE_NEWBUFFER|Py_TPFLAGS_BASETYPE|Py_TPFLAGS_HAVE_GC|Py_TPFLAGS_SEQUENCE,
@@ -19494,7 +19172,7 @@ static PyType_Spec __pyx_type___pyx_memoryviewslice_spec = {
 
 static PyTypeObject __pyx_type___pyx_memoryviewslice = {
   PyVarObject_HEAD_INIT(0, 0)
-  "poker_eval_faster.eval_cython.three_way_orders.""_memoryviewslice", /*tp_name*/
+  "poker_eval_faster.eval_cython.three_way_class_lookup_builder.""_memoryviewslice", /*tp_name*/
   sizeof(struct __pyx_memoryviewslice_obj), /*tp_basicsize*/
   0, /*tp_itemsize*/
   __pyx_tp_dealloc__memoryviewslice, /*tp_dealloc*/
@@ -19596,6 +19274,10 @@ static int __Pyx_modinit_global_init_code(__pyx_mstatetype *__pyx_mstate) {
   CYTHON_UNUSED_VAR(__pyx_mstate);
   __Pyx_RefNannySetupContext("__Pyx_modinit_global_init_code", 0);
   /*--- Global init code ---*/
+  __pyx_v_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder__EMPTY_BOARD = Py_None; Py_INCREF(Py_None);
+  __pyx_v_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder__COMBO_MASKS_OBJ = Py_None; Py_INCREF(Py_None);
+  __pyx_v_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder__COMBO_SUIT_REMAPS_OBJ = Py_None; Py_INCREF(Py_None);
+  __pyx_v_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder__CANONICAL_COUNT_CACHE = ((PyObject*)Py_None); Py_INCREF(Py_None);
   __pyx_collections_abc_Sequence = Py_None; Py_INCREF(Py_None);
   generic = Py_None; Py_INCREF(Py_None);
   strided = Py_None; Py_INCREF(Py_None);
@@ -19618,38 +19300,10 @@ static int __Pyx_modinit_variable_export_code(__pyx_mstatetype *__pyx_mstate) {
 static int __Pyx_modinit_function_export_code(__pyx_mstatetype *__pyx_mstate) {
   __Pyx_RefNannyDeclarations
   CYTHON_UNUSED_VAR(__pyx_mstate);
-  PyObject *__pyx_t_1 = NULL;
-  int __pyx_lineno = 0;
-  const char *__pyx_filename = NULL;
-  int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__Pyx_modinit_function_export_code", 0);
   /*--- Function export code ---*/
-  {
-    __pyx_t_1 = __Pyx_ApiExport_GetApiDict(); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    const char * __pyx_export_signature = __Pyx_PyBytes_AsString(__pyx_mstate_global->__pyx_kp_b_void_int_int_int_int_int_int___P);
-    #if !CYTHON_ASSUME_SAFE_MACROS
-    if (unlikely(!__pyx_export_signature)) __PYX_ERR(0, 1, __pyx_L1_error)
-    #endif
-    const char * __pyx_export_name = __pyx_export_signature + 68;
-    void (*const __pyx_export_pointers[])(void) = {(void (*)(void))&__pyx_f_17poker_eval_faster_11eval_cython_16three_way_orders__evaluate_three_way_orders, (void (*)(void)) NULL};
-    void (*const *__pyx_export_pointer)(void) = __pyx_export_pointers;
-    const char *__pyx_export_current_signature = __pyx_export_signature;
-    while (*__pyx_export_pointer) {
-      if (__Pyx_ExportFunction(__pyx_t_1, __pyx_export_name, *__pyx_export_pointer, __pyx_export_current_signature) < (0)) __PYX_ERR(0, 1, __pyx_L1_error)
-      ++__pyx_export_pointer;
-      __pyx_export_name = strchr(__pyx_export_name, '\0') + 1;
-      __pyx_export_signature = strchr(__pyx_export_signature, '\0') + 1;
-      if (*__pyx_export_signature != '\0') __pyx_export_current_signature = __pyx_export_signature;
-    }
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  }
   __Pyx_RefNannyFinishContext();
   return 0;
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_RefNannyFinishContext();
-  return -1;
 }
 
 static int __Pyx_modinit_type_init_code(__pyx_mstatetype *__pyx_mstate) {
@@ -19807,38 +19461,10 @@ static int __Pyx_modinit_type_import_code(__pyx_mstatetype *__pyx_mstate) {
 static int __Pyx_modinit_variable_import_code(__pyx_mstatetype *__pyx_mstate) {
   __Pyx_RefNannyDeclarations
   CYTHON_UNUSED_VAR(__pyx_mstate);
-  PyObject *__pyx_t_1 = NULL;
-  int __pyx_lineno = 0;
-  const char *__pyx_filename = NULL;
-  int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__Pyx_modinit_variable_import_code", 0);
   /*--- Variable import code ---*/
-  {
-    __pyx_t_1 = PyImport_ImportModule("poker_eval_faster.eval_cython.main"); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    const char * __pyx_import_signature = __Pyx_PyBytes_AsString(__pyx_mstate_global->__pyx_kp_b_Pyx_memviewslice_handdat);
-    #if !CYTHON_ASSUME_SAFE_MACROS
-    if (unlikely(!__pyx_import_signature)) __PYX_ERR(0, 1, __pyx_L1_error)
-    #endif
-    const char * __pyx_import_name = __pyx_import_signature + 19;
-    void **const __pyx_import_pointers[] = {(void **)&__pyx_vp_17poker_eval_faster_11eval_cython_4main_handdat, (void **) NULL};
-    void **const *__pyx_import_pointer = __pyx_import_pointers;
-    const char *__pyx_import_current_signature = __pyx_import_signature;
-    while (*__pyx_import_pointer) {
-      if (__Pyx_ImportVoidPtr_3_2_4(__pyx_t_1, __pyx_import_name, *__pyx_import_pointer, __pyx_import_current_signature) < (0)) __PYX_ERR(0, 1, __pyx_L1_error)
-      ++__pyx_import_pointer;
-      __pyx_import_name = strchr(__pyx_import_name, '\0') + 1;
-      __pyx_import_signature = strchr(__pyx_import_signature, '\0') + 1;
-      if (*__pyx_import_signature != '\0') __pyx_import_current_signature = __pyx_import_signature;
-    }
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  }
   __Pyx_RefNannyFinishContext();
   return 0;
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_RefNannyFinishContext();
-  return -1;
 }
 
 static int __Pyx_modinit_function_import_code(__pyx_mstatetype *__pyx_mstate) {
@@ -19851,34 +19477,14 @@ static int __Pyx_modinit_function_import_code(__pyx_mstatetype *__pyx_mstate) {
   __Pyx_RefNannySetupContext("__Pyx_modinit_function_import_code", 0);
   /*--- Function import code ---*/
   {
-    __pyx_t_1 = PyImport_ImportModule("poker_eval_faster.eval_cython.main"); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
+    __pyx_t_1 = PyImport_ImportModule("poker_eval_faster.eval_cython.three_way_orders"); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    const char * __pyx_import_signature = __Pyx_PyBytes_AsString(__pyx_mstate_global->__pyx_kp_b_int___Pyx_memviewslice_int_int_c);
+    const char * __pyx_import_signature = __Pyx_PyBytes_AsString(__pyx_mstate_global->__pyx_kp_b_void_int_int_int_int_int_int___P);
     #if !CYTHON_ASSUME_SAFE_MACROS
     if (unlikely(!__pyx_import_signature)) __PYX_ERR(0, 1, __pyx_L1_error)
     #endif
-    const char * __pyx_import_name = __pyx_import_signature + 37;
-    void (**const __pyx_import_pointers[])(void) = {(void (**)(void))&__pyx_f_17poker_eval_faster_11eval_cython_4main_create_deck, (void (**)(void)) NULL};
-    void (**const *__pyx_import_pointer)(void) = __pyx_import_pointers;
-    const char *__pyx_import_current_signature = __pyx_import_signature;
-    while (*__pyx_import_pointer) {
-      if (__Pyx_ImportFunction_3_2_4(__pyx_t_1, __pyx_import_name, *__pyx_import_pointer, __pyx_import_current_signature) < (0)) __PYX_ERR(0, 1, __pyx_L1_error)
-      ++__pyx_import_pointer;
-      __pyx_import_name = strchr(__pyx_import_name, '\0') + 1;
-      __pyx_import_signature = strchr(__pyx_import_signature, '\0') + 1;
-      if (*__pyx_import_signature != '\0') __pyx_import_current_signature = __pyx_import_signature;
-    }
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  }
-  {
-    __pyx_t_1 = PyImport_ImportModule("poker_eval_faster.eval_cython.common"); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    const char * __pyx_import_signature = __Pyx_PyBytes_AsString(__pyx_mstate_global->__pyx_kp_b_uint32_t_uint32_t___Pyx_memviews);
-    #if !CYTHON_ASSUME_SAFE_MACROS
-    if (unlikely(!__pyx_import_signature)) __PYX_ERR(0, 1, __pyx_L1_error)
-    #endif
-    const char * __pyx_import_name = __pyx_import_signature + 50;
-    void (**const __pyx_import_pointers[])(void) = {(void (**)(void))&__pyx_f_17poker_eval_faster_11eval_cython_6common_fold_cards, (void (**)(void)) NULL};
+    const char * __pyx_import_name = __pyx_import_signature + 68;
+    void (**const __pyx_import_pointers[])(void) = {(void (**)(void))&__pyx_f_17poker_eval_faster_11eval_cython_16three_way_orders__evaluate_three_way_orders, (void (**)(void)) NULL};
     void (**const *__pyx_import_pointer)(void) = __pyx_import_pointers;
     const char *__pyx_import_current_signature = __pyx_import_signature;
     while (*__pyx_import_pointer) {
@@ -19900,10 +19506,10 @@ static int __Pyx_modinit_function_import_code(__pyx_mstatetype *__pyx_mstate) {
 
 #if CYTHON_PEP489_MULTI_PHASE_INIT
 static PyObject* __pyx_pymod_create(PyObject *spec, PyModuleDef *def); /*proto*/
-static int __pyx_pymod_exec_three_way_orders(PyObject* module); /*proto*/
+static int __pyx_pymod_exec_three_way_class_lookup_builder(PyObject* module); /*proto*/
 static PyModuleDef_Slot __pyx_moduledef_slots[] = {
   {Py_mod_create, (void*)__pyx_pymod_create},
-  {Py_mod_exec, (void*)__pyx_pymod_exec_three_way_orders},
+  {Py_mod_exec, (void*)__pyx_pymod_exec_three_way_class_lookup_builder},
   #if CYTHON_COMPILING_IN_CPYTHON_FREETHREADING
   {Py_mod_gil, __Pyx_FREETHREADING_COMPATIBLE},
   #endif
@@ -19922,7 +19528,7 @@ namespace {
   #endif
   {
       PyModuleDef_HEAD_INIT,
-      "three_way_orders",
+      "three_way_class_lookup_builder",
       0, /* m_doc */
     #if CYTHON_USE_MODULE_STATE
       sizeof(__pyx_mstatetype), /* m_size */
@@ -19960,8 +19566,8 @@ namespace {
   #endif
 #endif
 
-__Pyx_PyMODINIT_FUNC PyInit_three_way_orders(void) CYTHON_SMALL_CODE; /*proto*/
-__Pyx_PyMODINIT_FUNC PyInit_three_way_orders(void)
+__Pyx_PyMODINIT_FUNC PyInit_three_way_class_lookup_builder(void) CYTHON_SMALL_CODE; /*proto*/
+__Pyx_PyMODINIT_FUNC PyInit_three_way_class_lookup_builder(void)
 #if CYTHON_PEP489_MULTI_PHASE_INIT
 {
   return PyModuleDef_Init(&__pyx_moduledef);
@@ -20068,7 +19674,7 @@ bad:
 }
 
 
-static CYTHON_SMALL_CODE int __pyx_pymod_exec_three_way_orders(PyObject *__pyx_pyinit_module)
+static CYTHON_SMALL_CODE int __pyx_pymod_exec_three_way_class_lookup_builder(PyObject *__pyx_pyinit_module)
 #endif
 {
   int stringtab_initialized = 0;
@@ -20087,7 +19693,6 @@ static CYTHON_SMALL_CODE int __pyx_pymod_exec_three_way_orders(PyObject *__pyx_p
   Py_ssize_t __pyx_t_9;
   PyObject *__pyx_t_10 = NULL;
   PyObject *__pyx_t_11 = NULL;
-  __Pyx_memviewslice __pyx_t_12 = { 0, 0, { 0 }, { 0 }, { 0 } };
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -20095,7 +19700,7 @@ static CYTHON_SMALL_CODE int __pyx_pymod_exec_three_way_orders(PyObject *__pyx_p
   #if CYTHON_PEP489_MULTI_PHASE_INIT
   if (__pyx_m) {
     if (__pyx_m == __pyx_pyinit_module) return 0;
-    PyErr_SetString(PyExc_RuntimeError, "Module 'three_way_orders' has already been imported. Re-initialisation is not supported.");
+    PyErr_SetString(PyExc_RuntimeError, "Module 'three_way_class_lookup_builder' has already been imported. Re-initialisation is not supported.");
     return -1;
   }
   #else
@@ -20111,7 +19716,7 @@ static CYTHON_SMALL_CODE int __pyx_pymod_exec_three_way_orders(PyObject *__pyx_p
   #if CYTHON_USE_MODULE_STATE
   {
     int add_module_result = __Pyx_State_AddModule(__pyx_t_1, &__pyx_moduledef);
-    __pyx_t_1 = 0; /* transfer ownership from __pyx_t_1 to "three_way_orders" pseudovariable */
+    __pyx_t_1 = 0; /* transfer ownership from __pyx_t_1 to "three_way_class_lookup_builder" pseudovariable */
     if (unlikely((add_module_result < 0))) __PYX_ERR(0, 1, __pyx_L1_error)
     pystate_addmodule_run = 1;
   }
@@ -20139,7 +19744,7 @@ static CYTHON_SMALL_CODE int __pyx_pymod_exec_three_way_orders(PyObject *__pyx_p
   }
   #endif
   
-__Pyx_RefNannySetupContext("PyInit_three_way_orders", 0);
+__Pyx_RefNannySetupContext("PyInit_three_way_class_lookup_builder", 0);
   __Pyx_init_runtime_version();
   if (__Pyx_check_binary_version(__PYX_LIMITED_VERSION_HEX, __Pyx_get_runtime_version(), CYTHON_COMPILING_IN_LIMITED_API) < (0)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_mstate->__pyx_empty_tuple = PyTuple_New(0); if (unlikely(!__pyx_mstate->__pyx_empty_tuple)) __PYX_ERR(0, 1, __pyx_L1_error)
@@ -20150,13 +19755,13 @@ __Pyx_RefNannySetupContext("PyInit_three_way_orders", 0);
   if (__Pyx_InitConstants(__pyx_mstate) < (0)) __PYX_ERR(0, 1, __pyx_L1_error)
   stringtab_initialized = 1;
   if (__Pyx_InitGlobals() < (0)) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__pyx_module_is_main_poker_eval_faster__eval_cython__three_way_orders) {
+  if (__pyx_module_is_main_poker_eval_faster__eval_cython__three_way_class_lookup_builder) {
     if (PyObject_SetAttr(__pyx_m, __pyx_mstate_global->__pyx_n_u_name_2, __pyx_mstate_global->__pyx_n_u_main) < (0)) __PYX_ERR(0, 1, __pyx_L1_error)
   }
   {
     PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(0, 1, __pyx_L1_error)
-    if (!PyDict_GetItemString(modules, "poker_eval_faster.eval_cython.three_way_orders")) {
-      if (unlikely((PyDict_SetItemString(modules, "poker_eval_faster.eval_cython.three_way_orders", __pyx_m) < 0))) __PYX_ERR(0, 1, __pyx_L1_error)
+    if (!PyDict_GetItemString(modules, "poker_eval_faster.eval_cython.three_way_class_lookup_builder")) {
+      if (unlikely((PyDict_SetItemString(modules, "poker_eval_faster.eval_cython.three_way_class_lookup_builder", __pyx_m) < 0))) __PYX_ERR(0, 1, __pyx_L1_error)
     }
   }
   /*--- Builtin init code ---*/
@@ -20167,10 +19772,10 @@ __Pyx_RefNannySetupContext("PyInit_three_way_orders", 0);
   /*--- Global type/function init code ---*/
   (void)__Pyx_modinit_global_init_code(__pyx_mstate);
   (void)__Pyx_modinit_variable_export_code(__pyx_mstate);
-  if (unlikely((__Pyx_modinit_function_export_code(__pyx_mstate) < 0))) __PYX_ERR(0, 1, __pyx_L1_error)
+  (void)__Pyx_modinit_function_export_code(__pyx_mstate);
   if (unlikely((__Pyx_modinit_type_init_code(__pyx_mstate) < 0))) __PYX_ERR(0, 1, __pyx_L1_error)
   (void)__Pyx_modinit_type_import_code(__pyx_mstate);
-  if (unlikely((__Pyx_modinit_variable_import_code(__pyx_mstate) < 0))) __PYX_ERR(0, 1, __pyx_L1_error)
+  (void)__Pyx_modinit_variable_import_code(__pyx_mstate);
   if (unlikely((__Pyx_modinit_function_import_code(__pyx_mstate) < 0))) __PYX_ERR(0, 1, __pyx_L1_error)
   /*--- Execution code ---*/
 
@@ -20665,189 +20270,104 @@ __Pyx_RefNannySetupContext("PyInit_three_way_orders", 0);
   if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_pyx_unpickle_Enum, __pyx_t_4) < (0)) __PYX_ERR(1, 4, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":3
+  /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":2
  * # cython: boundscheck=False, wraparound=False, nonecheck=False, cdivision=True, infer_types=True
- * from cpython.mem cimport PyMem_Malloc, PyMem_Free
  * from array import array             # <<<<<<<<<<<<<<
+ * from cpython.mem cimport PyMem_Malloc, PyMem_Free
  * from libc cimport stdint
- * import numpy as np
 */
   {
     PyObject* const __pyx_imported_names[] = {__pyx_mstate_global->__pyx_n_u_array};
-    __pyx_t_1 = __Pyx_Import(__pyx_mstate_global->__pyx_n_u_array, __pyx_imported_names, 1, NULL, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 3, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_Import(__pyx_mstate_global->__pyx_n_u_array, __pyx_imported_names, 1, NULL, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 2, __pyx_L1_error)
   }
   __pyx_t_4 = __pyx_t_1;
   __Pyx_GOTREF(__pyx_t_4);
   {
     PyObject* const __pyx_imported_names[] = {__pyx_mstate_global->__pyx_n_u_array};
     __pyx_t_9 = 0; {
-      __pyx_t_5 = __Pyx_ImportFrom(__pyx_t_4, __pyx_imported_names[__pyx_t_9]); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 3, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_ImportFrom(__pyx_t_4, __pyx_imported_names[__pyx_t_9]); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 2, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
-      if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_imported_names[__pyx_t_9], __pyx_t_5) < (0)) __PYX_ERR(0, 3, __pyx_L1_error)
+      if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_imported_names[__pyx_t_9], __pyx_t_5) < (0)) __PYX_ERR(0, 2, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     }
   }
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":5
- * from array import array
- * from libc cimport stdint
+  /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":7
+ * from libc.stddef cimport size_t
+ * from libc.stdlib cimport qsort
  * import numpy as np             # <<<<<<<<<<<<<<
  * 
- * cimport cython
+ * from poker_eval_faster.eval_cython.three_way_orders cimport _evaluate_three_way_orders
 */
-  __pyx_t_1 = __Pyx_Import(__pyx_mstate_global->__pyx_n_u_numpy, 0, 0, NULL, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 5, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_Import(__pyx_mstate_global->__pyx_n_u_numpy, 0, 0, NULL, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 7, __pyx_L1_error)
   __pyx_t_4 = __pyx_t_1;
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_np, __pyx_t_4) < (0)) __PYX_ERR(0, 5, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_np, __pyx_t_4) < (0)) __PYX_ERR(0, 7, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":12
- * from poker_eval_faster.eval_cython.common cimport fold_cards
+  /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":10
  * 
- * cdef int EVAL_START = 53             # <<<<<<<<<<<<<<
+ * from poker_eval_faster.eval_cython.three_way_orders cimport _evaluate_three_way_orders
+ * from poker_eval_faster.preflop_canonical import _combo_suit_remaps, canonical_combo_masks             # <<<<<<<<<<<<<<
  * 
- * cdef int ORDER_A_B_C = 0
-*/
-  __pyx_v_17poker_eval_faster_11eval_cython_16three_way_orders_EVAL_START = 53;
-
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":14
- * cdef int EVAL_START = 53
- * 
- * cdef int ORDER_A_B_C = 0             # <<<<<<<<<<<<<<
- * cdef int ORDER_A_C_B = 1
- * cdef int ORDER_B_A_C = 2
-*/
-  __pyx_v_17poker_eval_faster_11eval_cython_16three_way_orders_ORDER_A_B_C = 0;
-
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":15
- * 
- * cdef int ORDER_A_B_C = 0
- * cdef int ORDER_A_C_B = 1             # <<<<<<<<<<<<<<
- * cdef int ORDER_B_A_C = 2
- * cdef int ORDER_B_C_A = 3
-*/
-  __pyx_v_17poker_eval_faster_11eval_cython_16three_way_orders_ORDER_A_C_B = 1;
-
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":16
- * cdef int ORDER_A_B_C = 0
- * cdef int ORDER_A_C_B = 1
- * cdef int ORDER_B_A_C = 2             # <<<<<<<<<<<<<<
- * cdef int ORDER_B_C_A = 3
- * cdef int ORDER_C_A_B = 4
-*/
-  __pyx_v_17poker_eval_faster_11eval_cython_16three_way_orders_ORDER_B_A_C = 2;
-
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":17
- * cdef int ORDER_A_C_B = 1
- * cdef int ORDER_B_A_C = 2
- * cdef int ORDER_B_C_A = 3             # <<<<<<<<<<<<<<
- * cdef int ORDER_C_A_B = 4
- * cdef int ORDER_C_B_A = 5
-*/
-  __pyx_v_17poker_eval_faster_11eval_cython_16three_way_orders_ORDER_B_C_A = 3;
-
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":18
- * cdef int ORDER_B_A_C = 2
- * cdef int ORDER_B_C_A = 3
- * cdef int ORDER_C_A_B = 4             # <<<<<<<<<<<<<<
- * cdef int ORDER_C_B_A = 5
- * cdef int ORDER_A_EQ_B_GT_C = 6
-*/
-  __pyx_v_17poker_eval_faster_11eval_cython_16three_way_orders_ORDER_C_A_B = 4;
-
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":19
- * cdef int ORDER_B_C_A = 3
- * cdef int ORDER_C_A_B = 4
- * cdef int ORDER_C_B_A = 5             # <<<<<<<<<<<<<<
- * cdef int ORDER_A_EQ_B_GT_C = 6
- * cdef int ORDER_A_EQ_C_GT_B = 7
-*/
-  __pyx_v_17poker_eval_faster_11eval_cython_16three_way_orders_ORDER_C_B_A = 5;
-
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":20
- * cdef int ORDER_C_A_B = 4
- * cdef int ORDER_C_B_A = 5
- * cdef int ORDER_A_EQ_B_GT_C = 6             # <<<<<<<<<<<<<<
- * cdef int ORDER_A_EQ_C_GT_B = 7
- * cdef int ORDER_B_EQ_C_GT_A = 8
-*/
-  __pyx_v_17poker_eval_faster_11eval_cython_16three_way_orders_ORDER_A_EQ_B_GT_C = 6;
-
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":21
- * cdef int ORDER_C_B_A = 5
- * cdef int ORDER_A_EQ_B_GT_C = 6
- * cdef int ORDER_A_EQ_C_GT_B = 7             # <<<<<<<<<<<<<<
- * cdef int ORDER_B_EQ_C_GT_A = 8
- * cdef int ORDER_A_GT_B_EQ_C = 9
-*/
-  __pyx_v_17poker_eval_faster_11eval_cython_16three_way_orders_ORDER_A_EQ_C_GT_B = 7;
-
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":22
- * cdef int ORDER_A_EQ_B_GT_C = 6
- * cdef int ORDER_A_EQ_C_GT_B = 7
- * cdef int ORDER_B_EQ_C_GT_A = 8             # <<<<<<<<<<<<<<
- * cdef int ORDER_A_GT_B_EQ_C = 9
- * cdef int ORDER_B_GT_A_EQ_C = 10
-*/
-  __pyx_v_17poker_eval_faster_11eval_cython_16three_way_orders_ORDER_B_EQ_C_GT_A = 8;
-
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":23
- * cdef int ORDER_A_EQ_C_GT_B = 7
- * cdef int ORDER_B_EQ_C_GT_A = 8
- * cdef int ORDER_A_GT_B_EQ_C = 9             # <<<<<<<<<<<<<<
- * cdef int ORDER_B_GT_A_EQ_C = 10
- * cdef int ORDER_C_GT_A_EQ_B = 11
-*/
-  __pyx_v_17poker_eval_faster_11eval_cython_16three_way_orders_ORDER_A_GT_B_EQ_C = 9;
-
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":24
- * cdef int ORDER_B_EQ_C_GT_A = 8
- * cdef int ORDER_A_GT_B_EQ_C = 9
- * cdef int ORDER_B_GT_A_EQ_C = 10             # <<<<<<<<<<<<<<
- * cdef int ORDER_C_GT_A_EQ_B = 11
- * cdef int ORDER_A_EQ_B_EQ_C = 12
-*/
-  __pyx_v_17poker_eval_faster_11eval_cython_16three_way_orders_ORDER_B_GT_A_EQ_C = 10;
-
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":25
- * cdef int ORDER_A_GT_B_EQ_C = 9
- * cdef int ORDER_B_GT_A_EQ_C = 10
- * cdef int ORDER_C_GT_A_EQ_B = 11             # <<<<<<<<<<<<<<
- * cdef int ORDER_A_EQ_B_EQ_C = 12
- * cdef int NUM_THREE_WAY_ORDERS = 13
-*/
-  __pyx_v_17poker_eval_faster_11eval_cython_16three_way_orders_ORDER_C_GT_A_EQ_B = 11;
-
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":26
- * cdef int ORDER_B_GT_A_EQ_C = 10
- * cdef int ORDER_C_GT_A_EQ_B = 11
- * cdef int ORDER_A_EQ_B_EQ_C = 12             # <<<<<<<<<<<<<<
- * cdef int NUM_THREE_WAY_ORDERS = 13
  * 
 */
-  __pyx_v_17poker_eval_faster_11eval_cython_16three_way_orders_ORDER_A_EQ_B_EQ_C = 12;
+  {
+    PyObject* const __pyx_imported_names[] = {__pyx_mstate_global->__pyx_n_u_combo_suit_remaps,__pyx_mstate_global->__pyx_n_u_canonical_combo_masks};
+    __pyx_t_1 = __Pyx_Import(__pyx_mstate_global->__pyx_n_u_poker_eval_faster_preflop_canoni, __pyx_imported_names, 2, NULL, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 10, __pyx_L1_error)
+  }
+  __pyx_t_4 = __pyx_t_1;
+  __Pyx_GOTREF(__pyx_t_4);
+  {
+    PyObject* const __pyx_imported_names[] = {__pyx_mstate_global->__pyx_n_u_combo_suit_remaps,__pyx_mstate_global->__pyx_n_u_canonical_combo_masks};
+    for (__pyx_t_9=0; __pyx_t_9 < 2; __pyx_t_9++) {
+      __pyx_t_5 = __Pyx_ImportFrom(__pyx_t_4, __pyx_imported_names[__pyx_t_9]); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 10, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_5);
+      if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_imported_names[__pyx_t_9], __pyx_t_5) < (0)) __PYX_ERR(0, 10, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    }
+  }
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":27
- * cdef int ORDER_C_GT_A_EQ_B = 11
- * cdef int ORDER_A_EQ_B_EQ_C = 12
+  /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":13
+ * 
+ * 
  * cdef int NUM_THREE_WAY_ORDERS = 13             # <<<<<<<<<<<<<<
+ * cdef int NUM_SUIT_PERMUTATIONS = 24
+ * cdef int MAX_CANONICAL_COUNT_CACHE_SIZE = 100000
+*/
+  __pyx_v_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder_NUM_THREE_WAY_ORDERS = 13;
+
+  /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":14
  * 
+ * cdef int NUM_THREE_WAY_ORDERS = 13
+ * cdef int NUM_SUIT_PERMUTATIONS = 24             # <<<<<<<<<<<<<<
+ * cdef int MAX_CANONICAL_COUNT_CACHE_SIZE = 100000
  * 
 */
-  __pyx_v_17poker_eval_faster_11eval_cython_16three_way_orders_NUM_THREE_WAY_ORDERS = 13;
+  __pyx_v_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder_NUM_SUIT_PERMUTATIONS = 24;
 
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":165
+  /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":15
+ * cdef int NUM_THREE_WAY_ORDERS = 13
+ * cdef int NUM_SUIT_PERMUTATIONS = 24
+ * cdef int MAX_CANONICAL_COUNT_CACHE_SIZE = 100000             # <<<<<<<<<<<<<<
  * 
+ * cdef object _EMPTY_BOARD = array('i', [])
+*/
+  __pyx_v_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder_MAX_CANONICAL_COUNT_CACHE_SIZE = 0x186A0;
+
+  /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":17
+ * cdef int MAX_CANONICAL_COUNT_CACHE_SIZE = 100000
  * 
- * cpdef object evaluate_three_way_orders_c(int[:] hands, int[:] board=array('i', [])):             # <<<<<<<<<<<<<<
- *     if hands.size != 6:
- *         raise ValueError(f"Three-way evaluation expects exactly 6 cards, got {hands.size}")
+ * cdef object _EMPTY_BOARD = array('i', [])             # <<<<<<<<<<<<<<
+ * cdef object _COMBO_MASKS_OBJ = None
+ * cdef object _COMBO_SUIT_REMAPS_OBJ = None
 */
   __pyx_t_5 = NULL;
-  __Pyx_GetModuleGlobalName(__pyx_t_10, __pyx_mstate_global->__pyx_n_u_array); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 165, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_10, __pyx_mstate_global->__pyx_n_u_array); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 17, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
-  __pyx_t_11 = PyList_New(0); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 165, __pyx_L1_error)
+  __pyx_t_11 = PyList_New(0); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 17, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_11);
   __pyx_t_6 = 1;
   {
@@ -20856,52 +20376,85 @@ __Pyx_RefNannySetupContext("PyInit_three_way_orders", 0);
     __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
     __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-    if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 165, __pyx_L1_error)
+    if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 17, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
   }
-  __pyx_t_12 = __Pyx_PyObject_to_MemoryviewSlice_ds_int(__pyx_t_4, PyBUF_WRITABLE); if (unlikely(!__pyx_t_12.memview)) __PYX_ERR(0, 165, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_mstate_global->__pyx_k__12 = __pyx_t_12;
-  __pyx_t_12.memview = NULL;
-  __pyx_t_12.data = NULL;
-  __pyx_t_10 = NULL;
-  __Pyx_GetModuleGlobalName(__pyx_t_11, __pyx_mstate_global->__pyx_n_u_array); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 165, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_11);
-  __pyx_t_5 = PyList_New(0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 165, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_6 = 1;
-  {
-    PyObject *__pyx_callargs[3] = {__pyx_t_10, __pyx_mstate_global->__pyx_n_u_i, __pyx_t_5};
-    __pyx_t_4 = __Pyx_PyObject_FastCall((PyObject*)__pyx_t_11, __pyx_callargs+__pyx_t_6, (3-__pyx_t_6) | (__pyx_t_6*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
-    __Pyx_XDECREF(__pyx_t_10); __pyx_t_10 = 0;
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-    if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 165, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-  }
-  __pyx_t_12 = __Pyx_PyObject_to_MemoryviewSlice_ds_int(__pyx_t_4, PyBUF_WRITABLE); if (unlikely(!__pyx_t_12.memview)) __PYX_ERR(0, 165, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __pyx_memoryview_fromslice(__pyx_t_12, 1, (PyObject *(*)(char *)) __pyx_memview_get_int, (int (*)(char *, PyObject *)) __pyx_memview_set_int, 0);; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 165, __pyx_L1_error)
+  __Pyx_XGOTREF(__pyx_v_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder__EMPTY_BOARD);
+  __Pyx_DECREF_SET(__pyx_v_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder__EMPTY_BOARD, __pyx_t_4);
+  __Pyx_GIVEREF(__pyx_t_4);
+  __pyx_t_4 = 0;
+
+  /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":18
+ * 
+ * cdef object _EMPTY_BOARD = array('i', [])
+ * cdef object _COMBO_MASKS_OBJ = None             # <<<<<<<<<<<<<<
+ * cdef object _COMBO_SUIT_REMAPS_OBJ = None
+ * cdef dict _CANONICAL_COUNT_CACHE = {}
+*/
+  __Pyx_INCREF(Py_None);
+  __Pyx_XGOTREF(__pyx_v_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder__COMBO_MASKS_OBJ);
+  __Pyx_DECREF_SET(__pyx_v_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder__COMBO_MASKS_OBJ, Py_None);
+  __Pyx_GIVEREF(Py_None);
+
+  /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":19
+ * cdef object _EMPTY_BOARD = array('i', [])
+ * cdef object _COMBO_MASKS_OBJ = None
+ * cdef object _COMBO_SUIT_REMAPS_OBJ = None             # <<<<<<<<<<<<<<
+ * cdef dict _CANONICAL_COUNT_CACHE = {}
+ * 
+*/
+  __Pyx_INCREF(Py_None);
+  __Pyx_XGOTREF(__pyx_v_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder__COMBO_SUIT_REMAPS_OBJ);
+  __Pyx_DECREF_SET(__pyx_v_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder__COMBO_SUIT_REMAPS_OBJ, Py_None);
+  __Pyx_GIVEREF(Py_None);
+
+  /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":20
+ * cdef object _COMBO_MASKS_OBJ = None
+ * cdef object _COMBO_SUIT_REMAPS_OBJ = None
+ * cdef dict _CANONICAL_COUNT_CACHE = {}             # <<<<<<<<<<<<<<
+ * 
+ * 
+*/
+  __pyx_t_4 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 20, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __PYX_XCLEAR_MEMVIEW(&__pyx_t_12, 1);
-  __pyx_t_12.memview = NULL; __pyx_t_12.data = NULL;
-  __pyx_t_11 = PyTuple_Pack(1, __pyx_t_4); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 165, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_11);
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_17poker_eval_faster_11eval_cython_16three_way_orders_1evaluate_three_way_orders_c, 0, __pyx_mstate_global->__pyx_n_u_evaluate_three_way_orders_c, NULL, __pyx_mstate_global->__pyx_n_u_poker_eval_faster_eval_cython_th, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[0])); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 165, __pyx_L1_error)
+  __Pyx_XGOTREF(__pyx_v_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder__CANONICAL_COUNT_CACHE);
+  __Pyx_DECREF_SET(__pyx_v_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder__CANONICAL_COUNT_CACHE, ((PyObject*)__pyx_t_4));
+  __Pyx_GIVEREF(__pyx_t_4);
+  __pyx_t_4 = 0;
+
+  /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":81
+ * 
+ * 
+ * cpdef object evaluate_three_way_class_counts_c(int[:] class_a_combo_ids,             # <<<<<<<<<<<<<<
+ *                                                int[:] class_b_combo_ids,
+ *                                                int[:] class_c_combo_ids):
+*/
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder_1evaluate_three_way_class_counts_c, 0, __pyx_mstate_global->__pyx_n_u_evaluate_three_way_class_counts, NULL, __pyx_mstate_global->__pyx_n_u_poker_eval_faster_eval_cython_th, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[0])); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 81, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_4);
   #endif
-  __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_4, __pyx_t_11);
-  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_evaluate_three_way_orders_c, __pyx_t_4) < (0)) __PYX_ERR(0, 165, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_evaluate_three_way_class_counts, __pyx_t_4) < (0)) __PYX_ERR(0, 81, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "poker_eval_faster/eval_cython/three_way_orders.pyx":1
+  /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":190
+ * 
+ * 
+ * cpdef clear_three_way_class_builder_cache_c():             # <<<<<<<<<<<<<<
+ *     _CANONICAL_COUNT_CACHE.clear()
+*/
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_17poker_eval_faster_11eval_cython_30three_way_class_lookup_builder_3clear_three_way_class_builder_cache_c, 0, __pyx_mstate_global->__pyx_n_u_clear_three_way_class_builder_ca, NULL, __pyx_mstate_global->__pyx_n_u_poker_eval_faster_eval_cython_th, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[1])); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 190, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
+  PyUnstable_Object_EnableDeferredRefcount(__pyx_t_4);
+  #endif
+  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_clear_three_way_class_builder_ca, __pyx_t_4) < (0)) __PYX_ERR(0, 190, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+
+  /* "poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx":1
  * # cython: boundscheck=False, wraparound=False, nonecheck=False, cdivision=True, infer_types=True             # <<<<<<<<<<<<<<
- * from cpython.mem cimport PyMem_Malloc, PyMem_Free
  * from array import array
+ * from cpython.mem cimport PyMem_Malloc, PyMem_Free
 */
   __pyx_t_4 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
@@ -20916,10 +20469,9 @@ __Pyx_RefNannySetupContext("PyInit_three_way_orders", 0);
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_10);
   __Pyx_XDECREF(__pyx_t_11);
-  __PYX_XCLEAR_MEMVIEW(&__pyx_t_12, 1);
   if (__pyx_m) {
     if (__pyx_mstate->__pyx_d && stringtab_initialized) {
-      __Pyx_AddTraceback("init poker_eval_faster.eval_cython.three_way_orders", __pyx_clineno, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("init poker_eval_faster.eval_cython.three_way_class_lookup_builder", __pyx_clineno, __pyx_lineno, __pyx_filename);
     }
     #if !CYTHON_USE_MODULE_STATE
     Py_CLEAR(__pyx_m);
@@ -20933,7 +20485,7 @@ __Pyx_RefNannySetupContext("PyInit_three_way_orders", 0);
     }
     #endif
   } else if (!PyErr_Occurred()) {
-    PyErr_SetString(PyExc_ImportError, "init poker_eval_faster.eval_cython.three_way_orders");
+    PyErr_SetString(PyExc_ImportError, "init poker_eval_faster.eval_cython.three_way_class_lookup_builder");
   }
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
@@ -20954,6 +20506,8 @@ static int __Pyx_InitCachedBuiltins(__pyx_mstatetype *__pyx_mstate) {
   __pyx_builtin_id = __Pyx_GetBuiltinName(__pyx_mstate->__pyx_n_u_id); if (!__pyx_builtin_id) __PYX_ERR(1, 619, __pyx_L1_error)
 
   /* Cached unbound methods */
+  __pyx_mstate->__pyx_umethod_PyDict_Type_get.type = (PyObject*)&PyDict_Type;
+  __pyx_mstate->__pyx_umethod_PyDict_Type_get.method_name = &__pyx_mstate->__pyx_n_u_get;
   __pyx_mstate->__pyx_umethod_PyDict_Type_items.type = (PyObject*)&PyDict_Type;
   __pyx_mstate->__pyx_umethod_PyDict_Type_items.method_name = &__pyx_mstate->__pyx_n_u_items;
   __pyx_mstate->__pyx_umethod_PyDict_Type_pop.type = (PyObject*)&PyDict_Type;
@@ -21044,34 +20598,34 @@ static int __Pyx_InitCachedConstants(__pyx_mstatetype *__pyx_mstate) {
 static int __Pyx_InitConstants(__pyx_mstatetype *__pyx_mstate) {
   CYTHON_UNUSED_VAR(__pyx_mstate);
   {
-    const struct { const unsigned int length: 8; } index[] = {{2},{68},{35},{54},{37},{60},{24},{52},{26},{34},{29},{33},{45},{22},{15},{179},{37},{30},{50},{32},{1},{1},{1},{1},{1},{1},{1},{8},{5},{6},{15},{23},{25},{7},{6},{2},{6},{35},{9},{30},{50},{8},{50},{20},{32},{22},{30},{37},{5},{8},{20},{8},{15},{3},{15},{5},{18},{4},{5},{1},{9},{17},{18},{5},{8},{5},{15},{6},{9},{5},{27},{5},{6},{7},{8},{12},{5},{1},{2},{10},{5},{13},{5},{8},{4},{8},{7},{4},{10},{4},{8},{4},{7},{2},{5},{3},{4},{46},{3},{12},{14},{11},{10},{19},{14},{12},{10},{17},{13},{8},{12},{10},{12},{19},{5},{4},{5},{4},{4},{6},{8},{6},{6},{6},{6},{1},{5},{26},{2},{1},{0},{1},{1},{48},{125},{60},{94},{1}};
-    #if (CYTHON_COMPRESS_STRINGS) == 2 /* compression: bz2 (1353 bytes) */
-const char* const cstring = "BZh91AY&SY\007\231\264\245\000\000\240\177\377\345\3530\243J\367\375_\277#\377\001\277\377\377\372@@@@@\000\000@@@@@@\000@\000P\005\014{\031\210 HJ\264\366\032\232\236\223MF\223\323$\364\203G\251\246\3244\310\304\006\201\240\321\246\215\003L\206!\241\264\3248hh\311\243F\215422\030@\031\0002\r4\000\000\310\031\000i\220\202hAS50\321\241\250\006M\032i\232\214\200\031\000z\200\017S\3244\010J\000\000\006\200\000\000b\000\000\006@\000\000\033PJj\004d\023!\2224\323\025=M\222zOP\320\017Q\210\031\000\000\001\241\240<\231\326\010\025\222\010\373\306\004YDr\215\010m\300d\004k\216'&5r\370\302\036\007\207\022p\027\3330\334\207\236\324\360\305\273\253\227:?t~\212\372\334-*I\036\027\024\355\344\206\002\345^\345\362\333\\\302x\217\302\353S\253\036\367\363\307\225\367\336\271n\344\275\004\305B_\226\315\005\030\t\311\312\375\352\3471#\233s\340A}\232d _k\363\326O5\353\232\305\212z\210\330\345;\260\254\325\030`\374+\235\326\325\222\350\343\312\016o?g\017\035\362\016\234\\\315\340\035\250\331\001\345\317\315\354\360\200+\036\255\t)U\262\2335&\310\235\236g@\330pR\247\330\035\026\254\321\r$GJ\366+J\020@5\212\345V\302(\260\324pq\340\234\250\004+\236\315xo\271Z\005\3523t\344\330x\337v\333i\226\233\306\220\211H\253Y\333\273\273\313\226\316\201\275P\242\314\010\006\251\346\200\2037\206\342\303 \003\241\215\244T%&\274\2013\323w\016\004v9\023\203m=\210\265\210Q|\326\214\275\321,\342\303\264\360\"HsD\202\000\265\210\261\235\340&a<\275\302\366\031\311t\034\r2\353\356Ubpc\243\313\244\245\016Lue\346\032\206~\017\316\001xxz\260+`x\360\357A\341>\324K8\254\265\353\304%\304\346u\206\343;EFrv\242\3429>47\224Um\251\316\004vS\233\264\260\231\267 \200\022\200s\257\017&\315\272\235))\264\350\025X\017}\232\352iF&I\216\316AS\213\2663\021\303\375\270\265\331\206\006\210\"3\"E\200\303\311\0010\357\271A\027q@\204u\267\013u\374\372\337\316\030\273*\360\232\201\002\200R\021a\204\023\026#\276\351\305\ty E\273\215\301\237\027\233@\347j\351.\254\023\306\355\321\244S\241\223kubx\225E\"\003\331) \357\207\026\003{\t""\272\327$\337\341\000\221e\207w\274\267\016YA\265l\300a\355Nt\036d\356\2126\243\230\026LXk\263M\323!\213\243\263\245\310M\274tu\272\322\253C-\226\232\240b\355wOEM\320\222\343\372nl\367O{5\310k\311(\244\336U\353b\036\316\272\204d\306!M]\312\032z\260};\270\265\257\255\324\223u\365=\246\322\252\300{Z\200\376\220m\346\350\031\337\317'.\310\227=\212\2172HI\211[FY\276\211\213\364\264\255\306\020I\213\242J\333\360\377j`\325pB\362i!*Pc\272\025\264- \376\033/|\366J\277H\204\236\335\r!w\257\326&5\340\203\235\341\014\252\016\225\256\2675,b\204\343\355S\266!\006S780\326\326V\210\310\317NS\004\301\330Hi~\204U\232s\243\265\013\013\213Q\022\305?\003\274\006(\"h<\324\032\344\320\375\343`\303\216\355D\200\240\205\202$\201\223C\013N\302H$\021J\212A1\252\255\231\243\006\205\313;\010a\210X\202y\\]~\206\3532[d\034=<\016j\264\\T\273\026\016\031\317\361\216\t\005x\306b\300(\371\022\034^\315\007\234\245\254\220\220\335zu\023\344kfl\317U#)\362\2628\210q\027A\334;\374t\351t\352\246w\337Y\331\237\240\201G\335n\317z\270&@s\002l\303(\002.66\235\003\027\\\334\354\025-\200\330\364\023\277[D\343@\020d\002\224\315\201\330\340C\242\010\220\225zf\212i\020D]%KQ\335\0210;9D\2155m\274N\317\031\346\033\177I\264\336\005\266J\027\r\213\214KQ\003E\223\366\031\016F\345|\352\262\202q\250\324\261M\230\202\030m\021\002\345Z\344\006L\335[-\260\257\205\214\253^\3240\304\312 \226\002\226B\254>\236\255oMl\211\032\030\340\315\337\211\303\006\303\022e\230\"\200[=\003\3367qFI4\205*i-\360\303\031\271\\Ca@,\222\235q\021\014\225[mo\006\335E\027\341ts\310b\026\337\306\220n\205\344G\375\312\027\21089i85lN\352\2309\334\022\036\220\322\022\022\001}kX&*\332<B\320\355\307\222\016\023\021[\351P\336.#T\321\254\200@\002\0004\005q\323W\331\327\207i]\304\243\347\347\244%\212H\215\243\207\362T\250 ^eG!u\271gM\373\233s4\322\212k\346mT?\305\334\221N\024$\001\346m)@";
-    PyObject *data = __Pyx_DecompressString(cstring, 1353, 2);
+    const struct { const unsigned int length: 10; } index[] = {{2},{68},{35},{54},{37},{60},{24},{52},{26},{34},{29},{33},{45},{22},{15},{179},{37},{30},{32},{1},{1},{1},{1},{1},{8},{5},{6},{15},{23},{25},{7},{6},{2},{6},{35},{9},{30},{50},{8},{64},{20},{32},{22},{30},{37},{5},{8},{20},{8},{15},{3},{15},{5},{18},{4},{1},{21},{9},{17},{17},{17},{17},{37},{18},{18},{5},{8},{5},{15},{6},{9},{5},{33},{5},{6},{7},{8},{3},{12},{1},{2},{10},{5},{13},{5},{8},{8},{7},{4},{10},{4},{8},{4},{7},{2},{5},{3},{4},{60},{35},{3},{14},{11},{10},{19},{14},{12},{10},{17},{13},{8},{12},{10},{12},{19},{5},{4},{5},{4},{4},{6},{8},{6},{6},{6},{6},{1},{5},{9},{651},{94},{1}};
+    #if (CYTHON_COMPRESS_STRINGS) == 2 /* compression: bz2 (1739 bytes) */
+const char* const cstring = "BZh91AY&SY\213?\222\363\000\000\373\377\377\377~\377\377\377\367\377\337\277g\373\t\277\377\377\367\300@@@@@@@@@@@@\000@\000`\006<\355k\206\027\330u\312\205]\235;\267\207\203SI\rM\001\240\365\032f\246 \r20M\001\2204\r4\321\241\246&\231\014\232z\023G\251\350\232h\304\r\020\232`\200I\247\246\2112m\252oTh\320\310\000\320\000\0004\000\001\240\320\320\000\000\320\232b\247\225O\3256\022\006\324\320\365\014\232\017P\000\320\320\000\000\r\000\0004h\006\200\032\tM\010I\210h\201\023e\033)\246@\323\321\006\232\000h\000\000\000\000\000\014\236Q\243A\300\000\000\000\000\000\000\000\320\000\000\000\000\000\000\000\000\224\212zS\3244\321\351\007\2506\247\250\332\232\r\000\000\000h\000\000\000\000\000\000\000T\266l\243\235\3541\374\267\022\352\361\270\241\004?\032\207\236\307c9\032\277\340\245\022\020\204\231\266*\023\223M\020\220'n\275\330nJi\250\315T\240\306\266K\374\345h\302\177\333\250S_\365H\025tI\t\213J!\305\374\005%pr7 \371\004/b\311\210\254\213T\244\330\324+\005\205 \202\310*J.\257\324H\257\216\2021\017R\371\204EW\261\300b\017~\211\021\010\310\006\020\257N*\023\332\221k\362\325\t%_|%\207a\0377\361\265\270\261o\246\323\232\324\"|q*\030\204\354\221\277Z\320\262(qj\214\tQ\247=\344\231\262\217\352\324\\Y\255\213\341rx\261:a<C\007\233\315m\312\334Z\263H\370\247\217\2160l\206\035\271\236@\330!\310\202OX\003\300\016\211\0165x\374\0254\006\262\t!\326\303X\316Q\313\037\"\312\230\202\010|\372\317\022\247*3\301\201\251X\330a$[y)\232\2414\205\245\203EA\n2\335\036 \241\315\350\246.\376\247x5\231\"\021\350kjN1\343\027\033\210x\277\301\332R\002O\025.\2779\231g\273\206gk\323f\276k\355\027I\235\023.\366U\245\341b\342\325Kr(O\216\271\352\031r.\025\321\036\000\305z\243aD\253+B\r\307b-\277\025\375]\334#\213^\372rw'!S&\246jg\337\206h\215\254e\211n\355D\267N\2459\217]\327yAM\377\r\340Y\260\341\233\256F\004\\\351Q\342+\213d$,\375\036\267\215\307p\346b\306\r\350D\264\224]&D\254^H\225)\264#aSC\263J\nW\2060\314j\252\227!\215wOk\265\026d\261U\315\261\257d\300\373\365\355\361[\373f\274\177)~\222\331""\303\251\317\322\\\300\341\320\270\232\003\345\216\364GU+\246\202!\035\245b\0360\302@o$\035BQ\024\024\341\351\0165\304u\2202<\t$]j\252\331\t\217\270\374\202)6?\0000\t\304\030\022\340\250sA)\350\317\266a\013\221\030\266\234\361Kh\t\212Z\262\212\275\025\024\232RA\230V\267\0041\302d?is\301{1\201\213\216\232\t\014\257\232 v:P\234u\020h\034\235\333\271t\324Q\224\357.[r\250`\031\350\351\214\034vL\216\224<\024h\242\t\315\207/\257\211\013\027\334}\211K\231\r\263Y\256\276E\312\311n\275K\353J\023s\276\026u\252\220ib\360\203\rT\203/\321\200f!\032I\025,jQM\342\010\n\312\033\n\t\251\314\345F|\347TM\014\214\3721\325J\014\241\035>k\241\027\241s\332+\262\373%.[[x\212\224(E\351\0334{\023\006fyz\330J\371\263\021\024\014\244\n1\210}\016p8\025,\214^!8\r\245L\023\333*[\2431F\2226\3046\270\322W4\236\001\224\001\220,\031\220\006,\3766\3676\350c\014jl\307\032HH\266|Z\233A8&#[STBLc%\037,\353!K\302`L0f\326\202\026\200\302S\302\223\212\247H\247dF\335\000\245\244\262\311kF\333\"S\213^Hn\312\031\215\306\331\2707\326T\272\033\014\013\312S\300\307\302\240Km\032 \300\320\355\262\330\360\357a\005lf\205\257n\254^\016\304\226\032\321\26573SEa\252\213\213\252\351\t\343r\"FN\351T\343\251\225\3551\321W0o\346j\273\205E\202%5\342MV.\243\232\235!!\025\260\252\031\206\255\300RZQ\"+x\213\203E\200@\300v\002\022\211f\234\256\030\017\022\300\314\234\246\013\224\310@/h\211\234gr<\242\002\201\211\231e]\321e\204X\260\346\226g'\223\213$$76\232\203Ee\006\014\232\224\017A\313Sl#\031\246\021\022\024\214\327m\362)\247\033\333\014\371+\242\207\010\250P\273jD\225[UZ\260\250\204\270m\251\024\t\022\230\026\216\203\034#\024\023\242\0168\221\320dUZ\361\257\347<F\376/\002\316\t\234\036\216\315\247^\203\231\311s\220\"\316\371\267\225^\225\226\204\260\256\365,\202\322\340\213I\253\023wElk\326\333<\020\321:F\277u\263\323M\014\252@\256\240\266(aJ\312F\360\214!\206\272\220\3675D/\272\205\274w\014\261\202\t\333\310\231/Z\206\204&n\315j\207\245\257\213\346\267\256\332X\276\224t$\005nr\314E\375\013\241\006z\2252c\201\232N\036\007""\311\262\324f\303%x\030\335\244\210\005q\271g\031-w\315\231A\010\253\365(xX\0145*\341\3652\rk#\230\"B\272\233e/f\026@\217\245<\313\022\005JP\352\021\005#\313TQ\344lv#h\nA\241jR4$\223\036\263\354\002\014{\236D\241i~I\324\227\020\325\\\254,7\211\2745\232\227$@a\204s\016\354g\314v\355s\226S\243y\032H\363\265D\016\301H\013\222L\2459\017\316\336P\360\025`U\263Qq\253{@\270\t\003\014E\225(6f\256\272\231\320J\272v\035\027\335\317\307\202+S\312s\2550\363F\334\246j}\023v\326\233\363\270\266\264\352\006\017\003H\n\235'\200\245\230\035\267j\214#\252\233S\3030'\305\343D\311\335\204\374\335\314\333?\227l\006\212O\232\363#$\002\220\226:[\016\260\260r\377\234O'\260\356\264\371}\225N\033X/\177\265b\216VV6\331:7\37093}\366\346\006\235Ba\225\016S\222I\303]$\223b,\2033!\315\335\224\010Nz\211O)K\004\352\351G\251\325\241\2535H\377\213\271\"\234(HE\237\311y\200";
+    PyObject *data = __Pyx_DecompressString(cstring, 1739, 2);
     if (unlikely(!data)) __PYX_ERR(0, 1, __pyx_L1_error)
     const char* const bytes = __Pyx_PyBytes_AsString(data);
     #if !CYTHON_ASSUME_SAFE_MACROS
     if (likely(bytes)); else { Py_DECREF(data); __PYX_ERR(0, 1, __pyx_L1_error) }
     #endif
-    #elif (CYTHON_COMPRESS_STRINGS) != 0 /* compression: zlib (1201 bytes) */
-const char* const cstring = "x\332}U=o\0347\020\225\001#\261\021$\200\323\004)b\014\020\010'\005\322\332N\004!p\024\005\266$\003*lK\221\2232\004\217\234\275\243\265K\256\370q\272s\020 \245J\225*\3753R\272T\251R\245\177B~Bf\270{\272\263\345\030\270\343r\311\031\316\2337o\270\017\341QU\20165\332`\234\r\320xT\250\215\035\314\026aQC\235B\204>\202\261\032\307\250AZ\r\326E\010\225!\363\307\251,\321\303\310\3401h\207!o\341\270q\001!Do4\206-i\301\331j\002\312\243\214\010\022\372\255S\034\312\010&\200r6\232Ar)P\020\250\261v~R\220\027\037%C0\003\013\321\0019\353\325|Nk\301!;\243\356\340co\242\354W\330\031\264\240J\357\352\217\371\346\264\340\330\304!\304I\203\320\353\326\243\2276\3444f.\255\031y\030\242*\316q\267=O\230iIh\215v\352&N \014%\035\035SC\340J\347AM\342\320\331Bz/'\273\031\200K\021\\\t}\227\254\016\260$\307t\312\242^\336\275\036\253%?5\215\363\021\365\256\035\311\312P\225\234\306\025&\236\214\251H=\325\003\212\323\243`\234Ho\005\006\34455n\341\020\3279\314\306\323\234\340\357\234 Ax\346\210\312\\\232\255\214\222\363\321X\231>z\"\231(\344\262R\220\\?\013{;{\253k?\256eYx|I\341\003\241\353\253\212*Gr\340\234\222\251\"\005czC\001\273%L\\\002\213\004\223\312\332\220\335\274C\034\242\205\200\221'\320\313\265\220\221\362\026\344N\332\354u\274\232\021\262\367\023Y\005,\236\277C\036A\356\004&\225\3020e\363 b\003\265\234d\376H\317\257\320\273\031\321/\206\036q\365\230\266\2218J9dGg\240\247T\2212_\007%\275\016-\231\277\331\2545\002A\372\035\241')E\254\371\335\365\231\206\245\225_\212\315\336\262\324ZX\246\224\t\002b\365\376X\271\252\342\024\250\230\205\354\253\2159\375\263Q\233\340\346\373\313S\331mj\02382\346\370\003\005K\214f\220\025\307Ys\003\3438\242\215\271\235f\275lB\353\242\031g0\257\0206~\206\373\327\364h\035\225\273\224\251\212 \204G\235\024\n\001:\345T\255\263\253T\376\221\221\025\355*cM\244\3156\341\315\306\035\242\027\314\237(e \205\334\313\363\366\360{\221\031\026\304\260p^\243\017E3\031o\264W\204~'\357\353k,\345\253\364\337\331\277ZMW\325\220U\345T\276g8\033\3202\312\342\003\273m\017\360""\031\3355U<:\330\332\335\335\251*\323\004\023\204\330\233\214\351\277MR\027\317\210\317_\261<\300\243\204V!wJ1k\032*\341\364T\321\n/G\226ab\225q\205r\236\232\333X\014}\031\260\357HA\212\250c\271\0131\235\0140rU\370\225,\205!\271{\251\260/\325\241\"U\023\311\232\201\010\315M\224\007A\030[\336\t\0225?\332T\347\016E\357\235\357D\214\342}\326\205*+9\010T\364Z\306\356v\020\242LV1\030\202\021\"\273\tjm\035\214\321B\230\232o\032z\362=\305Q\257\022ju\324\211\351\245#\320\242\226y\304\232\257K\276\223\350\305\351T\321\323\312z6\222*i\304c\032\032\002\336L(\225\206\222\275&\241bNB\305\373\3114\256\021\202d$\224l\014\343\317\363!\252\303\220\352\366\255K\207\247\231\265<K\2661\352\220@\355\330\251\335(\1779\370\214\243$\253\026\345L\376W\263\026\310\334\002QB\323\201a\254B\320\275\325eH\263\256\213\362\274\20317\237\236\224u\310\004\322\262\247=lBt\364\367\211\353\035iY\210dl\\_#\324\304PjH\321\271\274\030\306|\207uR\3558\317_\345\005\256\036\231\275\370\363\217\207\177\221/,]\267Y\241\336\211y\200\357\226\027\332/\250\320D\335\305\302\366\233\235\363;\347\213\347G\2277?\375;\235<9\375\366t\377\362\326\027'/\317n\\|\375\364|\377\034/\016^\374\373\311\302\355o\316\036\237\225\257\037],\376\364\317\372\233/\337<\270\274\325{}\364\366\346\3353yy\353\363\223\375\023}\272xztv\343c/\267\351w\362\325\351\215\323;oo~v\362\2003\375\341{A\210\247\263\025\370\030\366\345\205\322UZ\344ky\344\350\323\2664\335\371\360\360\241\263ZvE\346A\374o\343<\377\017\202`\177\225";
-    PyObject *data = __Pyx_DecompressString(cstring, 1201, 1);
+    #elif (CYTHON_COMPRESS_STRINGS) != 0 /* compression: zlib (1600 bytes) */
+const char* const cstring = "x\332\225VMO\033G\030\306\371\250L\013\212\t&4\244i\207$\340\200\300\211\tM\253\226P\231\204\252H\r\004Pr\211\324\321xwl\246\254g\326;\263`GI\233#G\037\367\270\307=\372\310\221c\216>\356\321?\201\237\320wf\027p \211T\204w\347\353\375z\236\347\035\373\027Tv\034d\263:\345\222\t.\221\353Q\213\332\214\327\316\026\321\224\215\352\276T\250B\021\3436mR\033\021n#.\024\222\016\203\343+~\265J=\264\307\350>\262\005\225f\2136]!)\222\312c6\225O\tG\202;-dy\224(\212\010\252$Fj\207(\304$\262\004W\254\346\013_B\020T\247u\341\265\212`\245]\021)Y\215#%\020\030\333\363\306OrB\207L\017\245\216\367=\246H\305\241\351\201$\251\252'\352_\2625e\241}\246v\220j\271\024\025\322u\345\021.M\031g&\3111\260`\000\225\352\303\356Y?`,\001!9\264ZwU\013\311\035\002\256\225\357BrU\341!\253\245v\004/\022\317#\2555\223\200\360\025\022UT\021>\267%\272O\232\340e\312\236Y\273\030+\001\337w]\341)j\257\361=\3420`I\330tN\003\017\207\201\244\202U@\020\247\000\301t!\2059T\003\253\223\303I:\200\265\t\263\364\334\024\370J\027\010)\254\013\200\322P\363\324d\251\353\261\251\303*\324\003\220\001BM+\0041\374q\364b\365\305\374\342\317\213F\026\036\375\033\302K\310\256b9\300\034\310A\327\3443GA0\r\257,\242\265*j\t\037q\ni\002\255.\234\3537P;\224#I\225\036\240\202\341\202(\250\033\2039h\263\220\342\312\366\250\266\376\2358\222\0267>\002\017RN\005F,\213\312\0234\267\025uQ\235\264\014~\240\3477\324\023g@\277\344F9\340\022\324\270G=\020\206\242u=\027\025]Tq\2710\363\033\261m\3145<\272X\004\010=lZ\302qt:@L\221T\254\245>-\353CI\262\313\347\227O$\264l3\251\343R\023\275f\241\373\232\246\232Q\217\256@7#m*\312\225i\215\263\276d21\261u\226\222\275\241h\351\tzxA[\\\000uU\342;\na\354Q\333\267(\306\310\366M\241\\\360y\240r\217\021\007v-\306\231\202\315\244\334eW\354R\017S\320\013\256\022\tl?0\343\304\371\003\265\343Q\212\367I\013\033\332\260#\304\256\357b\315\264M\275\242\333j.%\315o\177\204\302\3055-\322S0>\332?]\365O\231!\216#,s\203\350\332\220M\024)~b7Q\267\366\221^@\305\362\366\323\265\265U\307a\256d\022\343\027\255&|\236\201\210""\361:\240\273E\253\333\264\341SnQ\335\003\305\263v\000BO\274\342DR&2\221-n1Q\264\204\007m\3138\225\025\"\251e\021@\224Y\032%Q\257\010\\'r\027\242%\010\245/\222\3561[&\013\225\363\013\326\331\302\211Q\215*M\263\236R\342\341\363\340\247\250c\213X;\024[\226\003\031a\006\r\343\021\213V\210\265\233z\224>\020\354\321:q\245\005\235\002d\333\032\002l\353\3064\017\014\350$\374\003\030p\241P\356\327M\327S\317\023\236\026\200\257\2418\237\200\361\006\257\252Cj\022$X'*\275w0\256\372\334\302\272\002\363\220J\333c\306lx\324\365\r\006o}\377\351\310\247p&\232N\205\215\001G(\006\303-\254\257`}\317\301D\330\276\003oN\352gO\350\016x\322}x\270\220\270\333\202R\\(\377\202\224\213}R.~Y\312\027m\341[\262\352\010\027\237\262\355\302\004\203\3421\240o\355J\277\236\314\322R\365\320@kF>w\231\265\013\231\257\362\223s{\346+\013\303_\303'NR\312Y\257\236\216\222l\373\026\0003\030\326\230N\nc\2700S\030`\224\266\274\031\247i\364\215O<\2316\321\010\303\262\007{\324\225J\300\307\363\265(\024,c\3543\256\036/B\326\000\243\357B\303\031\rP\331\324\227\247|\237\211\257L\004\323a\346}\346\370\253\201\253\023\301\010\274\006g\243\2218[\214H\234\275\035l\036g\007\006\307\272\371\251\360UT\212\312q6\377\231\361\235p:\272\024Mw.u&\343\354\335\260t|}`p&\312\034\177=0x;X\t\252a\271;\365\353\341\343\243\353G\2458[\010\033:^\366\375\273\366J\033\342\214w\307g\243\271\016\351\274;Z9\202\3717\007O\202\313A)\036\032\356]\271\032g\207\0166\364d\254\375:\314\204#\361P\256}-h\304\271\233\301\255\260\034n\306\271\321\366O\301\235\240\034\347\307\342\334DP\010\257\207\2458\227oo\300+\177;x\035e\240\240\374x\273\031x`\375\355\3158\217\302Lwr\241\273\260\325\335\332\326\013'\377=\250g\263\007\341\227\203Q\36074\332.\365\262\303\007\233\007<\370#\334\350>\372\363C\271\227\275\321v\302Ip\235\035o7\222\334~\204\264F\303\365\316\235\016\330\\;x\033,\004\177E\213\321\333\303\322\341\363\017\243\037\312q\016\002\306\271\221\336\320w\335\357\026:\367\240\320\206>\370O\260\255\327\363\355\347\341XH\302F\234\007`\242\341\316f/7\033M""\306\371[\301R(\243{Q\245\223\371\237\223\273\321V\004\356&\202\271\260\022e40\371\261^nJ\203\325\027m:\254E\233\221\325\031\351.\254\036m\002\360\220\347\325p3$\032\322Gm\322\035\177\020I\3403?\013\304B\242\323`\366o\207\364\200\200\341\340\245\001!\367C\360.*G\206\204'\341e\215\370\255\240\024\254G\363\035\357\020\nN\320\200\355\357\003'\232\214\214A\243\227\275v\320\350\031\226/\001q\317\302\341h\033\374\017\335h\223vcO\300\357\233\373 \3339\364\331G\362\r\220^(\346g\354\034J\224\216\025\232\235\031\300\237\270\351\204\007\267\201\334\370\017a\230R\254";
+    PyObject *data = __Pyx_DecompressString(cstring, 1600, 1);
     if (unlikely(!data)) __PYX_ERR(0, 1, __pyx_L1_error)
     const char* const bytes = __Pyx_PyBytes_AsString(data);
     #if !CYTHON_ASSUME_SAFE_MACROS
     if (likely(bytes)); else { Py_DECREF(data); __PYX_ERR(0, 1, __pyx_L1_error) }
     #endif
-    #else /* compression: none (2352 bytes) */
-const char* const bytes = ": All dimensions preceding dimension %d must be indexed and not slicedBuffer view does not expose stridesCan only create a buffer that is contiguous in memory.Cannot assign to read-only memoryviewCannot create writable memory view from read-only memoryviewCannot index with type 'Cannot transpose memoryview with indirect dimensionsDimension %d is not directEmpty shape tuple for cython.arrayIndex out of bounds (axis %d)Indirect dimensions not supportedInvalid mode, expected 'c' or 'fortran', got Invalid shape in axis <MemoryView of Note that Cython is deliberately stricter than PEP-484 and rejects subclasses of builtin types. If you need to pass subclasses then set the 'annotation_typing' directive to False.Out of bounds on buffer access (axis Step may not be zero (axis %d)Three-way evaluation expects exactly 6 cards, got Unable to convert item to object(,?.>')add_note and  at 0xcollections.abc<contiguous and direct><contiguous and indirect>disableenablegc (got got differing extents in dimension isenableditemsize <= 0 for cython.arrayno default __reduce__ due to non-trivial __cinit__ object>poker_eval_faster/eval_cython/three_way_orders.pyx<strided and direct><strided and direct or indirect><strided and indirect>unable to allocate array data.unable to allocate shape and strides.ASCIIEllipsis__Pyx_PyDict_NextRefSequenceView.MemoryViewabcallocate_bufferarrayasyncio.coroutinesbaseboardc__class____class_getitem__cline_in_tracebackcount__dict__dtypedtype_is_objectencodeenumerateerrorevaluate_three_way_orders_cflagsformatfortran__func____getstate__handsiid__import__index_is_coroutineitemsitemsizejoin__main__memviewmode__module__name__name__ndim__new__npnumpyobjpackpoker_eval_faster.eval_cython.three_way_orderspop__pyx_capi____pyx_checksum__pyx_state__pyx_type__pyx_unpickle_Enum__pyx_vtable____qualname____reduce____reduce_cython____reduce_ex__register__set_name__setdefault__setstate____setstate_cython__shapesizestartstepstopstruct__test__uint64unpackupdatevaluesxzeros__Pyx_m""emviewslice\000handdatT{^:}int (__Pyx_memviewslice, int, int *)\000create_deck\320\000D\300E\310\021\310%\310q\330\004\007\200u\210F\220#\220Q\330\010\016\210j\230\001\320\031M\310Q\310e\320ST\360\006\000\t\035\230B\230f\240A\320%;\2706\300\022\3001\330\010'\240q\340\004\036\230a\330\010\r\210Q\210d\220%\220q\230\001\330\010\r\210Q\210d\220%\220q\230\001\330\010\r\210Q\210d\220%\220q\230\001\330\010\t\330\010\t\210\027\220\001\220\021\340\004\013\2101uint32_t (uint32_t, __Pyx_memviewslice, int, int)\000fold_cardsvoid (int, int, int, int, int, int, __Pyx_memviewslice, uint64_t *)\000_evaluate_three_way_ordersO";
+    #else /* compression: none (2869 bytes) */
+const char* const bytes = ": All dimensions preceding dimension %d must be indexed and not slicedBuffer view does not expose stridesCan only create a buffer that is contiguous in memory.Cannot assign to read-only memoryviewCannot create writable memory view from read-only memoryviewCannot index with type 'Cannot transpose memoryview with indirect dimensionsDimension %d is not directEmpty shape tuple for cython.arrayIndex out of bounds (axis %d)Indirect dimensions not supportedInvalid mode, expected 'c' or 'fortran', got Invalid shape in axis <MemoryView of Note that Cython is deliberately stricter than PEP-484 and rejects subclasses of builtin types. If you need to pass subclasses then set the 'annotation_typing' directive to False.Out of bounds on buffer access (axis Step may not be zero (axis %d)Unable to convert item to object.>')?add_note and  at 0xcollections.abc<contiguous and direct><contiguous and indirect>disableenablegc (got got differing extents in dimension isenableditemsize <= 0 for cython.arrayno default __reduce__ due to non-trivial __cinit__ object>poker_eval_faster/eval_cython/three_way_class_lookup_builder.pyx<strided and direct><strided and direct or indirect><strided and indirect>unable to allocate array data.unable to allocate shape and strides.ASCIIEllipsis__Pyx_PyDict_NextRefSequenceView.MemoryViewabcallocate_bufferarrayasyncio.coroutinesbaseccanonical_combo_masks__class__class_a_combo_idsclass_b_combo_idsclass_c_combo_ids__class_getitem__clear_three_way_class_builder_cache_ccline_in_traceback_combo_suit_remapscount__dict__dtypedtype_is_objectencodeenumerateerrorevaluate_three_way_class_counts_cflagsformatfortran__func__get__getstate__iid__import__index_is_coroutineitemsitemsize__main__memviewmode__module__name__name__ndim__new__npnumpyobjpackpoker_eval_faster.eval_cython.three_way_class_lookup_builderpoker_eval_faster.preflop_canonicalpop__pyx_checksum__pyx_state__pyx_type__pyx_unpickle_Enum__pyx_vtable____qualname____reduce____reduce_cython____reduce_ex__register__set""_name__setdefault__setstate____setstate_cython__shapesizestartstepstopstruct__test__uint64unpackupdatevaluesxzeros\200\001\330\004\032\230&\240\001\200\001\360\006\000\005\032\230\021\360\006\000\t*\250\021\330\010.\250a\330\010\035\230Q\360\010\000\t\025\320\024%\240V\2501\250A\330\010\024\320\024%\240V\2501\250A\330\010\024\320\024%\240V\2501\250A\330\010\"\240&\250\002\250&\260\002\260!\330\010#\2401\360\022\000\t)\250\001\360\n\000\t\035\230B\230f\240A\320%;\2706\300\022\3001\330\010'\240q\360\006\000\005\010\200}\220B\220a\330\010\027\320\027*\250,\260a\260}\300B\300a\330\010\013\210=\230\003\2301\330\014\r\340\004\005\330\010\014\210O\2301\330\014\025\220[\240\001\240\021\330\014\020\220\017\230q\330\020\031\230\033\240A\240Q\330\020\023\2207\230\"\230A\330\024\025\330\020\032\230'\240\022\2401\330\020\024\220O\2401\330\024\035\230[\250\001\250\021\330\024\027\220x\230r\240\021\330\030\031\330\024 \240\001\320!2\3202R\320RS\330\030\031\330\030\031\330\030\031\330\030\031\340\024%\240Q\340\010\013\210>\230\023\230A\330\014\023\2201\340\010\r\210Q\210n\230H\240O\3203L\310A\340\010\026\220l\240!\2401\330\010\027\220q\330\010\014\210O\2305\240\001\240\023\240N\260\"\260A\330\014\017\210|\2302\230^\2504\250|\2701\270M\310\023\310A\330\020 \240\001\330\020\021\340\014\034\320\0342\260$\260a\260q\330\014\017\210~\230S\240\001\330\020\024\220M\240\025\240a\240q\330\024'\240q\250\r\260Q\340\020*\250!\330\024\033\230<\240s\250$\250b\260\001\330\024\033\230<\240s\250$\250b\260\001\330\024\033\230<\240s\250$\250b\260\001\330\024\033\230<\240s\250$\250b\260\001\330\024\033\230<\240s\250#\250R\250q\330\024\032\230,\240b\250\001\330\024\025\330\024\025\340\020%\240Q\330\020\024\220M\240\025\240a\240q\330\024&\240g\250Q\250c\260\021\3202E\300Q\300a\330\020 \240\005\240Q\240a\330\020\023\2203\220a\320\027/\250s\260!\330\024*\250&\260\001\330\020&\240a\240\177\260a\340\014\020\220\r\230U\240!\2401\330\020\037\230}\250A\250Q\330\020\023\220=\240\003\2401\330\024\033\2301\230N""\250-\260r\270\021\340\014\017\210|\2302\230Q\330\020\036\230l\250!\2501\330\020\037\230q\340\010\017\210q\340\010\013\210=\230\002\230\"\230D\240\r\250S\260\001\330\014\026\220a\220qvoid (int, int, int, int, int, int, __Pyx_memviewslice, uint64_t *)\000_evaluate_three_way_ordersO";
     PyObject *data = NULL;
     CYTHON_UNUSED_VAR(__Pyx_DecompressString);
     #endif
     PyObject **stringtab = __pyx_mstate->__pyx_string_tab;
     Py_ssize_t pos = 0;
-    for (int i = 0; i < 127; i++) {
+    for (int i = 0; i < 128; i++) {
       Py_ssize_t bytes_length = index[i].length;
       PyObject *string = PyUnicode_DecodeUTF8(bytes + pos, bytes_length, NULL);
-      if (likely(string) && i >= 48) PyUnicode_InternInPlace(&string);
+      if (likely(string) && i >= 45) PyUnicode_InternInPlace(&string);
       if (unlikely(!string)) {
         Py_XDECREF(data);
         __PYX_ERR(0, 1, __pyx_L1_error)
@@ -21079,7 +20633,7 @@ const char* const bytes = ": All dimensions preceding dimension %d must be index
       stringtab[i] = string;
       pos += bytes_length;
     }
-    for (int i = 127; i < 138; i++) {
+    for (int i = 128; i < 132; i++) {
       Py_ssize_t bytes_length = index[i].length;
       PyObject *string = PyBytes_FromStringAndSize(bytes + pos, bytes_length);
       stringtab[i] = string;
@@ -21090,15 +20644,15 @@ const char* const bytes = ": All dimensions preceding dimension %d must be index
       }
     }
     Py_XDECREF(data);
-    for (Py_ssize_t i = 0; i < 138; i++) {
+    for (Py_ssize_t i = 0; i < 132; i++) {
       if (unlikely(PyObject_Hash(stringtab[i]) == -1)) {
         __PYX_ERR(0, 1, __pyx_L1_error)
       }
     }
     #if CYTHON_IMMORTAL_CONSTANTS
     {
-      PyObject **table = stringtab + 127;
-      for (Py_ssize_t i=0; i<11; ++i) {
+      PyObject **table = stringtab + 128;
+      for (Py_ssize_t i=0; i<4; ++i) {
         #if CYTHON_COMPILING_IN_CPYTHON_FREETHREADING
         #if PY_VERSION_HEX < 0x030E0000
         if (_Py_IsOwnedByCurrentThread(table[i]) && Py_REFCNT(table[i]) == 1)
@@ -21117,17 +20671,17 @@ const char* const bytes = ": All dimensions preceding dimension %d must be index
   }
   {
     PyObject **numbertab = __pyx_mstate->__pyx_number_tab + 0;
-    int8_t const cint_constants_1[] = {0,-1,1,6};
+    int8_t const cint_constants_1[] = {0,-1,1};
     int32_t const cint_constants_4[] = {136983863L};
-    for (int i = 0; i < 5; i++) {
-      numbertab[i] = PyLong_FromLong((i < 4 ? cint_constants_1[i - 0] : cint_constants_4[i - 4]));
+    for (int i = 0; i < 4; i++) {
+      numbertab[i] = PyLong_FromLong((i < 3 ? cint_constants_1[i - 0] : cint_constants_4[i - 3]));
       if (unlikely(!numbertab[i])) __PYX_ERR(0, 1, __pyx_L1_error)
     }
   }
   #if CYTHON_IMMORTAL_CONSTANTS
   {
     PyObject **table = __pyx_mstate->__pyx_number_tab;
-    for (Py_ssize_t i=0; i<5; ++i) {
+    for (Py_ssize_t i=0; i<4; ++i) {
       #if CYTHON_COMPILING_IN_CPYTHON_FREETHREADING
       #if PY_VERSION_HEX < 0x030E0000
       if (_Py_IsOwnedByCurrentThread(table[i]) && Py_REFCNT(table[i]) == 1)
@@ -21171,9 +20725,14 @@ static int __Pyx_CreateCodeObjects(__pyx_mstatetype *__pyx_mstate) {
   PyObject* tuple_dedup_map = PyDict_New();
   if (unlikely(!tuple_dedup_map)) return -1;
   {
-    const __Pyx_PyCode_New_function_description descr = {2, 0, 0, 2, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 165};
-    PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_hands, __pyx_mstate->__pyx_n_u_board};
-    __pyx_mstate_global->__pyx_codeobj_tab[0] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_poker_eval_faster_eval_cython_th_2, __pyx_mstate->__pyx_n_u_evaluate_three_way_orders_c, __pyx_mstate->__pyx_kp_b_iso88591_DE_q_uF_Q_j_MQeST_BfA_6_1_q_a_Q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[0])) goto bad;
+    const __Pyx_PyCode_New_function_description descr = {3, 0, 0, 3, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 81};
+    PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_class_a_combo_ids, __pyx_mstate->__pyx_n_u_class_b_combo_ids, __pyx_mstate->__pyx_n_u_class_c_combo_ids};
+    __pyx_mstate_global->__pyx_codeobj_tab[0] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_poker_eval_faster_eval_cython_th_2, __pyx_mstate->__pyx_n_u_evaluate_three_way_class_counts, __pyx_mstate->__pyx_kp_b_iso88591_a_Q_V1A_V1A_V1A_1_BfA_6_1_q_Ba, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[0])) goto bad;
+  }
+  {
+    const __Pyx_PyCode_New_function_description descr = {0, 0, 0, 0, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 190};
+    PyObject* const varnames[] = {0};
+    __pyx_mstate_global->__pyx_codeobj_tab[1] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_poker_eval_faster_eval_cython_th_2, __pyx_mstate->__pyx_n_u_clear_three_way_class_builder_ca, __pyx_mstate->__pyx_kp_b_iso88591__7, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[1])) goto bad;
   }
   Py_DECREF(tuple_dedup_map);
   return 0;
@@ -23967,340 +23526,6 @@ static CYTHON_INLINE long __Pyx_div_long(long a, long b, int b_is_constant) {
     return q - adapt_python;
 }
 
-/* PyObjectCall2Args (used by PyObjectCallMethod1) */
-static CYTHON_INLINE PyObject* __Pyx_PyObject_Call2Args(PyObject* function, PyObject* arg1, PyObject* arg2) {
-    PyObject *args[3] = {NULL, arg1, arg2};
-    return __Pyx_PyObject_FastCall(function, args+1, 2 | __Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET);
-}
-
-/* PyObjectGetMethod (used by PyObjectCallMethod1) */
-#if !(CYTHON_VECTORCALL && (__PYX_LIMITED_VERSION_HEX >= 0x030C0000 || (!CYTHON_COMPILING_IN_LIMITED_API && PY_VERSION_HEX >= 0x03090000)))
-static int __Pyx_PyObject_GetMethod(PyObject *obj, PyObject *name, PyObject **method) {
-    PyObject *attr;
-#if CYTHON_UNPACK_METHODS && CYTHON_COMPILING_IN_CPYTHON && CYTHON_USE_PYTYPE_LOOKUP
-    __Pyx_TypeName type_name;
-    PyTypeObject *tp = Py_TYPE(obj);
-    PyObject *descr;
-    descrgetfunc f = NULL;
-    PyObject **dictptr, *dict;
-    int meth_found = 0;
-    assert (*method == NULL);
-    if (unlikely(tp->tp_getattro != PyObject_GenericGetAttr)) {
-        attr = __Pyx_PyObject_GetAttrStr(obj, name);
-        goto try_unpack;
-    }
-    if (unlikely(tp->tp_dict == NULL) && unlikely(PyType_Ready(tp) < 0)) {
-        return 0;
-    }
-    descr = _PyType_Lookup(tp, name);
-    if (likely(descr != NULL)) {
-        Py_INCREF(descr);
-#if defined(Py_TPFLAGS_METHOD_DESCRIPTOR) && Py_TPFLAGS_METHOD_DESCRIPTOR
-        if (__Pyx_PyType_HasFeature(Py_TYPE(descr), Py_TPFLAGS_METHOD_DESCRIPTOR))
-#else
-        #ifdef __Pyx_CyFunction_USED
-        if (likely(PyFunction_Check(descr) || __Pyx_IS_TYPE(descr, &PyMethodDescr_Type) || __Pyx_CyFunction_Check(descr)))
-        #else
-        if (likely(PyFunction_Check(descr) || __Pyx_IS_TYPE(descr, &PyMethodDescr_Type)))
-        #endif
-#endif
-        {
-            meth_found = 1;
-        } else {
-            f = Py_TYPE(descr)->tp_descr_get;
-            if (f != NULL && PyDescr_IsData(descr)) {
-                attr = f(descr, obj, (PyObject *)Py_TYPE(obj));
-                Py_DECREF(descr);
-                goto try_unpack;
-            }
-        }
-    }
-    dictptr = _PyObject_GetDictPtr(obj);
-    if (dictptr != NULL && (dict = *dictptr) != NULL) {
-        Py_INCREF(dict);
-        attr = __Pyx_PyDict_GetItemStr(dict, name);
-        if (attr != NULL) {
-            Py_INCREF(attr);
-            Py_DECREF(dict);
-            Py_XDECREF(descr);
-            goto try_unpack;
-        }
-        Py_DECREF(dict);
-    }
-    if (meth_found) {
-        *method = descr;
-        return 1;
-    }
-    if (f != NULL) {
-        attr = f(descr, obj, (PyObject *)Py_TYPE(obj));
-        Py_DECREF(descr);
-        goto try_unpack;
-    }
-    if (likely(descr != NULL)) {
-        *method = descr;
-        return 0;
-    }
-    type_name = __Pyx_PyType_GetFullyQualifiedName(tp);
-    PyErr_Format(PyExc_AttributeError,
-                 "'" __Pyx_FMT_TYPENAME "' object has no attribute '%U'",
-                 type_name, name);
-    __Pyx_DECREF_TypeName(type_name);
-    return 0;
-#else
-    attr = __Pyx_PyObject_GetAttrStr(obj, name);
-    goto try_unpack;
-#endif
-try_unpack:
-#if CYTHON_UNPACK_METHODS
-    if (likely(attr) && PyMethod_Check(attr) && likely(PyMethod_GET_SELF(attr) == obj)) {
-        PyObject *function = PyMethod_GET_FUNCTION(attr);
-        Py_INCREF(function);
-        Py_DECREF(attr);
-        *method = function;
-        return 1;
-    }
-#endif
-    *method = attr;
-    return 0;
-}
-#endif
-
-/* PyObjectCallMethod1 (used by StringJoin) */
-#if !(CYTHON_VECTORCALL && (__PYX_LIMITED_VERSION_HEX >= 0x030C0000 || (!CYTHON_COMPILING_IN_LIMITED_API && PY_VERSION_HEX >= 0x03090000)))
-static PyObject* __Pyx__PyObject_CallMethod1(PyObject* method, PyObject* arg) {
-    PyObject *result = __Pyx_PyObject_CallOneArg(method, arg);
-    Py_DECREF(method);
-    return result;
-}
-#endif
-static PyObject* __Pyx_PyObject_CallMethod1(PyObject* obj, PyObject* method_name, PyObject* arg) {
-#if CYTHON_VECTORCALL && (__PYX_LIMITED_VERSION_HEX >= 0x030C0000 || (!CYTHON_COMPILING_IN_LIMITED_API && PY_VERSION_HEX >= 0x03090000))
-    PyObject *args[2] = {obj, arg};
-    (void) __Pyx_PyObject_CallOneArg;
-    (void) __Pyx_PyObject_Call2Args;
-    return PyObject_VectorcallMethod(method_name, args, 2 | PY_VECTORCALL_ARGUMENTS_OFFSET, NULL);
-#else
-    PyObject *method = NULL, *result;
-    int is_method = __Pyx_PyObject_GetMethod(obj, method_name, &method);
-    if (likely(is_method)) {
-        result = __Pyx_PyObject_Call2Args(method, obj, arg);
-        Py_DECREF(method);
-        return result;
-    }
-    if (unlikely(!method)) return NULL;
-    return __Pyx__PyObject_CallMethod1(method, arg);
-#endif
-}
-
-/* StringJoin */
-static CYTHON_INLINE PyObject* __Pyx_PyBytes_Join(PyObject* sep, PyObject* values) {
-    (void) __Pyx_PyObject_CallMethod1;
-#if !CYTHON_COMPILING_IN_LIMITED_API && PY_VERSION_HEX >= 0x030e0000 || defined(PyBytes_Join)
-    return PyBytes_Join(sep, values);
-#elif CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX < 0x030d0000 || defined(_PyBytes_Join)
-    return _PyBytes_Join(sep, values);
-#else
-    return __Pyx_PyObject_CallMethod1(sep, __pyx_mstate_global->__pyx_n_u_join, values);
-#endif
-}
-
-/* CIntToPyUnicode */
-static CYTHON_INLINE PyObject* __Pyx_uchar___Pyx_PyUnicode_From_size_t(size_t value, Py_ssize_t width, char padding_char) {
-#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wconversion"
-#endif
-    const size_t neg_one = (size_t) -1, const_zero = (size_t) 0;
-#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
-#pragma GCC diagnostic pop
-#endif
-    const int is_unsigned = neg_one > const_zero;
-    if (unlikely(!(is_unsigned || value == 0 || value > 0) ||
-                    !(sizeof(value) <= 2 || value & ~ (size_t) 0x01fffff || __Pyx_CheckUnicodeValue((int) value)))) {
-        PyErr_SetString(PyExc_OverflowError, "%c arg not in range(0x110000)");
-        return NULL;
-    }
-    if (width <= 1) {
-        return PyUnicode_FromOrdinal((int) value);
-    }
-    return __Pyx_PyUnicode_FromOrdinal_Padded((int) value, width, padding_char);
-}
-static CYTHON_INLINE PyObject* __Pyx____Pyx_PyUnicode_From_size_t(size_t value, Py_ssize_t width, char padding_char, char format_char) {
-    char digits[sizeof(size_t)*3+2];
-    char *dpos, *end = digits + sizeof(size_t)*3+2;
-    const char *hex_digits = DIGITS_HEX;
-    Py_ssize_t length, ulength;
-    int prepend_sign, last_one_off;
-    size_t remaining;
-#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wconversion"
-#endif
-    const size_t neg_one = (size_t) -1, const_zero = (size_t) 0;
-#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
-#pragma GCC diagnostic pop
-#endif
-    const int is_unsigned = neg_one > const_zero;
-    if (format_char == 'X') {
-        hex_digits += 16;
-        format_char = 'x';
-    }
-    remaining = value;
-    last_one_off = 0;
-    dpos = end;
-    do {
-        int digit_pos;
-        switch (format_char) {
-        case 'o':
-            digit_pos = abs((int)(remaining % (8*8)));
-            remaining = (size_t) (remaining / (8*8));
-            dpos -= 2;
-            memcpy(dpos, DIGIT_PAIRS_8 + digit_pos * 2, 2);
-            last_one_off = (digit_pos < 8);
-            break;
-        case 'd':
-            digit_pos = abs((int)(remaining % (10*10)));
-            remaining = (size_t) (remaining / (10*10));
-            dpos -= 2;
-            memcpy(dpos, DIGIT_PAIRS_10 + digit_pos * 2, 2);
-            last_one_off = (digit_pos < 10);
-            break;
-        case 'x':
-            *(--dpos) = hex_digits[abs((int)(remaining % 16))];
-            remaining = (size_t) (remaining / 16);
-            break;
-        default:
-            assert(0);
-            break;
-        }
-    } while (unlikely(remaining != 0));
-    assert(!last_one_off || *dpos == '0');
-    dpos += last_one_off;
-    length = end - dpos;
-    ulength = length;
-    prepend_sign = 0;
-    if (!is_unsigned && value <= neg_one) {
-        if (padding_char == ' ' || width <= length + 1) {
-            *(--dpos) = '-';
-            ++length;
-        } else {
-            prepend_sign = 1;
-        }
-        ++ulength;
-    }
-    if (width > ulength) {
-        ulength = width;
-    }
-    if (ulength == 1) {
-        return PyUnicode_FromOrdinal(*dpos);
-    }
-    return __Pyx_PyUnicode_BuildFromAscii(ulength, dpos, (int) length, prepend_sign, padding_char);
-}
-
-/* RaiseUnboundLocalErrorNogil */
-static void __Pyx_RaiseUnboundLocalErrorNogil(const char *varname) {
-    PyGILState_STATE gilstate = PyGILState_Ensure();
-    __Pyx_RaiseUnboundLocalError(varname);
-    PyGILState_Release(gilstate);
-}
-
-/* WriteUnraisableException */
-static void __Pyx_WriteUnraisable(const char *name, int clineno,
-                                  int lineno, const char *filename,
-                                  int full_traceback, int nogil) {
-    PyObject *old_exc, *old_val, *old_tb;
-    PyObject *ctx;
-    __Pyx_PyThreadState_declare
-    PyGILState_STATE state;
-    if (nogil)
-        state = PyGILState_Ensure();
-    else state = (PyGILState_STATE)0;
-    CYTHON_UNUSED_VAR(clineno);
-    CYTHON_UNUSED_VAR(lineno);
-    CYTHON_UNUSED_VAR(filename);
-    CYTHON_MAYBE_UNUSED_VAR(nogil);
-    __Pyx_PyThreadState_assign
-    __Pyx_ErrFetch(&old_exc, &old_val, &old_tb);
-    if (full_traceback) {
-        Py_XINCREF(old_exc);
-        Py_XINCREF(old_val);
-        Py_XINCREF(old_tb);
-        __Pyx_ErrRestore(old_exc, old_val, old_tb);
-        PyErr_PrintEx(0);
-    }
-    ctx = PyUnicode_FromString(name);
-    __Pyx_ErrRestore(old_exc, old_val, old_tb);
-    if (!ctx) {
-        PyErr_WriteUnraisable(Py_None);
-    } else {
-        PyErr_WriteUnraisable(ctx);
-        Py_DECREF(ctx);
-    }
-    if (nogil)
-        PyGILState_Release(state);
-}
-
-/* PyLongCompare */
-static CYTHON_INLINE int __Pyx_PyLong_BoolNeObjC(PyObject *op1, PyObject *op2, long intval, long inplace) {
-    CYTHON_MAYBE_UNUSED_VAR(intval);
-    CYTHON_UNUSED_VAR(inplace);
-    if (op1 == op2) {
-        return 0;
-    }
-    #if CYTHON_USE_PYLONG_INTERNALS
-    if (likely(PyLong_CheckExact(op1))) {
-        int unequal;
-        unsigned long uintval;
-        Py_ssize_t size = __Pyx_PyLong_DigitCount(op1);
-        const digit* digits = __Pyx_PyLong_Digits(op1);
-        if (intval == 0) {
-            return (__Pyx_PyLong_IsZero(op1) != 1);
-        } else if (intval < 0) {
-            if (__Pyx_PyLong_IsNonNeg(op1))
-                return 1;
-            intval = -intval;
-        } else {
-            if (__Pyx_PyLong_IsNeg(op1))
-                return 1;
-        }
-        uintval = (unsigned long) intval;
-#if PyLong_SHIFT * 4 < SIZEOF_LONG*8
-        if (uintval >> (PyLong_SHIFT * 4)) {
-            unequal = (size != 5) || (digits[0] != (uintval & (unsigned long) PyLong_MASK))
-                 | (digits[1] != ((uintval >> (1 * PyLong_SHIFT)) & (unsigned long) PyLong_MASK)) | (digits[2] != ((uintval >> (2 * PyLong_SHIFT)) & (unsigned long) PyLong_MASK)) | (digits[3] != ((uintval >> (3 * PyLong_SHIFT)) & (unsigned long) PyLong_MASK)) | (digits[4] != ((uintval >> (4 * PyLong_SHIFT)) & (unsigned long) PyLong_MASK));
-        } else
-#endif
-#if PyLong_SHIFT * 3 < SIZEOF_LONG*8
-        if (uintval >> (PyLong_SHIFT * 3)) {
-            unequal = (size != 4) || (digits[0] != (uintval & (unsigned long) PyLong_MASK))
-                 | (digits[1] != ((uintval >> (1 * PyLong_SHIFT)) & (unsigned long) PyLong_MASK)) | (digits[2] != ((uintval >> (2 * PyLong_SHIFT)) & (unsigned long) PyLong_MASK)) | (digits[3] != ((uintval >> (3 * PyLong_SHIFT)) & (unsigned long) PyLong_MASK));
-        } else
-#endif
-#if PyLong_SHIFT * 2 < SIZEOF_LONG*8
-        if (uintval >> (PyLong_SHIFT * 2)) {
-            unequal = (size != 3) || (digits[0] != (uintval & (unsigned long) PyLong_MASK))
-                 | (digits[1] != ((uintval >> (1 * PyLong_SHIFT)) & (unsigned long) PyLong_MASK)) | (digits[2] != ((uintval >> (2 * PyLong_SHIFT)) & (unsigned long) PyLong_MASK));
-        } else
-#endif
-#if PyLong_SHIFT * 1 < SIZEOF_LONG*8
-        if (uintval >> (PyLong_SHIFT * 1)) {
-            unequal = (size != 2) || (digits[0] != (uintval & (unsigned long) PyLong_MASK))
-                 | (digits[1] != ((uintval >> (1 * PyLong_SHIFT)) & (unsigned long) PyLong_MASK));
-        } else
-#endif
-            unequal = (size != 1) || (((unsigned long) digits[0]) != (uintval & (unsigned long) PyLong_MASK));
-        return (unequal != 0);
-    }
-    #endif
-    if (PyFloat_CheckExact(op1)) {
-        const long b = intval;
-        double a = __Pyx_PyFloat_AS_DOUBLE(op1);
-        return ((double)a != (double)b);
-    }
-    return __Pyx_PyObject_IsTrueAndDecref(
-        PyObject_RichCompare(op1, op2, Py_NE));
-}
-
 /* PyObjectVectorCallKwBuilder */
 #if CYTHON_VECTORCALL
 static int __Pyx_VectorcallBuilder_AddArg(PyObject *key, PyObject *value, PyObject *builder, PyObject **args, int n) {
@@ -24332,6 +23557,95 @@ CYTHON_UNUSED static int __Pyx_VectorcallBuilder_AddArg_Check(PyObject *key, PyO
     return PyDict_SetItem(builder, key, value);
 }
 #endif
+
+/* PyObjectCall2Args (used by CallUnboundCMethod1) */
+static CYTHON_INLINE PyObject* __Pyx_PyObject_Call2Args(PyObject* function, PyObject* arg1, PyObject* arg2) {
+    PyObject *args[3] = {NULL, arg1, arg2};
+    return __Pyx_PyObject_FastCall(function, args+1, 2 | __Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET);
+}
+
+/* CallUnboundCMethod1 */
+#if CYTHON_COMPILING_IN_CPYTHON
+static CYTHON_INLINE PyObject* __Pyx_CallUnboundCMethod1(__Pyx_CachedCFunction* cfunc, PyObject* self, PyObject* arg) {
+    int was_initialized =  __Pyx_CachedCFunction_GetAndSetInitializing(cfunc);
+    if (likely(was_initialized == 2 && cfunc->func)) {
+        int flag = cfunc->flag;
+        if (flag == METH_O) {
+            return __Pyx_CallCFunction(cfunc, self, arg);
+        } else if (flag == METH_FASTCALL) {
+            return __Pyx_CallCFunctionFast(cfunc, self, &arg, 1);
+        } else if (flag == (METH_FASTCALL | METH_KEYWORDS)) {
+            return __Pyx_CallCFunctionFastWithKeywords(cfunc, self, &arg, 1, NULL);
+        }
+    }
+#if CYTHON_COMPILING_IN_CPYTHON_FREETHREADING
+    else if (unlikely(was_initialized == 1)) {
+        __Pyx_CachedCFunction tmp_cfunc = {
+#ifndef __cplusplus
+            0
+#endif
+        };
+        tmp_cfunc.type = cfunc->type;
+        tmp_cfunc.method_name = cfunc->method_name;
+        return __Pyx__CallUnboundCMethod1(&tmp_cfunc, self, arg);
+    }
+#endif
+    PyObject* result = __Pyx__CallUnboundCMethod1(cfunc, self, arg);
+    __Pyx_CachedCFunction_SetFinishedInitializing(cfunc);
+    return result;
+}
+#endif
+static PyObject* __Pyx__CallUnboundCMethod1(__Pyx_CachedCFunction* cfunc, PyObject* self, PyObject* arg){
+    PyObject *result = NULL;
+    if (unlikely(!cfunc->func && !cfunc->method) && unlikely(__Pyx_TryUnpackUnboundCMethod(cfunc) < 0)) return NULL;
+#if CYTHON_COMPILING_IN_CPYTHON
+    if (cfunc->func && (cfunc->flag & METH_VARARGS)) {
+        PyObject *args = PyTuple_New(1);
+        if (unlikely(!args)) return NULL;
+        Py_INCREF(arg);
+        PyTuple_SET_ITEM(args, 0, arg);
+        if (cfunc->flag & METH_KEYWORDS)
+            result = __Pyx_CallCFunctionWithKeywords(cfunc, self, args, NULL);
+        else
+            result = __Pyx_CallCFunction(cfunc, self, args);
+        Py_DECREF(args);
+    } else
+#endif
+    {
+        result = __Pyx_PyObject_Call2Args(cfunc->method, self, arg);
+    }
+    return result;
+}
+
+/* dict_getitem_default */
+static PyObject* __Pyx_PyDict_GetItemDefault(PyObject* d, PyObject* key, PyObject* default_value) {
+    PyObject* value;
+#if !CYTHON_COMPILING_IN_PYPY || PYPY_VERSION_NUM >= 0x07020000
+    value = PyDict_GetItemWithError(d, key);
+    if (unlikely(!value)) {
+        if (unlikely(PyErr_Occurred()))
+            return NULL;
+        value = default_value;
+    }
+    Py_INCREF(value);
+    if ((1));
+#else
+    if (PyBytes_CheckExact(key) || PyUnicode_CheckExact(key) || PyLong_CheckExact(key)) {
+        value = PyDict_GetItem(d, key);
+        if (unlikely(!value)) {
+            value = default_value;
+        }
+        Py_INCREF(value);
+    }
+#endif
+    else {
+        if (default_value == Py_None)
+            value = __Pyx_CallUnboundCMethod1(&__pyx_mstate_global->__pyx_umethod_PyDict_Type_get, d, key);
+        else
+            value = __Pyx_CallUnboundCMethod2(&__pyx_mstate_global->__pyx_umethod_PyDict_Type_get, d, key, default_value);
+    }
+    return value;
+}
 
 /* AllocateExtensionType */
 static PyObject *__Pyx_AllocateExtensionType(PyTypeObject *t, int is_final) {
@@ -24373,44 +23687,6 @@ static int __Pyx_call_type_traverse(PyObject *o, int always_call, visitproc visi
     return 0;
 }
 #endif
-
-/* FunctionExport */
-static int __Pyx_ExportFunction(PyObject *api_dict, const char *name, void (*f)(void), const char *sig) {
-    PyObject *cobj;
-    union {
-        void (*fp)(void);
-        void *p;
-    } tmp;
-    tmp.fp = f;
-    cobj = PyCapsule_New(tmp.p, sig, 0);
-    if (!cobj)
-        goto bad;
-    if (PyDict_SetItemString(api_dict, name, cobj) < 0)
-        goto bad;
-    Py_DECREF(cobj);
-    return 0;
-bad:
-    Py_XDECREF(cobj);
-    return -1;
-}
-
-/* GetApiDict */
-static PyObject *__Pyx_ApiExport_GetApiDict(void) {
-    PyObject *d;
-    if (__Pyx_PyDict_GetItemRef(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_pyx_capi, &d) == -1)
-        return NULL;
-    if (!d) {
-        d = PyDict_New();
-        if (!d)
-            goto bad;
-        if (PyObject_SetAttr(__pyx_m, __pyx_mstate_global->__pyx_n_u_pyx_capi, d) < 0)
-            goto bad;
-    }
-    return d;
-bad:
-    Py_XDECREF(d);
-    return NULL;
-}
 
 /* LimitedApiGetTypeDict (used by SetItemOnTypeDict) */
 #if CYTHON_COMPILING_IN_LIMITED_API
@@ -24576,6 +23852,98 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_CallNoArg(PyObject *func) {
     PyObject *arg[2] = {NULL, NULL};
     return __Pyx_PyObject_FastCall(func, arg + 1, 0 | __Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET);
 }
+
+/* PyObjectGetMethod (used by PyObjectCallMethod0) */
+#if !(CYTHON_VECTORCALL && (__PYX_LIMITED_VERSION_HEX >= 0x030C0000 || (!CYTHON_COMPILING_IN_LIMITED_API && PY_VERSION_HEX >= 0x03090000)))
+static int __Pyx_PyObject_GetMethod(PyObject *obj, PyObject *name, PyObject **method) {
+    PyObject *attr;
+#if CYTHON_UNPACK_METHODS && CYTHON_COMPILING_IN_CPYTHON && CYTHON_USE_PYTYPE_LOOKUP
+    __Pyx_TypeName type_name;
+    PyTypeObject *tp = Py_TYPE(obj);
+    PyObject *descr;
+    descrgetfunc f = NULL;
+    PyObject **dictptr, *dict;
+    int meth_found = 0;
+    assert (*method == NULL);
+    if (unlikely(tp->tp_getattro != PyObject_GenericGetAttr)) {
+        attr = __Pyx_PyObject_GetAttrStr(obj, name);
+        goto try_unpack;
+    }
+    if (unlikely(tp->tp_dict == NULL) && unlikely(PyType_Ready(tp) < 0)) {
+        return 0;
+    }
+    descr = _PyType_Lookup(tp, name);
+    if (likely(descr != NULL)) {
+        Py_INCREF(descr);
+#if defined(Py_TPFLAGS_METHOD_DESCRIPTOR) && Py_TPFLAGS_METHOD_DESCRIPTOR
+        if (__Pyx_PyType_HasFeature(Py_TYPE(descr), Py_TPFLAGS_METHOD_DESCRIPTOR))
+#else
+        #ifdef __Pyx_CyFunction_USED
+        if (likely(PyFunction_Check(descr) || __Pyx_IS_TYPE(descr, &PyMethodDescr_Type) || __Pyx_CyFunction_Check(descr)))
+        #else
+        if (likely(PyFunction_Check(descr) || __Pyx_IS_TYPE(descr, &PyMethodDescr_Type)))
+        #endif
+#endif
+        {
+            meth_found = 1;
+        } else {
+            f = Py_TYPE(descr)->tp_descr_get;
+            if (f != NULL && PyDescr_IsData(descr)) {
+                attr = f(descr, obj, (PyObject *)Py_TYPE(obj));
+                Py_DECREF(descr);
+                goto try_unpack;
+            }
+        }
+    }
+    dictptr = _PyObject_GetDictPtr(obj);
+    if (dictptr != NULL && (dict = *dictptr) != NULL) {
+        Py_INCREF(dict);
+        attr = __Pyx_PyDict_GetItemStr(dict, name);
+        if (attr != NULL) {
+            Py_INCREF(attr);
+            Py_DECREF(dict);
+            Py_XDECREF(descr);
+            goto try_unpack;
+        }
+        Py_DECREF(dict);
+    }
+    if (meth_found) {
+        *method = descr;
+        return 1;
+    }
+    if (f != NULL) {
+        attr = f(descr, obj, (PyObject *)Py_TYPE(obj));
+        Py_DECREF(descr);
+        goto try_unpack;
+    }
+    if (likely(descr != NULL)) {
+        *method = descr;
+        return 0;
+    }
+    type_name = __Pyx_PyType_GetFullyQualifiedName(tp);
+    PyErr_Format(PyExc_AttributeError,
+                 "'" __Pyx_FMT_TYPENAME "' object has no attribute '%U'",
+                 type_name, name);
+    __Pyx_DECREF_TypeName(type_name);
+    return 0;
+#else
+    attr = __Pyx_PyObject_GetAttrStr(obj, name);
+    goto try_unpack;
+#endif
+try_unpack:
+#if CYTHON_UNPACK_METHODS
+    if (likely(attr) && PyMethod_Check(attr) && likely(PyMethod_GET_SELF(attr) == obj)) {
+        PyObject *function = PyMethod_GET_FUNCTION(attr);
+        Py_INCREF(function);
+        Py_DECREF(attr);
+        *method = function;
+        return 1;
+    }
+#endif
+    *method = attr;
+    return 0;
+}
+#endif
 
 /* PyObjectCallMethod0 (used by PyType_Ready) */
 static PyObject* __Pyx_PyObject_CallMethod0(PyObject* obj, PyObject* method_name) {
@@ -25026,7 +24394,7 @@ __PYX_GOOD:
     return ret;
 }
 
-/* PxdImportShared (used by VoidPtrImport) */
+/* PxdImportShared (used by FunctionImport) */
 #ifndef __PYX_HAVE_RT_ImportFromPxd_3_2_4
 #define __PYX_HAVE_RT_ImportFromPxd_3_2_4
 static int __Pyx_ImportFromPxd_3_2_4(PyObject *module, const char *name, void **p, const char *sig, const char *what) {
@@ -25063,14 +24431,6 @@ bad:
     Py_XDECREF(d);
     Py_XDECREF(cobj);
     return -1;
-}
-#endif
-
-/* VoidPtrImport */
-#ifndef __PYX_HAVE_RT_ImportVoidPtr_3_2_4
-#define __PYX_HAVE_RT_ImportVoidPtr_3_2_4
-static int __Pyx_ImportVoidPtr_3_2_4(PyObject *module, const char *name, void **p, const char *sig) {
-    return __Pyx_ImportFromPxd_3_2_4(module, name, p, sig, "variable");
 }
 #endif
 
@@ -27760,16 +27120,50 @@ static const char* __Pyx_BufFmt_CheckString(__Pyx_BufFmt_Context* ctx, const cha
           return (target_type) value;\
       }
   
-/* MemviewDtypeToObject */
-  static CYTHON_INLINE PyObject *__pyx_memview_get_int(const char *itemp) {
-      return (PyObject *) __Pyx_PyLong_From_int(*(int const *) itemp);
+/* ObjectToMemviewSlice */
+  static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_ds_nn_uint64_t(PyObject *obj, int writable_flag) {
+      __Pyx_memviewslice result = __Pyx_MEMSLICE_INIT;
+      __Pyx_BufFmt_StackElem stack[1];
+      int axes_specs[] = { (__Pyx_MEMVIEW_DIRECT | __Pyx_MEMVIEW_STRIDED) };
+      int retcode;
+      if (obj == Py_None) {
+          result.memview = (struct __pyx_memoryview_obj *) Py_None;
+          return result;
+      }
+      retcode = __Pyx_ValidateAndInit_memviewslice(axes_specs, 0,
+                                                   PyBUF_RECORDS_RO | writable_flag, 1,
+                                                   &__Pyx_TypeInfo_nn_uint64_t, stack,
+                                                   &result, obj);
+      if (unlikely(retcode == -1))
+          goto __pyx_fail;
+      return result;
+  __pyx_fail:
+      result.memview = NULL;
+      result.data = NULL;
+      return result;
   }
-  static CYTHON_INLINE int __pyx_memview_set_int(char *itemp, PyObject *obj) {
-      int value = __Pyx_PyLong_As_int(obj);
-      if (unlikely((value == (int)-1) && PyErr_Occurred()))
-          return 0;
-      *(int *) itemp = value;
-      return 1;
+  
+/* ObjectToMemviewSlice */
+  static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_dsdsds_unsigned_char(PyObject *obj, int writable_flag) {
+      __Pyx_memviewslice result = __Pyx_MEMSLICE_INIT;
+      __Pyx_BufFmt_StackElem stack[1];
+      int axes_specs[] = { (__Pyx_MEMVIEW_DIRECT | __Pyx_MEMVIEW_STRIDED), (__Pyx_MEMVIEW_DIRECT | __Pyx_MEMVIEW_STRIDED), (__Pyx_MEMVIEW_DIRECT | __Pyx_MEMVIEW_STRIDED) };
+      int retcode;
+      if (obj == Py_None) {
+          result.memview = (struct __pyx_memoryview_obj *) Py_None;
+          return result;
+      }
+      retcode = __Pyx_ValidateAndInit_memviewslice(axes_specs, 0,
+                                                   PyBUF_RECORDS_RO | writable_flag, 3,
+                                                   &__Pyx_TypeInfo_unsigned_char, stack,
+                                                   &result, obj);
+      if (unlikely(retcode == -1))
+          goto __pyx_fail;
+      return result;
+  __pyx_fail:
+      result.memview = NULL;
+      result.data = NULL;
+      return result;
   }
   
 /* ObjectToMemviewSlice */
@@ -27793,6 +27187,18 @@ static const char* __Pyx_BufFmt_CheckString(__Pyx_BufFmt_Context* ctx, const cha
       result.memview = NULL;
       result.data = NULL;
       return result;
+  }
+  
+/* MemviewDtypeToObject */
+  static CYTHON_INLINE PyObject *__pyx_memview_get_int(const char *itemp) {
+      return (PyObject *) __Pyx_PyLong_From_int(*(int const *) itemp);
+  }
+  static CYTHON_INLINE int __pyx_memview_set_int(char *itemp, PyObject *obj) {
+      int value = __Pyx_PyLong_As_int(obj);
+      if (unlikely((value == (int)-1) && PyErr_Occurred()))
+          return 0;
+      *(int *) itemp = value;
+      return 1;
   }
   
 /* MemviewSliceCopy */
@@ -27935,50 +27341,6 @@ static const char* __Pyx_BufFmt_CheckString(__Pyx_BufFmt_Context* ctx, const cha
           return result;
   #endif
       }
-  }
-  
-/* TypeInfoToFormat */
-  static struct __pyx_typeinfo_string __Pyx_TypeInfoToFormat(const __Pyx_TypeInfo *type) {
-      struct __pyx_typeinfo_string result = { {0} };
-      char *buf = (char *) result.string;
-      size_t size = type->size;
-      switch (type->typegroup) {
-          case 'H':
-              *buf = 'c';
-              break;
-          case 'I':
-          case 'U':
-              if (size == 1)
-                  *buf = (type->is_unsigned) ? 'B' : 'b';
-              else if (size == 2)
-                  *buf = (type->is_unsigned) ? 'H' : 'h';
-              else if (size == 4)
-                  *buf = (type->is_unsigned) ? 'I' : 'i';
-              else if (size == 8)
-                  *buf = (type->is_unsigned) ? 'Q' : 'q';
-              break;
-          case 'P':
-              *buf = 'P';
-              break;
-          case 'C':
-           {
-              __Pyx_TypeInfo complex_type = *type;
-              complex_type.typegroup = 'R';
-              complex_type.size /= 2;
-              *buf++ = 'Z';
-              *buf = __Pyx_TypeInfoToFormat(&complex_type).string[0];
-              break;
-           }
-          case 'R':
-              if (size == 4)
-                  *buf = 'f';
-              else if (size == 8)
-                  *buf = 'd';
-              else
-                  *buf = 'g';
-              break;
-      }
-      return result;
   }
   
 /* CIntFromPy */
@@ -28232,30 +27594,30 @@ static const char* __Pyx_BufFmt_CheckString(__Pyx_BufFmt_Context* ctx, const cha
   }
   
 /* CIntToPy */
-  static CYTHON_INLINE PyObject* __Pyx_PyLong_From_long(long value) {
+  static CYTHON_INLINE PyObject* __Pyx_PyLong_From_uint64_t(uint64_t value) {
   #ifdef __Pyx_HAS_GCC_DIAGNOSTIC
   #pragma GCC diagnostic push
   #pragma GCC diagnostic ignored "-Wconversion"
   #endif
-      const long neg_one = (long) -1, const_zero = (long) 0;
+      const uint64_t neg_one = (uint64_t) -1, const_zero = (uint64_t) 0;
   #ifdef __Pyx_HAS_GCC_DIAGNOSTIC
   #pragma GCC diagnostic pop
   #endif
       const int is_unsigned = neg_one > const_zero;
       if (is_unsigned) {
-          if (sizeof(long) < sizeof(long)) {
+          if (sizeof(uint64_t) < sizeof(long)) {
               return PyLong_FromLong((long) value);
-          } else if (sizeof(long) <= sizeof(unsigned long)) {
+          } else if (sizeof(uint64_t) <= sizeof(unsigned long)) {
               return PyLong_FromUnsignedLong((unsigned long) value);
   #if !CYTHON_COMPILING_IN_PYPY
-          } else if (sizeof(long) <= sizeof(unsigned PY_LONG_LONG)) {
+          } else if (sizeof(uint64_t) <= sizeof(unsigned PY_LONG_LONG)) {
               return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
   #endif
           }
       } else {
-          if (sizeof(long) <= sizeof(long)) {
+          if (sizeof(uint64_t) <= sizeof(long)) {
               return PyLong_FromLong((long) value);
-          } else if (sizeof(long) <= sizeof(PY_LONG_LONG)) {
+          } else if (sizeof(uint64_t) <= sizeof(PY_LONG_LONG)) {
               return PyLong_FromLongLong((PY_LONG_LONG) value);
           }
       }
@@ -28269,7 +27631,7 @@ static const char* __Pyx_BufFmt_CheckString(__Pyx_BufFmt_Context* ctx, const cha
           }
   #elif !CYTHON_COMPILING_IN_LIMITED_API && PY_VERSION_HEX < 0x030d0000
           int one = 1; int little = (int)*(unsigned char *)&one;
-          return _PyLong_FromByteArray(bytes, sizeof(long),
+          return _PyLong_FromByteArray(bytes, sizeof(uint64_t),
                                        little, !is_unsigned);
   #else
           int one = 1; int little = (int)*(unsigned char *)&one;
@@ -28277,7 +27639,7 @@ static const char* __Pyx_BufFmt_CheckString(__Pyx_BufFmt_Context* ctx, const cha
           PyObject *py_bytes = NULL, *order_str = NULL;
           from_bytes = PyObject_GetAttrString((PyObject*)&PyLong_Type, "from_bytes");
           if (!from_bytes) return NULL;
-          py_bytes = PyBytes_FromStringAndSize((char*)bytes, sizeof(long));
+          py_bytes = PyBytes_FromStringAndSize((char*)bytes, sizeof(uint64_t));
           if (!py_bytes) goto limited_bad;
           order_str = PyUnicode_FromString(little ? "little" : "big");
           if (!order_str) goto limited_bad;
@@ -28298,6 +27660,33 @@ static const char* __Pyx_BufFmt_CheckString(__Pyx_BufFmt_Context* ctx, const cha
           return result;
   #endif
       }
+  }
+  
+/* PyObjectCallMethod1 (used by UpdateUnpickledDict) */
+  #if !(CYTHON_VECTORCALL && (__PYX_LIMITED_VERSION_HEX >= 0x030C0000 || (!CYTHON_COMPILING_IN_LIMITED_API && PY_VERSION_HEX >= 0x03090000)))
+  static PyObject* __Pyx__PyObject_CallMethod1(PyObject* method, PyObject* arg) {
+      PyObject *result = __Pyx_PyObject_CallOneArg(method, arg);
+      Py_DECREF(method);
+      return result;
+  }
+  #endif
+  static PyObject* __Pyx_PyObject_CallMethod1(PyObject* obj, PyObject* method_name, PyObject* arg) {
+  #if CYTHON_VECTORCALL && (__PYX_LIMITED_VERSION_HEX >= 0x030C0000 || (!CYTHON_COMPILING_IN_LIMITED_API && PY_VERSION_HEX >= 0x03090000))
+      PyObject *args[2] = {obj, arg};
+      (void) __Pyx_PyObject_CallOneArg;
+      (void) __Pyx_PyObject_Call2Args;
+      return PyObject_VectorcallMethod(method_name, args, 2 | PY_VECTORCALL_ARGUMENTS_OFFSET, NULL);
+  #else
+      PyObject *method = NULL, *result;
+      int is_method = __Pyx_PyObject_GetMethod(obj, method_name, &method);
+      if (likely(is_method)) {
+          result = __Pyx_PyObject_Call2Args(method, obj, arg);
+          Py_DECREF(method);
+          return result;
+      }
+      if (unlikely(!method)) return NULL;
+      return __Pyx__PyObject_CallMethod1(method, arg);
+  #endif
   }
   
 /* UpdateUnpickledDict */
@@ -28630,6 +28019,75 @@ static const char* __Pyx_BufFmt_CheckString(__Pyx_BufFmt_Context* ctx, const cha
       return (long) -1;
   }
   
+/* CIntToPy */
+  static CYTHON_INLINE PyObject* __Pyx_PyLong_From_long(long value) {
+  #ifdef __Pyx_HAS_GCC_DIAGNOSTIC
+  #pragma GCC diagnostic push
+  #pragma GCC diagnostic ignored "-Wconversion"
+  #endif
+      const long neg_one = (long) -1, const_zero = (long) 0;
+  #ifdef __Pyx_HAS_GCC_DIAGNOSTIC
+  #pragma GCC diagnostic pop
+  #endif
+      const int is_unsigned = neg_one > const_zero;
+      if (is_unsigned) {
+          if (sizeof(long) < sizeof(long)) {
+              return PyLong_FromLong((long) value);
+          } else if (sizeof(long) <= sizeof(unsigned long)) {
+              return PyLong_FromUnsignedLong((unsigned long) value);
+  #if !CYTHON_COMPILING_IN_PYPY
+          } else if (sizeof(long) <= sizeof(unsigned PY_LONG_LONG)) {
+              return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
+  #endif
+          }
+      } else {
+          if (sizeof(long) <= sizeof(long)) {
+              return PyLong_FromLong((long) value);
+          } else if (sizeof(long) <= sizeof(PY_LONG_LONG)) {
+              return PyLong_FromLongLong((PY_LONG_LONG) value);
+          }
+      }
+      {
+          unsigned char *bytes = (unsigned char *)&value;
+  #if !CYTHON_COMPILING_IN_LIMITED_API && PY_VERSION_HEX >= 0x030d00A4
+          if (is_unsigned) {
+              return PyLong_FromUnsignedNativeBytes(bytes, sizeof(value), -1);
+          } else {
+              return PyLong_FromNativeBytes(bytes, sizeof(value), -1);
+          }
+  #elif !CYTHON_COMPILING_IN_LIMITED_API && PY_VERSION_HEX < 0x030d0000
+          int one = 1; int little = (int)*(unsigned char *)&one;
+          return _PyLong_FromByteArray(bytes, sizeof(long),
+                                       little, !is_unsigned);
+  #else
+          int one = 1; int little = (int)*(unsigned char *)&one;
+          PyObject *from_bytes, *result = NULL, *kwds = NULL;
+          PyObject *py_bytes = NULL, *order_str = NULL;
+          from_bytes = PyObject_GetAttrString((PyObject*)&PyLong_Type, "from_bytes");
+          if (!from_bytes) return NULL;
+          py_bytes = PyBytes_FromStringAndSize((char*)bytes, sizeof(long));
+          if (!py_bytes) goto limited_bad;
+          order_str = PyUnicode_FromString(little ? "little" : "big");
+          if (!order_str) goto limited_bad;
+          {
+              PyObject *args[3+(CYTHON_VECTORCALL ? 1 : 0)] = { NULL, py_bytes, order_str };
+              if (!is_unsigned) {
+                  kwds = __Pyx_MakeVectorcallBuilderKwds(1);
+                  if (!kwds) goto limited_bad;
+                  if (__Pyx_VectorcallBuilder_AddArgStr("signed", __Pyx_NewRef(Py_True), kwds, args+3, 0) < 0) goto limited_bad;
+              }
+              result = __Pyx_Object_Vectorcall_CallFromBuilder(from_bytes, args+1, 2 | __Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET, kwds);
+          }
+          limited_bad:
+          Py_XDECREF(kwds);
+          Py_XDECREF(order_str);
+          Py_XDECREF(py_bytes);
+          Py_XDECREF(from_bytes);
+          return result;
+  #endif
+      }
+  }
+  
 /* CIntFromPy */
   static CYTHON_INLINE char __Pyx_PyLong_As_char(PyObject *x) {
   #ifdef __Pyx_HAS_GCC_DIAGNOSTIC
@@ -28913,7 +28371,7 @@ static const char* __Pyx_BufFmt_CheckString(__Pyx_BufFmt_Context* ctx, const cha
           result = name;
           name = NULL;
       } else {
-          result = __Pyx_NewRef(__pyx_mstate_global->__pyx_kp_u__13);
+          result = __Pyx_NewRef(__pyx_mstate_global->__pyx_kp_u__6);
       }
       goto done;
   }

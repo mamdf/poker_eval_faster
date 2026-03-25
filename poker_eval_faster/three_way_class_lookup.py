@@ -11,8 +11,8 @@ from typing import Iterable, Sequence
 
 import numpy as np
 
+from .eval_cython.three_way_class_lookup_builder import evaluate_three_way_class_counts_c
 from .main import RANKS_STR, THREE_WAY_ORDER_LABELS, ThreeWayOrderCounts, _range_combo_ids_from_string
-from .preflop_canonical import _evaluate_three_way_ranges_preflop_cached
 
 
 THREE_WAY_CLASS_LOOKUP_MAGIC = b"PTW1"
@@ -46,7 +46,7 @@ _ORDER_STRENGTHS = (
 )
 _ORDER_STRENGTHS_TO_INDEX = {strengths: idx for idx, strengths in enumerate(_ORDER_STRENGTHS)}
 
-_WORKER_LOCAL_CLASS_COMBO_IDS: tuple[tuple[int, ...], ...] = tuple()
+_WORKER_LOCAL_CLASS_COMBO_IDS: tuple[np.ndarray, ...] = tuple()
 
 
 def _generate_hand_classes_169() -> tuple[str, ...]:
@@ -346,15 +346,23 @@ def _resolve_processes(processes: int | None, entry_count: int, chunk_size: int)
     return max(os.cpu_count() or 1, 1)
 
 
-def _init_three_way_class_lookup_worker(local_class_combo_ids: tuple[tuple[int, ...], ...]) -> None:
+def _init_three_way_class_lookup_worker(local_class_combo_ids: tuple[np.ndarray, ...]) -> None:
     global _WORKER_LOCAL_CLASS_COMBO_IDS
     _WORKER_LOCAL_CLASS_COMBO_IDS = local_class_combo_ids
 
 
+def _chunk_entry_count(first_start: int, first_end: int, num_items: int) -> int:
+    return sum(_entries_with_first_index(first_idx, num_items) for first_idx in range(first_start, first_end))
+
+
 def _evaluate_chunk(spec: tuple[int, int, int]) -> tuple[int, np.ndarray, int]:
     start_idx, first_start, first_end = spec
-    rows: list[tuple[int, ...]] = []
+    rows = np.zeros(
+        (_chunk_entry_count(first_start, first_end, len(_WORKER_LOCAL_CLASS_COMBO_IDS)), len(THREE_WAY_ORDER_LABELS)),
+        dtype=np.uint64,
+    )
     legal_count = 0
+    row_idx = 0
 
     for first_idx in range(first_start, first_end):
         combos_first = _WORKER_LOCAL_CLASS_COMBO_IDS[first_idx]
@@ -362,16 +370,17 @@ def _evaluate_chunk(spec: tuple[int, int, int]) -> tuple[int, np.ndarray, int]:
             combos_second = _WORKER_LOCAL_CLASS_COMBO_IDS[second_idx]
             for third_idx in range(second_idx, len(_WORKER_LOCAL_CLASS_COMBO_IDS)):
                 combos_third = _WORKER_LOCAL_CLASS_COMBO_IDS[third_idx]
-                counts = _evaluate_three_way_ranges_preflop_cached(
+                counts = evaluate_three_way_class_counts_c(
                     combos_first,
                     combos_second,
                     combos_third,
                 )
-                rows.append(counts)
-                if any(counts):
+                rows[row_idx, :] = counts
+                row_idx += 1
+                if int(np.sum(counts)) != 0:
                     legal_count += 1
 
-    return start_idx, np.array(rows, dtype=np.uint64), legal_count
+    return start_idx, rows, legal_count
 
 
 def _build_entries(
@@ -412,7 +421,10 @@ def build_three_way_class_lookup(
 ) -> ThreeWayClassLookupArtifact:
     selected = _normalize_class_indices(class_indices)
     class_meta = _build_class_meta(selected)
-    local_class_combo_ids = tuple(all_class_combo_ids()[int(class_id)] for class_id in selected.tolist())
+    local_class_combo_ids = tuple(
+        np.array(all_class_combo_ids()[int(class_id)], dtype=np.int32)
+        for class_id in selected.tolist()
+    )
     entries, legal_count = _build_entries(local_class_combo_ids, processes=processes, chunk_size=chunk_size)
     header = ThreeWayClassLookupHeader(
         universe_class_count=len(HAND_CLASSES_169),

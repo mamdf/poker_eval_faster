@@ -15,6 +15,7 @@ EXTENSION_NAMES = (
     "main",
     "one_hand_evaluate",
     "python_wrapper",
+    "three_way_class_lookup_builder",
     "three_way_orders",
 )
 USE_CYTHON = cythonize is not None

@@ -10,6 +10,7 @@ from .eval_cython.hands_evaluate import (
     evaluate_range_vs_range_c,
     hands_to_equity,
 )
+from .eval_cython.three_way_class_lookup_builder import clear_three_way_class_builder_cache_c
 from .eval_cython.main import evaluate_c
 from .eval_cython.one_hand_evaluate import evaluate_one_hand_vs_all_c, hand_to_equity
 from .eval_cython.three_way_orders import evaluate_three_way_orders_c
@@ -266,6 +267,7 @@ def _clear_preflop_caches() -> None:
     _range_array_from_string.cache_clear()
     _range_combo_ids_from_string.cache_clear()
     _clear_preflop_canonical_caches()
+    clear_three_way_class_builder_cache_c()
 
 
 def packed_pair_index(first_idx: int, second_idx: int, num_items: int) -> int:
