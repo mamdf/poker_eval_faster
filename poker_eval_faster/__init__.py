@@ -40,6 +40,7 @@ from .main import (
     evaluate_one_hand_vs_all,
     evaluate_ranges,
     evaluate_rank,
+    evaluate_three_way_ranges,
     evaluate_three_way_orders,
     int_to_cards,
     packed_pair_index,

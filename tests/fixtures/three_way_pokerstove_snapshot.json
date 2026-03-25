@@ -1,0 +1,90 @@
+{
+  "source": "PokerStove ps-eval exact 3-way snapshots",
+  "notes": "For 3-way, ps-eval exposes solo wins and split-pot equity share, not the full 13-class weak-order distribution. Range-like cases use explicit comma-separated combo lists, not shorthand like AA/AKo.",
+  "cases": [
+    {
+      "id": "aa_vs_aa_vs_qq_preflop",
+      "kind": "hands",
+      "hands": [["Ac", "Ad"], ["Ah", "As"], ["Qc", "Qd"]],
+      "board": [],
+      "expected": {
+        "players": [
+          {"label": "AcAd", "wins": 23848, "tie_share": 514270.999999968, "equity": 0.392571533623},
+          {"label": "AhAs", "wins": 31950, "tie_share": 514270.999999968, "equity": 0.39848214924},
+          {"label": "QcQd", "wins": 284646, "tie_share": 1767.999999999877, "equity": 0.208946317136}
+        ],
+        "total": 1370754
+      }
+    },
+    {
+      "id": "aks_qhj_99_flop",
+      "kind": "hands",
+      "hands": [["As", "Ks"], ["Qh", "Jh"], ["9c", "9d"]],
+      "board": ["2c", "7d", "Th"],
+      "expected": {
+        "players": [
+          {"label": "AsKs", "wins": 211, "tie_share": 0.0, "equity": 0.233665559247},
+          {"label": "QhJh", "wins": 231, "tie_share": 0.0, "equity": 0.255813953488},
+          {"label": "9c9d", "wins": 461, "tie_share": 0.0, "equity": 0.510520487265}
+        ],
+        "total": 903
+      }
+    },
+    {
+      "id": "two_way_top_tie_river",
+      "kind": "hands",
+      "hands": [["Kc", "Qc"], ["Kh", "Qh"], ["Td", "9d"]],
+      "board": ["Ac", "Ad", "2h", "3s", "4d"],
+      "expected": {
+        "players": [
+          {"label": "KcQc", "wins": 0, "tie_share": 0.5, "equity": 0.5},
+          {"label": "KhQh", "wins": 0, "tie_share": 0.5, "equity": 0.5},
+          {"label": "Td9d", "wins": 0, "tie_share": 0.0, "equity": 0.0}
+        ],
+        "total": 1
+      }
+    },
+    {
+      "id": "triple_tie_river",
+      "kind": "hands",
+      "hands": [["Kc", "Qc"], ["Kh", "Qh"], ["Ks", "Qs"]],
+      "board": ["Ac", "Ad", "2h", "3s", "4d"],
+      "expected": {
+        "players": [
+          {"label": "KcQc", "wins": 0, "tie_share": 0.333333333333, "equity": 0.333333333333},
+          {"label": "KhQh", "wins": 0, "tie_share": 0.333333333333, "equity": 0.333333333333},
+          {"label": "KsQs", "wins": 0, "tie_share": 0.333333333333, "equity": 0.333333333333}
+        ],
+        "total": 1
+      }
+    },
+    {
+      "id": "pair_range_showdown_preflop",
+      "kind": "ranges",
+      "ranges": ["AcAd,AhAs", "QcQd,QhQs", "JcJd,JhJs"],
+      "board": [],
+      "expected": {
+        "players": [
+          {"label": "AcAd,AhAs", "wins": 7336932, "tie_share": 14421.333333341683, "equity": 0.670374966381},
+          {"label": "QcQd,QhQs", "wins": 1927348, "tie_share": 14421.333333341683, "equity": 0.177071280964},
+          {"label": "JcJd,JhJs", "wins": 1658488, "tie_share": 14421.333333341683, "equity": 0.152553752655}
+        ],
+        "total": 10966032
+      }
+    },
+    {
+      "id": "explicit_combo_ranges_preflop",
+      "kind": "ranges",
+      "ranges": ["AcKc,AdKd", "2c2d,3c3d", "5s6s,7s8s"],
+      "board": [],
+      "expected": {
+        "players": [
+          {"label": "AcKc,AdKd", "wins": 4429080, "tie_share": 17043.333333342853, "equity": 0.405445044601},
+          {"label": "2c2d,3c3d", "wins": 2774018, "tie_share": 17043.333333342853, "equity": 0.254518802547},
+          {"label": "5s6s,7s8s", "wins": 3711804, "tie_share": 17043.333333342853, "equity": 0.340036152852}
+        ],
+        "total": 10966032
+      }
+    }
+  ]
+}

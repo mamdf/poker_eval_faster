@@ -168,6 +168,7 @@ CLI options:
 - `evaluate_hands(hands, board=None, eq=True, incomplete_board=False) -> list[float] | list[int]`
 - `evaluate_heads_up_counts(hero_hand, villain_hand, board=None) -> HeadsUpCounts`
 - `evaluate_three_way_orders(hands, board=None) -> ThreeWayOrderCounts`
+- `evaluate_three_way_ranges(range_a, range_b, range_c) -> ThreeWayOrderCounts` for exact preflop `range vs range vs range`
 - `build_heads_up_lookup(board=None, combo_indices=None) -> HeadsUpLookupTable`
 - `aggregate_heads_up_lookup_by_class(lookup) -> dict[(str, str), HeadsUpCounts]`
 - `write_hu_preflop_lookup(path, combo_indices=None)` writes a stable triangular binary artifact with sentinels for dead-card pairs
@@ -191,6 +192,16 @@ This prints ops/s and microseconds/op for:
 - `evaluate_one_hand_vs_all` (turn)
 - `evaluate_three_way_orders` (3 hands on flop)
 - `evaluate_rank` (5–7 cards)
+
+- Run the exact 3-range preflop benchmark script:
+```bash
+python benchmarks/benchmark_three_way_ranges.py --warm-iters 50 --baseline-iters 20
+```
+This reports:
+- combos per range
+- legal preflop triples
+- canonical preflop matchups after suit-isomorphism grouping
+- cold/warm timings for `evaluate_three_way_ranges`
 
 - Optional: run with pytest-benchmark (install the plugin first):
 ```bash
@@ -245,7 +256,9 @@ To install from a GitHub Release artifact, download the matching wheel for your 
 ## Development Notes
 - Cython sources live under `poker_eval_faster/eval_cython/` (`.pyx`, `.pxd`).
 - Heads-up range/lookup work now uses a dedicated exact-count kernel instead of routing every combo pair through the generic multi-hand path.
+- Exact `3-way` preflop range evaluation uses in-memory canonical grouping over ordered combo triples; it is intended for bounded ranges rather than full-deck exhaustive artifacts.
 - `scripts/build_hu_preflop_lookup.py` builds a disk artifact for preflop HU combo-vs-combo win/tie counts.
+- `scripts/generate_pokerstove_three_way_fixture.py` refreshes 3-way snapshot fixtures from a local `ps-eval` binary.
 - Recommended local development flow:
 ```bash
 uv venv

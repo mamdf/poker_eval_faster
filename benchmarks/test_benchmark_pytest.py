@@ -10,6 +10,7 @@ from poker_eval_faster import (
     evaluate_ranges,
     evaluate_heads_up_counts,
     evaluate_three_way_orders,
+    evaluate_three_way_ranges,
 )
 from poker_eval_faster.main import (
     _clear_preflop_caches,
@@ -20,11 +21,19 @@ from poker_eval_faster.main import (
 
 COMPLEX_HERO_RANGE = "99+,AQs+,AQo+"
 COMPLEX_VILLAIN_RANGE = "JJ-77,AQs-A9s,KJs+,QJs,AQo-AJo,KQo"
+THREE_WAY_RANGE_A = "AKs,AKo,QQ,JJ"
+THREE_WAY_RANGE_B = "TT-99,AQs-AJs,KQs"
+THREE_WAY_RANGE_C = "88-77,ATs-A8s,KJs+,QJs,AJo"
 
 
 def _benchmark_cold_range(hero: str, villain: str) -> None:
     _clear_preflop_caches()
     evaluate_ranges(hero, villain)
+
+
+def _benchmark_cold_three_way_range(range_a: str, range_b: str, range_c: str) -> None:
+    _clear_preflop_caches()
+    evaluate_three_way_ranges(range_a, range_b, range_c)
 
 
 @pytest.mark.benchmark(group="evaluate_hands")
@@ -57,6 +66,17 @@ def test_benchmark_evaluate_three_way_orders_flop(benchmark):
     hands = [['As', 'Ks'], ['Qh', 'Jh'], ['9c', '9d']]
     board = ['2c', '7d', 'Th']
     benchmark(lambda: evaluate_three_way_orders(hands, board))
+
+
+@pytest.mark.benchmark(group="evaluate_three_way_ranges_preflop_warm")
+def test_benchmark_evaluate_three_way_ranges_preflop_warm(benchmark):
+    evaluate_three_way_ranges(THREE_WAY_RANGE_A, THREE_WAY_RANGE_B, THREE_WAY_RANGE_C)
+    benchmark(lambda: evaluate_three_way_ranges(THREE_WAY_RANGE_A, THREE_WAY_RANGE_B, THREE_WAY_RANGE_C))
+
+
+@pytest.mark.benchmark(group="evaluate_three_way_ranges_preflop_cold")
+def test_benchmark_evaluate_three_way_ranges_preflop_cold(benchmark):
+    benchmark(lambda: _benchmark_cold_three_way_range(THREE_WAY_RANGE_A, THREE_WAY_RANGE_B, THREE_WAY_RANGE_C))
 
 
 @pytest.mark.benchmark(group="evaluate_one_vs_all")

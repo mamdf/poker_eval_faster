@@ -15,11 +15,16 @@ from .eval_cython.one_hand_evaluate import evaluate_one_hand_vs_all_c, hand_to_e
 from .eval_cython.three_way_orders import evaluate_three_way_orders_c
 from .preflop_canonical import (
     _canonical_preflop_matchup,
+    _canonical_preflop_three_way_matchup,
     _clear_preflop_canonical_caches,
     _combo_ids_from_array,
     _evaluate_ranges_preflop_cached,
+    _evaluate_three_way_ranges_preflop_cached,
     _preflop_canonical_counts,
     _preflop_range_matchup_profile,
+    _preflop_three_way_canonical_counts,
+    _preflop_three_way_combo_order_counts,
+    _preflop_three_way_range_matchup_profile,
     canonical_combo_masks,
     canonical_combos,
 )
@@ -250,6 +255,12 @@ def _range_combo_ids_from_string(range_str: str) -> Tuple[int, ...]:
     return _combo_ids_from_array(_range_array_from_string(range_str))
 
 
+def _normalize_range_combo_ids(range_input: Iterable[Tuple[int, int]] | str) -> Tuple[int, ...]:
+    if isinstance(range_input, str):
+        return _range_combo_ids_from_string(range_input)
+    return _combo_ids_from_array(np.array(list(range_input), dtype="int32"))
+
+
 def _clear_preflop_caches() -> None:
     _parse_range_notation_cached.cache_clear()
     _range_array_from_string.cache_clear()
@@ -415,8 +426,36 @@ def evaluate_three_way_orders(hands, board=None) -> ThreeWayOrderCounts:
             total=0,
         )
 
-    counts = evaluate_three_way_orders_c(hands_cards, board_cards)
-    order_counts = tuple(int(value) for value in counts.tolist())
+    if board_cards.size == 0:
+        combo_ids = _combo_ids_from_array(np.vstack(normalized_hands))
+        order_counts = _preflop_three_way_combo_order_counts(
+            int(combo_ids[0]),
+            int(combo_ids[1]),
+            int(combo_ids[2]),
+        )
+    else:
+        counts = evaluate_three_way_orders_c(hands_cards, board_cards)
+        order_counts = tuple(int(value) for value in counts.tolist())
+    return ThreeWayOrderCounts(order_counts=order_counts, total=int(sum(order_counts)))
+
+
+def evaluate_three_way_ranges(
+    range_a: Iterable[Tuple[int, int]] | str,
+    range_b: Iterable[Tuple[int, int]] | str,
+    range_c: Iterable[Tuple[int, int]] | str,
+) -> ThreeWayOrderCounts:
+    """
+    Evalúa exactamente tres rangos preflop y devuelve la distribución sobre las
+    13 clases débiles de orden para A/B/C.
+    """
+    range_a_ids = _normalize_range_combo_ids(range_a)
+    range_b_ids = _normalize_range_combo_ids(range_b)
+    range_c_ids = _normalize_range_combo_ids(range_c)
+    order_counts = _evaluate_three_way_ranges_preflop_cached(
+        range_a_ids,
+        range_b_ids,
+        range_c_ids,
+    )
     return ThreeWayOrderCounts(order_counts=order_counts, total=int(sum(order_counts)))
 
 
@@ -702,14 +741,14 @@ def evaluate_ranges(hero_range: Iterable[Tuple[int, int]] | str,
     board_cards = _normalize_board(board)
     if isinstance(hero_range, str):
         if board_cards.size == 0:
-            hero_combo_ids = _range_combo_ids_from_string(hero_range)
+            hero_combo_ids = _normalize_range_combo_ids(hero_range)
         else:
             hero_arr = _range_array_from_string(hero_range)
     else:
         hero_arr = np.array(list(hero_range), dtype='int32')
     if isinstance(villain_range, str):
         if board_cards.size == 0:
-            villain_combo_ids = _range_combo_ids_from_string(villain_range)
+            villain_combo_ids = _normalize_range_combo_ids(villain_range)
         else:
             villain_arr = _range_array_from_string(villain_range)
     else:
