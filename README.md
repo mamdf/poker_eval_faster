@@ -38,10 +38,18 @@ If you install from source, the target machine still needs a working C/C++ toolc
 
 ### Development install
 ```bash
-python3 -m pip install -e ".[dev]"
+uv sync --extra dev
 ```
 
-This installs test tooling and Cython. Editable install will build the extensions and register the CLI entry point `poker-eval`.
+This creates or updates `.venv`, installs the project in editable mode, installs test tooling and Cython, and registers the CLI entry point `poker-eval`.
+
+If you prefer to create the environment explicitly first:
+```bash
+uv venv
+uv sync --extra dev
+```
+
+The day-to-day development workflow can be driven with `uv`. `setuptools` is still kept as the build backend because this project compiles Cython extensions.
 
 ## Quickstart (Python API)
 
@@ -205,9 +213,9 @@ Notes:
 
 ## Testing
 ```bash
-pytest -v
+uv run python -m pytest -v
 # or
-python -m pytest tests/ -v
+uv run python -m pytest tests/ -v
 ```
 
 ## Releases
@@ -236,9 +244,15 @@ To install from a GitHub Release artifact, download the matching wheel for your 
 - Cython sources live under `poker_eval_faster/eval_cython/` (`.pyx`, `.pxd`).
 - Heads-up range/lookup work now uses a dedicated exact-count kernel instead of routing every combo pair through the generic multi-hand path.
 - `scripts/build_hu_preflop_lookup.py` builds a disk artifact for preflop HU combo-vs-combo win/tie counts.
+- Recommended local development flow:
+```bash
+uv venv
+uv sync --extra dev
+uv run python -m pytest tests -q
+```
 - If you modify `.pyx` / `.pxd` files and need to rebuild the extensions in place:
 ```bash
-python3 setup.py build_ext --inplace
+uv run --with setuptools python setup.py build_ext --inplace
 ```
 - To clean compiled artifacts (optional):
 ```bash

@@ -1,3 +1,39 @@
 [build-system]
 requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "poker_eval_faster"
+version = "1.0"
+description = "High-performance poker hand evaluation for Texas Hold'em"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "click",
+    "numpy",
+]
+
+[project.optional-dependencies]
+dev = [
+    "build",
+    "cython",
+    "pytest",
+    "pytest-benchmark",
+]
+
+[project.scripts]
+poker-eval = "poker_eval_faster.script:run"
+
+[[project.authors]]
+name = "marcos masci"
+
+[tool.setuptools]
+include-package-data = true
+zip-safe = false
+
+[tool.setuptools.packages.find]
+include = ["poker_eval_faster", "poker_eval_faster.*"]
+
+[tool.setuptools.package-data]
+poker_eval_faster = ["data/*.dat", "data/*.dat.gz", "data/*.bin"]
+"poker_eval_faster.eval_cython" = ["*.pxd", "*.pyx", "*.c"]
