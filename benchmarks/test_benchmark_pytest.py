@@ -8,7 +8,8 @@ from poker_eval_faster import (
     evaluate_one_hand_vs_all,
     evaluate_rank,
     evaluate_ranges,
-    evaluate_heads_up_counts
+    evaluate_heads_up_counts,
+    evaluate_three_way_orders,
 )
 from poker_eval_faster.main import (
     _clear_preflop_caches,
@@ -43,6 +44,19 @@ def test_benchmark_evaluate_two_combos_preflop(benchmark):
 def test_benchmark_evaluate_tree_combos_preflop(benchmark):
     hands = [['Ac', 'Kc'], ['2d', '2h'], ['5s', '6s']]
     benchmark(lambda: evaluate_hands(hands))
+
+
+@pytest.mark.benchmark(group="evaluate_three_way_orders_preflop")
+def test_benchmark_evaluate_three_way_orders_preflop(benchmark):
+    hands = [['Ac', 'Kc'], ['2d', '2h'], ['5s', '6s']]
+    benchmark(lambda: evaluate_three_way_orders(hands))
+
+
+@pytest.mark.benchmark(group="evaluate_three_way_orders_flop")
+def test_benchmark_evaluate_three_way_orders_flop(benchmark):
+    hands = [['As', 'Ks'], ['Qh', 'Jh'], ['9c', '9d']]
+    board = ['2c', '7d', 'Th']
+    benchmark(lambda: evaluate_three_way_orders(hands, board))
 
 
 @pytest.mark.benchmark(group="evaluate_one_vs_all")

@@ -167,6 +167,7 @@ CLI options:
 - `evaluate_one_hand_vs_all(hand, board, eq=True, incomplete_board=False) -> float | list[int]`
 - `evaluate_hands(hands, board=None, eq=True, incomplete_board=False) -> list[float] | list[int]`
 - `evaluate_heads_up_counts(hero_hand, villain_hand, board=None) -> HeadsUpCounts`
+- `evaluate_three_way_orders(hands, board=None) -> ThreeWayOrderCounts`
 - `build_heads_up_lookup(board=None, combo_indices=None) -> HeadsUpLookupTable`
 - `aggregate_heads_up_lookup_by_class(lookup) -> dict[(str, str), HeadsUpCounts]`
 - `write_hu_preflop_lookup(path, combo_indices=None)` writes a stable triangular binary artifact with sentinels for dead-card pairs
@@ -188,6 +189,7 @@ python benchmarks/benchmark_basic.py --iters 50000
 This prints ops/s and microseconds/op for:
 - `evaluate_hands` (2 hands on flop)
 - `evaluate_one_hand_vs_all` (turn)
+- `evaluate_three_way_orders` (3 hands on flop)
 - `evaluate_rank` (5–7 cards)
 
 - Optional: run with pytest-benchmark (install the plugin first):

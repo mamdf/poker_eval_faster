@@ -7,6 +7,7 @@ from poker_eval_faster import (
     evaluate_hands,
     evaluate_one_hand_vs_all,
     evaluate_rank,
+    evaluate_three_way_orders,
     ranking_to_category,
 )
 
@@ -29,6 +30,8 @@ def main() -> None:
     # Inputs inspired by unit tests
     hands = [['9c', '8c'], ['Tc', 'Td']]
     board = ['Qh', 'Jh', '8s']
+    three_way_hands = [['As', 'Ks'], ['Qh', 'Jh'], ['9c', '9d']]
+    three_way_board = ['2c', '7d', 'Th']
 
     hand = ['Tc', 'Qc']
     board2 = ['Ad', 'Jh', '3s']
@@ -47,6 +50,12 @@ def main() -> None:
     _bench(
         "evaluate_one_hand_vs_all (turn)",
         lambda: evaluate_one_hand_vs_all(hand, board2),
+        args.iters,
+    )
+
+    _bench(
+        "evaluate_three_way_orders (3 hands on flop)",
+        lambda: evaluate_three_way_orders(three_way_hands, three_way_board),
         args.iters,
     )
 

@@ -19,6 +19,8 @@ dev = [
     "cython",
     "pytest",
     "pytest-benchmark",
+    "setuptools>=68",
+    "wheel",
 ]
 
 [project.scripts]

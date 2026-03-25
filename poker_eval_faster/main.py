@@ -12,6 +12,7 @@ from .eval_cython.hands_evaluate import (
 )
 from .eval_cython.main import evaluate_c
 from .eval_cython.one_hand_evaluate import evaluate_one_hand_vs_all_c, hand_to_equity
+from .eval_cython.three_way_orders import evaluate_three_way_orders_c
 from .preflop_canonical import (
     _canonical_preflop_matchup,
     _clear_preflop_canonical_caches,
@@ -28,6 +29,46 @@ SUITS_STR = 'cdhs'
 DECK = [r + s for r in RANKS_STR for s in SUITS_STR]
 CARDS_TO_INT = {card: i for i, card in enumerate(DECK, start=1)}
 RANKING = [None, "NOPAIR", "PAIR", "DOUBLES", "TRIPS", "STRAIGHT", "FLUSH", "FULL", "QUADS", "STRAIGHT_FLUSH"]
+THREE_WAY_ORDER_LABELS = (
+    "A>B>C",
+    "A>C>B",
+    "B>A>C",
+    "B>C>A",
+    "C>A>B",
+    "C>B>A",
+    "A=B>C",
+    "A=C>B",
+    "B=C>A",
+    "A>B=C",
+    "B>A=C",
+    "C>A=B",
+    "A=B=C",
+)
+_THREE_WAY_SOLO_WIN_INDICES = (
+    (0, 1, 9),
+    (2, 3, 10),
+    (4, 5, 11),
+)
+_THREE_WAY_TWO_WAY_TOP_TIE_INDICES = (
+    (6, 7),
+    (6, 8),
+    (7, 8),
+)
+_THREE_WAY_EQUITY_WEIGHTS = (
+    (1.0, 0.0, 0.0),
+    (1.0, 0.0, 0.0),
+    (0.0, 1.0, 0.0),
+    (0.0, 1.0, 0.0),
+    (0.0, 0.0, 1.0),
+    (0.0, 0.0, 1.0),
+    (0.5, 0.5, 0.0),
+    (0.5, 0.0, 0.5),
+    (0.0, 0.5, 0.5),
+    (1.0, 0.0, 0.0),
+    (0.0, 1.0, 0.0),
+    (0.0, 0.0, 1.0),
+    (1.0 / 3.0, 1.0 / 3.0, 1.0 / 3.0),
+)
 
 
 @dataclass(frozen=True)
@@ -45,6 +86,76 @@ class HeadsUpCounts:
         if self.total == 0:
             return 0.0
         return (self.wins + (self.ties / 2.0)) / self.total
+
+
+@dataclass(frozen=True)
+class ThreeWayTopCounts:
+    wins: int
+    two_way_ties: int
+    three_way_ties: int
+    total: int
+
+    @property
+    def ties(self) -> int:
+        return self.two_way_ties + self.three_way_ties
+
+    @property
+    def equity(self) -> float:
+        if self.total == 0:
+            return 0.0
+        return (self.wins + (self.two_way_ties / 2.0) + (self.three_way_ties / 3.0)) / self.total
+
+
+@dataclass(frozen=True)
+class ThreeWayOrderCounts:
+    order_counts: Tuple[int, ...]
+    total: int
+
+    def __post_init__(self) -> None:
+        if len(self.order_counts) != len(THREE_WAY_ORDER_LABELS):
+            raise ValueError(
+                f"ThreeWayOrderCounts expects {len(THREE_WAY_ORDER_LABELS)} order counts, "
+                f"got {len(self.order_counts)}"
+            )
+
+    @property
+    def equities(self) -> Tuple[float, float, float]:
+        if self.total == 0:
+            return 0.0, 0.0, 0.0
+
+        equity_a = 0.0
+        equity_b = 0.0
+        equity_c = 0.0
+        for count, weights in zip(self.order_counts, _THREE_WAY_EQUITY_WEIGHTS):
+            if count == 0:
+                continue
+            equity_a += count * weights[0]
+            equity_b += count * weights[1]
+            equity_c += count * weights[2]
+        return (
+            equity_a / self.total,
+            equity_b / self.total,
+            equity_c / self.total,
+        )
+
+    def first_place_counts(self, player_idx: int) -> ThreeWayTopCounts:
+        if player_idx not in (0, 1, 2):
+            raise ValueError(f"Player index must be 0, 1 or 2, got {player_idx}")
+
+        wins = sum(self.order_counts[idx] for idx in _THREE_WAY_SOLO_WIN_INDICES[player_idx])
+        two_way_ties = sum(self.order_counts[idx] for idx in _THREE_WAY_TWO_WAY_TOP_TIE_INDICES[player_idx])
+        return ThreeWayTopCounts(
+            wins=wins,
+            two_way_ties=two_way_ties,
+            three_way_ties=self.order_counts[12],
+            total=self.total,
+        )
+
+    def as_dict(self) -> dict[str, int]:
+        return {
+            label: int(count)
+            for label, count in zip(THREE_WAY_ORDER_LABELS, self.order_counts)
+        }
 
 
 @dataclass(frozen=True)
@@ -288,6 +399,25 @@ def evaluate_heads_up_counts(hero_hand, villain_hand, board=None) -> HeadsUpCoun
 
     counts = evaluate_heads_up_counts_c(hero_cards, villain_cards, board_cards)
     return HeadsUpCounts(wins=int(counts[0]), ties=int(counts[1]), total=int(counts[2]))
+
+
+def evaluate_three_way_orders(hands, board=None) -> ThreeWayOrderCounts:
+    if len(hands) != 3:
+        raise ValueError(f"Three-way evaluation expects exactly 3 hands, got {len(hands)}")
+
+    normalized_hands = [_normalize_combo(hand) for hand in hands]
+    hands_cards = np.concatenate(normalized_hands).astype('int32', copy=False)
+    board_cards = _normalize_board(board)
+    all_cards = np.concatenate((hands_cards, board_cards))
+    if _cards_have_duplicates(all_cards):
+        return ThreeWayOrderCounts(
+            order_counts=(0,) * len(THREE_WAY_ORDER_LABELS),
+            total=0,
+        )
+
+    counts = evaluate_three_way_orders_c(hands_cards, board_cards)
+    order_counts = tuple(int(value) for value in counts.tolist())
+    return ThreeWayOrderCounts(order_counts=order_counts, total=int(sum(order_counts)))
 
 
 def build_heads_up_lookup(board=None, combo_indices: Iterable[int] | None = None) -> HeadsUpLookupTable:
