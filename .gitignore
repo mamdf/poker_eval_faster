@@ -20,3 +20,4 @@ poker_eval_faster/data/*
 !poker_eval_faster/data/subset.bin
 !poker_eval_faster/eval_cython/*.c
 .cursorignore
+.benchmarks
