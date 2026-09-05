@@ -3,12 +3,14 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
+import shutil
 import re
 import subprocess
 from pathlib import Path
 
 
-DEFAULT_PS_EVAL = Path.home() / "pokerstove" / "build" / "bin" / "ps-eval"
+DEFAULT_PS_EVAL = os.environ.get("POKERSTOVE_BIN") or shutil.which("ps-eval")
 OUTPUT_PATTERN = re.compile(
     r"The hand (\S+) has ([0-9.]+) % equity \(([-0-9.]+) ([-0-9.]+) 0 0\)"
 )
@@ -73,14 +75,19 @@ def main() -> None:
     )
     parser.add_argument(
         "--ps-eval",
-        default=str(DEFAULT_PS_EVAL),
-        help="Path to the PokerStove ps-eval binary.",
+        default=DEFAULT_PS_EVAL,
+        help="PokerStove binary (default: POKERSTOVE_BIN, then ps-eval on PATH).",
     )
     args = parser.parse_args()
 
     input_path = Path(args.input)
     output_path = Path(args.output) if args.output else input_path
-    ps_eval = Path(args.ps_eval).expanduser()
+    if not args.ps_eval:
+        parser.error("ps-eval not found: set POKERSTOVE_BIN or pass --ps-eval")
+    resolved = shutil.which(os.path.expanduser(args.ps_eval))
+    if resolved is None:
+        parser.error(f"ps-eval is not executable: {args.ps_eval}")
+    ps_eval = Path(resolved).resolve()
 
     payload = json.loads(input_path.read_text())
     for case in payload["cases"]:
