@@ -54,6 +54,6 @@ edge that declares a risk. Full `what`/`risk` prose:
 `uv run tooling/workspace-index/impact.py libs/poker_eval_faster`.
 Refresh: `uv run tooling/workspace-index/gen_consumed_by.py --write`.
 
-- **`adapters/poker-history-replay`** (uv-path) — Optional eval extra for settlement with known cards…
 - **`libs/holdem_insights`** (import) — lazy importlib.import_module with fail-with-message fallback ⚠
+- **`room-tools/history/poker-history-replay`** (uv-path) — Optional eval extra for settlement with known…
 <!-- END AUTOGEN:consumed-by -->
