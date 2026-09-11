@@ -55,5 +55,4 @@ edge that declares a risk. Full `what`/`risk` prose:
 Refresh: `uv run tooling/workspace-index/gen_consumed_by.py --write`.
 
 - **`libs/holdem_insights`** (import) — lazy importlib.import_module with fail-with-message fallback ⚠
-- **`room-tools/history/poker-history-replay`** (uv-path) — Optional eval extra for settlement with known…
 <!-- END AUTOGEN:consumed-by -->
