@@ -1612,7 +1612,7 @@ struct __pyx_memoryview_obj;
 struct __pyx_memoryviewslice_obj;
 struct __pyx_opt_args_17poker_eval_faster_11eval_cython_17one_hand_evaluate_evaluate_one_hand_vs_all_c;
 
-/* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":123
+/* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":209
  * 
  * 
  * cpdef object evaluate_one_hand_vs_all_c(int[:] cards, double[:,:] distributions, incomplete_board=False):             # <<<<<<<<<<<<<<
@@ -2479,11 +2479,16 @@ static CYTHON_INLINE PyObject* __Pyx_PyBytes_Join(PyObject* sep, PyObject* value
 static CYTHON_INLINE PyObject* __Pyx_uchar___Pyx_PyUnicode_From_size_t(size_t value, Py_ssize_t width, char padding_char);
 static CYTHON_INLINE PyObject* __Pyx____Pyx_PyUnicode_From_size_t(size_t value, Py_ssize_t width, char padding_char, char format_char);
 
-/* ErrOccurredWithGIL.proto */
-static CYTHON_INLINE int __Pyx_ErrOccurredWithGIL(void);
-
 /* RaiseUnboundLocalErrorNogil.proto */
 static void __Pyx_RaiseUnboundLocalErrorNogil(const char *varname);
+
+/* WriteUnraisableException.proto */
+static void __Pyx_WriteUnraisable(const char *name, int clineno,
+                                  int lineno, const char *filename,
+                                  int full_traceback, int nogil);
+
+/* ErrOccurredWithGIL.proto */
+static CYTHON_INLINE int __Pyx_ErrOccurredWithGIL(void);
 
 /* PyObjectVectorCallKwBuilder.proto */
 CYTHON_UNUSED static int __Pyx_VectorcallBuilder_AddArg_Check(PyObject *key, PyObject *value, PyObject *builder, PyObject **args, int n);
@@ -2784,10 +2789,10 @@ static int __Pyx_ValidateAndInit_memviewslice(
                 PyObject *original_obj);
 
 /* ObjectToMemviewSlice.proto */
-static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_ds_double(PyObject *, int writable_flag);
+static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_ds_int(PyObject *, int writable_flag);
 
 /* ObjectToMemviewSlice.proto */
-static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_ds_int(PyObject *, int writable_flag);
+static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_ds_double(PyObject *, int writable_flag);
 
 /* ObjectToMemviewSlice.proto */
 static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_dsds_double(PyObject *, int writable_flag);
@@ -2808,14 +2813,17 @@ struct __pyx_typeinfo_string {
 };
 static struct __pyx_typeinfo_string __Pyx_TypeInfoToFormat(const __Pyx_TypeInfo *type);
 
-/* CIntToPy.proto */
-static CYTHON_INLINE PyObject* __Pyx_PyLong_From_int(int value);
-
 /* CIntFromPy.proto */
 static CYTHON_INLINE int __Pyx_PyLong_As_int(PyObject *);
 
 /* CIntToPy.proto */
+static CYTHON_INLINE PyObject* __Pyx_PyLong_From_int(int value);
+
+/* CIntToPy.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyLong_From_long(long value);
+
+/* CIntToPy.proto */
+static CYTHON_INLINE PyObject* __Pyx_PyLong_From_uint64_t(uint64_t value);
 
 /* UpdateUnpickledDict.proto */
 static int __Pyx_UpdateUnpickledDict(PyObject *obj, PyObject *state, Py_ssize_t index);
@@ -2955,6 +2963,8 @@ static PyObject *contiguous = 0;
 static PyObject *indirect_contiguous = 0;
 static int __pyx_memoryview_thread_locks_used;
 static PyThread_type_lock __pyx_memoryview_thread_locks[8];
+static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__two_random_on_board(int, int, int *, int, uint32_t, uint64_t *); /*proto*/
+static PyObject *__pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate_evaluate_one_hand_vs_two_random_c(__Pyx_memviewslice, __Pyx_memviewslice, __Pyx_memviewslice, int __pyx_skip_dispatch); /*proto*/
 static CYTHON_INLINE double __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__hand_equity(double, double, double); /*proto*/
 static double __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate_hand_to_equity(__Pyx_memviewslice, int __pyx_skip_dispatch); /*proto*/
 static CYTHON_INLINE double __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__hand_to_equity_c(double *); /*proto*/
@@ -3056,8 +3066,9 @@ static void __pyx_memoryviewslice___pyx_pf_15View_dot_MemoryView_16_memoryviewsl
 static PyObject *__pyx_pf___pyx_memoryviewslice___reduce_cython__(CYTHON_UNUSED struct __pyx_memoryviewslice_obj *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf___pyx_memoryviewslice_2__setstate_cython__(CYTHON_UNUSED struct __pyx_memoryviewslice_obj *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
 static PyObject *__pyx_pf_15View_dot_MemoryView___pyx_unpickle_Enum(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state); /* proto */
-static PyObject *__pyx_pf_17poker_eval_faster_11eval_cython_17one_hand_evaluate_hand_to_equity(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_results); /* proto */
-static PyObject *__pyx_pf_17poker_eval_faster_11eval_cython_17one_hand_evaluate_2evaluate_one_hand_vs_all_c(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_cards, __Pyx_memviewslice __pyx_v_distributions, PyObject *__pyx_v_incomplete_board); /* proto */
+static PyObject *__pyx_pf_17poker_eval_faster_11eval_cython_17one_hand_evaluate_evaluate_one_hand_vs_two_random_c(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_hero, __Pyx_memviewslice __pyx_v_board, __Pyx_memviewslice __pyx_v_dead); /* proto */
+static PyObject *__pyx_pf_17poker_eval_faster_11eval_cython_17one_hand_evaluate_2hand_to_equity(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_results); /* proto */
+static PyObject *__pyx_pf_17poker_eval_faster_11eval_cython_17one_hand_evaluate_4evaluate_one_hand_vs_all_c(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_cards, __Pyx_memviewslice __pyx_v_distributions, PyObject *__pyx_v_incomplete_board); /* proto */
 static PyObject *__pyx_tp_new_array(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_Enum(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_memoryview(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
@@ -3095,8 +3106,8 @@ typedef struct {
   __Pyx_CachedCFunction __pyx_umethod_PyDict_Type_values;
   PyObject *__pyx_slice[1];
   PyObject *__pyx_tuple[2];
-  PyObject *__pyx_codeobj_tab[2];
-  PyObject *__pyx_string_tab[137];
+  PyObject *__pyx_codeobj_tab[3];
+  PyObject *__pyx_string_tab[142];
   PyObject *__pyx_number_tab[5];
 /* #### Code section: module_state_contents ### */
 /* CommonTypesMetaclass.module_state_decls */
@@ -3194,87 +3205,92 @@ static __pyx_mstatetype * const __pyx_mstate_global = &__pyx_mstate_global_stati
 #define __pyx_n_u_allocate_buffer __pyx_string_tab[53]
 #define __pyx_n_u_asyncio_coroutines __pyx_string_tab[54]
 #define __pyx_n_u_base __pyx_string_tab[55]
-#define __pyx_n_u_c __pyx_string_tab[56]
-#define __pyx_n_u_cards __pyx_string_tab[57]
-#define __pyx_n_u_class __pyx_string_tab[58]
-#define __pyx_n_u_class_getitem __pyx_string_tab[59]
-#define __pyx_n_u_cline_in_traceback __pyx_string_tab[60]
-#define __pyx_n_u_count __pyx_string_tab[61]
-#define __pyx_n_u_dict __pyx_string_tab[62]
-#define __pyx_n_u_distributions __pyx_string_tab[63]
-#define __pyx_n_u_dtype __pyx_string_tab[64]
-#define __pyx_n_u_dtype_is_object __pyx_string_tab[65]
-#define __pyx_n_u_encode __pyx_string_tab[66]
-#define __pyx_n_u_enumerate __pyx_string_tab[67]
-#define __pyx_n_u_error __pyx_string_tab[68]
-#define __pyx_n_u_evaluate_one_hand_vs_all_c __pyx_string_tab[69]
-#define __pyx_n_u_flags __pyx_string_tab[70]
-#define __pyx_n_u_float64 __pyx_string_tab[71]
-#define __pyx_n_u_format __pyx_string_tab[72]
-#define __pyx_n_u_fortran __pyx_string_tab[73]
-#define __pyx_n_u_func __pyx_string_tab[74]
-#define __pyx_n_u_getstate __pyx_string_tab[75]
-#define __pyx_n_u_hand_to_equity __pyx_string_tab[76]
-#define __pyx_n_u_id __pyx_string_tab[77]
-#define __pyx_n_u_import __pyx_string_tab[78]
-#define __pyx_n_u_incomplete_board __pyx_string_tab[79]
-#define __pyx_n_u_index __pyx_string_tab[80]
-#define __pyx_n_u_is_coroutine __pyx_string_tab[81]
-#define __pyx_n_u_items __pyx_string_tab[82]
-#define __pyx_n_u_itemsize __pyx_string_tab[83]
-#define __pyx_n_u_join __pyx_string_tab[84]
-#define __pyx_n_u_main __pyx_string_tab[85]
-#define __pyx_n_u_memview __pyx_string_tab[86]
-#define __pyx_n_u_mode __pyx_string_tab[87]
-#define __pyx_n_u_module __pyx_string_tab[88]
-#define __pyx_n_u_name __pyx_string_tab[89]
-#define __pyx_n_u_name_2 __pyx_string_tab[90]
-#define __pyx_n_u_ndim __pyx_string_tab[91]
-#define __pyx_n_u_new __pyx_string_tab[92]
-#define __pyx_n_u_np __pyx_string_tab[93]
-#define __pyx_n_u_numpy __pyx_string_tab[94]
-#define __pyx_n_u_obj __pyx_string_tab[95]
-#define __pyx_n_u_pack __pyx_string_tab[96]
-#define __pyx_n_u_poker_eval_faster_eval_cython_on __pyx_string_tab[97]
-#define __pyx_n_u_pop __pyx_string_tab[98]
-#define __pyx_n_u_pyx_checksum __pyx_string_tab[99]
-#define __pyx_n_u_pyx_state __pyx_string_tab[100]
-#define __pyx_n_u_pyx_type __pyx_string_tab[101]
-#define __pyx_n_u_pyx_unpickle_Enum __pyx_string_tab[102]
-#define __pyx_n_u_pyx_vtable __pyx_string_tab[103]
-#define __pyx_n_u_qualname __pyx_string_tab[104]
-#define __pyx_n_u_reduce __pyx_string_tab[105]
-#define __pyx_n_u_reduce_cython __pyx_string_tab[106]
-#define __pyx_n_u_reduce_ex __pyx_string_tab[107]
-#define __pyx_n_u_register __pyx_string_tab[108]
-#define __pyx_n_u_results __pyx_string_tab[109]
-#define __pyx_n_u_set_name __pyx_string_tab[110]
-#define __pyx_n_u_setdefault __pyx_string_tab[111]
-#define __pyx_n_u_setstate __pyx_string_tab[112]
-#define __pyx_n_u_setstate_cython __pyx_string_tab[113]
-#define __pyx_n_u_shape __pyx_string_tab[114]
-#define __pyx_n_u_size __pyx_string_tab[115]
-#define __pyx_n_u_start __pyx_string_tab[116]
-#define __pyx_n_u_step __pyx_string_tab[117]
-#define __pyx_n_u_stop __pyx_string_tab[118]
-#define __pyx_n_u_struct __pyx_string_tab[119]
-#define __pyx_n_u_test __pyx_string_tab[120]
-#define __pyx_n_u_unpack __pyx_string_tab[121]
-#define __pyx_n_u_update __pyx_string_tab[122]
-#define __pyx_n_u_values __pyx_string_tab[123]
-#define __pyx_n_u_x __pyx_string_tab[124]
-#define __pyx_n_u_zeros __pyx_string_tab[125]
-#define __pyx_kp_b_Pyx_memviewslice_handdat __pyx_string_tab[126]
-#define __pyx_kp_b_T __pyx_string_tab[127]
-#define __pyx_kp_b__6 __pyx_string_tab[128]
-#define __pyx_kp_b__7 __pyx_string_tab[129]
-#define __pyx_kp_b__8 __pyx_string_tab[130]
-#define __pyx_kp_b__9 __pyx_string_tab[131]
-#define __pyx_kp_b_int___Pyx_memviewslice_int_int_c __pyx_string_tab[132]
-#define __pyx_kp_b_iso88591_bbc_V1A_BfAS_b_1_1L_s_U_1_q_Q_w __pyx_string_tab[133]
-#define __pyx_kp_b_iso88591_q_q_gQfG1A __pyx_string_tab[134]
-#define __pyx_kp_b_uint32_t_uint32_t___Pyx_memviews __pyx_string_tab[135]
-#define __pyx_n_b_O __pyx_string_tab[136]
+#define __pyx_n_u_board __pyx_string_tab[56]
+#define __pyx_n_u_c __pyx_string_tab[57]
+#define __pyx_n_u_cards __pyx_string_tab[58]
+#define __pyx_n_u_class __pyx_string_tab[59]
+#define __pyx_n_u_class_getitem __pyx_string_tab[60]
+#define __pyx_n_u_cline_in_traceback __pyx_string_tab[61]
+#define __pyx_n_u_count __pyx_string_tab[62]
+#define __pyx_n_u_dead __pyx_string_tab[63]
+#define __pyx_n_u_dict __pyx_string_tab[64]
+#define __pyx_n_u_distributions __pyx_string_tab[65]
+#define __pyx_n_u_dtype __pyx_string_tab[66]
+#define __pyx_n_u_dtype_is_object __pyx_string_tab[67]
+#define __pyx_n_u_encode __pyx_string_tab[68]
+#define __pyx_n_u_enumerate __pyx_string_tab[69]
+#define __pyx_n_u_error __pyx_string_tab[70]
+#define __pyx_n_u_evaluate_one_hand_vs_all_c __pyx_string_tab[71]
+#define __pyx_n_u_evaluate_one_hand_vs_two_random __pyx_string_tab[72]
+#define __pyx_n_u_flags __pyx_string_tab[73]
+#define __pyx_n_u_float64 __pyx_string_tab[74]
+#define __pyx_n_u_format __pyx_string_tab[75]
+#define __pyx_n_u_fortran __pyx_string_tab[76]
+#define __pyx_n_u_func __pyx_string_tab[77]
+#define __pyx_n_u_getstate __pyx_string_tab[78]
+#define __pyx_n_u_hand_to_equity __pyx_string_tab[79]
+#define __pyx_n_u_hero __pyx_string_tab[80]
+#define __pyx_n_u_id __pyx_string_tab[81]
+#define __pyx_n_u_import __pyx_string_tab[82]
+#define __pyx_n_u_incomplete_board __pyx_string_tab[83]
+#define __pyx_n_u_index __pyx_string_tab[84]
+#define __pyx_n_u_is_coroutine __pyx_string_tab[85]
+#define __pyx_n_u_items __pyx_string_tab[86]
+#define __pyx_n_u_itemsize __pyx_string_tab[87]
+#define __pyx_n_u_join __pyx_string_tab[88]
+#define __pyx_n_u_main __pyx_string_tab[89]
+#define __pyx_n_u_memview __pyx_string_tab[90]
+#define __pyx_n_u_mode __pyx_string_tab[91]
+#define __pyx_n_u_module __pyx_string_tab[92]
+#define __pyx_n_u_name __pyx_string_tab[93]
+#define __pyx_n_u_name_2 __pyx_string_tab[94]
+#define __pyx_n_u_ndim __pyx_string_tab[95]
+#define __pyx_n_u_new __pyx_string_tab[96]
+#define __pyx_n_u_np __pyx_string_tab[97]
+#define __pyx_n_u_numpy __pyx_string_tab[98]
+#define __pyx_n_u_obj __pyx_string_tab[99]
+#define __pyx_n_u_pack __pyx_string_tab[100]
+#define __pyx_n_u_poker_eval_faster_eval_cython_on __pyx_string_tab[101]
+#define __pyx_n_u_pop __pyx_string_tab[102]
+#define __pyx_n_u_pyx_checksum __pyx_string_tab[103]
+#define __pyx_n_u_pyx_state __pyx_string_tab[104]
+#define __pyx_n_u_pyx_type __pyx_string_tab[105]
+#define __pyx_n_u_pyx_unpickle_Enum __pyx_string_tab[106]
+#define __pyx_n_u_pyx_vtable __pyx_string_tab[107]
+#define __pyx_n_u_qualname __pyx_string_tab[108]
+#define __pyx_n_u_reduce __pyx_string_tab[109]
+#define __pyx_n_u_reduce_cython __pyx_string_tab[110]
+#define __pyx_n_u_reduce_ex __pyx_string_tab[111]
+#define __pyx_n_u_register __pyx_string_tab[112]
+#define __pyx_n_u_results __pyx_string_tab[113]
+#define __pyx_n_u_set_name __pyx_string_tab[114]
+#define __pyx_n_u_setdefault __pyx_string_tab[115]
+#define __pyx_n_u_setstate __pyx_string_tab[116]
+#define __pyx_n_u_setstate_cython __pyx_string_tab[117]
+#define __pyx_n_u_shape __pyx_string_tab[118]
+#define __pyx_n_u_size __pyx_string_tab[119]
+#define __pyx_n_u_start __pyx_string_tab[120]
+#define __pyx_n_u_step __pyx_string_tab[121]
+#define __pyx_n_u_stop __pyx_string_tab[122]
+#define __pyx_n_u_struct __pyx_string_tab[123]
+#define __pyx_n_u_test __pyx_string_tab[124]
+#define __pyx_n_u_unpack __pyx_string_tab[125]
+#define __pyx_n_u_update __pyx_string_tab[126]
+#define __pyx_n_u_values __pyx_string_tab[127]
+#define __pyx_n_u_x __pyx_string_tab[128]
+#define __pyx_n_u_zeros __pyx_string_tab[129]
+#define __pyx_kp_b_Pyx_memviewslice_handdat __pyx_string_tab[130]
+#define __pyx_kp_b_T __pyx_string_tab[131]
+#define __pyx_kp_b__6 __pyx_string_tab[132]
+#define __pyx_kp_b__7 __pyx_string_tab[133]
+#define __pyx_kp_b__8 __pyx_string_tab[134]
+#define __pyx_kp_b__9 __pyx_string_tab[135]
+#define __pyx_kp_b_int___Pyx_memviewslice_int_int_c __pyx_string_tab[136]
+#define __pyx_kp_b_iso88591_Be6_U_1_q_Q_1D_q_1D_q_U_5_aq_q __pyx_string_tab[137]
+#define __pyx_kp_b_iso88591_bbc_V1A_BfAS_b_1_1L_s_U_1_q_Q_w __pyx_string_tab[138]
+#define __pyx_kp_b_iso88591_q_q_gQfG1A __pyx_string_tab[139]
+#define __pyx_kp_b_uint32_t_uint32_t___Pyx_memviews __pyx_string_tab[140]
+#define __pyx_n_b_O __pyx_string_tab[141]
 #define __pyx_int_0 __pyx_number_tab[0]
 #define __pyx_int_neg_1 __pyx_number_tab[1]
 #define __pyx_int_1 __pyx_number_tab[2]
@@ -3304,8 +3320,8 @@ static CYTHON_SMALL_CODE int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_type___pyx_memoryviewslice);
   for (int i=0; i<1; ++i) { Py_CLEAR(clear_module_state->__pyx_slice[i]); }
   for (int i=0; i<2; ++i) { Py_CLEAR(clear_module_state->__pyx_tuple[i]); }
-  for (int i=0; i<2; ++i) { Py_CLEAR(clear_module_state->__pyx_codeobj_tab[i]); }
-  for (int i=0; i<137; ++i) { Py_CLEAR(clear_module_state->__pyx_string_tab[i]); }
+  for (int i=0; i<3; ++i) { Py_CLEAR(clear_module_state->__pyx_codeobj_tab[i]); }
+  for (int i=0; i<142; ++i) { Py_CLEAR(clear_module_state->__pyx_string_tab[i]); }
   for (int i=0; i<5; ++i) { Py_CLEAR(clear_module_state->__pyx_number_tab[i]); }
 /* #### Code section: module_state_clear_contents ### */
 /* CommonTypesMetaclass.module_state_clear */
@@ -3339,8 +3355,8 @@ static CYTHON_SMALL_CODE int __pyx_m_traverse(PyObject *m, visitproc visit, void
   Py_VISIT(traverse_module_state->__pyx_type___pyx_memoryviewslice);
   for (int i=0; i<1; ++i) { __Pyx_VISIT_CONST(traverse_module_state->__pyx_slice[i]); }
   for (int i=0; i<2; ++i) { __Pyx_VISIT_CONST(traverse_module_state->__pyx_tuple[i]); }
-  for (int i=0; i<2; ++i) { __Pyx_VISIT_CONST(traverse_module_state->__pyx_codeobj_tab[i]); }
-  for (int i=0; i<137; ++i) { __Pyx_VISIT_CONST(traverse_module_state->__pyx_string_tab[i]); }
+  for (int i=0; i<3; ++i) { __Pyx_VISIT_CONST(traverse_module_state->__pyx_codeobj_tab[i]); }
+  for (int i=0; i<142; ++i) { __Pyx_VISIT_CONST(traverse_module_state->__pyx_string_tab[i]); }
   for (int i=0; i<5; ++i) { __Pyx_VISIT_CONST(traverse_module_state->__pyx_number_tab[i]); }
 /* #### Code section: module_state_traverse_contents ### */
 /* CommonTypesMetaclass.module_state_traverse */
@@ -16981,6 +16997,1116 @@ static PyObject *__pyx_format_from_typeinfo(__Pyx_TypeInfo const *__pyx_v_type) 
 /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":17
  * 
  * 
+ * cdef void _two_random_on_board(int hero0, int hero1, int* deck, int n,             # <<<<<<<<<<<<<<
+ *                                stdint.uint32_t board_rank,
+ *                                stdint.uint64_t* counts) noexcept nogil:
+*/
+
+static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__two_random_on_board(int __pyx_v_hero0, int __pyx_v_hero1, int *__pyx_v_deck, int __pyx_v_n, uint32_t __pyx_v_board_rank, uint64_t *__pyx_v_counts) {
+  int __pyx_v_lower_degree[53];
+  int __pyx_v_eligible_degree[53];
+  int __pyx_v_i;
+  int __pyx_v_j;
+  int __pyx_v_a;
+  int __pyx_v_b;
+  uint32_t __pyx_v_hero_rank;
+  uint32_t __pyx_v_prefix;
+  uint32_t __pyx_v_rank;
+  uint64_t __pyx_v_lower;
+  uint64_t __pyx_v_eligible;
+  uint64_t __pyx_v_wins;
+  uint64_t __pyx_v_unbeaten;
+  uint64_t __pyx_v_total;
+  size_t __pyx_t_1;
+  size_t __pyx_t_2;
+  int __pyx_t_3;
+  int __pyx_t_4;
+  int __pyx_t_5;
+  int __pyx_t_6;
+  int __pyx_t_7;
+  int __pyx_t_8;
+  int __pyx_t_9;
+  int __pyx_t_10;
+  uint64_t __pyx_t_11;
+  long __pyx_t_12;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  PyGILState_STATE __pyx_gilstate_save;
+
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":25
+ *     cdef int eligible_degree[53]
+ *     cdef int i, j, a, b
+ *     cdef stdint.uint32_t hero_rank = handdat[handdat[board_rank + hero0] + hero1]             # <<<<<<<<<<<<<<
+ *     cdef stdint.uint32_t prefix, rank
+ *     cdef stdint.uint64_t lower = 0, eligible = 0, wins, unbeaten, total
+*/
+  if (unlikely(!__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.memview)) { __Pyx_RaiseUnboundLocalErrorNogil("handdat"); __PYX_ERR(0, 25, __pyx_L1_error) }
+  if (unlikely(!__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.memview)) { __Pyx_RaiseUnboundLocalErrorNogil("handdat"); __PYX_ERR(0, 25, __pyx_L1_error) }
+  __pyx_t_1 = (__pyx_v_board_rank + __pyx_v_hero0);
+  __pyx_t_2 = ((*((uint32_t const  *) ( /* dim=0 */ (__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.data + __pyx_t_1 * __pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.strides[0]) ))) + __pyx_v_hero1);
+  __pyx_v_hero_rank = (*((uint32_t const  *) ( /* dim=0 */ (__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.data + __pyx_t_2 * __pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.strides[0]) )));
+
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":27
+ *     cdef stdint.uint32_t hero_rank = handdat[handdat[board_rank + hero0] + hero1]
+ *     cdef stdint.uint32_t prefix, rank
+ *     cdef stdint.uint64_t lower = 0, eligible = 0, wins, unbeaten, total             # <<<<<<<<<<<<<<
+ *     for i in range(53):
+ *         lower_degree[i] = 0
+*/
+  __pyx_v_lower = 0;
+  __pyx_v_eligible = 0;
+
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":28
+ *     cdef stdint.uint32_t prefix, rank
+ *     cdef stdint.uint64_t lower = 0, eligible = 0, wins, unbeaten, total
+ *     for i in range(53):             # <<<<<<<<<<<<<<
+ *         lower_degree[i] = 0
+ *         eligible_degree[i] = 0
+*/
+  for (__pyx_t_3 = 0; __pyx_t_3 < 53; __pyx_t_3+=1) {
+    __pyx_v_i = __pyx_t_3;
+
+    /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":29
+ *     cdef stdint.uint64_t lower = 0, eligible = 0, wins, unbeaten, total
+ *     for i in range(53):
+ *         lower_degree[i] = 0             # <<<<<<<<<<<<<<
+ *         eligible_degree[i] = 0
+ *     for i in range(n):
+*/
+    (__pyx_v_lower_degree[__pyx_v_i]) = 0;
+
+    /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":30
+ *     for i in range(53):
+ *         lower_degree[i] = 0
+ *         eligible_degree[i] = 0             # <<<<<<<<<<<<<<
+ *     for i in range(n):
+ *         a = deck[i]
+*/
+    (__pyx_v_eligible_degree[__pyx_v_i]) = 0;
+  }
+
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":31
+ *         lower_degree[i] = 0
+ *         eligible_degree[i] = 0
+ *     for i in range(n):             # <<<<<<<<<<<<<<
+ *         a = deck[i]
+ *         prefix = handdat[board_rank + a]
+*/
+  __pyx_t_3 = __pyx_v_n;
+  __pyx_t_4 = __pyx_t_3;
+  for (__pyx_t_5 = 0; __pyx_t_5 < __pyx_t_4; __pyx_t_5+=1) {
+    __pyx_v_i = __pyx_t_5;
+
+    /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":32
+ *         eligible_degree[i] = 0
+ *     for i in range(n):
+ *         a = deck[i]             # <<<<<<<<<<<<<<
+ *         prefix = handdat[board_rank + a]
+ *         for j in range(i + 1, n):
+*/
+    __pyx_v_a = (__pyx_v_deck[__pyx_v_i]);
+
+    /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":33
+ *     for i in range(n):
+ *         a = deck[i]
+ *         prefix = handdat[board_rank + a]             # <<<<<<<<<<<<<<
+ *         for j in range(i + 1, n):
+ *             b = deck[j]
+*/
+    if (unlikely(!__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.memview)) { __Pyx_RaiseUnboundLocalErrorNogil("handdat"); __PYX_ERR(0, 33, __pyx_L1_error) }
+    __pyx_t_1 = (__pyx_v_board_rank + __pyx_v_a);
+    __pyx_v_prefix = (*((uint32_t const  *) ( /* dim=0 */ (__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.data + __pyx_t_1 * __pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.strides[0]) )));
+
+    /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":34
+ *         a = deck[i]
+ *         prefix = handdat[board_rank + a]
+ *         for j in range(i + 1, n):             # <<<<<<<<<<<<<<
+ *             b = deck[j]
+ *             rank = handdat[prefix + b]
+*/
+    __pyx_t_6 = __pyx_v_n;
+    __pyx_t_7 = __pyx_t_6;
+    for (__pyx_t_8 = (__pyx_v_i + 1); __pyx_t_8 < __pyx_t_7; __pyx_t_8+=1) {
+      __pyx_v_j = __pyx_t_8;
+
+      /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":35
+ *         prefix = handdat[board_rank + a]
+ *         for j in range(i + 1, n):
+ *             b = deck[j]             # <<<<<<<<<<<<<<
+ *             rank = handdat[prefix + b]
+ *             if rank <= hero_rank:
+*/
+      __pyx_v_b = (__pyx_v_deck[__pyx_v_j]);
+
+      /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":36
+ *         for j in range(i + 1, n):
+ *             b = deck[j]
+ *             rank = handdat[prefix + b]             # <<<<<<<<<<<<<<
+ *             if rank <= hero_rank:
+ *                 eligible += 1
+*/
+      if (unlikely(!__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.memview)) { __Pyx_RaiseUnboundLocalErrorNogil("handdat"); __PYX_ERR(0, 36, __pyx_L1_error) }
+      __pyx_t_1 = (__pyx_v_prefix + __pyx_v_b);
+      __pyx_v_rank = (*((uint32_t const  *) ( /* dim=0 */ (__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.data + __pyx_t_1 * __pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.strides[0]) )));
+
+      /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":37
+ *             b = deck[j]
+ *             rank = handdat[prefix + b]
+ *             if rank <= hero_rank:             # <<<<<<<<<<<<<<
+ *                 eligible += 1
+ *                 eligible_degree[a] += 1
+*/
+      __pyx_t_9 = (__pyx_v_rank <= __pyx_v_hero_rank);
+      if (__pyx_t_9) {
+
+        /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":38
+ *             rank = handdat[prefix + b]
+ *             if rank <= hero_rank:
+ *                 eligible += 1             # <<<<<<<<<<<<<<
+ *                 eligible_degree[a] += 1
+ *                 eligible_degree[b] += 1
+*/
+        __pyx_v_eligible = (__pyx_v_eligible + 1);
+
+        /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":39
+ *             if rank <= hero_rank:
+ *                 eligible += 1
+ *                 eligible_degree[a] += 1             # <<<<<<<<<<<<<<
+ *                 eligible_degree[b] += 1
+ *                 if rank < hero_rank:
+*/
+        __pyx_t_10 = __pyx_v_a;
+        (__pyx_v_eligible_degree[__pyx_t_10]) = ((__pyx_v_eligible_degree[__pyx_t_10]) + 1);
+
+        /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":40
+ *                 eligible += 1
+ *                 eligible_degree[a] += 1
+ *                 eligible_degree[b] += 1             # <<<<<<<<<<<<<<
+ *                 if rank < hero_rank:
+ *                     lower += 1
+*/
+        __pyx_t_10 = __pyx_v_b;
+        (__pyx_v_eligible_degree[__pyx_t_10]) = ((__pyx_v_eligible_degree[__pyx_t_10]) + 1);
+
+        /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":41
+ *                 eligible_degree[a] += 1
+ *                 eligible_degree[b] += 1
+ *                 if rank < hero_rank:             # <<<<<<<<<<<<<<
+ *                     lower += 1
+ *                     lower_degree[a] += 1
+*/
+        __pyx_t_9 = (__pyx_v_rank < __pyx_v_hero_rank);
+        if (__pyx_t_9) {
+
+          /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":42
+ *                 eligible_degree[b] += 1
+ *                 if rank < hero_rank:
+ *                     lower += 1             # <<<<<<<<<<<<<<
+ *                     lower_degree[a] += 1
+ *                     lower_degree[b] += 1
+*/
+          __pyx_v_lower = (__pyx_v_lower + 1);
+
+          /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":43
+ *                 if rank < hero_rank:
+ *                     lower += 1
+ *                     lower_degree[a] += 1             # <<<<<<<<<<<<<<
+ *                     lower_degree[b] += 1
+ *     wins = lower * (lower - 1) if lower else 0
+*/
+          __pyx_t_10 = __pyx_v_a;
+          (__pyx_v_lower_degree[__pyx_t_10]) = ((__pyx_v_lower_degree[__pyx_t_10]) + 1);
+
+          /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":44
+ *                     lower += 1
+ *                     lower_degree[a] += 1
+ *                     lower_degree[b] += 1             # <<<<<<<<<<<<<<
+ *     wins = lower * (lower - 1) if lower else 0
+ *     unbeaten = eligible * (eligible - 1) if eligible else 0
+*/
+          __pyx_t_10 = __pyx_v_b;
+          (__pyx_v_lower_degree[__pyx_t_10]) = ((__pyx_v_lower_degree[__pyx_t_10]) + 1);
+
+          /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":41
+ *                 eligible_degree[a] += 1
+ *                 eligible_degree[b] += 1
+ *                 if rank < hero_rank:             # <<<<<<<<<<<<<<
+ *                     lower += 1
+ *                     lower_degree[a] += 1
+*/
+        }
+
+        /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":37
+ *             b = deck[j]
+ *             rank = handdat[prefix + b]
+ *             if rank <= hero_rank:             # <<<<<<<<<<<<<<
+ *                 eligible += 1
+ *                 eligible_degree[a] += 1
+*/
+      }
+    }
+  }
+
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":45
+ *                     lower_degree[a] += 1
+ *                     lower_degree[b] += 1
+ *     wins = lower * (lower - 1) if lower else 0             # <<<<<<<<<<<<<<
+ *     unbeaten = eligible * (eligible - 1) if eligible else 0
+ *     for i in range(53):
+*/
+  __pyx_t_9 = (__pyx_v_lower != 0);
+  if (__pyx_t_9) {
+    __pyx_t_11 = (__pyx_v_lower * (__pyx_v_lower - 1));
+  } else {
+    __pyx_t_11 = 0;
+  }
+  __pyx_v_wins = __pyx_t_11;
+
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":46
+ *                     lower_degree[b] += 1
+ *     wins = lower * (lower - 1) if lower else 0
+ *     unbeaten = eligible * (eligible - 1) if eligible else 0             # <<<<<<<<<<<<<<
+ *     for i in range(53):
+ *         wins -= lower_degree[i] * (lower_degree[i] - 1)
+*/
+  __pyx_t_9 = (__pyx_v_eligible != 0);
+  if (__pyx_t_9) {
+    __pyx_t_11 = (__pyx_v_eligible * (__pyx_v_eligible - 1));
+  } else {
+    __pyx_t_11 = 0;
+  }
+  __pyx_v_unbeaten = __pyx_t_11;
+
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":47
+ *     wins = lower * (lower - 1) if lower else 0
+ *     unbeaten = eligible * (eligible - 1) if eligible else 0
+ *     for i in range(53):             # <<<<<<<<<<<<<<
+ *         wins -= lower_degree[i] * (lower_degree[i] - 1)
+ *         unbeaten -= eligible_degree[i] * (eligible_degree[i] - 1)
+*/
+  for (__pyx_t_3 = 0; __pyx_t_3 < 53; __pyx_t_3+=1) {
+    __pyx_v_i = __pyx_t_3;
+
+    /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":48
+ *     unbeaten = eligible * (eligible - 1) if eligible else 0
+ *     for i in range(53):
+ *         wins -= lower_degree[i] * (lower_degree[i] - 1)             # <<<<<<<<<<<<<<
+ *         unbeaten -= eligible_degree[i] * (eligible_degree[i] - 1)
+ *     total = (<stdint.uint64_t>n * (n - 1) * (n - 2) * (n - 3)) // 4
+*/
+    __pyx_v_wins = (__pyx_v_wins - ((__pyx_v_lower_degree[__pyx_v_i]) * ((__pyx_v_lower_degree[__pyx_v_i]) - 1)));
+
+    /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":49
+ *     for i in range(53):
+ *         wins -= lower_degree[i] * (lower_degree[i] - 1)
+ *         unbeaten -= eligible_degree[i] * (eligible_degree[i] - 1)             # <<<<<<<<<<<<<<
+ *     total = (<stdint.uint64_t>n * (n - 1) * (n - 2) * (n - 3)) // 4
+ *     counts[0] += wins
+*/
+    __pyx_v_unbeaten = (__pyx_v_unbeaten - ((__pyx_v_eligible_degree[__pyx_v_i]) * ((__pyx_v_eligible_degree[__pyx_v_i]) - 1)));
+  }
+
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":50
+ *         wins -= lower_degree[i] * (lower_degree[i] - 1)
+ *         unbeaten -= eligible_degree[i] * (eligible_degree[i] - 1)
+ *     total = (<stdint.uint64_t>n * (n - 1) * (n - 2) * (n - 3)) // 4             # <<<<<<<<<<<<<<
+ *     counts[0] += wins
+ *     counts[1] += unbeaten - wins
+*/
+  __pyx_v_total = ((((((uint64_t)__pyx_v_n) * (__pyx_v_n - 1)) * (__pyx_v_n - 2)) * (__pyx_v_n - 3)) / 4);
+
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":51
+ *         unbeaten -= eligible_degree[i] * (eligible_degree[i] - 1)
+ *     total = (<stdint.uint64_t>n * (n - 1) * (n - 2) * (n - 3)) // 4
+ *     counts[0] += wins             # <<<<<<<<<<<<<<
+ *     counts[1] += unbeaten - wins
+ *     counts[2] += total - unbeaten
+*/
+  __pyx_t_12 = 0;
+  (__pyx_v_counts[__pyx_t_12]) = ((__pyx_v_counts[__pyx_t_12]) + __pyx_v_wins);
+
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":52
+ *     total = (<stdint.uint64_t>n * (n - 1) * (n - 2) * (n - 3)) // 4
+ *     counts[0] += wins
+ *     counts[1] += unbeaten - wins             # <<<<<<<<<<<<<<
+ *     counts[2] += total - unbeaten
+ * 
+*/
+  __pyx_t_12 = 1;
+  (__pyx_v_counts[__pyx_t_12]) = ((__pyx_v_counts[__pyx_t_12]) + (__pyx_v_unbeaten - __pyx_v_wins));
+
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":53
+ *     counts[0] += wins
+ *     counts[1] += unbeaten - wins
+ *     counts[2] += total - unbeaten             # <<<<<<<<<<<<<<
+ * 
+ * 
+*/
+  __pyx_t_12 = 2;
+  (__pyx_v_counts[__pyx_t_12]) = ((__pyx_v_counts[__pyx_t_12]) + (__pyx_v_total - __pyx_v_unbeaten));
+
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":17
+ * 
+ * 
+ * cdef void _two_random_on_board(int hero0, int hero1, int* deck, int n,             # <<<<<<<<<<<<<<
+ *                                stdint.uint32_t board_rank,
+ *                                stdint.uint64_t* counts) noexcept nogil:
+*/
+
+  /* function exit code */
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
+  __Pyx_WriteUnraisable("poker_eval_faster.eval_cython.one_hand_evaluate._two_random_on_board", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
+  __Pyx_PyGILState_Release(__pyx_gilstate_save);
+  __pyx_L0:;
+}
+
+/* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":56
+ * 
+ * 
+ * cpdef object evaluate_one_hand_vs_two_random_c(int[:] hero, int[:] board, int[:] dead):             # <<<<<<<<<<<<<<
+ *     """Validated inputs only; exact win/tie/loss EVENTS, not pot shares."""
+ *     cdef bint blocked[53]
+*/
+
+static PyObject *__pyx_pw_17poker_eval_faster_11eval_cython_17one_hand_evaluate_1evaluate_one_hand_vs_two_random_c(PyObject *__pyx_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+); /*proto*/
+static PyObject *__pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate_evaluate_one_hand_vs_two_random_c(__Pyx_memviewslice __pyx_v_hero, __Pyx_memviewslice __pyx_v_board, __Pyx_memviewslice __pyx_v_dead, CYTHON_UNUSED int __pyx_skip_dispatch) {
+  int __pyx_v_blocked[53];
+  int __pyx_v_deck[52];
+  int __pyx_v_rivals[52];
+  int __pyx_v_i;
+  int __pyx_v_a;
+  int __pyx_v_b;
+  int __pyx_v_n;
+  int __pyx_v_m;
+  int __pyx_v_missing;
+  uint32_t __pyx_v_prefix;
+  uint32_t __pyx_v_turn;
+  uint32_t __pyx_v_river;
+  uint64_t __pyx_v_counts[3];
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  int __pyx_t_1;
+  Py_ssize_t __pyx_t_2;
+  Py_ssize_t __pyx_t_3;
+  Py_ssize_t __pyx_t_4;
+  size_t __pyx_t_5;
+  int __pyx_t_6;
+  Py_ssize_t __pyx_t_7;
+  int __pyx_t_8;
+  int __pyx_t_9;
+  int __pyx_t_10;
+  int __pyx_t_11;
+  int __pyx_t_12;
+  int __pyx_t_13;
+  int __pyx_t_14;
+  int __pyx_t_15;
+  int __pyx_t_16;
+  PyObject *__pyx_t_17 = NULL;
+  PyObject *__pyx_t_18 = NULL;
+  PyObject *__pyx_t_19 = NULL;
+  PyObject *__pyx_t_20 = NULL;
+  PyObject *__pyx_t_21 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("evaluate_one_hand_vs_two_random_c", 0);
+
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":61
+ *     cdef int deck[52]
+ *     cdef int rivals[52]
+ *     cdef int i, a, b, n = 0, m, missing = 5 - board.shape[0]             # <<<<<<<<<<<<<<
+ *     cdef stdint.uint32_t prefix = 53, turn, river
+ *     cdef stdint.uint64_t counts[3]
+*/
+  __pyx_v_n = 0;
+  __pyx_v_missing = (5 - (__pyx_v_board.shape[0]));
+
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":62
+ *     cdef int rivals[52]
+ *     cdef int i, a, b, n = 0, m, missing = 5 - board.shape[0]
+ *     cdef stdint.uint32_t prefix = 53, turn, river             # <<<<<<<<<<<<<<
+ *     cdef stdint.uint64_t counts[3]
+ *     for i in range(53):
+*/
+  __pyx_v_prefix = 53;
+
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":64
+ *     cdef stdint.uint32_t prefix = 53, turn, river
+ *     cdef stdint.uint64_t counts[3]
+ *     for i in range(53):             # <<<<<<<<<<<<<<
+ *         blocked[i] = False
+ *     blocked[hero[0]] = True
+*/
+  for (__pyx_t_1 = 0; __pyx_t_1 < 53; __pyx_t_1+=1) {
+    __pyx_v_i = __pyx_t_1;
+
+    /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":65
+ *     cdef stdint.uint64_t counts[3]
+ *     for i in range(53):
+ *         blocked[i] = False             # <<<<<<<<<<<<<<
+ *     blocked[hero[0]] = True
+ *     blocked[hero[1]] = True
+*/
+    (__pyx_v_blocked[__pyx_v_i]) = 0;
+  }
+
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":66
+ *     for i in range(53):
+ *         blocked[i] = False
+ *     blocked[hero[0]] = True             # <<<<<<<<<<<<<<
+ *     blocked[hero[1]] = True
+ *     for i in range(board.shape[0]):
+*/
+  __pyx_t_2 = 0;
+  (__pyx_v_blocked[(*((int *) ( /* dim=0 */ (__pyx_v_hero.data + __pyx_t_2 * __pyx_v_hero.strides[0]) )))]) = 1;
+
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":67
+ *         blocked[i] = False
+ *     blocked[hero[0]] = True
+ *     blocked[hero[1]] = True             # <<<<<<<<<<<<<<
+ *     for i in range(board.shape[0]):
+ *         blocked[board[i]] = True
+*/
+  __pyx_t_2 = 1;
+  (__pyx_v_blocked[(*((int *) ( /* dim=0 */ (__pyx_v_hero.data + __pyx_t_2 * __pyx_v_hero.strides[0]) )))]) = 1;
+
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":68
+ *     blocked[hero[0]] = True
+ *     blocked[hero[1]] = True
+ *     for i in range(board.shape[0]):             # <<<<<<<<<<<<<<
+ *         blocked[board[i]] = True
+ *         prefix = handdat[prefix + board[i]]
+*/
+  __pyx_t_3 = (__pyx_v_board.shape[0]);
+  __pyx_t_4 = __pyx_t_3;
+  for (__pyx_t_1 = 0; __pyx_t_1 < __pyx_t_4; __pyx_t_1+=1) {
+    __pyx_v_i = __pyx_t_1;
+
+    /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":69
+ *     blocked[hero[1]] = True
+ *     for i in range(board.shape[0]):
+ *         blocked[board[i]] = True             # <<<<<<<<<<<<<<
+ *         prefix = handdat[prefix + board[i]]
+ *     for i in range(dead.shape[0]):
+*/
+    __pyx_t_2 = __pyx_v_i;
+    (__pyx_v_blocked[(*((int *) ( /* dim=0 */ (__pyx_v_board.data + __pyx_t_2 * __pyx_v_board.strides[0]) )))]) = 1;
+
+    /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":70
+ *     for i in range(board.shape[0]):
+ *         blocked[board[i]] = True
+ *         prefix = handdat[prefix + board[i]]             # <<<<<<<<<<<<<<
+ *     for i in range(dead.shape[0]):
+ *         blocked[dead[i]] = True
+*/
+    if (unlikely(!__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.memview)) { __Pyx_RaiseUnboundLocalError("handdat"); __PYX_ERR(0, 70, __pyx_L1_error) }
+    __pyx_t_2 = __pyx_v_i;
+    __pyx_t_5 = (__pyx_v_prefix + (*((int *) ( /* dim=0 */ (__pyx_v_board.data + __pyx_t_2 * __pyx_v_board.strides[0]) ))));
+    __pyx_v_prefix = (*((uint32_t const  *) ( /* dim=0 */ (__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.data + __pyx_t_5 * __pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.strides[0]) )));
+  }
+
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":71
+ *         blocked[board[i]] = True
+ *         prefix = handdat[prefix + board[i]]
+ *     for i in range(dead.shape[0]):             # <<<<<<<<<<<<<<
+ *         blocked[dead[i]] = True
+ *     for i in range(1, 53):
+*/
+  __pyx_t_3 = (__pyx_v_dead.shape[0]);
+  __pyx_t_4 = __pyx_t_3;
+  for (__pyx_t_1 = 0; __pyx_t_1 < __pyx_t_4; __pyx_t_1+=1) {
+    __pyx_v_i = __pyx_t_1;
+
+    /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":72
+ *         prefix = handdat[prefix + board[i]]
+ *     for i in range(dead.shape[0]):
+ *         blocked[dead[i]] = True             # <<<<<<<<<<<<<<
+ *     for i in range(1, 53):
+ *         if not blocked[i]:
+*/
+    __pyx_t_2 = __pyx_v_i;
+    (__pyx_v_blocked[(*((int *) ( /* dim=0 */ (__pyx_v_dead.data + __pyx_t_2 * __pyx_v_dead.strides[0]) )))]) = 1;
+  }
+
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":73
+ *     for i in range(dead.shape[0]):
+ *         blocked[dead[i]] = True
+ *     for i in range(1, 53):             # <<<<<<<<<<<<<<
+ *         if not blocked[i]:
+ *             deck[n] = i
+*/
+  for (__pyx_t_1 = 1; __pyx_t_1 < 53; __pyx_t_1+=1) {
+    __pyx_v_i = __pyx_t_1;
+
+    /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":74
+ *         blocked[dead[i]] = True
+ *     for i in range(1, 53):
+ *         if not blocked[i]:             # <<<<<<<<<<<<<<
+ *             deck[n] = i
+ *             n += 1
+*/
+    __pyx_t_6 = (!(__pyx_v_blocked[__pyx_v_i]));
+    if (__pyx_t_6) {
+
+      /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":75
+ *     for i in range(1, 53):
+ *         if not blocked[i]:
+ *             deck[n] = i             # <<<<<<<<<<<<<<
+ *             n += 1
+ *     counts[0] = counts[1] = counts[2] = 0
+*/
+      (__pyx_v_deck[__pyx_v_n]) = __pyx_v_i;
+
+      /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":76
+ *         if not blocked[i]:
+ *             deck[n] = i
+ *             n += 1             # <<<<<<<<<<<<<<
+ *     counts[0] = counts[1] = counts[2] = 0
+ *     with nogil:
+*/
+      __pyx_v_n = (__pyx_v_n + 1);
+
+      /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":74
+ *         blocked[dead[i]] = True
+ *     for i in range(1, 53):
+ *         if not blocked[i]:             # <<<<<<<<<<<<<<
+ *             deck[n] = i
+ *             n += 1
+*/
+    }
+  }
+
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":77
+ *             deck[n] = i
+ *             n += 1
+ *     counts[0] = counts[1] = counts[2] = 0             # <<<<<<<<<<<<<<
+ *     with nogil:
+ *         if missing == 0:
+*/
+  (__pyx_v_counts[0]) = 0;
+  (__pyx_v_counts[1]) = 0;
+  (__pyx_v_counts[2]) = 0;
+
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":78
+ *             n += 1
+ *     counts[0] = counts[1] = counts[2] = 0
+ *     with nogil:             # <<<<<<<<<<<<<<
+ *         if missing == 0:
+ *             _two_random_on_board(hero[0], hero[1], deck, n, prefix, counts)
+*/
+  {
+      PyThreadState * _save;
+      _save = PyEval_SaveThread();
+      __Pyx_FastGIL_Remember();
+      /*try:*/ {
+
+        /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":79
+ *     counts[0] = counts[1] = counts[2] = 0
+ *     with nogil:
+ *         if missing == 0:             # <<<<<<<<<<<<<<
+ *             _two_random_on_board(hero[0], hero[1], deck, n, prefix, counts)
+ *         else:
+*/
+        __pyx_t_6 = (__pyx_v_missing == 0);
+        if (__pyx_t_6) {
+
+          /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":80
+ *     with nogil:
+ *         if missing == 0:
+ *             _two_random_on_board(hero[0], hero[1], deck, n, prefix, counts)             # <<<<<<<<<<<<<<
+ *         else:
+ *             for a in range(n):
+*/
+          __pyx_t_2 = 0;
+          __pyx_t_7 = 1;
+          __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__two_random_on_board((*((int *) ( /* dim=0 */ (__pyx_v_hero.data + __pyx_t_2 * __pyx_v_hero.strides[0]) ))), (*((int *) ( /* dim=0 */ (__pyx_v_hero.data + __pyx_t_7 * __pyx_v_hero.strides[0]) ))), __pyx_v_deck, __pyx_v_n, __pyx_v_prefix, __pyx_v_counts);
+
+          /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":79
+ *     counts[0] = counts[1] = counts[2] = 0
+ *     with nogil:
+ *         if missing == 0:             # <<<<<<<<<<<<<<
+ *             _two_random_on_board(hero[0], hero[1], deck, n, prefix, counts)
+ *         else:
+*/
+          goto __pyx_L15;
+        }
+
+        /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":82
+ *             _two_random_on_board(hero[0], hero[1], deck, n, prefix, counts)
+ *         else:
+ *             for a in range(n):             # <<<<<<<<<<<<<<
+ *                 turn = handdat[prefix + deck[a]]
+ *                 if missing == 1:
+*/
+        /*else*/ {
+          __pyx_t_1 = __pyx_v_n;
+          __pyx_t_8 = __pyx_t_1;
+          for (__pyx_t_9 = 0; __pyx_t_9 < __pyx_t_8; __pyx_t_9+=1) {
+            __pyx_v_a = __pyx_t_9;
+
+            /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":83
+ *         else:
+ *             for a in range(n):
+ *                 turn = handdat[prefix + deck[a]]             # <<<<<<<<<<<<<<
+ *                 if missing == 1:
+ *                     m = 0
+*/
+            if (unlikely(!__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.memview)) { __Pyx_RaiseUnboundLocalErrorNogil("handdat"); __PYX_ERR(0, 83, __pyx_L13_error) }
+            __pyx_t_5 = (__pyx_v_prefix + (__pyx_v_deck[__pyx_v_a]));
+            __pyx_v_turn = (*((uint32_t const  *) ( /* dim=0 */ (__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.data + __pyx_t_5 * __pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.strides[0]) )));
+
+            /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":84
+ *             for a in range(n):
+ *                 turn = handdat[prefix + deck[a]]
+ *                 if missing == 1:             # <<<<<<<<<<<<<<
+ *                     m = 0
+ *                     for i in range(n):
+*/
+            __pyx_t_6 = (__pyx_v_missing == 1);
+            if (__pyx_t_6) {
+
+              /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":85
+ *                 turn = handdat[prefix + deck[a]]
+ *                 if missing == 1:
+ *                     m = 0             # <<<<<<<<<<<<<<
+ *                     for i in range(n):
+ *                         if i != a:
+*/
+              __pyx_v_m = 0;
+
+              /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":86
+ *                 if missing == 1:
+ *                     m = 0
+ *                     for i in range(n):             # <<<<<<<<<<<<<<
+ *                         if i != a:
+ *                             rivals[m] = deck[i]
+*/
+              __pyx_t_10 = __pyx_v_n;
+              __pyx_t_11 = __pyx_t_10;
+              for (__pyx_t_12 = 0; __pyx_t_12 < __pyx_t_11; __pyx_t_12+=1) {
+                __pyx_v_i = __pyx_t_12;
+
+                /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":87
+ *                     m = 0
+ *                     for i in range(n):
+ *                         if i != a:             # <<<<<<<<<<<<<<
+ *                             rivals[m] = deck[i]
+ *                             m += 1
+*/
+                __pyx_t_6 = (__pyx_v_i != __pyx_v_a);
+                if (__pyx_t_6) {
+
+                  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":88
+ *                     for i in range(n):
+ *                         if i != a:
+ *                             rivals[m] = deck[i]             # <<<<<<<<<<<<<<
+ *                             m += 1
+ *                     _two_random_on_board(hero[0], hero[1], rivals, m, turn, counts)
+*/
+                  (__pyx_v_rivals[__pyx_v_m]) = (__pyx_v_deck[__pyx_v_i]);
+
+                  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":89
+ *                         if i != a:
+ *                             rivals[m] = deck[i]
+ *                             m += 1             # <<<<<<<<<<<<<<
+ *                     _two_random_on_board(hero[0], hero[1], rivals, m, turn, counts)
+ *                 else:
+*/
+                  __pyx_v_m = (__pyx_v_m + 1);
+
+                  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":87
+ *                     m = 0
+ *                     for i in range(n):
+ *                         if i != a:             # <<<<<<<<<<<<<<
+ *                             rivals[m] = deck[i]
+ *                             m += 1
+*/
+                }
+              }
+
+              /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":90
+ *                             rivals[m] = deck[i]
+ *                             m += 1
+ *                     _two_random_on_board(hero[0], hero[1], rivals, m, turn, counts)             # <<<<<<<<<<<<<<
+ *                 else:
+ *                     for b in range(a + 1, n):
+*/
+              __pyx_t_7 = 0;
+              __pyx_t_2 = 1;
+              __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__two_random_on_board((*((int *) ( /* dim=0 */ (__pyx_v_hero.data + __pyx_t_7 * __pyx_v_hero.strides[0]) ))), (*((int *) ( /* dim=0 */ (__pyx_v_hero.data + __pyx_t_2 * __pyx_v_hero.strides[0]) ))), __pyx_v_rivals, __pyx_v_m, __pyx_v_turn, __pyx_v_counts);
+
+              /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":84
+ *             for a in range(n):
+ *                 turn = handdat[prefix + deck[a]]
+ *                 if missing == 1:             # <<<<<<<<<<<<<<
+ *                     m = 0
+ *                     for i in range(n):
+*/
+              goto __pyx_L18;
+            }
+
+            /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":92
+ *                     _two_random_on_board(hero[0], hero[1], rivals, m, turn, counts)
+ *                 else:
+ *                     for b in range(a + 1, n):             # <<<<<<<<<<<<<<
+ *                         river = handdat[turn + deck[b]]
+ *                         m = 0
+*/
+            /*else*/ {
+              __pyx_t_10 = __pyx_v_n;
+              __pyx_t_11 = __pyx_t_10;
+              for (__pyx_t_12 = (__pyx_v_a + 1); __pyx_t_12 < __pyx_t_11; __pyx_t_12+=1) {
+                __pyx_v_b = __pyx_t_12;
+
+                /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":93
+ *                 else:
+ *                     for b in range(a + 1, n):
+ *                         river = handdat[turn + deck[b]]             # <<<<<<<<<<<<<<
+ *                         m = 0
+ *                         for i in range(n):
+*/
+                if (unlikely(!__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.memview)) { __Pyx_RaiseUnboundLocalErrorNogil("handdat"); __PYX_ERR(0, 93, __pyx_L13_error) }
+                __pyx_t_5 = (__pyx_v_turn + (__pyx_v_deck[__pyx_v_b]));
+                __pyx_v_river = (*((uint32_t const  *) ( /* dim=0 */ (__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.data + __pyx_t_5 * __pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.strides[0]) )));
+
+                /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":94
+ *                     for b in range(a + 1, n):
+ *                         river = handdat[turn + deck[b]]
+ *                         m = 0             # <<<<<<<<<<<<<<
+ *                         for i in range(n):
+ *                             if i != a and i != b:
+*/
+                __pyx_v_m = 0;
+
+                /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":95
+ *                         river = handdat[turn + deck[b]]
+ *                         m = 0
+ *                         for i in range(n):             # <<<<<<<<<<<<<<
+ *                             if i != a and i != b:
+ *                                 rivals[m] = deck[i]
+*/
+                __pyx_t_13 = __pyx_v_n;
+                __pyx_t_14 = __pyx_t_13;
+                for (__pyx_t_15 = 0; __pyx_t_15 < __pyx_t_14; __pyx_t_15+=1) {
+                  __pyx_v_i = __pyx_t_15;
+
+                  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":96
+ *                         m = 0
+ *                         for i in range(n):
+ *                             if i != a and i != b:             # <<<<<<<<<<<<<<
+ *                                 rivals[m] = deck[i]
+ *                                 m += 1
+*/
+                  __pyx_t_16 = (__pyx_v_i != __pyx_v_a);
+                  if (__pyx_t_16) {
+                  } else {
+                    __pyx_t_6 = __pyx_t_16;
+                    goto __pyx_L27_bool_binop_done;
+                  }
+                  __pyx_t_16 = (__pyx_v_i != __pyx_v_b);
+                  __pyx_t_6 = __pyx_t_16;
+                  __pyx_L27_bool_binop_done:;
+                  if (__pyx_t_6) {
+
+                    /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":97
+ *                         for i in range(n):
+ *                             if i != a and i != b:
+ *                                 rivals[m] = deck[i]             # <<<<<<<<<<<<<<
+ *                                 m += 1
+ *                         _two_random_on_board(hero[0], hero[1], rivals, m, river, counts)
+*/
+                    (__pyx_v_rivals[__pyx_v_m]) = (__pyx_v_deck[__pyx_v_i]);
+
+                    /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":98
+ *                             if i != a and i != b:
+ *                                 rivals[m] = deck[i]
+ *                                 m += 1             # <<<<<<<<<<<<<<
+ *                         _two_random_on_board(hero[0], hero[1], rivals, m, river, counts)
+ *     return (int(counts[0]), int(counts[1]), int(counts[2]))
+*/
+                    __pyx_v_m = (__pyx_v_m + 1);
+
+                    /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":96
+ *                         m = 0
+ *                         for i in range(n):
+ *                             if i != a and i != b:             # <<<<<<<<<<<<<<
+ *                                 rivals[m] = deck[i]
+ *                                 m += 1
+*/
+                  }
+                }
+
+                /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":99
+ *                                 rivals[m] = deck[i]
+ *                                 m += 1
+ *                         _two_random_on_board(hero[0], hero[1], rivals, m, river, counts)             # <<<<<<<<<<<<<<
+ *     return (int(counts[0]), int(counts[1]), int(counts[2]))
+ * 
+*/
+                __pyx_t_2 = 0;
+                __pyx_t_7 = 1;
+                __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__two_random_on_board((*((int *) ( /* dim=0 */ (__pyx_v_hero.data + __pyx_t_2 * __pyx_v_hero.strides[0]) ))), (*((int *) ( /* dim=0 */ (__pyx_v_hero.data + __pyx_t_7 * __pyx_v_hero.strides[0]) ))), __pyx_v_rivals, __pyx_v_m, __pyx_v_river, __pyx_v_counts);
+              }
+            }
+            __pyx_L18:;
+          }
+        }
+        __pyx_L15:;
+      }
+
+      /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":78
+ *             n += 1
+ *     counts[0] = counts[1] = counts[2] = 0
+ *     with nogil:             # <<<<<<<<<<<<<<
+ *         if missing == 0:
+ *             _two_random_on_board(hero[0], hero[1], deck, n, prefix, counts)
+*/
+      /*finally:*/ {
+        /*normal exit:*/{
+          __Pyx_FastGIL_Forget();
+          PyEval_RestoreThread(_save);
+          goto __pyx_L14;
+        }
+        __pyx_L13_error: {
+          __Pyx_FastGIL_Forget();
+          PyEval_RestoreThread(_save);
+          goto __pyx_L1_error;
+        }
+        __pyx_L14:;
+      }
+  }
+
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":100
+ *                                 m += 1
+ *                         _two_random_on_board(hero[0], hero[1], rivals, m, river, counts)
+ *     return (int(counts[0]), int(counts[1]), int(counts[2]))             # <<<<<<<<<<<<<<
+ * 
+ * 
+*/
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_18 = NULL;
+  __pyx_t_19 = __Pyx_PyLong_From_uint64_t((__pyx_v_counts[0])); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 100, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_19);
+  __pyx_t_5 = 1;
+  {
+    PyObject *__pyx_callargs[2] = {__pyx_t_18, __pyx_t_19};
+    __pyx_t_17 = __Pyx_PyObject_FastCall((PyObject*)(&PyLong_Type), __pyx_callargs+__pyx_t_5, (2-__pyx_t_5) | (__pyx_t_5*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
+    __Pyx_XDECREF(__pyx_t_18); __pyx_t_18 = 0;
+    __Pyx_DECREF(__pyx_t_19); __pyx_t_19 = 0;
+    if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 100, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_17);
+  }
+  __pyx_t_18 = NULL;
+  __pyx_t_20 = __Pyx_PyLong_From_uint64_t((__pyx_v_counts[1])); if (unlikely(!__pyx_t_20)) __PYX_ERR(0, 100, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_20);
+  __pyx_t_5 = 1;
+  {
+    PyObject *__pyx_callargs[2] = {__pyx_t_18, __pyx_t_20};
+    __pyx_t_19 = __Pyx_PyObject_FastCall((PyObject*)(&PyLong_Type), __pyx_callargs+__pyx_t_5, (2-__pyx_t_5) | (__pyx_t_5*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
+    __Pyx_XDECREF(__pyx_t_18); __pyx_t_18 = 0;
+    __Pyx_DECREF(__pyx_t_20); __pyx_t_20 = 0;
+    if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 100, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_19);
+  }
+  __pyx_t_18 = NULL;
+  __pyx_t_21 = __Pyx_PyLong_From_uint64_t((__pyx_v_counts[2])); if (unlikely(!__pyx_t_21)) __PYX_ERR(0, 100, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_21);
+  __pyx_t_5 = 1;
+  {
+    PyObject *__pyx_callargs[2] = {__pyx_t_18, __pyx_t_21};
+    __pyx_t_20 = __Pyx_PyObject_FastCall((PyObject*)(&PyLong_Type), __pyx_callargs+__pyx_t_5, (2-__pyx_t_5) | (__pyx_t_5*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET));
+    __Pyx_XDECREF(__pyx_t_18); __pyx_t_18 = 0;
+    __Pyx_DECREF(__pyx_t_21); __pyx_t_21 = 0;
+    if (unlikely(!__pyx_t_20)) __PYX_ERR(0, 100, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_20);
+  }
+  __pyx_t_21 = PyTuple_New(3); if (unlikely(!__pyx_t_21)) __PYX_ERR(0, 100, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_21);
+  __Pyx_GIVEREF(__pyx_t_17);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_21, 0, __pyx_t_17) != (0)) __PYX_ERR(0, 100, __pyx_L1_error);
+  __Pyx_GIVEREF(__pyx_t_19);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_21, 1, __pyx_t_19) != (0)) __PYX_ERR(0, 100, __pyx_L1_error);
+  __Pyx_GIVEREF(__pyx_t_20);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_21, 2, __pyx_t_20) != (0)) __PYX_ERR(0, 100, __pyx_L1_error);
+  __pyx_t_17 = 0;
+  __pyx_t_19 = 0;
+  __pyx_t_20 = 0;
+  __pyx_r = __pyx_t_21;
+  __pyx_t_21 = 0;
+  goto __pyx_L0;
+
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":56
+ * 
+ * 
+ * cpdef object evaluate_one_hand_vs_two_random_c(int[:] hero, int[:] board, int[:] dead):             # <<<<<<<<<<<<<<
+ *     """Validated inputs only; exact win/tie/loss EVENTS, not pot shares."""
+ *     cdef bint blocked[53]
+*/
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_17);
+  __Pyx_XDECREF(__pyx_t_18);
+  __Pyx_XDECREF(__pyx_t_19);
+  __Pyx_XDECREF(__pyx_t_20);
+  __Pyx_XDECREF(__pyx_t_21);
+  __Pyx_AddTraceback("poker_eval_faster.eval_cython.one_hand_evaluate.evaluate_one_hand_vs_two_random_c", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* Python wrapper */
+static PyObject *__pyx_pw_17poker_eval_faster_11eval_cython_17one_hand_evaluate_1evaluate_one_hand_vs_two_random_c(PyObject *__pyx_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+); /*proto*/
+PyDoc_STRVAR(__pyx_doc_17poker_eval_faster_11eval_cython_17one_hand_evaluate_evaluate_one_hand_vs_two_random_c, "Validated inputs only; exact win/tie/loss EVENTS, not pot shares.");
+static PyMethodDef __pyx_mdef_17poker_eval_faster_11eval_cython_17one_hand_evaluate_1evaluate_one_hand_vs_two_random_c = {"evaluate_one_hand_vs_two_random_c", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_17poker_eval_faster_11eval_cython_17one_hand_evaluate_1evaluate_one_hand_vs_two_random_c, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_17poker_eval_faster_11eval_cython_17one_hand_evaluate_evaluate_one_hand_vs_two_random_c};
+static PyObject *__pyx_pw_17poker_eval_faster_11eval_cython_17one_hand_evaluate_1evaluate_one_hand_vs_two_random_c(PyObject *__pyx_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+) {
+  __Pyx_memviewslice __pyx_v_hero = { 0, 0, { 0 }, { 0 }, { 0 } };
+  __Pyx_memviewslice __pyx_v_board = { 0, 0, { 0 }, { 0 }, { 0 } };
+  __Pyx_memviewslice __pyx_v_dead = { 0, 0, { 0 }, { 0 }, { 0 } };
+  #if !CYTHON_METH_FASTCALL
+  CYTHON_UNUSED Py_ssize_t __pyx_nargs;
+  #endif
+  CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
+  PyObject* values[3] = {0,0,0};
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("evaluate_one_hand_vs_two_random_c (wrapper)", 0);
+  #if !CYTHON_METH_FASTCALL
+  #if CYTHON_ASSUME_SAFE_SIZE
+  __pyx_nargs = PyTuple_GET_SIZE(__pyx_args);
+  #else
+  __pyx_nargs = PyTuple_Size(__pyx_args); if (unlikely(__pyx_nargs < 0)) return NULL;
+  #endif
+  #endif
+  __pyx_kwvalues = __Pyx_KwValues_FASTCALL(__pyx_args, __pyx_nargs);
+  {
+    PyObject ** const __pyx_pyargnames[] = {&__pyx_mstate_global->__pyx_n_u_hero,&__pyx_mstate_global->__pyx_n_u_board,&__pyx_mstate_global->__pyx_n_u_dead,0};
+    const Py_ssize_t __pyx_kwds_len = (__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL(__pyx_kwds) : 0;
+    if (unlikely(__pyx_kwds_len) < 0) __PYX_ERR(0, 56, __pyx_L3_error)
+    if (__pyx_kwds_len > 0) {
+      switch (__pyx_nargs) {
+        case  3:
+        values[2] = __Pyx_ArgRef_FASTCALL(__pyx_args, 2);
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[2])) __PYX_ERR(0, 56, __pyx_L3_error)
+        CYTHON_FALLTHROUGH;
+        case  2:
+        values[1] = __Pyx_ArgRef_FASTCALL(__pyx_args, 1);
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[1])) __PYX_ERR(0, 56, __pyx_L3_error)
+        CYTHON_FALLTHROUGH;
+        case  1:
+        values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 56, __pyx_L3_error)
+        CYTHON_FALLTHROUGH;
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      const Py_ssize_t kwd_pos_args = __pyx_nargs;
+      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "evaluate_one_hand_vs_two_random_c", 0) < (0)) __PYX_ERR(0, 56, __pyx_L3_error)
+      for (Py_ssize_t i = __pyx_nargs; i < 3; i++) {
+        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("evaluate_one_hand_vs_two_random_c", 1, 3, 3, i); __PYX_ERR(0, 56, __pyx_L3_error) }
+      }
+    } else if (unlikely(__pyx_nargs != 3)) {
+      goto __pyx_L5_argtuple_error;
+    } else {
+      values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
+      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 56, __pyx_L3_error)
+      values[1] = __Pyx_ArgRef_FASTCALL(__pyx_args, 1);
+      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[1])) __PYX_ERR(0, 56, __pyx_L3_error)
+      values[2] = __Pyx_ArgRef_FASTCALL(__pyx_args, 2);
+      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[2])) __PYX_ERR(0, 56, __pyx_L3_error)
+    }
+    __pyx_v_hero = __Pyx_PyObject_to_MemoryviewSlice_ds_int(values[0], PyBUF_WRITABLE); if (unlikely(!__pyx_v_hero.memview)) __PYX_ERR(0, 56, __pyx_L3_error)
+    __pyx_v_board = __Pyx_PyObject_to_MemoryviewSlice_ds_int(values[1], PyBUF_WRITABLE); if (unlikely(!__pyx_v_board.memview)) __PYX_ERR(0, 56, __pyx_L3_error)
+    __pyx_v_dead = __Pyx_PyObject_to_MemoryviewSlice_ds_int(values[2], PyBUF_WRITABLE); if (unlikely(!__pyx_v_dead.memview)) __PYX_ERR(0, 56, __pyx_L3_error)
+  }
+  goto __pyx_L6_skip;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("evaluate_one_hand_vs_two_random_c", 1, 3, 3, __pyx_nargs); __PYX_ERR(0, 56, __pyx_L3_error)
+  __pyx_L6_skip:;
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L3_error:;
+  for (Py_ssize_t __pyx_temp=0; __pyx_temp < (Py_ssize_t)(sizeof(values)/sizeof(values[0])); ++__pyx_temp) {
+    Py_XDECREF(values[__pyx_temp]);
+  }
+  __PYX_XCLEAR_MEMVIEW(&__pyx_v_hero, 1);
+  __PYX_XCLEAR_MEMVIEW(&__pyx_v_board, 1);
+  __PYX_XCLEAR_MEMVIEW(&__pyx_v_dead, 1);
+  __Pyx_AddTraceback("poker_eval_faster.eval_cython.one_hand_evaluate.evaluate_one_hand_vs_two_random_c", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_17poker_eval_faster_11eval_cython_17one_hand_evaluate_evaluate_one_hand_vs_two_random_c(__pyx_self, __pyx_v_hero, __pyx_v_board, __pyx_v_dead);
+
+  /* function exit code */
+  for (Py_ssize_t __pyx_temp=0; __pyx_temp < (Py_ssize_t)(sizeof(values)/sizeof(values[0])); ++__pyx_temp) {
+    Py_XDECREF(values[__pyx_temp]);
+  }
+  __PYX_XCLEAR_MEMVIEW(&__pyx_v_hero, 1);
+  __PYX_XCLEAR_MEMVIEW(&__pyx_v_board, 1);
+  __PYX_XCLEAR_MEMVIEW(&__pyx_v_dead, 1);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_17poker_eval_faster_11eval_cython_17one_hand_evaluate_evaluate_one_hand_vs_two_random_c(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_hero, __Pyx_memviewslice __pyx_v_board, __Pyx_memviewslice __pyx_v_dead) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("evaluate_one_hand_vs_two_random_c", 0);
+  __Pyx_XDECREF(__pyx_r);
+  if (unlikely(!__pyx_v_hero.memview)) { __Pyx_RaiseUnboundLocalError("hero"); __PYX_ERR(0, 56, __pyx_L1_error) }
+  if (unlikely(!__pyx_v_board.memview)) { __Pyx_RaiseUnboundLocalError("board"); __PYX_ERR(0, 56, __pyx_L1_error) }
+  if (unlikely(!__pyx_v_dead.memview)) { __Pyx_RaiseUnboundLocalError("dead"); __PYX_ERR(0, 56, __pyx_L1_error) }
+  __pyx_t_1 = __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate_evaluate_one_hand_vs_two_random_c(__pyx_v_hero, __pyx_v_board, __pyx_v_dead, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 56, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("poker_eval_faster.eval_cython.one_hand_evaluate.evaluate_one_hand_vs_two_random_c", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":103
+ * 
+ * 
  * @cython.cdivision(True)             # <<<<<<<<<<<<<<
  * cdef inline double _hand_equity(double wins, double ties, double losses) nogil:
  *     cdef double total = wins + 2.0 * ties + losses
@@ -16991,7 +18117,7 @@ static CYTHON_INLINE double __pyx_f_17poker_eval_faster_11eval_cython_17one_hand
   double __pyx_r;
   int __pyx_t_1;
 
-  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":19
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":105
  * @cython.cdivision(True)
  * cdef inline double _hand_equity(double wins, double ties, double losses) nogil:
  *     cdef double total = wins + 2.0 * ties + losses             # <<<<<<<<<<<<<<
@@ -17000,7 +18126,7 @@ static CYTHON_INLINE double __pyx_f_17poker_eval_faster_11eval_cython_17one_hand
 */
   __pyx_v_total = ((__pyx_v_wins + (2.0 * __pyx_v_ties)) + __pyx_v_losses);
 
-  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":20
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":106
  * cdef inline double _hand_equity(double wins, double ties, double losses) nogil:
  *     cdef double total = wins + 2.0 * ties + losses
  *     if total == 0.0:             # <<<<<<<<<<<<<<
@@ -17010,7 +18136,7 @@ static CYTHON_INLINE double __pyx_f_17poker_eval_faster_11eval_cython_17one_hand
   __pyx_t_1 = (__pyx_v_total == 0.0);
   if (__pyx_t_1) {
 
-    /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":21
+    /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":107
  *     cdef double total = wins + 2.0 * ties + losses
  *     if total == 0.0:
  *         return 0.0             # <<<<<<<<<<<<<<
@@ -17020,7 +18146,7 @@ static CYTHON_INLINE double __pyx_f_17poker_eval_faster_11eval_cython_17one_hand
     __pyx_r = 0.0;
     goto __pyx_L0;
 
-    /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":20
+    /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":106
  * cdef inline double _hand_equity(double wins, double ties, double losses) nogil:
  *     cdef double total = wins + 2.0 * ties + losses
  *     if total == 0.0:             # <<<<<<<<<<<<<<
@@ -17029,7 +18155,7 @@ static CYTHON_INLINE double __pyx_f_17poker_eval_faster_11eval_cython_17one_hand
 */
   }
 
-  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":22
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":108
  *     if total == 0.0:
  *         return 0.0
  *     return (wins + ties) / total             # <<<<<<<<<<<<<<
@@ -17039,7 +18165,7 @@ static CYTHON_INLINE double __pyx_f_17poker_eval_faster_11eval_cython_17one_hand
   __pyx_r = ((__pyx_v_wins + __pyx_v_ties) / __pyx_v_total);
   goto __pyx_L0;
 
-  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":17
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":103
  * 
  * 
  * @cython.cdivision(True)             # <<<<<<<<<<<<<<
@@ -17052,7 +18178,7 @@ static CYTHON_INLINE double __pyx_f_17poker_eval_faster_11eval_cython_17one_hand
   return __pyx_r;
 }
 
-/* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":25
+/* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":111
  * 
  * 
  * @cython.cdivision(True)             # <<<<<<<<<<<<<<
@@ -17060,7 +18186,7 @@ static CYTHON_INLINE double __pyx_f_17poker_eval_faster_11eval_cython_17one_hand
  *     return _hand_equity(results[WIN], results[TIE], results[LOSS])
 */
 
-static PyObject *__pyx_pw_17poker_eval_faster_11eval_cython_17one_hand_evaluate_1hand_to_equity(PyObject *__pyx_self, 
+static PyObject *__pyx_pw_17poker_eval_faster_11eval_cython_17one_hand_evaluate_3hand_to_equity(PyObject *__pyx_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -17077,7 +18203,7 @@ static double __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate_hand
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
 
-  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":27
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":113
  * @cython.cdivision(True)
  * cpdef double hand_to_equity(double[:] results):
  *     return _hand_equity(results[WIN], results[TIE], results[LOSS])             # <<<<<<<<<<<<<<
@@ -17087,11 +18213,11 @@ static double __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate_hand
   __pyx_t_1 = __pyx_v_17poker_eval_faster_11eval_cython_17one_hand_evaluate_WIN;
   __pyx_t_2 = __pyx_v_17poker_eval_faster_11eval_cython_17one_hand_evaluate_TIE;
   __pyx_t_3 = __pyx_v_17poker_eval_faster_11eval_cython_17one_hand_evaluate_LOSS;
-  __pyx_t_4 = __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__hand_equity((*((double *) ( /* dim=0 */ (__pyx_v_results.data + __pyx_t_1 * __pyx_v_results.strides[0]) ))), (*((double *) ( /* dim=0 */ (__pyx_v_results.data + __pyx_t_2 * __pyx_v_results.strides[0]) ))), (*((double *) ( /* dim=0 */ (__pyx_v_results.data + __pyx_t_3 * __pyx_v_results.strides[0]) )))); if (unlikely(__pyx_t_4 == ((double)-1) && PyErr_Occurred())) __PYX_ERR(0, 27, __pyx_L1_error)
+  __pyx_t_4 = __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__hand_equity((*((double *) ( /* dim=0 */ (__pyx_v_results.data + __pyx_t_1 * __pyx_v_results.strides[0]) ))), (*((double *) ( /* dim=0 */ (__pyx_v_results.data + __pyx_t_2 * __pyx_v_results.strides[0]) ))), (*((double *) ( /* dim=0 */ (__pyx_v_results.data + __pyx_t_3 * __pyx_v_results.strides[0]) )))); if (unlikely(__pyx_t_4 == ((double)-1) && PyErr_Occurred())) __PYX_ERR(0, 113, __pyx_L1_error)
   __pyx_r = __pyx_t_4;
   goto __pyx_L0;
 
-  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":25
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":111
  * 
  * 
  * @cython.cdivision(True)             # <<<<<<<<<<<<<<
@@ -17108,15 +18234,15 @@ static double __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate_hand
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_17poker_eval_faster_11eval_cython_17one_hand_evaluate_1hand_to_equity(PyObject *__pyx_self, 
+static PyObject *__pyx_pw_17poker_eval_faster_11eval_cython_17one_hand_evaluate_3hand_to_equity(PyObject *__pyx_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_17poker_eval_faster_11eval_cython_17one_hand_evaluate_1hand_to_equity = {"hand_to_equity", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_17poker_eval_faster_11eval_cython_17one_hand_evaluate_1hand_to_equity, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_17poker_eval_faster_11eval_cython_17one_hand_evaluate_1hand_to_equity(PyObject *__pyx_self, 
+static PyMethodDef __pyx_mdef_17poker_eval_faster_11eval_cython_17one_hand_evaluate_3hand_to_equity = {"hand_to_equity", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_17poker_eval_faster_11eval_cython_17one_hand_evaluate_3hand_to_equity, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_17poker_eval_faster_11eval_cython_17one_hand_evaluate_3hand_to_equity(PyObject *__pyx_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -17146,32 +18272,32 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   {
     PyObject ** const __pyx_pyargnames[] = {&__pyx_mstate_global->__pyx_n_u_results,0};
     const Py_ssize_t __pyx_kwds_len = (__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL(__pyx_kwds) : 0;
-    if (unlikely(__pyx_kwds_len) < 0) __PYX_ERR(0, 25, __pyx_L3_error)
+    if (unlikely(__pyx_kwds_len) < 0) __PYX_ERR(0, 111, __pyx_L3_error)
     if (__pyx_kwds_len > 0) {
       switch (__pyx_nargs) {
         case  1:
         values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 25, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 111, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  0: break;
         default: goto __pyx_L5_argtuple_error;
       }
       const Py_ssize_t kwd_pos_args = __pyx_nargs;
-      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "hand_to_equity", 0) < (0)) __PYX_ERR(0, 25, __pyx_L3_error)
+      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "hand_to_equity", 0) < (0)) __PYX_ERR(0, 111, __pyx_L3_error)
       for (Py_ssize_t i = __pyx_nargs; i < 1; i++) {
-        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("hand_to_equity", 1, 1, 1, i); __PYX_ERR(0, 25, __pyx_L3_error) }
+        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("hand_to_equity", 1, 1, 1, i); __PYX_ERR(0, 111, __pyx_L3_error) }
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
     } else {
       values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 25, __pyx_L3_error)
+      if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 111, __pyx_L3_error)
     }
-    __pyx_v_results = __Pyx_PyObject_to_MemoryviewSlice_ds_double(values[0], PyBUF_WRITABLE); if (unlikely(!__pyx_v_results.memview)) __PYX_ERR(0, 26, __pyx_L3_error)
+    __pyx_v_results = __Pyx_PyObject_to_MemoryviewSlice_ds_double(values[0], PyBUF_WRITABLE); if (unlikely(!__pyx_v_results.memview)) __PYX_ERR(0, 112, __pyx_L3_error)
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("hand_to_equity", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 25, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("hand_to_equity", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 111, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -17183,7 +18309,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_17poker_eval_faster_11eval_cython_17one_hand_evaluate_hand_to_equity(__pyx_self, __pyx_v_results);
+  __pyx_r = __pyx_pf_17poker_eval_faster_11eval_cython_17one_hand_evaluate_2hand_to_equity(__pyx_self, __pyx_v_results);
 
   /* function exit code */
   for (Py_ssize_t __pyx_temp=0; __pyx_temp < (Py_ssize_t)(sizeof(values)/sizeof(values[0])); ++__pyx_temp) {
@@ -17194,7 +18320,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_17poker_eval_faster_11eval_cython_17one_hand_evaluate_hand_to_equity(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_results) {
+static PyObject *__pyx_pf_17poker_eval_faster_11eval_cython_17one_hand_evaluate_2hand_to_equity(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_results) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   double __pyx_t_1;
@@ -17204,9 +18330,9 @@ static PyObject *__pyx_pf_17poker_eval_faster_11eval_cython_17one_hand_evaluate_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("hand_to_equity", 0);
   __Pyx_XDECREF(__pyx_r);
-  if (unlikely(!__pyx_v_results.memview)) { __Pyx_RaiseUnboundLocalError("results"); __PYX_ERR(0, 25, __pyx_L1_error) }
-  __pyx_t_1 = __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate_hand_to_equity(__pyx_v_results, 1); if (unlikely(__pyx_t_1 == ((double)-1) && PyErr_Occurred())) __PYX_ERR(0, 25, __pyx_L1_error)
-  __pyx_t_2 = PyFloat_FromDouble(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 25, __pyx_L1_error)
+  if (unlikely(!__pyx_v_results.memview)) { __Pyx_RaiseUnboundLocalError("results"); __PYX_ERR(0, 111, __pyx_L1_error) }
+  __pyx_t_1 = __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate_hand_to_equity(__pyx_v_results, 1); if (unlikely(__pyx_t_1 == ((double)-1) && PyErr_Occurred())) __PYX_ERR(0, 111, __pyx_L1_error)
+  __pyx_t_2 = PyFloat_FromDouble(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 111, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
@@ -17223,7 +18349,7 @@ static PyObject *__pyx_pf_17poker_eval_faster_11eval_cython_17one_hand_evaluate_
   return __pyx_r;
 }
 
-/* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":29
+/* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":115
  *     return _hand_equity(results[WIN], results[TIE], results[LOSS])
  * 
  * @cython.cdivision(True)             # <<<<<<<<<<<<<<
@@ -17239,18 +18365,18 @@ static CYTHON_INLINE double __pyx_f_17poker_eval_faster_11eval_cython_17one_hand
   int __pyx_clineno = 0;
   PyGILState_STATE __pyx_gilstate_save;
 
-  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":31
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":117
  * @cython.cdivision(True)
  * cdef inline double _hand_to_equity_c(double results[]) nogil:
  *     return _hand_equity(results[WIN], results[TIE], results[LOSS])             # <<<<<<<<<<<<<<
  * 
  * 
 */
-  __pyx_t_1 = __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__hand_equity((__pyx_v_results[__pyx_v_17poker_eval_faster_11eval_cython_17one_hand_evaluate_WIN]), (__pyx_v_results[__pyx_v_17poker_eval_faster_11eval_cython_17one_hand_evaluate_TIE]), (__pyx_v_results[__pyx_v_17poker_eval_faster_11eval_cython_17one_hand_evaluate_LOSS])); if (unlikely(__pyx_t_1 == ((double)-1) && __Pyx_ErrOccurredWithGIL())) __PYX_ERR(0, 31, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__hand_equity((__pyx_v_results[__pyx_v_17poker_eval_faster_11eval_cython_17one_hand_evaluate_WIN]), (__pyx_v_results[__pyx_v_17poker_eval_faster_11eval_cython_17one_hand_evaluate_TIE]), (__pyx_v_results[__pyx_v_17poker_eval_faster_11eval_cython_17one_hand_evaluate_LOSS])); if (unlikely(__pyx_t_1 == ((double)-1) && __Pyx_ErrOccurredWithGIL())) __PYX_ERR(0, 117, __pyx_L1_error)
   __pyx_r = __pyx_t_1;
   goto __pyx_L0;
 
-  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":29
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":115
  *     return _hand_equity(results[WIN], results[TIE], results[LOSS])
  * 
  * @cython.cdivision(True)             # <<<<<<<<<<<<<<
@@ -17268,7 +18394,7 @@ static CYTHON_INLINE double __pyx_f_17poker_eval_faster_11eval_cython_17one_hand
   return __pyx_r;
 }
 
-/* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":34
+/* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":120
  * 
  * 
  * cdef void _all_hands_create_boards(int[:] cards, int len_cards, stdint.uint32_t eval_hand, stdint.uint32_t eval_board,             # <<<<<<<<<<<<<<
@@ -17316,7 +18442,7 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__all_h
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_all_hands_create_boards", 0);
 
-  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":39
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":125
  *         stdint.uint32_t eval_board_turn, eval_board_river
  *         stdint.uint32_t eval_hand_turn, eval_hand_river
  *         int [7] dead_cards = [0,0,0,0,0,0,0]             # <<<<<<<<<<<<<<
@@ -17332,7 +18458,7 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__all_h
   __pyx_t_1[6] = 0;
   memcpy(&(__pyx_v_dead_cards[0]), __pyx_t_1, sizeof(__pyx_v_dead_cards[0]) * (7));
 
-  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":40
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":126
  *         stdint.uint32_t eval_hand_turn, eval_hand_river
  *         int [7] dead_cards = [0,0,0,0,0,0,0]
  *         int *deck = <int *> PyMem_Malloc((52 - len_cards) * sizeof(int))             # <<<<<<<<<<<<<<
@@ -17341,17 +18467,17 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__all_h
 */
   __pyx_v_deck = ((int *)PyMem_Malloc(((52 - __pyx_v_len_cards) * (sizeof(int)))));
 
-  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":41
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":127
  *         int [7] dead_cards = [0,0,0,0,0,0,0]
  *         int *deck = <int *> PyMem_Malloc((52 - len_cards) * sizeof(int))
  *         int len_deck = create_deck(cards, len_cards, deck)  # call func to create deck (rival_cards)             # <<<<<<<<<<<<<<
  *         int a, b, i
  *         double n_simulations = 46.0 if len_cards == 6 else 47.0  # number simulations (turn or river)
 */
-  __pyx_t_2 = __pyx_f_17poker_eval_faster_11eval_cython_4main_create_deck(__pyx_v_cards, __pyx_v_len_cards, __pyx_v_deck); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 41, __pyx_L1_error)
+  __pyx_t_2 = __pyx_f_17poker_eval_faster_11eval_cython_4main_create_deck(__pyx_v_cards, __pyx_v_len_cards, __pyx_v_deck); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 127, __pyx_L1_error)
   __pyx_v_len_deck = __pyx_t_2;
 
-  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":43
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":129
  *         int len_deck = create_deck(cards, len_cards, deck)  # call func to create deck (rival_cards)
  *         int a, b, i
  *         double n_simulations = 46.0 if len_cards == 6 else 47.0  # number simulations (turn or river)             # <<<<<<<<<<<<<<
@@ -17366,7 +18492,7 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__all_h
   }
   __pyx_v_n_simulations = __pyx_t_3;
 
-  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":46
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":132
  *         double tmp_results_turn[3]
  *         double tmp_results_river[3]
  *     for i in range(len_cards):             # <<<<<<<<<<<<<<
@@ -17378,7 +18504,7 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__all_h
   for (__pyx_t_6 = 0; __pyx_t_6 < __pyx_t_5; __pyx_t_6+=1) {
     __pyx_v_i = __pyx_t_6;
 
-    /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":47
+    /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":133
  *         double tmp_results_river[3]
  *     for i in range(len_cards):
  *         dead_cards[i] = cards[i]             # <<<<<<<<<<<<<<
@@ -17389,7 +18515,7 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__all_h
     (__pyx_v_dead_cards[__pyx_v_i]) = (*((int *) ( /* dim=0 */ (__pyx_v_cards.data + __pyx_t_7 * __pyx_v_cards.strides[0]) )));
   }
 
-  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":50
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":136
  * 
  *     cdef double eq
  *     for a in range(len_deck):             # <<<<<<<<<<<<<<
@@ -17401,29 +18527,29 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__all_h
   for (__pyx_t_6 = 0; __pyx_t_6 < __pyx_t_5; __pyx_t_6+=1) {
     __pyx_v_a = __pyx_t_6;
 
-    /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":51
+    /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":137
  *     cdef double eq
  *     for a in range(len_deck):
  *         eval_board_turn = handdat[eval_board + deck[a]]             # <<<<<<<<<<<<<<
  *         eval_hand_turn = handdat[eval_hand + deck[a]]
  *         if len_cards == 6:  # just complete river card
 */
-    if (unlikely(!__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.memview)) { __Pyx_RaiseUnboundLocalError("handdat"); __PYX_ERR(0, 51, __pyx_L1_error) }
+    if (unlikely(!__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.memview)) { __Pyx_RaiseUnboundLocalError("handdat"); __PYX_ERR(0, 137, __pyx_L1_error) }
     __pyx_t_8 = (__pyx_v_eval_board + (__pyx_v_deck[__pyx_v_a]));
     __pyx_v_eval_board_turn = (*((uint32_t const  *) ( /* dim=0 */ (__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.data + __pyx_t_8 * __pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.strides[0]) )));
 
-    /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":52
+    /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":138
  *     for a in range(len_deck):
  *         eval_board_turn = handdat[eval_board + deck[a]]
  *         eval_hand_turn = handdat[eval_hand + deck[a]]             # <<<<<<<<<<<<<<
  *         if len_cards == 6:  # just complete river card
  *             dead_cards[6] = deck[a]  # add river card
 */
-    if (unlikely(!__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.memview)) { __Pyx_RaiseUnboundLocalError("handdat"); __PYX_ERR(0, 52, __pyx_L1_error) }
+    if (unlikely(!__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.memview)) { __Pyx_RaiseUnboundLocalError("handdat"); __PYX_ERR(0, 138, __pyx_L1_error) }
     __pyx_t_8 = (__pyx_v_eval_hand + (__pyx_v_deck[__pyx_v_a]));
     __pyx_v_eval_hand_turn = (*((uint32_t const  *) ( /* dim=0 */ (__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.data + __pyx_t_8 * __pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.strides[0]) )));
 
-    /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":53
+    /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":139
  *         eval_board_turn = handdat[eval_board + deck[a]]
  *         eval_hand_turn = handdat[eval_hand + deck[a]]
  *         if len_cards == 6:  # just complete river card             # <<<<<<<<<<<<<<
@@ -17433,7 +18559,7 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__all_h
     __pyx_t_4 = (__pyx_v_len_cards == 6);
     if (__pyx_t_4) {
 
-      /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":54
+      /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":140
  *         eval_hand_turn = handdat[eval_hand + deck[a]]
  *         if len_cards == 6:  # just complete river card
  *             dead_cards[6] = deck[a]  # add river card             # <<<<<<<<<<<<<<
@@ -17442,7 +18568,7 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__all_h
 */
       (__pyx_v_dead_cards[6]) = (__pyx_v_deck[__pyx_v_a]);
 
-      /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":55
+      /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":141
  *         if len_cards == 6:  # just complete river card
  *             dead_cards[6] = deck[a]  # add river card
  *             for i in range(3):             # <<<<<<<<<<<<<<
@@ -17452,7 +18578,7 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__all_h
       for (__pyx_t_9 = 0; __pyx_t_9 < 3; __pyx_t_9+=1) {
         __pyx_v_i = __pyx_t_9;
 
-        /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":56
+        /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":142
  *             dead_cards[6] = deck[a]  # add river card
  *             for i in range(3):
  *                 tmp_results_turn[i] = 0.0             # <<<<<<<<<<<<<<
@@ -17462,43 +18588,43 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__all_h
         (__pyx_v_tmp_results_turn[__pyx_v_i]) = 0.0;
       }
 
-      /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":57
+      /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":143
  *             for i in range(3):
  *                 tmp_results_turn[i] = 0.0
  *             _evaluate_all_rival_hands(dead_cards, 7, eval_hand_turn, eval_board_turn, tmp_results_turn)             # <<<<<<<<<<<<<<
  *             eq = _hand_to_equity_c(tmp_results_turn)
  *             distributions[0, deck[a]] = eq
 */
-      __pyx_t_12 = __pyx_format_from_typeinfo(&__Pyx_TypeInfo_int); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 57, __pyx_L1_error)
+      __pyx_t_12 = __pyx_format_from_typeinfo(&__Pyx_TypeInfo_int); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 143, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
-      __pyx_t_11 = Py_BuildValue("("  __PYX_BUILD_PY_SSIZE_T  ")", ((Py_ssize_t)7)); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 57, __pyx_L1_error)
+      __pyx_t_11 = Py_BuildValue("("  __PYX_BUILD_PY_SSIZE_T  ")", ((Py_ssize_t)7)); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 143, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_11);
       #if CYTHON_COMPILING_IN_LIMITED_API
-      __pyx_t_13 = PyBytes_AsString(__pyx_t_12); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 57, __pyx_L1_error)
+      __pyx_t_13 = PyBytes_AsString(__pyx_t_12); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 143, __pyx_L1_error)
       #else
       __pyx_t_13 = PyBytes_AS_STRING(__pyx_t_12);
       #endif
-      __pyx_t_10 = __pyx_array_new(__pyx_t_11, sizeof(int), __pyx_t_13, "fortran", (char *) __pyx_v_dead_cards); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 57, __pyx_L1_error)
+      __pyx_t_10 = __pyx_array_new(__pyx_t_11, sizeof(int), __pyx_t_13, "fortran", (char *) __pyx_v_dead_cards); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 143, __pyx_L1_error)
       __Pyx_GOTREF((PyObject *)__pyx_t_10);
       __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
       __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-      __pyx_t_14 = __Pyx_PyObject_to_MemoryviewSlice_ds_int(((PyObject *)__pyx_t_10), PyBUF_WRITABLE); if (unlikely(!__pyx_t_14.memview)) __PYX_ERR(0, 57, __pyx_L1_error)
+      __pyx_t_14 = __Pyx_PyObject_to_MemoryviewSlice_ds_int(((PyObject *)__pyx_t_10), PyBUF_WRITABLE); if (unlikely(!__pyx_t_14.memview)) __PYX_ERR(0, 143, __pyx_L1_error)
       __Pyx_DECREF((PyObject *)__pyx_t_10); __pyx_t_10 = 0;
-      __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__evaluate_all_rival_hands(__pyx_t_14, 7, __pyx_v_eval_hand_turn, __pyx_v_eval_board_turn, __pyx_v_tmp_results_turn); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 57, __pyx_L1_error)
+      __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__evaluate_all_rival_hands(__pyx_t_14, 7, __pyx_v_eval_hand_turn, __pyx_v_eval_board_turn, __pyx_v_tmp_results_turn); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 143, __pyx_L1_error)
       __PYX_XCLEAR_MEMVIEW(&__pyx_t_14, 1);
       __pyx_t_14.memview = NULL; __pyx_t_14.data = NULL;
 
-      /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":58
+      /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":144
  *                 tmp_results_turn[i] = 0.0
  *             _evaluate_all_rival_hands(dead_cards, 7, eval_hand_turn, eval_board_turn, tmp_results_turn)
  *             eq = _hand_to_equity_c(tmp_results_turn)             # <<<<<<<<<<<<<<
  *             distributions[0, deck[a]] = eq
  *             results[0] += tmp_results_turn[0]
 */
-      __pyx_t_3 = __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__hand_to_equity_c(__pyx_v_tmp_results_turn); if (unlikely(__pyx_t_3 == ((double)-1) && PyErr_Occurred())) __PYX_ERR(0, 58, __pyx_L1_error)
+      __pyx_t_3 = __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__hand_to_equity_c(__pyx_v_tmp_results_turn); if (unlikely(__pyx_t_3 == ((double)-1) && PyErr_Occurred())) __PYX_ERR(0, 144, __pyx_L1_error)
       __pyx_v_eq = __pyx_t_3;
 
-      /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":59
+      /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":145
  *             _evaluate_all_rival_hands(dead_cards, 7, eval_hand_turn, eval_board_turn, tmp_results_turn)
  *             eq = _hand_to_equity_c(tmp_results_turn)
  *             distributions[0, deck[a]] = eq             # <<<<<<<<<<<<<<
@@ -17509,7 +18635,7 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__all_h
       __pyx_t_15 = (__pyx_v_deck[__pyx_v_a]);
       *((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_distributions.data + __pyx_t_7 * __pyx_v_distributions.strides[0]) ) + __pyx_t_15 * __pyx_v_distributions.strides[1]) )) = __pyx_v_eq;
 
-      /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":60
+      /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":146
  *             eq = _hand_to_equity_c(tmp_results_turn)
  *             distributions[0, deck[a]] = eq
  *             results[0] += tmp_results_turn[0]             # <<<<<<<<<<<<<<
@@ -17519,7 +18645,7 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__all_h
       __pyx_t_16 = 0;
       (__pyx_v_results[__pyx_t_16]) = ((__pyx_v_results[__pyx_t_16]) + (__pyx_v_tmp_results_turn[0]));
 
-      /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":61
+      /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":147
  *             distributions[0, deck[a]] = eq
  *             results[0] += tmp_results_turn[0]
  *             results[1] += tmp_results_turn[1]             # <<<<<<<<<<<<<<
@@ -17529,7 +18655,7 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__all_h
       __pyx_t_16 = 1;
       (__pyx_v_results[__pyx_t_16]) = ((__pyx_v_results[__pyx_t_16]) + (__pyx_v_tmp_results_turn[1]));
 
-      /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":62
+      /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":148
  *             results[0] += tmp_results_turn[0]
  *             results[1] += tmp_results_turn[1]
  *             results[2] += tmp_results_turn[2]             # <<<<<<<<<<<<<<
@@ -17539,7 +18665,7 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__all_h
       __pyx_t_16 = 2;
       (__pyx_v_results[__pyx_t_16]) = ((__pyx_v_results[__pyx_t_16]) + (__pyx_v_tmp_results_turn[2]));
 
-      /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":63
+      /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":149
  *             results[1] += tmp_results_turn[1]
  *             results[2] += tmp_results_turn[2]
  *             continue             # <<<<<<<<<<<<<<
@@ -17548,7 +18674,7 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__all_h
 */
       goto __pyx_L5_continue;
 
-      /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":53
+      /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":139
  *         eval_board_turn = handdat[eval_board + deck[a]]
  *         eval_hand_turn = handdat[eval_hand + deck[a]]
  *         if len_cards == 6:  # just complete river card             # <<<<<<<<<<<<<<
@@ -17557,7 +18683,7 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__all_h
 */
     }
 
-    /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":65
+    /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":151
  *             continue
  * 
  *         dead_cards[5] = deck[a]  # add turn card             # <<<<<<<<<<<<<<
@@ -17566,7 +18692,7 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__all_h
 */
     (__pyx_v_dead_cards[5]) = (__pyx_v_deck[__pyx_v_a]);
 
-    /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":66
+    /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":152
  * 
  *         dead_cards[5] = deck[a]  # add turn card
  *         for b in range(a+1, len_deck):  # complete river after simulate turn             # <<<<<<<<<<<<<<
@@ -17578,29 +18704,29 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__all_h
     for (__pyx_t_18 = (__pyx_v_a + 1); __pyx_t_18 < __pyx_t_17; __pyx_t_18+=1) {
       __pyx_v_b = __pyx_t_18;
 
-      /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":67
+      /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":153
  *         dead_cards[5] = deck[a]  # add turn card
  *         for b in range(a+1, len_deck):  # complete river after simulate turn
  *             eval_board_river = handdat[eval_board_turn + deck[b]]             # <<<<<<<<<<<<<<
  *             eval_hand_river = handdat[eval_hand_turn + deck[b]]
  *             dead_cards[6] = deck[b]  # add river card
 */
-      if (unlikely(!__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.memview)) { __Pyx_RaiseUnboundLocalError("handdat"); __PYX_ERR(0, 67, __pyx_L1_error) }
+      if (unlikely(!__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.memview)) { __Pyx_RaiseUnboundLocalError("handdat"); __PYX_ERR(0, 153, __pyx_L1_error) }
       __pyx_t_8 = (__pyx_v_eval_board_turn + (__pyx_v_deck[__pyx_v_b]));
       __pyx_v_eval_board_river = (*((uint32_t const  *) ( /* dim=0 */ (__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.data + __pyx_t_8 * __pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.strides[0]) )));
 
-      /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":68
+      /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":154
  *         for b in range(a+1, len_deck):  # complete river after simulate turn
  *             eval_board_river = handdat[eval_board_turn + deck[b]]
  *             eval_hand_river = handdat[eval_hand_turn + deck[b]]             # <<<<<<<<<<<<<<
  *             dead_cards[6] = deck[b]  # add river card
  *             for i in range(3):
 */
-      if (unlikely(!__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.memview)) { __Pyx_RaiseUnboundLocalError("handdat"); __PYX_ERR(0, 68, __pyx_L1_error) }
+      if (unlikely(!__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.memview)) { __Pyx_RaiseUnboundLocalError("handdat"); __PYX_ERR(0, 154, __pyx_L1_error) }
       __pyx_t_8 = (__pyx_v_eval_hand_turn + (__pyx_v_deck[__pyx_v_b]));
       __pyx_v_eval_hand_river = (*((uint32_t const  *) ( /* dim=0 */ (__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.data + __pyx_t_8 * __pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.strides[0]) )));
 
-      /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":69
+      /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":155
  *             eval_board_river = handdat[eval_board_turn + deck[b]]
  *             eval_hand_river = handdat[eval_hand_turn + deck[b]]
  *             dead_cards[6] = deck[b]  # add river card             # <<<<<<<<<<<<<<
@@ -17609,7 +18735,7 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__all_h
 */
       (__pyx_v_dead_cards[6]) = (__pyx_v_deck[__pyx_v_b]);
 
-      /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":70
+      /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":156
  *             eval_hand_river = handdat[eval_hand_turn + deck[b]]
  *             dead_cards[6] = deck[b]  # add river card
  *             for i in range(3):             # <<<<<<<<<<<<<<
@@ -17619,7 +18745,7 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__all_h
       for (__pyx_t_19 = 0; __pyx_t_19 < 3; __pyx_t_19+=1) {
         __pyx_v_i = __pyx_t_19;
 
-        /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":71
+        /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":157
  *             dead_cards[6] = deck[b]  # add river card
  *             for i in range(3):
  *                 tmp_results_river[i] = 0.0             # <<<<<<<<<<<<<<
@@ -17629,51 +18755,51 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__all_h
         (__pyx_v_tmp_results_river[__pyx_v_i]) = 0.0;
       }
 
-      /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":72
+      /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":158
  *             for i in range(3):
  *                 tmp_results_river[i] = 0.0
  *             _evaluate_all_rival_hands(dead_cards, 7, eval_hand_river, eval_board_river,             # <<<<<<<<<<<<<<
  *                                                     tmp_results_river)
  *             eq = _hand_to_equity_c(tmp_results_river)
 */
-      __pyx_t_11 = __pyx_format_from_typeinfo(&__Pyx_TypeInfo_int); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 72, __pyx_L1_error)
+      __pyx_t_11 = __pyx_format_from_typeinfo(&__Pyx_TypeInfo_int); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 158, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_11);
-      __pyx_t_12 = Py_BuildValue("("  __PYX_BUILD_PY_SSIZE_T  ")", ((Py_ssize_t)7)); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 72, __pyx_L1_error)
+      __pyx_t_12 = Py_BuildValue("("  __PYX_BUILD_PY_SSIZE_T  ")", ((Py_ssize_t)7)); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 158, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
       #if CYTHON_COMPILING_IN_LIMITED_API
-      __pyx_t_13 = PyBytes_AsString(__pyx_t_11); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 72, __pyx_L1_error)
+      __pyx_t_13 = PyBytes_AsString(__pyx_t_11); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 158, __pyx_L1_error)
       #else
       __pyx_t_13 = PyBytes_AS_STRING(__pyx_t_11);
       #endif
-      __pyx_t_10 = __pyx_array_new(__pyx_t_12, sizeof(int), __pyx_t_13, "fortran", (char *) __pyx_v_dead_cards); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 72, __pyx_L1_error)
+      __pyx_t_10 = __pyx_array_new(__pyx_t_12, sizeof(int), __pyx_t_13, "fortran", (char *) __pyx_v_dead_cards); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 158, __pyx_L1_error)
       __Pyx_GOTREF((PyObject *)__pyx_t_10);
       __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
       __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-      __pyx_t_14 = __Pyx_PyObject_to_MemoryviewSlice_ds_int(((PyObject *)__pyx_t_10), PyBUF_WRITABLE); if (unlikely(!__pyx_t_14.memview)) __PYX_ERR(0, 72, __pyx_L1_error)
+      __pyx_t_14 = __Pyx_PyObject_to_MemoryviewSlice_ds_int(((PyObject *)__pyx_t_10), PyBUF_WRITABLE); if (unlikely(!__pyx_t_14.memview)) __PYX_ERR(0, 158, __pyx_L1_error)
       __Pyx_DECREF((PyObject *)__pyx_t_10); __pyx_t_10 = 0;
 
-      /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":73
+      /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":159
  *                 tmp_results_river[i] = 0.0
  *             _evaluate_all_rival_hands(dead_cards, 7, eval_hand_river, eval_board_river,
  *                                                     tmp_results_river)             # <<<<<<<<<<<<<<
  *             eq = _hand_to_equity_c(tmp_results_river)
  *             distributions[deck[a], deck[b]] = eq
 */
-      __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__evaluate_all_rival_hands(__pyx_t_14, 7, __pyx_v_eval_hand_river, __pyx_v_eval_board_river, __pyx_v_tmp_results_river); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 72, __pyx_L1_error)
+      __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__evaluate_all_rival_hands(__pyx_t_14, 7, __pyx_v_eval_hand_river, __pyx_v_eval_board_river, __pyx_v_tmp_results_river); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 158, __pyx_L1_error)
       __PYX_XCLEAR_MEMVIEW(&__pyx_t_14, 1);
       __pyx_t_14.memview = NULL; __pyx_t_14.data = NULL;
 
-      /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":74
+      /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":160
  *             _evaluate_all_rival_hands(dead_cards, 7, eval_hand_river, eval_board_river,
  *                                                     tmp_results_river)
  *             eq = _hand_to_equity_c(tmp_results_river)             # <<<<<<<<<<<<<<
  *             distributions[deck[a], deck[b]] = eq
  *             distributions[deck[b], deck[a]] = eq
 */
-      __pyx_t_3 = __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__hand_to_equity_c(__pyx_v_tmp_results_river); if (unlikely(__pyx_t_3 == ((double)-1) && PyErr_Occurred())) __PYX_ERR(0, 74, __pyx_L1_error)
+      __pyx_t_3 = __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__hand_to_equity_c(__pyx_v_tmp_results_river); if (unlikely(__pyx_t_3 == ((double)-1) && PyErr_Occurred())) __PYX_ERR(0, 160, __pyx_L1_error)
       __pyx_v_eq = __pyx_t_3;
 
-      /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":75
+      /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":161
  *                                                     tmp_results_river)
  *             eq = _hand_to_equity_c(tmp_results_river)
  *             distributions[deck[a], deck[b]] = eq             # <<<<<<<<<<<<<<
@@ -17684,7 +18810,7 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__all_h
       __pyx_t_7 = (__pyx_v_deck[__pyx_v_b]);
       *((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_distributions.data + __pyx_t_15 * __pyx_v_distributions.strides[0]) ) + __pyx_t_7 * __pyx_v_distributions.strides[1]) )) = __pyx_v_eq;
 
-      /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":76
+      /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":162
  *             eq = _hand_to_equity_c(tmp_results_river)
  *             distributions[deck[a], deck[b]] = eq
  *             distributions[deck[b], deck[a]] = eq             # <<<<<<<<<<<<<<
@@ -17695,7 +18821,7 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__all_h
       __pyx_t_15 = (__pyx_v_deck[__pyx_v_a]);
       *((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_distributions.data + __pyx_t_7 * __pyx_v_distributions.strides[0]) ) + __pyx_t_15 * __pyx_v_distributions.strides[1]) )) = __pyx_v_eq;
 
-      /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":77
+      /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":163
  *             distributions[deck[a], deck[b]] = eq
  *             distributions[deck[b], deck[a]] = eq
  *             results[0] += tmp_results_river[0]             # <<<<<<<<<<<<<<
@@ -17705,7 +18831,7 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__all_h
       __pyx_t_16 = 0;
       (__pyx_v_results[__pyx_t_16]) = ((__pyx_v_results[__pyx_t_16]) + (__pyx_v_tmp_results_river[0]));
 
-      /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":78
+      /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":164
  *             distributions[deck[b], deck[a]] = eq
  *             results[0] += tmp_results_river[0]
  *             results[1] += tmp_results_river[1]             # <<<<<<<<<<<<<<
@@ -17715,7 +18841,7 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__all_h
       __pyx_t_16 = 1;
       (__pyx_v_results[__pyx_t_16]) = ((__pyx_v_results[__pyx_t_16]) + (__pyx_v_tmp_results_river[1]));
 
-      /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":79
+      /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":165
  *             results[0] += tmp_results_river[0]
  *             results[1] += tmp_results_river[1]
  *             results[2] += tmp_results_river[2]             # <<<<<<<<<<<<<<
@@ -17728,7 +18854,7 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__all_h
     __pyx_L5_continue:;
   }
 
-  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":81
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":167
  *             results[2] += tmp_results_river[2]
  * 
  *     PyMem_Free(deck)             # <<<<<<<<<<<<<<
@@ -17737,7 +18863,7 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__all_h
 */
   PyMem_Free(__pyx_v_deck);
 
-  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":82
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":168
  * 
  *     PyMem_Free(deck)
  *     return             # <<<<<<<<<<<<<<
@@ -17746,7 +18872,7 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__all_h
 */
   goto __pyx_L0;
 
-  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":34
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":120
  * 
  * 
  * cdef void _all_hands_create_boards(int[:] cards, int len_cards, stdint.uint32_t eval_hand, stdint.uint32_t eval_board,             # <<<<<<<<<<<<<<
@@ -17765,7 +18891,7 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__all_h
   __Pyx_RefNannyFinishContext();
 }
 
-/* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":85
+/* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":171
  * 
  * 
  * cdef void _evaluate_all_rival_hands(int[:] dead_cards, int len_dead_cards, stdint.uint32_t eval_hand,             # <<<<<<<<<<<<<<
@@ -17798,7 +18924,7 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__evalu
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
 
-  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":94
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":180
  *     cdef:
  *         stdint.uint32_t tmp_sum, first_eval_rival, eval_rival
  *         double win=0.0, loss=0.0, tie=0.0             # <<<<<<<<<<<<<<
@@ -17809,7 +18935,7 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__evalu
   __pyx_v_loss = 0.0;
   __pyx_v_tie = 0.0;
 
-  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":96
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":182
  *         double win=0.0, loss=0.0, tie=0.0
  *         int c1, c2, card1, card2
  *         int *rival_cards = <int *> PyMem_Malloc((52 - len_dead_cards) * sizeof(int))             # <<<<<<<<<<<<<<
@@ -17818,17 +18944,17 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__evalu
 */
   __pyx_v_rival_cards = ((int *)PyMem_Malloc(((52 - __pyx_v_len_dead_cards) * (sizeof(int)))));
 
-  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":97
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":183
  *         int c1, c2, card1, card2
  *         int *rival_cards = <int *> PyMem_Malloc((52 - len_dead_cards) * sizeof(int))
  *         int num_cards = create_deck(dead_cards, len_dead_cards, rival_cards)  # call func to create deck (rival_cards)             # <<<<<<<<<<<<<<
  *     # evaluate all rival hands possibles
  *     with nogil:
 */
-  __pyx_t_1 = __pyx_f_17poker_eval_faster_11eval_cython_4main_create_deck(__pyx_v_dead_cards, __pyx_v_len_dead_cards, __pyx_v_rival_cards); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 97, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_17poker_eval_faster_11eval_cython_4main_create_deck(__pyx_v_dead_cards, __pyx_v_len_dead_cards, __pyx_v_rival_cards); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 183, __pyx_L1_error)
   __pyx_v_num_cards = __pyx_t_1;
 
-  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":99
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":185
  *         int num_cards = create_deck(dead_cards, len_dead_cards, rival_cards)  # call func to create deck (rival_cards)
  *     # evaluate all rival hands possibles
  *     with nogil:             # <<<<<<<<<<<<<<
@@ -17841,7 +18967,7 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__evalu
       __Pyx_FastGIL_Remember();
       /*try:*/ {
 
-        /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":100
+        /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":186
  *     # evaluate all rival hands possibles
  *     with nogil:
  *         for c1 in range(num_cards):             # <<<<<<<<<<<<<<
@@ -17853,7 +18979,7 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__evalu
         for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
           __pyx_v_c1 = __pyx_t_3;
 
-          /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":101
+          /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":187
  *     with nogil:
  *         for c1 in range(num_cards):
  *             card1 = rival_cards[c1]             # <<<<<<<<<<<<<<
@@ -17862,7 +18988,7 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__evalu
 */
           __pyx_v_card1 = (__pyx_v_rival_cards[__pyx_v_c1]);
 
-          /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":102
+          /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":188
  *         for c1 in range(num_cards):
  *             card1 = rival_cards[c1]
  *             tmp_sum = eval_board + card1             # <<<<<<<<<<<<<<
@@ -17871,18 +18997,18 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__evalu
 */
           __pyx_v_tmp_sum = (__pyx_v_eval_board + __pyx_v_card1);
 
-          /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":103
+          /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":189
  *             card1 = rival_cards[c1]
  *             tmp_sum = eval_board + card1
  *             first_eval_rival = handdat[tmp_sum]             # <<<<<<<<<<<<<<
  *             for c2 in range(c1 + 1, num_cards):
  *                 card2 = rival_cards[c2]
 */
-          if (unlikely(!__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.memview)) { __Pyx_RaiseUnboundLocalErrorNogil("handdat"); __PYX_ERR(0, 103, __pyx_L4_error) }
+          if (unlikely(!__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.memview)) { __Pyx_RaiseUnboundLocalErrorNogil("handdat"); __PYX_ERR(0, 189, __pyx_L4_error) }
           __pyx_t_4 = __pyx_v_tmp_sum;
           __pyx_v_first_eval_rival = (*((uint32_t const  *) ( /* dim=0 */ (__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.data + __pyx_t_4 * __pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.strides[0]) )));
 
-          /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":104
+          /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":190
  *             tmp_sum = eval_board + card1
  *             first_eval_rival = handdat[tmp_sum]
  *             for c2 in range(c1 + 1, num_cards):             # <<<<<<<<<<<<<<
@@ -17894,7 +19020,7 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__evalu
           for (__pyx_t_7 = (__pyx_v_c1 + 1); __pyx_t_7 < __pyx_t_6; __pyx_t_7+=1) {
             __pyx_v_c2 = __pyx_t_7;
 
-            /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":105
+            /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":191
  *             first_eval_rival = handdat[tmp_sum]
  *             for c2 in range(c1 + 1, num_cards):
  *                 card2 = rival_cards[c2]             # <<<<<<<<<<<<<<
@@ -17903,7 +19029,7 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__evalu
 */
             __pyx_v_card2 = (__pyx_v_rival_cards[__pyx_v_c2]);
 
-            /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":106
+            /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":192
  *             for c2 in range(c1 + 1, num_cards):
  *                 card2 = rival_cards[c2]
  *                 tmp_sum = first_eval_rival + card2             # <<<<<<<<<<<<<<
@@ -17912,18 +19038,18 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__evalu
 */
             __pyx_v_tmp_sum = (__pyx_v_first_eval_rival + __pyx_v_card2);
 
-            /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":107
+            /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":193
  *                 card2 = rival_cards[c2]
  *                 tmp_sum = first_eval_rival + card2
  *                 eval_rival = handdat[tmp_sum]             # <<<<<<<<<<<<<<
  *                 if len_dead_cards < 7:
  *                     eval_rival = handdat[eval_rival]
 */
-            if (unlikely(!__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.memview)) { __Pyx_RaiseUnboundLocalErrorNogil("handdat"); __PYX_ERR(0, 107, __pyx_L4_error) }
+            if (unlikely(!__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.memview)) { __Pyx_RaiseUnboundLocalErrorNogil("handdat"); __PYX_ERR(0, 193, __pyx_L4_error) }
             __pyx_t_4 = __pyx_v_tmp_sum;
             __pyx_v_eval_rival = (*((uint32_t const  *) ( /* dim=0 */ (__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.data + __pyx_t_4 * __pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.strides[0]) )));
 
-            /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":108
+            /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":194
  *                 tmp_sum = first_eval_rival + card2
  *                 eval_rival = handdat[tmp_sum]
  *                 if len_dead_cards < 7:             # <<<<<<<<<<<<<<
@@ -17933,18 +19059,18 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__evalu
             __pyx_t_8 = (__pyx_v_len_dead_cards < 7);
             if (__pyx_t_8) {
 
-              /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":109
+              /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":195
  *                 eval_rival = handdat[tmp_sum]
  *                 if len_dead_cards < 7:
  *                     eval_rival = handdat[eval_rival]             # <<<<<<<<<<<<<<
  *                 if eval_hand > eval_rival:
  *                     win += 1.0
 */
-              if (unlikely(!__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.memview)) { __Pyx_RaiseUnboundLocalErrorNogil("handdat"); __PYX_ERR(0, 109, __pyx_L4_error) }
+              if (unlikely(!__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.memview)) { __Pyx_RaiseUnboundLocalErrorNogil("handdat"); __PYX_ERR(0, 195, __pyx_L4_error) }
               __pyx_t_4 = __pyx_v_eval_rival;
               __pyx_v_eval_rival = (*((uint32_t const  *) ( /* dim=0 */ (__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.data + __pyx_t_4 * __pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.strides[0]) )));
 
-              /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":108
+              /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":194
  *                 tmp_sum = first_eval_rival + card2
  *                 eval_rival = handdat[tmp_sum]
  *                 if len_dead_cards < 7:             # <<<<<<<<<<<<<<
@@ -17953,7 +19079,7 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__evalu
 */
             }
 
-            /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":110
+            /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":196
  *                 if len_dead_cards < 7:
  *                     eval_rival = handdat[eval_rival]
  *                 if eval_hand > eval_rival:             # <<<<<<<<<<<<<<
@@ -17963,7 +19089,7 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__evalu
             __pyx_t_8 = (__pyx_v_eval_hand > __pyx_v_eval_rival);
             if (__pyx_t_8) {
 
-              /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":111
+              /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":197
  *                     eval_rival = handdat[eval_rival]
  *                 if eval_hand > eval_rival:
  *                     win += 1.0             # <<<<<<<<<<<<<<
@@ -17972,7 +19098,7 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__evalu
 */
               __pyx_v_win = (__pyx_v_win + 1.0);
 
-              /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":110
+              /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":196
  *                 if len_dead_cards < 7:
  *                     eval_rival = handdat[eval_rival]
  *                 if eval_hand > eval_rival:             # <<<<<<<<<<<<<<
@@ -17982,7 +19108,7 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__evalu
               goto __pyx_L11;
             }
 
-            /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":112
+            /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":198
  *                 if eval_hand > eval_rival:
  *                     win += 1.0
  *                 elif eval_hand == eval_rival:             # <<<<<<<<<<<<<<
@@ -17992,7 +19118,7 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__evalu
             __pyx_t_8 = (__pyx_v_eval_hand == __pyx_v_eval_rival);
             if (__pyx_t_8) {
 
-              /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":113
+              /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":199
  *                     win += 1.0
  *                 elif eval_hand == eval_rival:
  *                     tie += 1.0             # <<<<<<<<<<<<<<
@@ -18001,7 +19127,7 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__evalu
 */
               __pyx_v_tie = (__pyx_v_tie + 1.0);
 
-              /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":112
+              /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":198
  *                 if eval_hand > eval_rival:
  *                     win += 1.0
  *                 elif eval_hand == eval_rival:             # <<<<<<<<<<<<<<
@@ -18011,7 +19137,7 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__evalu
               goto __pyx_L11;
             }
 
-            /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":115
+            /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":201
  *                     tie += 1.0
  *                 else:
  *                     loss += 1.0             # <<<<<<<<<<<<<<
@@ -18026,7 +19152,7 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__evalu
         }
       }
 
-      /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":99
+      /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":185
  *         int num_cards = create_deck(dead_cards, len_dead_cards, rival_cards)  # call func to create deck (rival_cards)
  *     # evaluate all rival hands possibles
  *     with nogil:             # <<<<<<<<<<<<<<
@@ -18048,7 +19174,7 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__evalu
       }
   }
 
-  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":117
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":203
  *                     loss += 1.0
  * 
  *     PyMem_Free(rival_cards)             # <<<<<<<<<<<<<<
@@ -18057,7 +19183,7 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__evalu
 */
   PyMem_Free(__pyx_v_rival_cards);
 
-  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":118
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":204
  * 
  *     PyMem_Free(rival_cards)
  *     results[WIN] += win             # <<<<<<<<<<<<<<
@@ -18067,7 +19193,7 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__evalu
   __pyx_t_1 = __pyx_v_17poker_eval_faster_11eval_cython_17one_hand_evaluate_WIN;
   (__pyx_v_results[__pyx_t_1]) = ((__pyx_v_results[__pyx_t_1]) + __pyx_v_win);
 
-  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":119
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":205
  *     PyMem_Free(rival_cards)
  *     results[WIN] += win
  *     results[TIE] += tie / 2             # <<<<<<<<<<<<<<
@@ -18077,7 +19203,7 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__evalu
   __pyx_t_1 = __pyx_v_17poker_eval_faster_11eval_cython_17one_hand_evaluate_TIE;
   (__pyx_v_results[__pyx_t_1]) = ((__pyx_v_results[__pyx_t_1]) + (__pyx_v_tie / 2.0));
 
-  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":120
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":206
  *     results[WIN] += win
  *     results[TIE] += tie / 2
  *     results[LOSS] += loss             # <<<<<<<<<<<<<<
@@ -18087,7 +19213,7 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__evalu
   __pyx_t_1 = __pyx_v_17poker_eval_faster_11eval_cython_17one_hand_evaluate_LOSS;
   (__pyx_v_results[__pyx_t_1]) = ((__pyx_v_results[__pyx_t_1]) + __pyx_v_loss);
 
-  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":85
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":171
  * 
  * 
  * cdef void _evaluate_all_rival_hands(int[:] dead_cards, int len_dead_cards, stdint.uint32_t eval_hand,             # <<<<<<<<<<<<<<
@@ -18102,7 +19228,7 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__evalu
   __pyx_L0:;
 }
 
-/* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":123
+/* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":209
  * 
  * 
  * cpdef object evaluate_one_hand_vs_all_c(int[:] cards, double[:,:] distributions, incomplete_board=False):             # <<<<<<<<<<<<<<
@@ -18110,7 +19236,7 @@ static void __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__evalu
  *     Evaluate one hand vs all other hands in one specific board
 */
 
-static PyObject *__pyx_pw_17poker_eval_faster_11eval_cython_17one_hand_evaluate_3evaluate_one_hand_vs_all_c(PyObject *__pyx_self, 
+static PyObject *__pyx_pw_17poker_eval_faster_11eval_cython_17one_hand_evaluate_5evaluate_one_hand_vs_all_c(PyObject *__pyx_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -18148,7 +19274,7 @@ static PyObject *__pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate_e
     }
   }
 
-  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":134
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":220
  *         stdint.uint32_t tmp_sum, eval_board, eval_hand
  *         int i
  *         int len_cards = cards.shape[0]             # <<<<<<<<<<<<<<
@@ -18157,7 +19283,7 @@ static PyObject *__pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate_e
 */
   __pyx_v_len_cards = (__pyx_v_cards.shape[0]);
 
-  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":135
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":221
  *         int i
  *         int len_cards = cards.shape[0]
  *         object results_np = np.zeros(3, dtype=np.float64)             # <<<<<<<<<<<<<<
@@ -18165,14 +19291,14 @@ static PyObject *__pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate_e
  *     # eval board
 */
   __pyx_t_2 = NULL;
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_mstate_global->__pyx_n_u_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 135, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_mstate_global->__pyx_n_u_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 221, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_mstate_global->__pyx_n_u_zeros); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 135, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_mstate_global->__pyx_n_u_zeros); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 221, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_mstate_global->__pyx_n_u_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 135, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_mstate_global->__pyx_n_u_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 221, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_mstate_global->__pyx_n_u_float64); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 135, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_mstate_global->__pyx_n_u_float64); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 221, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_t_6 = 1;
@@ -18189,33 +19315,33 @@ static PyObject *__pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate_e
   #endif
   {
     PyObject *__pyx_callargs[2 + ((CYTHON_VECTORCALL) ? 1 : 0)] = {__pyx_t_2, __pyx_mstate_global->__pyx_int_3};
-    __pyx_t_3 = __Pyx_MakeVectorcallBuilderKwds(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 135, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_MakeVectorcallBuilderKwds(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 221, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    if (__Pyx_VectorcallBuilder_AddArg(__pyx_mstate_global->__pyx_n_u_dtype, __pyx_t_5, __pyx_t_3, __pyx_callargs+2, 0) < (0)) __PYX_ERR(0, 135, __pyx_L1_error)
+    if (__Pyx_VectorcallBuilder_AddArg(__pyx_mstate_global->__pyx_n_u_dtype, __pyx_t_5, __pyx_t_3, __pyx_callargs+2, 0) < (0)) __PYX_ERR(0, 221, __pyx_L1_error)
     __pyx_t_1 = __Pyx_Object_Vectorcall_CallFromBuilder((PyObject*)__pyx_t_4, __pyx_callargs+__pyx_t_6, (2-__pyx_t_6) | (__pyx_t_6*__Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET), __pyx_t_3);
     __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 135, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 221, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
   }
   __pyx_v_results_np = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":136
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":222
  *         int len_cards = cards.shape[0]
  *         object results_np = np.zeros(3, dtype=np.float64)
  *         cdef double[::1] results = results_np             # <<<<<<<<<<<<<<
  *     # eval board
  *     eval_board = fold_cards(EVAL_START, cards, 2, len_cards)
 */
-  __pyx_t_7 = __Pyx_PyObject_to_MemoryviewSlice_dc_double(__pyx_v_results_np, PyBUF_WRITABLE); if (unlikely(!__pyx_t_7.memview)) __PYX_ERR(0, 136, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_to_MemoryviewSlice_dc_double(__pyx_v_results_np, PyBUF_WRITABLE); if (unlikely(!__pyx_t_7.memview)) __PYX_ERR(0, 222, __pyx_L1_error)
   __pyx_v_results = __pyx_t_7;
   __pyx_t_7.memview = NULL;
   __pyx_t_7.data = NULL;
 
-  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":138
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":224
  *         cdef double[::1] results = results_np
  *     # eval board
  *     eval_board = fold_cards(EVAL_START, cards, 2, len_cards)             # <<<<<<<<<<<<<<
@@ -18224,7 +19350,7 @@ static PyObject *__pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate_e
 */
   __pyx_v_eval_board = __pyx_f_17poker_eval_faster_11eval_cython_6common_fold_cards(__pyx_v_17poker_eval_faster_11eval_cython_17one_hand_evaluate_EVAL_START, __pyx_v_cards, 2, __pyx_v_len_cards);
 
-  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":139
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":225
  *     # eval board
  *     eval_board = fold_cards(EVAL_START, cards, 2, len_cards)
  *     for i in range(3):             # <<<<<<<<<<<<<<
@@ -18234,7 +19360,7 @@ static PyObject *__pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate_e
   for (__pyx_t_8 = 0; __pyx_t_8 < 3; __pyx_t_8+=1) {
     __pyx_v_i = __pyx_t_8;
 
-    /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":140
+    /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":226
  *     eval_board = fold_cards(EVAL_START, cards, 2, len_cards)
  *     for i in range(3):
  *         results[i] = 0.0             # <<<<<<<<<<<<<<
@@ -18245,7 +19371,7 @@ static PyObject *__pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate_e
     *((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_results.data) + __pyx_t_9)) )) = 0.0;
   }
 
-  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":142
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":228
  *         results[i] = 0.0
  *     # eval hand (sum hand over board)
  *     eval_hand = fold_cards(eval_board, cards, 0, 2)             # <<<<<<<<<<<<<<
@@ -18254,7 +19380,7 @@ static PyObject *__pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate_e
 */
   __pyx_v_eval_hand = __pyx_f_17poker_eval_faster_11eval_cython_6common_fold_cards(__pyx_v_eval_board, __pyx_v_cards, 0, 2);
 
-  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":144
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":230
  *     eval_hand = fold_cards(eval_board, cards, 0, 2)
  * 
  *     if len_cards < 7 and incomplete_board:  # evaluate hands strength on current board             # <<<<<<<<<<<<<<
@@ -18267,23 +19393,23 @@ static PyObject *__pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate_e
     __pyx_t_10 = __pyx_t_11;
     goto __pyx_L6_bool_binop_done;
   }
-  __pyx_t_11 = __Pyx_PyObject_IsTrue(__pyx_v_incomplete_board); if (unlikely((__pyx_t_11 < 0))) __PYX_ERR(0, 144, __pyx_L1_error)
+  __pyx_t_11 = __Pyx_PyObject_IsTrue(__pyx_v_incomplete_board); if (unlikely((__pyx_t_11 < 0))) __PYX_ERR(0, 230, __pyx_L1_error)
   __pyx_t_10 = __pyx_t_11;
   __pyx_L6_bool_binop_done:;
   if (__pyx_t_10) {
 
-    /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":145
+    /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":231
  * 
  *     if len_cards < 7 and incomplete_board:  # evaluate hands strength on current board
  *         eval_hand = handdat[eval_hand]             # <<<<<<<<<<<<<<
  *         _evaluate_all_rival_hands(cards, len_cards, eval_hand, eval_board, &results[0])
  *     elif len_cards == 7:
 */
-    if (unlikely(!__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.memview)) { __Pyx_RaiseUnboundLocalError("handdat"); __PYX_ERR(0, 145, __pyx_L1_error) }
+    if (unlikely(!__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.memview)) { __Pyx_RaiseUnboundLocalError("handdat"); __PYX_ERR(0, 231, __pyx_L1_error) }
     __pyx_t_6 = __pyx_v_eval_hand;
     __pyx_v_eval_hand = (*((uint32_t const  *) ( /* dim=0 */ (__pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.data + __pyx_t_6 * __pyx_v_17poker_eval_faster_11eval_cython_4main_handdat.strides[0]) )));
 
-    /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":146
+    /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":232
  *     if len_cards < 7 and incomplete_board:  # evaluate hands strength on current board
  *         eval_hand = handdat[eval_hand]
  *         _evaluate_all_rival_hands(cards, len_cards, eval_hand, eval_board, &results[0])             # <<<<<<<<<<<<<<
@@ -18291,9 +19417,9 @@ static PyObject *__pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate_e
  *         _evaluate_all_rival_hands(cards, len_cards, eval_hand, eval_board, &results[0])
 */
     __pyx_t_9 = 0;
-    __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__evaluate_all_rival_hands(__pyx_v_cards, __pyx_v_len_cards, __pyx_v_eval_hand, __pyx_v_eval_board, (&(*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_results.data) + __pyx_t_9)) ))))); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 146, __pyx_L1_error)
+    __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__evaluate_all_rival_hands(__pyx_v_cards, __pyx_v_len_cards, __pyx_v_eval_hand, __pyx_v_eval_board, (&(*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_results.data) + __pyx_t_9)) ))))); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 232, __pyx_L1_error)
 
-    /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":144
+    /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":230
  *     eval_hand = fold_cards(eval_board, cards, 0, 2)
  * 
  *     if len_cards < 7 and incomplete_board:  # evaluate hands strength on current board             # <<<<<<<<<<<<<<
@@ -18303,7 +19429,7 @@ static PyObject *__pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate_e
     goto __pyx_L5;
   }
 
-  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":147
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":233
  *         eval_hand = handdat[eval_hand]
  *         _evaluate_all_rival_hands(cards, len_cards, eval_hand, eval_board, &results[0])
  *     elif len_cards == 7:             # <<<<<<<<<<<<<<
@@ -18313,7 +19439,7 @@ static PyObject *__pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate_e
   __pyx_t_10 = (__pyx_v_len_cards == 7);
   if (__pyx_t_10) {
 
-    /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":148
+    /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":234
  *         _evaluate_all_rival_hands(cards, len_cards, eval_hand, eval_board, &results[0])
  *     elif len_cards == 7:
  *         _evaluate_all_rival_hands(cards, len_cards, eval_hand, eval_board, &results[0])             # <<<<<<<<<<<<<<
@@ -18321,9 +19447,9 @@ static PyObject *__pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate_e
  *         _all_hands_create_boards(cards, len_cards, eval_hand, eval_board, &results[0], distributions)
 */
     __pyx_t_9 = 0;
-    __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__evaluate_all_rival_hands(__pyx_v_cards, __pyx_v_len_cards, __pyx_v_eval_hand, __pyx_v_eval_board, (&(*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_results.data) + __pyx_t_9)) ))))); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 148, __pyx_L1_error)
+    __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__evaluate_all_rival_hands(__pyx_v_cards, __pyx_v_len_cards, __pyx_v_eval_hand, __pyx_v_eval_board, (&(*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_results.data) + __pyx_t_9)) ))))); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 234, __pyx_L1_error)
 
-    /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":147
+    /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":233
  *         eval_hand = handdat[eval_hand]
  *         _evaluate_all_rival_hands(cards, len_cards, eval_hand, eval_board, &results[0])
  *     elif len_cards == 7:             # <<<<<<<<<<<<<<
@@ -18333,7 +19459,7 @@ static PyObject *__pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate_e
     goto __pyx_L5;
   }
 
-  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":150
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":236
  *         _evaluate_all_rival_hands(cards, len_cards, eval_hand, eval_board, &results[0])
  *     else:
  *         _all_hands_create_boards(cards, len_cards, eval_hand, eval_board, &results[0], distributions)             # <<<<<<<<<<<<<<
@@ -18342,11 +19468,11 @@ static PyObject *__pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate_e
 */
   /*else*/ {
     __pyx_t_9 = 0;
-    __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__all_hands_create_boards(__pyx_v_cards, __pyx_v_len_cards, __pyx_v_eval_hand, __pyx_v_eval_board, (&(*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_results.data) + __pyx_t_9)) )))), __pyx_v_distributions); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 150, __pyx_L1_error)
+    __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate__all_hands_create_boards(__pyx_v_cards, __pyx_v_len_cards, __pyx_v_eval_hand, __pyx_v_eval_board, (&(*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_results.data) + __pyx_t_9)) )))), __pyx_v_distributions); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 236, __pyx_L1_error)
   }
   __pyx_L5:;
 
-  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":152
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":238
  *         _all_hands_create_boards(cards, len_cards, eval_hand, eval_board, &results[0], distributions)
  * 
  *     return results_np             # <<<<<<<<<<<<<<
@@ -18356,7 +19482,7 @@ static PyObject *__pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate_e
   __pyx_r = __pyx_v_results_np;
   goto __pyx_L0;
 
-  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":123
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":209
  * 
  * 
  * cpdef object evaluate_one_hand_vs_all_c(int[:] cards, double[:,:] distributions, incomplete_board=False):             # <<<<<<<<<<<<<<
@@ -18383,16 +19509,16 @@ static PyObject *__pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate_e
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_17poker_eval_faster_11eval_cython_17one_hand_evaluate_3evaluate_one_hand_vs_all_c(PyObject *__pyx_self, 
+static PyObject *__pyx_pw_17poker_eval_faster_11eval_cython_17one_hand_evaluate_5evaluate_one_hand_vs_all_c(PyObject *__pyx_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_17poker_eval_faster_11eval_cython_17one_hand_evaluate_2evaluate_one_hand_vs_all_c, "\n    Evaluate one hand vs all other hands in one specific board\n    :param cards: Array int where hand[:2] and board[2:]\n    :param distributions: np.zeros([53,53]) distribution equity per round per card\n    :param incomplete_board: if False and board < 5 cards, complete it with all possible combinations\n    :return: probabilities to [win, tie], distributions\n    ");
-static PyMethodDef __pyx_mdef_17poker_eval_faster_11eval_cython_17one_hand_evaluate_3evaluate_one_hand_vs_all_c = {"evaluate_one_hand_vs_all_c", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_17poker_eval_faster_11eval_cython_17one_hand_evaluate_3evaluate_one_hand_vs_all_c, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_17poker_eval_faster_11eval_cython_17one_hand_evaluate_2evaluate_one_hand_vs_all_c};
-static PyObject *__pyx_pw_17poker_eval_faster_11eval_cython_17one_hand_evaluate_3evaluate_one_hand_vs_all_c(PyObject *__pyx_self, 
+PyDoc_STRVAR(__pyx_doc_17poker_eval_faster_11eval_cython_17one_hand_evaluate_4evaluate_one_hand_vs_all_c, "\n    Evaluate one hand vs all other hands in one specific board\n    :param cards: Array int where hand[:2] and board[2:]\n    :param distributions: np.zeros([53,53]) distribution equity per round per card\n    :param incomplete_board: if False and board < 5 cards, complete it with all possible combinations\n    :return: probabilities to [win, tie], distributions\n    ");
+static PyMethodDef __pyx_mdef_17poker_eval_faster_11eval_cython_17one_hand_evaluate_5evaluate_one_hand_vs_all_c = {"evaluate_one_hand_vs_all_c", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_17poker_eval_faster_11eval_cython_17one_hand_evaluate_5evaluate_one_hand_vs_all_c, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_17poker_eval_faster_11eval_cython_17one_hand_evaluate_4evaluate_one_hand_vs_all_c};
+static PyObject *__pyx_pw_17poker_eval_faster_11eval_cython_17one_hand_evaluate_5evaluate_one_hand_vs_all_c(PyObject *__pyx_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -18424,53 +19550,53 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   {
     PyObject ** const __pyx_pyargnames[] = {&__pyx_mstate_global->__pyx_n_u_cards,&__pyx_mstate_global->__pyx_n_u_distributions,&__pyx_mstate_global->__pyx_n_u_incomplete_board,0};
     const Py_ssize_t __pyx_kwds_len = (__pyx_kwds) ? __Pyx_NumKwargs_FASTCALL(__pyx_kwds) : 0;
-    if (unlikely(__pyx_kwds_len) < 0) __PYX_ERR(0, 123, __pyx_L3_error)
+    if (unlikely(__pyx_kwds_len) < 0) __PYX_ERR(0, 209, __pyx_L3_error)
     if (__pyx_kwds_len > 0) {
       switch (__pyx_nargs) {
         case  3:
         values[2] = __Pyx_ArgRef_FASTCALL(__pyx_args, 2);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[2])) __PYX_ERR(0, 123, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[2])) __PYX_ERR(0, 209, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  2:
         values[1] = __Pyx_ArgRef_FASTCALL(__pyx_args, 1);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[1])) __PYX_ERR(0, 123, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[1])) __PYX_ERR(0, 209, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  1:
         values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 123, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 209, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  0: break;
         default: goto __pyx_L5_argtuple_error;
       }
       const Py_ssize_t kwd_pos_args = __pyx_nargs;
-      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "evaluate_one_hand_vs_all_c", 0) < (0)) __PYX_ERR(0, 123, __pyx_L3_error)
+      if (__Pyx_ParseKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values, kwd_pos_args, __pyx_kwds_len, "evaluate_one_hand_vs_all_c", 0) < (0)) __PYX_ERR(0, 209, __pyx_L3_error)
       if (!values[2]) values[2] = __Pyx_NewRef(((PyObject *)Py_False));
       for (Py_ssize_t i = __pyx_nargs; i < 2; i++) {
-        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("evaluate_one_hand_vs_all_c", 0, 2, 3, i); __PYX_ERR(0, 123, __pyx_L3_error) }
+        if (unlikely(!values[i])) { __Pyx_RaiseArgtupleInvalid("evaluate_one_hand_vs_all_c", 0, 2, 3, i); __PYX_ERR(0, 209, __pyx_L3_error) }
       }
     } else {
       switch (__pyx_nargs) {
         case  3:
         values[2] = __Pyx_ArgRef_FASTCALL(__pyx_args, 2);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[2])) __PYX_ERR(0, 123, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[2])) __PYX_ERR(0, 209, __pyx_L3_error)
         CYTHON_FALLTHROUGH;
         case  2:
         values[1] = __Pyx_ArgRef_FASTCALL(__pyx_args, 1);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[1])) __PYX_ERR(0, 123, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[1])) __PYX_ERR(0, 209, __pyx_L3_error)
         values[0] = __Pyx_ArgRef_FASTCALL(__pyx_args, 0);
-        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 123, __pyx_L3_error)
+        if (!CYTHON_ASSUME_SAFE_MACROS && unlikely(!values[0])) __PYX_ERR(0, 209, __pyx_L3_error)
         break;
         default: goto __pyx_L5_argtuple_error;
       }
       if (!values[2]) values[2] = __Pyx_NewRef(((PyObject *)Py_False));
     }
-    __pyx_v_cards = __Pyx_PyObject_to_MemoryviewSlice_ds_int(values[0], PyBUF_WRITABLE); if (unlikely(!__pyx_v_cards.memview)) __PYX_ERR(0, 123, __pyx_L3_error)
-    __pyx_v_distributions = __Pyx_PyObject_to_MemoryviewSlice_dsds_double(values[1], PyBUF_WRITABLE); if (unlikely(!__pyx_v_distributions.memview)) __PYX_ERR(0, 123, __pyx_L3_error)
+    __pyx_v_cards = __Pyx_PyObject_to_MemoryviewSlice_ds_int(values[0], PyBUF_WRITABLE); if (unlikely(!__pyx_v_cards.memview)) __PYX_ERR(0, 209, __pyx_L3_error)
+    __pyx_v_distributions = __Pyx_PyObject_to_MemoryviewSlice_dsds_double(values[1], PyBUF_WRITABLE); if (unlikely(!__pyx_v_distributions.memview)) __PYX_ERR(0, 209, __pyx_L3_error)
     __pyx_v_incomplete_board = values[2];
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("evaluate_one_hand_vs_all_c", 0, 2, 3, __pyx_nargs); __PYX_ERR(0, 123, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("evaluate_one_hand_vs_all_c", 0, 2, 3, __pyx_nargs); __PYX_ERR(0, 209, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -18483,7 +19609,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_17poker_eval_faster_11eval_cython_17one_hand_evaluate_2evaluate_one_hand_vs_all_c(__pyx_self, __pyx_v_cards, __pyx_v_distributions, __pyx_v_incomplete_board);
+  __pyx_r = __pyx_pf_17poker_eval_faster_11eval_cython_17one_hand_evaluate_4evaluate_one_hand_vs_all_c(__pyx_self, __pyx_v_cards, __pyx_v_distributions, __pyx_v_incomplete_board);
 
   /* function exit code */
   for (Py_ssize_t __pyx_temp=0; __pyx_temp < (Py_ssize_t)(sizeof(values)/sizeof(values[0])); ++__pyx_temp) {
@@ -18495,7 +19621,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_17poker_eval_faster_11eval_cython_17one_hand_evaluate_2evaluate_one_hand_vs_all_c(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_cards, __Pyx_memviewslice __pyx_v_distributions, PyObject *__pyx_v_incomplete_board) {
+static PyObject *__pyx_pf_17poker_eval_faster_11eval_cython_17one_hand_evaluate_4evaluate_one_hand_vs_all_c(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_cards, __Pyx_memviewslice __pyx_v_distributions, PyObject *__pyx_v_incomplete_board) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -18505,11 +19631,11 @@ static PyObject *__pyx_pf_17poker_eval_faster_11eval_cython_17one_hand_evaluate_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("evaluate_one_hand_vs_all_c", 0);
   __Pyx_XDECREF(__pyx_r);
-  if (unlikely(!__pyx_v_cards.memview)) { __Pyx_RaiseUnboundLocalError("cards"); __PYX_ERR(0, 123, __pyx_L1_error) }
-  if (unlikely(!__pyx_v_distributions.memview)) { __Pyx_RaiseUnboundLocalError("distributions"); __PYX_ERR(0, 123, __pyx_L1_error) }
+  if (unlikely(!__pyx_v_cards.memview)) { __Pyx_RaiseUnboundLocalError("cards"); __PYX_ERR(0, 209, __pyx_L1_error) }
+  if (unlikely(!__pyx_v_distributions.memview)) { __Pyx_RaiseUnboundLocalError("distributions"); __PYX_ERR(0, 209, __pyx_L1_error) }
   __pyx_t_2.__pyx_n = 1;
   __pyx_t_2.incomplete_board = __pyx_v_incomplete_board;
-  __pyx_t_1 = __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate_evaluate_one_hand_vs_all_c(__pyx_v_cards, __pyx_v_distributions, 1, &__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 123, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_17poker_eval_faster_11eval_cython_17one_hand_evaluate_evaluate_one_hand_vs_all_c(__pyx_v_cards, __pyx_v_distributions, 1, &__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 209, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -20483,35 +21609,50 @@ __Pyx_RefNannySetupContext("PyInit_one_hand_evaluate", 0);
 */
   __pyx_v_17poker_eval_faster_11eval_cython_17one_hand_evaluate_LOSS = 2;
 
-  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":25
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":56
+ * 
+ * 
+ * cpdef object evaluate_one_hand_vs_two_random_c(int[:] hero, int[:] board, int[:] dead):             # <<<<<<<<<<<<<<
+ *     """Validated inputs only; exact win/tie/loss EVENTS, not pot shares."""
+ *     cdef bint blocked[53]
+*/
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_17poker_eval_faster_11eval_cython_17one_hand_evaluate_1evaluate_one_hand_vs_two_random_c, 0, __pyx_mstate_global->__pyx_n_u_evaluate_one_hand_vs_two_random, NULL, __pyx_mstate_global->__pyx_n_u_poker_eval_faster_eval_cython_on, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[0])); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 56, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
+  PyUnstable_Object_EnableDeferredRefcount(__pyx_t_4);
+  #endif
+  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_evaluate_one_hand_vs_two_random, __pyx_t_4) < (0)) __PYX_ERR(0, 56, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":111
  * 
  * 
  * @cython.cdivision(True)             # <<<<<<<<<<<<<<
  * cpdef double hand_to_equity(double[:] results):
  *     return _hand_equity(results[WIN], results[TIE], results[LOSS])
 */
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_17poker_eval_faster_11eval_cython_17one_hand_evaluate_1hand_to_equity, 0, __pyx_mstate_global->__pyx_n_u_hand_to_equity, NULL, __pyx_mstate_global->__pyx_n_u_poker_eval_faster_eval_cython_on, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[0])); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 25, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_17poker_eval_faster_11eval_cython_17one_hand_evaluate_3hand_to_equity, 0, __pyx_mstate_global->__pyx_n_u_hand_to_equity, NULL, __pyx_mstate_global->__pyx_n_u_poker_eval_faster_eval_cython_on, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[1])); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 111, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_4);
   #endif
-  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_hand_to_equity, __pyx_t_4) < (0)) __PYX_ERR(0, 25, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_hand_to_equity, __pyx_t_4) < (0)) __PYX_ERR(0, 111, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":123
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":209
  * 
  * 
  * cpdef object evaluate_one_hand_vs_all_c(int[:] cards, double[:,:] distributions, incomplete_board=False):             # <<<<<<<<<<<<<<
  *     """
  *     Evaluate one hand vs all other hands in one specific board
 */
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_17poker_eval_faster_11eval_cython_17one_hand_evaluate_3evaluate_one_hand_vs_all_c, 0, __pyx_mstate_global->__pyx_n_u_evaluate_one_hand_vs_all_c, NULL, __pyx_mstate_global->__pyx_n_u_poker_eval_faster_eval_cython_on, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[1])); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 123, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_17poker_eval_faster_11eval_cython_17one_hand_evaluate_5evaluate_one_hand_vs_all_c, 0, __pyx_mstate_global->__pyx_n_u_evaluate_one_hand_vs_all_c, NULL, __pyx_mstate_global->__pyx_n_u_poker_eval_faster_eval_cython_on, __pyx_mstate_global->__pyx_d, ((PyObject *)__pyx_mstate_global->__pyx_codeobj_tab[2])); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 209, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030E0000
   PyUnstable_Object_EnableDeferredRefcount(__pyx_t_4);
   #endif
   __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_4, __pyx_mstate_global->__pyx_tuple[1]);
-  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_evaluate_one_hand_vs_all_c, __pyx_t_4) < (0)) __PYX_ERR(0, 123, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_mstate_global->__pyx_d, __pyx_mstate_global->__pyx_n_u_evaluate_one_hand_vs_all_c, __pyx_t_4) < (0)) __PYX_ERR(0, 209, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
   /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":1
@@ -20609,14 +21750,14 @@ static int __Pyx_InitCachedConstants(__pyx_mstatetype *__pyx_mstate) {
   __Pyx_GOTREF(__pyx_mstate_global->__pyx_slice[0]);
   __Pyx_GIVEREF(__pyx_mstate_global->__pyx_slice[0]);
 
-  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":123
+  /* "poker_eval_faster/eval_cython/one_hand_evaluate.pyx":209
  * 
  * 
  * cpdef object evaluate_one_hand_vs_all_c(int[:] cards, double[:,:] distributions, incomplete_board=False):             # <<<<<<<<<<<<<<
  *     """
  *     Evaluate one hand vs all other hands in one specific board
 */
-  __pyx_mstate_global->__pyx_tuple[1] = PyTuple_Pack(1, Py_False); if (unlikely(!__pyx_mstate_global->__pyx_tuple[1])) __PYX_ERR(0, 123, __pyx_L1_error)
+  __pyx_mstate_global->__pyx_tuple[1] = PyTuple_Pack(1, Py_False); if (unlikely(!__pyx_mstate_global->__pyx_tuple[1])) __PYX_ERR(0, 209, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_mstate_global->__pyx_tuple[1]);
   __Pyx_GIVEREF(__pyx_mstate_global->__pyx_tuple[1]);
   #if CYTHON_IMMORTAL_CONSTANTS
@@ -20668,31 +21809,31 @@ static int __Pyx_InitCachedConstants(__pyx_mstatetype *__pyx_mstate) {
 static int __Pyx_InitConstants(__pyx_mstatetype *__pyx_mstate) {
   CYTHON_UNUSED_VAR(__pyx_mstate);
   {
-    const struct { const unsigned int length: 8; } index[] = {{2},{68},{35},{54},{37},{60},{24},{52},{26},{34},{29},{33},{45},{22},{15},{179},{37},{30},{32},{1},{1},{1},{1},{1},{1},{1},{8},{5},{6},{15},{23},{25},{7},{6},{2},{6},{35},{9},{30},{50},{8},{51},{20},{32},{22},{30},{37},{5},{8},{20},{8},{15},{3},{15},{18},{4},{1},{5},{9},{17},{18},{5},{8},{13},{5},{15},{6},{9},{5},{26},{5},{7},{6},{7},{8},{12},{14},{2},{10},{16},{5},{13},{5},{8},{4},{8},{7},{4},{10},{4},{8},{4},{7},{2},{5},{3},{4},{47},{3},{14},{11},{10},{19},{14},{12},{10},{17},{13},{8},{7},{12},{10},{12},{19},{5},{4},{5},{4},{4},{6},{8},{6},{6},{6},{1},{5},{26},{2},{1},{0},{1},{1},{48},{197},{30},{60},{1}};
-    #if (CYTHON_COMPRESS_STRINGS) == 2 /* compression: bz2 (1439 bytes) */
-const char* const cstring = "BZh91AY&SY\344iw\376\000\000\236\377\377\347\370\375\274j\367\375\337\277\257\377\301\277\377\377\376@@@@@@@@\000@@@@\000@\000P\005%\260\233\303\020\000Q\247\236\032\232hj\232\021\350\325?(\332)\372\023H\311\232\231\240\217@ 4\310\0310#\3246\203F\221\246OL\203I\251\211\246SS\323\3254\000\003M\000\000\000\000\000\000\000\006\200d\000hh\204M#\324\324a4i\352=CF\214@\r\000\0002\030\215\003@h\007\250\003\021P\006\200\003@\000\000\000\000\000\000\032\000\r\000\003@\001)\244\t\240 \0044\206\2235\033S\021\221\241\241\2204\000\000\000\000\001\240N\275\361\246\013p\224?\335\337\333\367\310\210v\367\177\322\364\343Z)\tL'\320\303aX\224%LtN\300\343d\267\203\253~9\305\321\342\007w\255\235E\310c\332H\317Y\272\312\355\314u\236\226\2755\340\274$\"!\235\000^\023L8\037i\262*+p8\022\237\006\034h\214\221\223B\325\351d\274\365\251Ip3\237#\204\200\213\245[\3552\266\210\030q\215\300\352qn\326\034Ui\374\316\027\rS\261\256QX\3141\363%\231\250#Q\254\234i*l\307BRU\362\254`\310] #\253\272\373\000\310\020,+ep\212\0147\315acf\333\203\321\357\026.,\243h\245\032\331X\317\014X\240 \301\030\242\177P\270A}\276{\254L\256_\3463\342\245A\216PA\303\231\204\025]oE\020J\205rD\2461\336\252\332\334\230u\335&%\020\353M\227\257<\320O\212|\326\276\177\243b\205\227\375S\355-V\022\205\306\007$b\017\037H\212\271B\362u\367\300\240'f\002\210\t\310\034\213\320\210x2L\365\207\346\320Df\022\010\017\300\347\261\013K*zQA\"\256\204\254H\"\020\216W$L<\010\221\014\252\2536`\310\251E\022X\203\"\n\352\006\246\245\020\034\010s,\3448I\010j\025+\342X\214V\310\372\037`\236\321M\231=@b\035\316l\305\214\020b\001\327\214\003\202\322{\rz\265h\tr\226\275\245\274\006\313\305\242\366\202\204,\024\265\312\323\210\271RH\351W\203\266\\rT\341\310$\007\014A(\365=N\347\006\356%f\313\233+\356jb\020\204gF\234\244\244\224n\250\363\350.\261\221\035\375\370\026U\230\270\301\307M\022\201\236\373\244\302c\353\242q\324 b9\0369\033\320\255\347R:K(\215,\305\"\000\202\312\203.\341\005\025\024s\241\313\210\007-@z\262l\277\375\272\n\332\327\232\267U\300S""\036O-\305b\216\323U\276\304C\2703f\020\241m\001\315\250\036\215v\246O\342\200\252&\325\226\244&\362\365n\263\245\000\270i.;\003\020\270\317$\304\030D\316\3101\313\014\362\220\312\t\272\273:pB9\303\317[\340J\315\233o5f4>\273+\247=\215\253\242\351t>\375ME^6l\023\030\221F\363\370Y\303\311\3251\032\330\316\025\323\233\300\264\356\362\346\205\335\216]\r\214j\367\320\346\345\203v\256k\002\314B\r\222\003\217\213r\016?\327\2061<wbg}$$\022\266\255\272\025La\241\245\305\242$d\230\302d/\307/\372\201y\014\032\304$\253Q\216\240Q\245q\030r>\354#]\322\263\3060\225\"\335&\240\261\320&4f\020s\340\021\3230\345W\330\355\032\332\026\225\237n\026\371n\027\311\236\343\2158ik\273\265rs6g\327PL@$4\241\2524f\262xR-D\022,\233\244'\206\310B#'\035)\237\334\314mh\303\215R\301\233\246\3557p\231V{\221$\020i\261d\263$\204\204N\202\233\025\032\2263J-\034\026\273\210\346\334\027 \252\333\226&9A\271\215\253\206a\342dn\236+\002}g\311\306~o\017)\367\2111`]\242W\212\367\221!\314\231\243\003\207\026HHn\256\235Ex\032\352\233\266\353\266S\257\013#\221\017'\216P\344\354]\034\375\033l\273]1\260\335\271\217\006Gs\310\353Y\024\311\233\210\023lmm\201\265\264d1\206\014\245Kmf\267\244\360\206\371<\013\331\331\301\344\354\326\235\rnj\020\206i\345,\232$\350U^'\006Y\320\352'9\214\025\304\206&*[|\241z\202^\312k\364\265%\013\206\316\346b\324D\302\325gi\221\004S{\274\372\367Z\240h\320\263&\332 \216\314\304bZ\236\312\240\244\031\267\273\346\213\326\347\272\332SdX\272Rt$\303\240\235\216Q\210[\331\215\221M|\t\2311\317f\305\261\310\235_\007\240\025\265`B\004SP\325\265\205\0143#6\326\0037\376\304R\202\300\211\tL\321E\002\363\005K\230\"\017)\323\25512\027#q\363\353\026\344^\2323\356\014\004\033]m7\265\201\2016\010\211&\354\242BI3{O\244\020a\301\004,\237\204\357E\310\312\033\356\210\336o8j4\254I\211\200!\003,\212d\247\020\006 {\372\300}\215\266\322\335;\267\016<\215\215\232OC\302\363\363\330\362b\t\235\222\241q\303!\324P\273\3369\311\204%\241\357\306\020\232b\267\304\223 Dp\207\240-G\357\340H\374\n\313\205?\242\002v\241\275""\020\215\rT\220k\343f\2230QF\307\340.\344\212p\241!\310\322\357\374";
-    PyObject *data = __Pyx_DecompressString(cstring, 1439, 2);
+    const struct { const unsigned int length: 9; } index[] = {{2},{68},{35},{54},{37},{60},{24},{52},{26},{34},{29},{33},{45},{22},{15},{179},{37},{30},{32},{1},{1},{1},{1},{1},{1},{1},{8},{5},{6},{15},{23},{25},{7},{6},{2},{6},{35},{9},{30},{50},{8},{51},{20},{32},{22},{30},{37},{5},{8},{20},{8},{15},{3},{15},{18},{4},{5},{1},{5},{9},{17},{18},{5},{4},{8},{13},{5},{15},{6},{9},{5},{26},{33},{5},{7},{6},{7},{8},{12},{14},{4},{2},{10},{16},{5},{13},{5},{8},{4},{8},{7},{4},{10},{4},{8},{4},{7},{2},{5},{3},{4},{47},{3},{14},{11},{10},{19},{14},{12},{10},{17},{13},{8},{7},{12},{10},{12},{19},{5},{4},{5},{4},{4},{6},{8},{6},{6},{6},{1},{5},{26},{2},{1},{0},{1},{1},{48},{495},{197},{30},{60},{1}};
+    #if (CYTHON_COMPRESS_STRINGS) == 2 /* compression: bz2 (1794 bytes) */
+const char* const cstring = "BZh91AY&SY\225\371\305b\000\000\364\177\377\367\374\377\374\377\367\377\337\277\357\377\301\277\377\377\376@@@@@@@@@@@@@\000@\000`\006]\233#\031\025\tD\202\206\320!\242\020\232\236Hjc\003hAM?T\364\217j\236\240\031\r\250\036I\352\0314\304\323\032\206\217S&\324\315\031\010\r=A(Ba\004\323\0214!\2012\232ze4z&\206\2324\032\000\000\000\000\001\240\r\r48\000\000\000\000\000\000\000\032\000\000\000\000\000\000\000\000\032h\020\211\241\252\236\215\032\237\243T\365=G\244\332\214\010\001\246\206@\000\000\003\t\246\201\243M=O\021\251\240\340\000\000\000\000\000\000\000h\000\000\000\000\000\000\000\000\340\000\000\000\000\000\000\000h\000\000\000\000\000\000\000\002\332\234?/ \037\250\240\335O\363xo\360\022[}\311\357\216\372\002@ \322F^\362\006\002\250\366\032#\247\203\336\371 MR\010)>\353\247\251\223P\262\214\224s\301\215\201\312\346\241gr\226\275\343\253\346\276\252\025\255\037d\232\326$\265\276(n%z*~\375\r\227#\254^\030\256\361\014!\241@+\017+\030\017\201#\324m*\332Y\260\213\316\263c\221\206\335l\"KFf4\222\031\357\334\242\360\277\252\326\334\023xVw\355Up8!\351\357\362\261z\347\366\346!\357\n\277\316k\304\201\0301]\3321\316 ob\327\207-\233\013\203\213gn\nA\336\2652-\365*\324\017\231\212\245$\032a\246\025\222\226\244:\3439g\035\0325\372d*\205\nu@\255\213\260\212\252b\272CF\310\246A\223\243\026\324\305\000\300vrAG\246\227\204,YT\325  i\315\275 I\245\270p\302\332X\025)!Y\311NH\204\240\022\347\3014*\020l\r\200\224\246XI'\026\336\276\323\254\270\2046\033t;]\226Z\373\376\361\274\336\3368\226x|}L\302r\264\355\273?A&\313r\351\307q\320\253\265\265f\331\301v\023\221\273'\216\337\373r\345\224\327\034p2\227\321\033\273:\035\"\232\262\266\030;\352s\320\354_-Y\016VV~/\177\345\364\301:\264\234{P'Js\014v\020|\317\314\323\306\257}%\373w1@\225\273\356D\034\355c\227\030DnD\2470\303\364t\332e\231\203\000\373~\242\2605\311g\255Hf\026\351V\231\022\\J0\362\374\241P\360\"X)\004\232*\205B\226\"L@T\025!'\362\0135\306\014\366x\266Ow3E\025d\260\267\371\274\2719\227\347\376\277\3213\320\313\313\355A\013""\203\263\305y$\007\010\316\016\22385\312\025i4e\226\001\016\022\215B\232\346\233\005\302\304r\271\304\205\206\210P\331+X\301M\304\3348S\203\242=\352\213o7\254f9\366\234\354B\000G\235\000\023\030a\361\364\365\364i6\326\3015\262\344Jg\001\2335*\004\304\030%\362\\\026|C\315\031\307\355\177\216%4B\262\326\031Q\344C\013+\202\n\207\331\025a\225\316.\030W\354\300\304\241\273\303\327\244q\006\316[\221\252\345\204\001\014\245\005/`\310P\217>\035\235 6\202\003\333\301\030\351\326\315\265\376\347\014u\027\212\2709;l\234iy\325\270U\326\204\355+\010w\rEQ\004\035D\016\303PP\244UpuN\022\001\"\213s-a4\361nsJ\324\013\332\263\317P\321\007\027\224\3127\301EB\006\\\330c\020\020\261Nn\267%\210#lj\2645\265\255S\323\261i\225\346\r\242S\307\t&[\354\253\273\370\350H\321\251\266\211j\241p\3656\216\332\355`\036\026\210\212k!\210R\334\374\372\316\307y\235\325\361q_\327\311/\252\266\272g\037z\344\334\301*\202\271\300d\304\371\205\023gN\202\006\316\356\303\270\327T\022;\304\220H\021}\223C\246\250]\212B\230<|\025\013*\035e\271\273\261\013\007Z\222QUg1\016 \212B\261\356\336mV\276z\241.\241l\"\364\341H\213v\002\241\205\342\206\343\201\370\324\035\005\262L\217\235\002\204\352\353:\235v\013 \215Y\315VC\024\257\306\233\025T;N}\023\005A\200\220\222\334G\252%g\n:P\201\002\262\244\202\255\252\314\341\n\205&G\014\214\267#\266\301\245Q\023\306T\225P\032E\200k\310\222\003$ \254g$\202B\225DZ\220\230\221\222$\036\217\265tV>\375AZ\204\327>\261~c5\356N3Yv*\013;\373\315Q}Mq\036F\275\204n\217\036b\2570\202\022\0131\205\242\332\320 1\231\021\3566nEQTNLr'\260\225\314\327\325\246\220\252{(\246\342\215\006~gnt\353~}\332J\275\021\272F\255Hp\300\361\320\344\3448\216N\243\307\253\337\\U\025\023\234\224VMt\324\027\233\t\243\001\t^\213\010\322\210\224\337g8\332\2038\261\031\030\032\014\211}f\366\2468\300\211U\256\203+\022\350\304\274V\032yP\345M)A\267|Pf\316\230\35523\330LvR\314\2220ubgb\362\212<\266\213.\252(\345#\264\315V\276\277J\333\026\006Y.\n\233\002\203\365\360\036\362\305iMB.D\332f\301g[WJ\252\324\364+\245U9ET""\031P\214\330\222\016\247M\363z\245\216*3\241\272\211b]\230\252mkD\t\321m\034\344N\005\245T\222F2\321k\235\314\031\2626\361\377\253\013\211\005j\367\360\035\265;\356V\031\314\r\214\242\212,\334q(\035B\206\223j*\207\244bTB\240x\014\200d( \350\010K\030\014\311Z \020\016\n\251\270\373\227\270\260$\224O\235u@ c\344\3549\007\"\351\036\313\240)\224\322\310P-\032\200\232&$\031\221\201\226\032\211\037+8\343g\235\375\377q\013\277`0\030\270\320\335!x\014\3137|\3420\020\177\204p\333\274H\032D2\007\021\337\270\200\213\267e\026\311\370m_\033\243\214\376\036\233\342\261N\344\033\305\202}\010\247\316\247\373\340\333\241}h\265\233\3025L\321\255\004\004\267\336^\247V\263\374\247\335\032\360\254',\264\027p\337\027y\2074b\006\371\314\237z:\333\317\307\034\037\230_\205R\037^\371\212\373O\326\3264R\350\247\016\370\267\206\340\317\034u#3^\342\304g\372\236\267\226q\205\255~7\250g\316\323\2357;ST\355U\316\320\022\346\tC\010q\317\024n\271\037\363\313\320,th\373v&b\022e\311\017L\255\376\312\035\230\007=\0271\250\2718\363l\355\323\302\366\214\330y\026!\356\035)a}\026(\324\026\230\242\254\261\177\372)j\212\362\177\361w$S\205\t\t_\234V ";
+    PyObject *data = __Pyx_DecompressString(cstring, 1794, 2);
     if (unlikely(!data)) __PYX_ERR(0, 1, __pyx_L1_error)
     const char* const bytes = __Pyx_PyBytes_AsString(data);
     #if !CYTHON_ASSUME_SAFE_MACROS
     if (likely(bytes)); else { Py_DECREF(data); __PYX_ERR(0, 1, __pyx_L1_error) }
     #endif
-    #elif (CYTHON_COMPRESS_STRINGS) != 0 /* compression: zlib (1284 bytes) */
-const char* const cstring = "x\332}UMs\0335\030Ng\3226\245\007\01000\320\036\224a:N\230\324\255\333\0160%\204I\333\320\311\000\375r\322rB\243\225\336u\324\354J\033I\353x\013\314\364\230\343\036}\364\321\307\034\363\023r\364\321\307\374\004~\002\257\264\353\330%\320\203e\255\366\375z\236\367y\265\367\311F\222\020!SPVjeIf\200\203\220\2523=$7\004Is\353H\004D*\001=\020\204)A\224v\304&\022\315\037\344q\014\206t%\034\020\241\301\206W\320\313\264\005b\235\221\002\354C\246\210VIA\270\001\346\2000\022UNn\2279\"-\341Z9\331\311un1\tI!\325\246h\242\227\017\305\254\225\035E\234&\350,n\2068\225\205OY\033\325\201\017\214t,J\2406\250\212\212\215N\337\347\033`\221\003\351v\211+2 \215\372\334\031\246l\2001u\251\314\320C\"Un\206\273G\263\204\311\212\204\312h3\315\\A\354.\303\320.\317\260\270X\033\302\013\267\253U\223\031\303\212\255P\200\316\035\3211\211t\256\204%\313\254\207Qn\210\225\255\363\271*\362\363,\323\306\201\330R]\226H\354\222\026\260\352\211GclR\2037\010\346i`2\017\244\261J:\35051\256\312A\256C\232\265_\003\300\227\036 \226\360D#\225\2415\017C\225\036\217\200DF`\220d\244\320\267\025\223\204\376)\362l\363\331\315{\337\335\013\2620\360\032\323[\254.\342\tv\016\345\3401\3452q\230\314\323k\233d+&\205\316\211\002,\023\333\232\241\335\254\203\333\005E,8\277!\215\320\013\346\0207Ew\324f\243\346Uv\301{\377\304\022\013\315\247\357\220\207%\327\002c\234\203\235\260\331v\220\221\224\025\201?\324\363\0330zJ\364\216\n\312\301\220\250\306.\030\024\206\203\324?\353\310\203Z^\375\261\271\336XaBP\345\t\362p\trt\273\307u\222\370\202\2605M\026\361\265\0315{\243\252\334\365\177\037OD\264.\244\365\231!\344\357p\262\354\033\325\t\372\361\030\3748B\317\201ra8\246\223)m\345\"|\235V\276\001\262\366\003\271}N]Jc\363b\226'\216Pj@\344\034(%\"\017P\225V7\261\231]\311\022|\313\245\222\016_V\200\3273\275\007\206\002*\206\306\314b\277o\205}\025\374\226V@\261\375\"\030\344(\214fV\364\326\252\211\027\357\000?\177\346\225y\206\377\235\367g\247\371Y;X\222h\036\256\r\017\207\010\346X\363?\336V\222\3661\352[\247\271\321~\270\265\265\231$2""\263\322R\372\254\350\341\357\021*\227>AB_@\334\206\375\034\024\007/\374\346t\006\260\207\223\250\264\322\021\263\205\342R7\27168\246R\201\215\230\005\316\231\021\0308\010\227\322\311\246\003\316w\304?\242%\225(\\\3038D\214\357q\324'\022,|\r\270\372B\243<\010G\370\331\010\013\305Z\253\006`i8\323\240\3624\014\036\030\243\315\204lzF\177\327R\254\226\3628a\035\033'\232\271o\356\241\006R\346\352\321\2474\316\025\367\365ae\326y\347\312\323i\212\004HWHA\251L\375u\202\377\2304\305[\312c\327\210/\334\216\276\2463\354\225\334j\315\275\326\210\217\246,\254\220\372;\322_D\370\240E\236\340\277b\351tE\361\342\n\007\270d\010++\020h\206\274\234SZsFi\315sJ\313tF)\252\215\362]\340{6O\253\247\032\233\337\006\"\303.W\231\344{X\311\246\232\330u\3037\302\023\262\237\263\244*m:\032g\273*\373\314\001\362\200\333\216\364\005\032\2608Q\330u\274\250jt\270\253\007-\354\353jf\366\223\200A\251\236<<6\370\0162\3534\376L\356e\341\360\230\372\262\221\227<C\265\007\324`{\376\272\252e\\3\035>\300s\236\0324\333\376\343\367\373\177I\345\310\362y\233U\234+\027\026\362\365\312\\\365\261\244\002\271\033\315E\243\210\377\375\331\334\225/\372\027\373/\007\255\301\306x\341z\377A?\036l\014\332\303K\303\350\350\302x\341\253A\353t~\261\374\262\337\352\3772\274<\264GK\343\371\205\303\213\207;\345R\331\032/|x\270_^,\237\237\316\177T~\320_\352\257\r\016\206\374h\361t\376\362\3337\345\307\345\235r\273\2778^\370\264|\214\356\030}i\2608h\014\257\035\375|\374\347I\353\344\361\250\275=\332\336\031_\371\244\274[\262\377y{\272@\006\027\006\237\017\257\036}\177\234\234,\235|;z\321\036\265_\215^\375v:\177\365\260\365\366\302\370\332\3651\356\326\312\375\376\345\376\376\340\322\2403|>\214\217\036\037\267\2167rD}\367\016E^&\273U\362>\206V\346b\235\010\032f\373\351?\203J\203I";
-    PyObject *data = __Pyx_DecompressString(cstring, 1284, 1);
+    #elif (CYTHON_COMPRESS_STRINGS) != 0 /* compression: zlib (1645 bytes) */
+const char* const cstring = "x\332}UMs\0335\030\216\031'M?f\250i\240\201f\006\271P\2342\251\301m\n\035\010e\3344\224\014_\315W\341\204F^i\035\321]i\275\322\306v\201\231\036}\334\343\036\367\270G\037}\3541G\037\367\230\237\300O\340\225\326\216S\322\341\020E+\275\037\317\373\274\317+\177\205\232\236\207(\367\231P\\\n\205\202\2209\214r\321\236\035\242[\024\371\221\322\250\305\020\027\224\365\030EDP$\244F\312\343`\376(r]\026\242#\316\272\210J\246\354\025\353\005R1\244t\310)S\233D )\274>rBF4C\004\265\n'}H4\342\n9Rh\336\216d\244 \t\362\231/\303~\035\274L(\242\024o\013\244%\002gz\307\306),L\312\211\321$p7\344\232\264<61(@\271\241\364\377\317\327\226\205\272\\\037\"\335\017\030\252M\316uH\204\262e\314\\\n3\360\340@\225>\303\335\343\263\204\361\202\204\302h\313\017t\037\251C\002\241u\024\0008W\206\310\351\353C)\352$\014I\177\333\002\220\221F\322E-\031\t\252\320*\351A\224[\364\366\366\371\\\005\371Q\020\310P3\272-\216\210\307\241K\222\2625C<\030C\223jN\rA\236\032$3\205\324\326P\033\274\246\306\005\034\340\332\246\331\370\311\026\370\314\024\010\020~\226@\245m\315\246Ei\352\241\314\343-\026\002\311@\241i+$\261\375\023\350\351\326\323;\353\017\326\255,B\366\007\244W\200\256\345x\3209\220\203\251)\342\236\206d\206^UG\333.\352\313\010\t\0060\241\255\001\330\235u\320\207L \305\264\331\240\232\355\005\321P7\006w\320fm\302+?b\306\373;\342)V\377\3455\362\000\362D`\304q\230\232\262\271\247Y\200|\322\267\374\201\236_\260P\316\210>\020V9\020\022\324x\304B\020\206f\276\371\226-S\324\352\332\267\365\207\265\333\204R,\014A\246\\\004\034}\336s\244\347\031@\320\232:i9\033g\324l\214\n\270\017\377{<\025\321C\312\225\311\314l\376\266\203VM\243\332V?\246\0063\216\254\247\231\320v8f\223\311U\341B\rN\305_0\264\361\r\372\374\234\272\204\204\346\271$\3624\3028d4r\030\306\210F\266T!\305\035h\346\021'\036\334:\\p\r\227E\301\017\003\371\234\205\230\201b\260K\024\364\3733\273/\202\177&\005\303\320~j\r\"\020F=\350\3676\212\211\247\257\025~\376\314(\363\264\376\327\356OO\243\323v\020\317\223\216}6L9\210\022M\352o\270-$mbL^\235zsos{{""\313\363x\240\270\302\370i\277\007\177\217A\271\370g t\227\271{\254\0231\3410#\374\372l\006\240\207\323\250\270\320\021Q}\341pYwd\010c\312\005S-\242XK\222\220:\016,\020\335\252\027\343\351\246\315\264i\213\371\004s\314A\275!qX\2138\317\035\020\251\246\360\036aL\r\030X\r\342Vd\025D\315\220\330\005\003\350\242\023\200\021\206\233\211\310\267\023\310\302P\206S\326\361i\037\216\024\006\330\330y\343\215\356J\014\317\000\225>v\\\217\264\225\353I\242\277X\007\265\370DO\036\t\214\335H8\246\010\200\257\264\211Q\004\320\022\003U\\\367\017ad8\000\347\276y|\340? \363\341M3L\0316\354[j\200\2372U\210s\242\320?$\020\201}bW\346\233\027\325<[\360!i\344\301\177A\374\331\nR\207\225ua\t\240\366\240\017l\004@\3409]\326\317\350\262~N\227\201\0140\006mb\347\2209\317U\344\027_\223\372\314\326\262mw\221\010\270\363\034\220l\211\251\335\221\375E1\244t\"\342\025\320f\203t\272+\262\2379\000\036`\333\346\006`\310\024\314\037\310\003\236\265Iu\260\233\214\245\335O\320\234\331O\003Z]\033\362\3408\204;\026(-\341/\214\214v4\034c\003\033x\211\002\230\r[5S=\363\270MD?a\332\376\\\317\031j\300l\377\317\337\277\372\233\013\215V\317\333\254\301\024j\273\240Oo\317\025?\255\230\002w/K\377\\\232\233\2771\376\340\323\354f\366(c\303/F\225Q5/\337L\253'\345\305\301\374\340 \256\306\215|\361\355A'\236\217w\362\362\345Ac\3608.\305\357\305\235\377|L\255\357'\013\tI:\247>\261\2334\363\305J|=)%\327\323\267\322[i'+\315\314\327\343\243d'!\205y9n\306\317\222\306\354\366^\0147\227\007\353\203nL \311\225\253\220\355]8\273R\211+y\371\322\240:\270\037/\300U\224|\227V\323\373\020\370\342%\343\360\300z^Ai)]JwR\232}\234\221LCu\327F\337\277j\236@\234\371\370 \251B\252\253\327\343.\340\355\246\255\254\2345\263\235\374\352\265\370Ar\017\020--'%\263\314'\007\020\273\221/\337H\356&{i)_\271is\025\346+\325\264\222/\255f\245l)\333\311\350\360\343!\031\352\321\203W\367^\271\307\315\223S\367\273\351n\252\262j\276\214\322\013@\300|\266\013p\032\303f\276\274\222\330e+}7%i'_\3710\t\323k\351#\300|3\333\314:9\372\004\316\243\354\361\2604""\254\344\350V\272\223/\257A\346\375a\005r\321Qu\264>\352\275R\307\265\361\316n^\2762\330\004\032\013F6\223N\272`}!\314p\001pu\306s\255q\313\371\347\275\271\213\357\003\256gi#\205\326\254$\217\0227m\246{\331B\326\032\226\362\305\217\322\306I\271\022\177\2204\222\037\263\013\231\032V\3637h\341\244|5\276\004\024n\244\335\314\031VN\312\027^\276\210\337\211\357\306\373I%_\\\212\237\200;D\007z\322Zvc\370\303\350\257\343\306\361\223\361\336\376x\377 \277x\255h\355\033oO\026M\337\256g\227\207_\217\274\343\352\361\227\343\335\275\361\336\257\343_\177;1\222{Y\312o\254\030\361m\304\235\344\202-\262\r\324\273\303'\243\306\250\031\201\310\357\335\3050\006\323\335\032\372\277\201\270=\347J\217b\373\346\377\362/\331\002\\\224";
+    PyObject *data = __Pyx_DecompressString(cstring, 1645, 1);
     if (unlikely(!data)) __PYX_ERR(0, 1, __pyx_L1_error)
     const char* const bytes = __Pyx_PyBytes_AsString(data);
     #if !CYTHON_ASSUME_SAFE_MACROS
     if (likely(bytes)); else { Py_DECREF(data); __PYX_ERR(0, 1, __pyx_L1_error) }
     #endif
-    #else /* compression: none (2339 bytes) */
-const char* const bytes = ": All dimensions preceding dimension %d must be indexed and not slicedBuffer view does not expose stridesCan only create a buffer that is contiguous in memory.Cannot assign to read-only memoryviewCannot create writable memory view from read-only memoryviewCannot index with type 'Cannot transpose memoryview with indirect dimensionsDimension %d is not directEmpty shape tuple for cython.arrayIndex out of bounds (axis %d)Indirect dimensions not supportedInvalid mode, expected 'c' or 'fortran', got Invalid shape in axis <MemoryView of Note that Cython is deliberately stricter than PEP-484 and rejects subclasses of builtin types. If you need to pass subclasses then set the 'annotation_typing' directive to False.Out of bounds on buffer access (axis Step may not be zero (axis %d)Unable to convert item to object(,?.>')add_note and  at 0xcollections.abc<contiguous and direct><contiguous and indirect>disableenablegc (got got differing extents in dimension isenableditemsize <= 0 for cython.arrayno default __reduce__ due to non-trivial __cinit__ object>poker_eval_faster/eval_cython/one_hand_evaluate.pyx<strided and direct><strided and direct or indirect><strided and indirect>unable to allocate array data.unable to allocate shape and strides.ASCIIEllipsis__Pyx_PyDict_NextRefSequenceView.MemoryViewabcallocate_bufferasyncio.coroutinesbaseccards__class____class_getitem__cline_in_tracebackcount__dict__distributionsdtypedtype_is_objectencodeenumerateerrorevaluate_one_hand_vs_all_cflagsfloat64formatfortran__func____getstate__hand_to_equityid__import__incomplete_boardindex_is_coroutineitemsitemsizejoin__main__memviewmode__module__name__name__ndim__new__npnumpyobjpackpoker_eval_faster.eval_cython.one_hand_evaluatepop__pyx_checksum__pyx_state__pyx_type__pyx_unpickle_Enum__pyx_vtable____qualname____reduce____reduce_cython____reduce_ex__registerresults__set_name__setdefault__setstate____setstate_cython__shapesizestartstepstopstruct__test__unpackupdatevaluesxzeros__Pyx_memviewslice\000handda""tT{^:}int (__Pyx_memviewslice, int, int *)\000create_deck\320\000b\320bc\360\026\000\t\031\230\005\230V\2401\240A\330\010\034\230B\230f\240A\240S\250\006\250b\260\001\330\010#\2401\340\004\021\220\032\2301\230L\250\007\250s\260!\330\004\010\210\005\210U\220!\2201\330\010\017\210q\220\005\220Q\340\004\020\220\n\230!\230<\240w\250c\260\021\340\004\007\200z\220\022\2202\220T\230\021\330\010\024\220G\2301\230A\330\010!\240\021\240'\250\033\260K\270|\3101\310G\320ST\320TU\330\t\023\2203\220a\330\010!\240\021\240'\250\033\260K\270|\3101\310G\320ST\320TU\340\010 \240\001\240\027\250\013\260;\270l\310!\3107\320RS\320SW\320WX\340\004\013\2101\200\001\330\033\034\330\004\013\210<\220q\230\007\230q\240\006\240g\250Q\250f\260G\2701\270Auint32_t (uint32_t, __Pyx_memviewslice, int, int)\000fold_cardsO";
+    #else /* compression: none (2880 bytes) */
+const char* const bytes = ": All dimensions preceding dimension %d must be indexed and not slicedBuffer view does not expose stridesCan only create a buffer that is contiguous in memory.Cannot assign to read-only memoryviewCannot create writable memory view from read-only memoryviewCannot index with type 'Cannot transpose memoryview with indirect dimensionsDimension %d is not directEmpty shape tuple for cython.arrayIndex out of bounds (axis %d)Indirect dimensions not supportedInvalid mode, expected 'c' or 'fortran', got Invalid shape in axis <MemoryView of Note that Cython is deliberately stricter than PEP-484 and rejects subclasses of builtin types. If you need to pass subclasses then set the 'annotation_typing' directive to False.Out of bounds on buffer access (axis Step may not be zero (axis %d)Unable to convert item to object(,?.>')add_note and  at 0xcollections.abc<contiguous and direct><contiguous and indirect>disableenablegc (got got differing extents in dimension isenableditemsize <= 0 for cython.arrayno default __reduce__ due to non-trivial __cinit__ object>poker_eval_faster/eval_cython/one_hand_evaluate.pyx<strided and direct><strided and direct or indirect><strided and indirect>unable to allocate array data.unable to allocate shape and strides.ASCIIEllipsis__Pyx_PyDict_NextRefSequenceView.MemoryViewabcallocate_bufferasyncio.coroutinesbaseboardccards__class____class_getitem__cline_in_tracebackcountdead__dict__distributionsdtypedtype_is_objectencodeenumerateerrorevaluate_one_hand_vs_all_cevaluate_one_hand_vs_two_random_cflagsfloat64formatfortran__func____getstate__hand_to_equityheroid__import__incomplete_boardindex_is_coroutineitemsitemsizejoin__main__memviewmode__module__name__name__ndim__new__npnumpyobjpackpoker_eval_faster.eval_cython.one_hand_evaluatepop__pyx_checksum__pyx_state__pyx_type__pyx_unpickle_Enum__pyx_vtable____qualname____reduce____reduce_cython____reduce_ex__registerresults__set_name__setdefault__setstate____setstate_cython__shapesizestartstepstopstruct__test__unpack""updatevaluesxzeros__Pyx_memviewslice\000handdatT{^:}int (__Pyx_memviewslice, int, int *)\000create_deck\200\001\360\n\000\005\033\320\032*\250\"\250B\250e\2606\270\021\270!\330\004\"\240!\340\004\010\210\005\210U\220!\2201\330\010\017\210q\220\005\220Q\330\004\013\2101\210D\220\001\220\026\220q\330\004\013\2101\210D\220\001\220\026\220q\330\004\010\210\005\210U\220!\2205\230\006\230a\230q\330\010\017\210q\220\005\220Q\220f\230A\330\010\021\220\027\230\001\230\027\240\002\240%\240q\250\001\330\004\010\210\005\210U\220!\2204\220v\230Q\230a\330\010\017\210q\220\004\220A\220V\2301\330\004\010\210\005\210U\220!\2203\220a\330\010\013\2104\210w\220a\220q\330\014\020\220\001\220\025\220a\330\014\021\220\021\330\004\n\210!\2105\220\006\220a\220u\230F\240!\2405\250\001\330\t\n\330\010\013\2108\2203\220a\330\014 \240\001\240\024\240Q\240d\250$\250a\250t\2606\270\023\270H\300A\340\014\020\220\005\220U\230!\2301\330\020\027\220w\230a\230w\240b\250\004\250A\250Q\330\020\023\2208\2303\230a\330\024\030\230\001\330\024\030\230\005\230U\240!\2401\330\030\033\2302\230S\240\001\330\034\"\240!\2405\250\004\250A\250Q\330\034!\240\021\330\024(\250\001\250\024\250Q\250d\260$\260a\260t\2708\3003\300f\310A\340\024\030\230\005\230U\240!\2402\240R\240s\250!\330\030 \240\007\240q\250\005\250R\250t\2601\260A\330\030\034\230A\330\030\034\230E\240\025\240a\240q\330\034\037\230r\240\023\240B\240d\250\"\250C\250q\330 &\240a\240u\250D\260\001\260\021\330 %\240Q\330\030,\250A\250T\260\021\260$\260d\270!\2704\270x\300s\310'\320QR\330\004\014\210C\210q\220\006\220a\220u\230C\230q\240\006\240a\240u\250C\250q\260\006\260a\260q\320\000b\320bc\360\026\000\t\031\230\005\230V\2401\240A\330\010\034\230B\230f\240A\240S\250\006\250b\260\001\330\010#\2401\340\004\021\220\032\2301\230L\250\007\250s\260!\330\004\010\210\005\210U\220!\2201\330\010\017\210q\220\005\220Q\340\004\020\220\n\230!\230<\240w\250c\260\021\340\004\007\200z\220\022\2202\220T\230\021\330\010\024\220G\2301\230A\330\010!\240\021\240'\250\033""\260K\270|\3101\310G\320ST\320TU\330\t\023\2203\220a\330\010!\240\021\240'\250\033\260K\270|\3101\310G\320ST\320TU\340\010 \240\001\240\027\250\013\260;\270l\310!\3107\320RS\320SW\320WX\340\004\013\2101\200\001\330\033\034\330\004\013\210<\220q\230\007\230q\240\006\240g\250Q\250f\260G\2701\270Auint32_t (uint32_t, __Pyx_memviewslice, int, int)\000fold_cardsO";
     PyObject *data = NULL;
     CYTHON_UNUSED_VAR(__Pyx_DecompressString);
     #endif
     PyObject **stringtab = __pyx_mstate->__pyx_string_tab;
     Py_ssize_t pos = 0;
-    for (int i = 0; i < 126; i++) {
+    for (int i = 0; i < 130; i++) {
       Py_ssize_t bytes_length = index[i].length;
       PyObject *string = PyUnicode_DecodeUTF8(bytes + pos, bytes_length, NULL);
       if (likely(string) && i >= 47) PyUnicode_InternInPlace(&string);
@@ -20703,7 +21844,7 @@ const char* const bytes = ": All dimensions preceding dimension %d must be index
       stringtab[i] = string;
       pos += bytes_length;
     }
-    for (int i = 126; i < 137; i++) {
+    for (int i = 130; i < 142; i++) {
       Py_ssize_t bytes_length = index[i].length;
       PyObject *string = PyBytes_FromStringAndSize(bytes + pos, bytes_length);
       stringtab[i] = string;
@@ -20714,15 +21855,15 @@ const char* const bytes = ": All dimensions preceding dimension %d must be index
       }
     }
     Py_XDECREF(data);
-    for (Py_ssize_t i = 0; i < 137; i++) {
+    for (Py_ssize_t i = 0; i < 142; i++) {
       if (unlikely(PyObject_Hash(stringtab[i]) == -1)) {
         __PYX_ERR(0, 1, __pyx_L1_error)
       }
     }
     #if CYTHON_IMMORTAL_CONSTANTS
     {
-      PyObject **table = stringtab + 126;
-      for (Py_ssize_t i=0; i<11; ++i) {
+      PyObject **table = stringtab + 130;
+      for (Py_ssize_t i=0; i<12; ++i) {
         #if CYTHON_COMPILING_IN_CPYTHON_FREETHREADING
         #if PY_VERSION_HEX < 0x030E0000
         if (_Py_IsOwnedByCurrentThread(table[i]) && Py_REFCNT(table[i]) == 1)
@@ -20778,7 +21919,7 @@ typedef struct {
     unsigned int num_kwonly_args : 1;
     unsigned int nlocals : 2;
     unsigned int flags : 10;
-    unsigned int first_line : 7;
+    unsigned int first_line : 8;
 } __Pyx_PyCode_New_function_description;
 /* NewCodeObj.proto */
 static PyObject* __Pyx_PyCode_New(
@@ -20795,14 +21936,19 @@ static int __Pyx_CreateCodeObjects(__pyx_mstatetype *__pyx_mstate) {
   PyObject* tuple_dedup_map = PyDict_New();
   if (unlikely(!tuple_dedup_map)) return -1;
   {
-    const __Pyx_PyCode_New_function_description descr = {1, 0, 0, 1, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 25};
-    PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_results};
-    __pyx_mstate_global->__pyx_codeobj_tab[0] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_poker_eval_faster_eval_cython_on_2, __pyx_mstate->__pyx_n_u_hand_to_equity, __pyx_mstate->__pyx_kp_b_iso88591_q_q_gQfG1A, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[0])) goto bad;
+    const __Pyx_PyCode_New_function_description descr = {3, 0, 0, 3, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 56};
+    PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_hero, __pyx_mstate->__pyx_n_u_board, __pyx_mstate->__pyx_n_u_dead};
+    __pyx_mstate_global->__pyx_codeobj_tab[0] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_poker_eval_faster_eval_cython_on_2, __pyx_mstate->__pyx_n_u_evaluate_one_hand_vs_two_random, __pyx_mstate->__pyx_kp_b_iso88591_Be6_U_1_q_Q_1D_q_1D_q_U_5_aq_q, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[0])) goto bad;
   }
   {
-    const __Pyx_PyCode_New_function_description descr = {3, 0, 0, 3, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 123};
+    const __Pyx_PyCode_New_function_description descr = {1, 0, 0, 1, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 111};
+    PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_results};
+    __pyx_mstate_global->__pyx_codeobj_tab[1] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_poker_eval_faster_eval_cython_on_2, __pyx_mstate->__pyx_n_u_hand_to_equity, __pyx_mstate->__pyx_kp_b_iso88591_q_q_gQfG1A, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[1])) goto bad;
+  }
+  {
+    const __Pyx_PyCode_New_function_description descr = {3, 0, 0, 3, (unsigned int)(CO_OPTIMIZED|CO_NEWLOCALS), 209};
     PyObject* const varnames[] = {__pyx_mstate->__pyx_n_u_cards, __pyx_mstate->__pyx_n_u_distributions, __pyx_mstate->__pyx_n_u_incomplete_board};
-    __pyx_mstate_global->__pyx_codeobj_tab[1] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_poker_eval_faster_eval_cython_on_2, __pyx_mstate->__pyx_n_u_evaluate_one_hand_vs_all_c, __pyx_mstate->__pyx_kp_b_iso88591_bbc_V1A_BfAS_b_1_1L_s_U_1_q_Q_w, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[1])) goto bad;
+    __pyx_mstate_global->__pyx_codeobj_tab[2] = __Pyx_PyCode_New(descr, varnames, __pyx_mstate->__pyx_kp_u_poker_eval_faster_eval_cython_on_2, __pyx_mstate->__pyx_n_u_evaluate_one_hand_vs_all_c, __pyx_mstate->__pyx_kp_b_iso88591_bbc_V1A_BfAS_b_1_1L_s_U_1_q_Q_w, tuple_dedup_map); if (unlikely(!__pyx_mstate_global->__pyx_codeobj_tab[2])) goto bad;
   }
   Py_DECREF(tuple_dedup_map);
   return 0;
@@ -23826,6 +24972,49 @@ static CYTHON_INLINE PyObject* __Pyx____Pyx_PyUnicode_From_size_t(size_t value, 
     return __Pyx_PyUnicode_BuildFromAscii(ulength, dpos, (int) length, prepend_sign, padding_char);
 }
 
+/* RaiseUnboundLocalErrorNogil */
+static void __Pyx_RaiseUnboundLocalErrorNogil(const char *varname) {
+    PyGILState_STATE gilstate = PyGILState_Ensure();
+    __Pyx_RaiseUnboundLocalError(varname);
+    PyGILState_Release(gilstate);
+}
+
+/* WriteUnraisableException */
+static void __Pyx_WriteUnraisable(const char *name, int clineno,
+                                  int lineno, const char *filename,
+                                  int full_traceback, int nogil) {
+    PyObject *old_exc, *old_val, *old_tb;
+    PyObject *ctx;
+    __Pyx_PyThreadState_declare
+    PyGILState_STATE state;
+    if (nogil)
+        state = PyGILState_Ensure();
+    else state = (PyGILState_STATE)0;
+    CYTHON_UNUSED_VAR(clineno);
+    CYTHON_UNUSED_VAR(lineno);
+    CYTHON_UNUSED_VAR(filename);
+    CYTHON_MAYBE_UNUSED_VAR(nogil);
+    __Pyx_PyThreadState_assign
+    __Pyx_ErrFetch(&old_exc, &old_val, &old_tb);
+    if (full_traceback) {
+        Py_XINCREF(old_exc);
+        Py_XINCREF(old_val);
+        Py_XINCREF(old_tb);
+        __Pyx_ErrRestore(old_exc, old_val, old_tb);
+        PyErr_PrintEx(0);
+    }
+    ctx = PyUnicode_FromString(name);
+    __Pyx_ErrRestore(old_exc, old_val, old_tb);
+    if (!ctx) {
+        PyErr_WriteUnraisable(Py_None);
+    } else {
+        PyErr_WriteUnraisable(ctx);
+        Py_DECREF(ctx);
+    }
+    if (nogil)
+        PyGILState_Release(state);
+}
+
 /* ErrOccurredWithGIL */
 static CYTHON_INLINE int __Pyx_ErrOccurredWithGIL(void) {
   int err;
@@ -23833,13 +25022,6 @@ static CYTHON_INLINE int __Pyx_ErrOccurredWithGIL(void) {
   err = !!PyErr_Occurred();
   PyGILState_Release(_save);
   return err;
-}
-
-/* RaiseUnboundLocalErrorNogil */
-static void __Pyx_RaiseUnboundLocalErrorNogil(const char *varname) {
-    PyGILState_STATE gilstate = PyGILState_Ensure();
-    __Pyx_RaiseUnboundLocalError(varname);
-    PyGILState_Release(gilstate);
 }
 
 /* PyObjectVectorCallKwBuilder */
@@ -27180,29 +28362,6 @@ static const char* __Pyx_BufFmt_CheckString(__Pyx_BufFmt_Context* ctx, const cha
   }
   
 /* ObjectToMemviewSlice */
-  static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_ds_double(PyObject *obj, int writable_flag) {
-      __Pyx_memviewslice result = __Pyx_MEMSLICE_INIT;
-      __Pyx_BufFmt_StackElem stack[1];
-      int axes_specs[] = { (__Pyx_MEMVIEW_DIRECT | __Pyx_MEMVIEW_STRIDED) };
-      int retcode;
-      if (obj == Py_None) {
-          result.memview = (struct __pyx_memoryview_obj *) Py_None;
-          return result;
-      }
-      retcode = __Pyx_ValidateAndInit_memviewslice(axes_specs, 0,
-                                                   PyBUF_RECORDS_RO | writable_flag, 1,
-                                                   &__Pyx_TypeInfo_double, stack,
-                                                   &result, obj);
-      if (unlikely(retcode == -1))
-          goto __pyx_fail;
-      return result;
-  __pyx_fail:
-      result.memview = NULL;
-      result.data = NULL;
-      return result;
-  }
-  
-/* ObjectToMemviewSlice */
   static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_ds_int(PyObject *obj, int writable_flag) {
       __Pyx_memviewslice result = __Pyx_MEMSLICE_INIT;
       __Pyx_BufFmt_StackElem stack[1];
@@ -27215,6 +28374,29 @@ static const char* __Pyx_BufFmt_CheckString(__Pyx_BufFmt_Context* ctx, const cha
       retcode = __Pyx_ValidateAndInit_memviewslice(axes_specs, 0,
                                                    PyBUF_RECORDS_RO | writable_flag, 1,
                                                    &__Pyx_TypeInfo_int, stack,
+                                                   &result, obj);
+      if (unlikely(retcode == -1))
+          goto __pyx_fail;
+      return result;
+  __pyx_fail:
+      result.memview = NULL;
+      result.data = NULL;
+      return result;
+  }
+  
+/* ObjectToMemviewSlice */
+  static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_ds_double(PyObject *obj, int writable_flag) {
+      __Pyx_memviewslice result = __Pyx_MEMSLICE_INIT;
+      __Pyx_BufFmt_StackElem stack[1];
+      int axes_specs[] = { (__Pyx_MEMVIEW_DIRECT | __Pyx_MEMVIEW_STRIDED) };
+      int retcode;
+      if (obj == Py_None) {
+          result.memview = (struct __pyx_memoryview_obj *) Py_None;
+          return result;
+      }
+      retcode = __Pyx_ValidateAndInit_memviewslice(axes_specs, 0,
+                                                   PyBUF_RECORDS_RO | writable_flag, 1,
+                                                   &__Pyx_TypeInfo_double, stack,
                                                    &result, obj);
       if (unlikely(retcode == -1))
           goto __pyx_fail;
@@ -27408,75 +28590,6 @@ static const char* __Pyx_BufFmt_CheckString(__Pyx_BufFmt_Context* ctx, const cha
               break;
       }
       return result;
-  }
-  
-/* CIntToPy */
-  static CYTHON_INLINE PyObject* __Pyx_PyLong_From_int(int value) {
-  #ifdef __Pyx_HAS_GCC_DIAGNOSTIC
-  #pragma GCC diagnostic push
-  #pragma GCC diagnostic ignored "-Wconversion"
-  #endif
-      const int neg_one = (int) -1, const_zero = (int) 0;
-  #ifdef __Pyx_HAS_GCC_DIAGNOSTIC
-  #pragma GCC diagnostic pop
-  #endif
-      const int is_unsigned = neg_one > const_zero;
-      if (is_unsigned) {
-          if (sizeof(int) < sizeof(long)) {
-              return PyLong_FromLong((long) value);
-          } else if (sizeof(int) <= sizeof(unsigned long)) {
-              return PyLong_FromUnsignedLong((unsigned long) value);
-  #if !CYTHON_COMPILING_IN_PYPY
-          } else if (sizeof(int) <= sizeof(unsigned PY_LONG_LONG)) {
-              return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
-  #endif
-          }
-      } else {
-          if (sizeof(int) <= sizeof(long)) {
-              return PyLong_FromLong((long) value);
-          } else if (sizeof(int) <= sizeof(PY_LONG_LONG)) {
-              return PyLong_FromLongLong((PY_LONG_LONG) value);
-          }
-      }
-      {
-          unsigned char *bytes = (unsigned char *)&value;
-  #if !CYTHON_COMPILING_IN_LIMITED_API && PY_VERSION_HEX >= 0x030d00A4
-          if (is_unsigned) {
-              return PyLong_FromUnsignedNativeBytes(bytes, sizeof(value), -1);
-          } else {
-              return PyLong_FromNativeBytes(bytes, sizeof(value), -1);
-          }
-  #elif !CYTHON_COMPILING_IN_LIMITED_API && PY_VERSION_HEX < 0x030d0000
-          int one = 1; int little = (int)*(unsigned char *)&one;
-          return _PyLong_FromByteArray(bytes, sizeof(int),
-                                       little, !is_unsigned);
-  #else
-          int one = 1; int little = (int)*(unsigned char *)&one;
-          PyObject *from_bytes, *result = NULL, *kwds = NULL;
-          PyObject *py_bytes = NULL, *order_str = NULL;
-          from_bytes = PyObject_GetAttrString((PyObject*)&PyLong_Type, "from_bytes");
-          if (!from_bytes) return NULL;
-          py_bytes = PyBytes_FromStringAndSize((char*)bytes, sizeof(int));
-          if (!py_bytes) goto limited_bad;
-          order_str = PyUnicode_FromString(little ? "little" : "big");
-          if (!order_str) goto limited_bad;
-          {
-              PyObject *args[3+(CYTHON_VECTORCALL ? 1 : 0)] = { NULL, py_bytes, order_str };
-              if (!is_unsigned) {
-                  kwds = __Pyx_MakeVectorcallBuilderKwds(1);
-                  if (!kwds) goto limited_bad;
-                  if (__Pyx_VectorcallBuilder_AddArgStr("signed", __Pyx_NewRef(Py_True), kwds, args+3, 0) < 0) goto limited_bad;
-              }
-              result = __Pyx_Object_Vectorcall_CallFromBuilder(from_bytes, args+1, 2 | __Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET, kwds);
-          }
-          limited_bad:
-          Py_XDECREF(kwds);
-          Py_XDECREF(order_str);
-          Py_XDECREF(py_bytes);
-          Py_XDECREF(from_bytes);
-          return result;
-  #endif
-      }
   }
   
 /* CIntFromPy */
@@ -27730,6 +28843,75 @@ static const char* __Pyx_BufFmt_CheckString(__Pyx_BufFmt_Context* ctx, const cha
   }
   
 /* CIntToPy */
+  static CYTHON_INLINE PyObject* __Pyx_PyLong_From_int(int value) {
+  #ifdef __Pyx_HAS_GCC_DIAGNOSTIC
+  #pragma GCC diagnostic push
+  #pragma GCC diagnostic ignored "-Wconversion"
+  #endif
+      const int neg_one = (int) -1, const_zero = (int) 0;
+  #ifdef __Pyx_HAS_GCC_DIAGNOSTIC
+  #pragma GCC diagnostic pop
+  #endif
+      const int is_unsigned = neg_one > const_zero;
+      if (is_unsigned) {
+          if (sizeof(int) < sizeof(long)) {
+              return PyLong_FromLong((long) value);
+          } else if (sizeof(int) <= sizeof(unsigned long)) {
+              return PyLong_FromUnsignedLong((unsigned long) value);
+  #if !CYTHON_COMPILING_IN_PYPY
+          } else if (sizeof(int) <= sizeof(unsigned PY_LONG_LONG)) {
+              return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
+  #endif
+          }
+      } else {
+          if (sizeof(int) <= sizeof(long)) {
+              return PyLong_FromLong((long) value);
+          } else if (sizeof(int) <= sizeof(PY_LONG_LONG)) {
+              return PyLong_FromLongLong((PY_LONG_LONG) value);
+          }
+      }
+      {
+          unsigned char *bytes = (unsigned char *)&value;
+  #if !CYTHON_COMPILING_IN_LIMITED_API && PY_VERSION_HEX >= 0x030d00A4
+          if (is_unsigned) {
+              return PyLong_FromUnsignedNativeBytes(bytes, sizeof(value), -1);
+          } else {
+              return PyLong_FromNativeBytes(bytes, sizeof(value), -1);
+          }
+  #elif !CYTHON_COMPILING_IN_LIMITED_API && PY_VERSION_HEX < 0x030d0000
+          int one = 1; int little = (int)*(unsigned char *)&one;
+          return _PyLong_FromByteArray(bytes, sizeof(int),
+                                       little, !is_unsigned);
+  #else
+          int one = 1; int little = (int)*(unsigned char *)&one;
+          PyObject *from_bytes, *result = NULL, *kwds = NULL;
+          PyObject *py_bytes = NULL, *order_str = NULL;
+          from_bytes = PyObject_GetAttrString((PyObject*)&PyLong_Type, "from_bytes");
+          if (!from_bytes) return NULL;
+          py_bytes = PyBytes_FromStringAndSize((char*)bytes, sizeof(int));
+          if (!py_bytes) goto limited_bad;
+          order_str = PyUnicode_FromString(little ? "little" : "big");
+          if (!order_str) goto limited_bad;
+          {
+              PyObject *args[3+(CYTHON_VECTORCALL ? 1 : 0)] = { NULL, py_bytes, order_str };
+              if (!is_unsigned) {
+                  kwds = __Pyx_MakeVectorcallBuilderKwds(1);
+                  if (!kwds) goto limited_bad;
+                  if (__Pyx_VectorcallBuilder_AddArgStr("signed", __Pyx_NewRef(Py_True), kwds, args+3, 0) < 0) goto limited_bad;
+              }
+              result = __Pyx_Object_Vectorcall_CallFromBuilder(from_bytes, args+1, 2 | __Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET, kwds);
+          }
+          limited_bad:
+          Py_XDECREF(kwds);
+          Py_XDECREF(order_str);
+          Py_XDECREF(py_bytes);
+          Py_XDECREF(from_bytes);
+          return result;
+  #endif
+      }
+  }
+  
+/* CIntToPy */
   static CYTHON_INLINE PyObject* __Pyx_PyLong_From_long(long value) {
   #ifdef __Pyx_HAS_GCC_DIAGNOSTIC
   #pragma GCC diagnostic push
@@ -27776,6 +28958,75 @@ static const char* __Pyx_BufFmt_CheckString(__Pyx_BufFmt_Context* ctx, const cha
           from_bytes = PyObject_GetAttrString((PyObject*)&PyLong_Type, "from_bytes");
           if (!from_bytes) return NULL;
           py_bytes = PyBytes_FromStringAndSize((char*)bytes, sizeof(long));
+          if (!py_bytes) goto limited_bad;
+          order_str = PyUnicode_FromString(little ? "little" : "big");
+          if (!order_str) goto limited_bad;
+          {
+              PyObject *args[3+(CYTHON_VECTORCALL ? 1 : 0)] = { NULL, py_bytes, order_str };
+              if (!is_unsigned) {
+                  kwds = __Pyx_MakeVectorcallBuilderKwds(1);
+                  if (!kwds) goto limited_bad;
+                  if (__Pyx_VectorcallBuilder_AddArgStr("signed", __Pyx_NewRef(Py_True), kwds, args+3, 0) < 0) goto limited_bad;
+              }
+              result = __Pyx_Object_Vectorcall_CallFromBuilder(from_bytes, args+1, 2 | __Pyx_PY_VECTORCALL_ARGUMENTS_OFFSET, kwds);
+          }
+          limited_bad:
+          Py_XDECREF(kwds);
+          Py_XDECREF(order_str);
+          Py_XDECREF(py_bytes);
+          Py_XDECREF(from_bytes);
+          return result;
+  #endif
+      }
+  }
+  
+/* CIntToPy */
+  static CYTHON_INLINE PyObject* __Pyx_PyLong_From_uint64_t(uint64_t value) {
+  #ifdef __Pyx_HAS_GCC_DIAGNOSTIC
+  #pragma GCC diagnostic push
+  #pragma GCC diagnostic ignored "-Wconversion"
+  #endif
+      const uint64_t neg_one = (uint64_t) -1, const_zero = (uint64_t) 0;
+  #ifdef __Pyx_HAS_GCC_DIAGNOSTIC
+  #pragma GCC diagnostic pop
+  #endif
+      const int is_unsigned = neg_one > const_zero;
+      if (is_unsigned) {
+          if (sizeof(uint64_t) < sizeof(long)) {
+              return PyLong_FromLong((long) value);
+          } else if (sizeof(uint64_t) <= sizeof(unsigned long)) {
+              return PyLong_FromUnsignedLong((unsigned long) value);
+  #if !CYTHON_COMPILING_IN_PYPY
+          } else if (sizeof(uint64_t) <= sizeof(unsigned PY_LONG_LONG)) {
+              return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
+  #endif
+          }
+      } else {
+          if (sizeof(uint64_t) <= sizeof(long)) {
+              return PyLong_FromLong((long) value);
+          } else if (sizeof(uint64_t) <= sizeof(PY_LONG_LONG)) {
+              return PyLong_FromLongLong((PY_LONG_LONG) value);
+          }
+      }
+      {
+          unsigned char *bytes = (unsigned char *)&value;
+  #if !CYTHON_COMPILING_IN_LIMITED_API && PY_VERSION_HEX >= 0x030d00A4
+          if (is_unsigned) {
+              return PyLong_FromUnsignedNativeBytes(bytes, sizeof(value), -1);
+          } else {
+              return PyLong_FromNativeBytes(bytes, sizeof(value), -1);
+          }
+  #elif !CYTHON_COMPILING_IN_LIMITED_API && PY_VERSION_HEX < 0x030d0000
+          int one = 1; int little = (int)*(unsigned char *)&one;
+          return _PyLong_FromByteArray(bytes, sizeof(uint64_t),
+                                       little, !is_unsigned);
+  #else
+          int one = 1; int little = (int)*(unsigned char *)&one;
+          PyObject *from_bytes, *result = NULL, *kwds = NULL;
+          PyObject *py_bytes = NULL, *order_str = NULL;
+          from_bytes = PyObject_GetAttrString((PyObject*)&PyLong_Type, "from_bytes");
+          if (!from_bytes) return NULL;
+          py_bytes = PyBytes_FromStringAndSize((char*)bytes, sizeof(uint64_t));
           if (!py_bytes) goto limited_bad;
           order_str = PyUnicode_FromString(little ? "little" : "big");
           if (!order_str) goto limited_bad;

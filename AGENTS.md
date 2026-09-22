@@ -54,5 +54,5 @@ edge that declares a risk. Full `what`/`risk` prose:
 `uv run tooling/workspace-index/impact.py libs/poker_eval_faster`.
 Refresh: `uv run tooling/workspace-index/gen_consumed_by.py --write`.
 
-- **`libs/holdem_insights`** (import) — lazy importlib.import_module with fail-with-message fallback ⚠
+- **`libs/holdem_insights`** (import) — lazy evaluator import; rank, HU and known-three-way counts… ⚠
 <!-- END AUTOGEN:consumed-by -->

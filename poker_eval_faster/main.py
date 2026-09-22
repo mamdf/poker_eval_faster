@@ -12,7 +12,9 @@ from .eval_cython.hands_evaluate import (
 )
 from .eval_cython.three_way_class_lookup_builder import clear_three_way_class_builder_cache_c
 from .eval_cython.main import evaluate_c
-from .eval_cython.one_hand_evaluate import evaluate_one_hand_vs_all_c, hand_to_equity
+from .eval_cython.one_hand_evaluate import (
+    evaluate_one_hand_vs_all_c, evaluate_one_hand_vs_two_random_c, hand_to_equity,
+)
 from .eval_cython.three_way_orders import evaluate_three_way_orders_c
 from .preflop_canonical import (
     _canonical_preflop_matchup,
@@ -412,6 +414,26 @@ def evaluate_heads_up_counts(hero_hand, villain_hand, board=None) -> HeadsUpCoun
 
     counts = evaluate_heads_up_counts_c(hero_cards, villain_cards, board_cards)
     return HeadsUpCounts(wins=int(counts[0]), ties=int(counts[1]), total=int(counts[2]))
+
+
+def evaluate_one_hand_vs_two_random(hero, board, dead_cards=()) -> Tuple[int, int, int]:
+    """Exact postflop win/tie/loss event counts versus two uniform random hands.
+
+    Rivals occupy distinct seats and cannot share cards. Ties include both
+    two-way and three-way top ties, so these counts are NOT split-pot equity.
+    Additional known dead cards are excluded from rivals and board runouts.
+    """
+    hero = _normalize_cards(hero)
+    board = _normalize_cards(board)
+    dead = _normalize_cards(dead_cards)
+    if len(hero) != 2 or len(board) not in (3, 4, 5):
+        raise ValueError("Expected two hero cards and a flop, turn or river board")
+    cards = np.concatenate((hero, board, dead))
+    if np.any(cards < 1) or np.any(cards > 52) or len(set(cards.tolist())) != len(cards):
+        raise ValueError("Cards must be distinct deck IDs in 1..52")
+    if 52 - len(cards) < 4 + 5 - len(board):
+        raise ValueError("Not enough cards for two rivals and the board runout")
+    return evaluate_one_hand_vs_two_random_c(hero, board, dead)
 
 
 def evaluate_three_way_orders(hands, board=None) -> ThreeWayOrderCounts:

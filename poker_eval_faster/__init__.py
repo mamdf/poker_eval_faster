@@ -56,6 +56,7 @@ from .main import (
     evaluate_hands,
     evaluate_heads_up_counts,
     evaluate_one_hand_vs_all,
+    evaluate_one_hand_vs_two_random,
     evaluate_ranges,
     evaluate_rank,
     evaluate_three_way_ranges,

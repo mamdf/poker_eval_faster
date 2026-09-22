@@ -14,6 +14,92 @@ cdef int TIE = 1
 cdef int LOSS = 2
 
 
+cdef void _two_random_on_board(int hero0, int hero1, int* deck, int n,
+                               stdint.uint32_t board_rank,
+                               stdint.uint64_t* counts) noexcept nogil:
+    # Hands are edges between cards. Ordered pairs of disjoint edges in a
+    # subset S: |S|*(|S|-1) - sum_card degree*(degree-1).
+    cdef int lower_degree[53]
+    cdef int eligible_degree[53]
+    cdef int i, j, a, b
+    cdef stdint.uint32_t hero_rank = handdat[handdat[board_rank + hero0] + hero1]
+    cdef stdint.uint32_t prefix, rank
+    cdef stdint.uint64_t lower = 0, eligible = 0, wins, unbeaten, total
+    for i in range(53):
+        lower_degree[i] = 0
+        eligible_degree[i] = 0
+    for i in range(n):
+        a = deck[i]
+        prefix = handdat[board_rank + a]
+        for j in range(i + 1, n):
+            b = deck[j]
+            rank = handdat[prefix + b]
+            if rank <= hero_rank:
+                eligible += 1
+                eligible_degree[a] += 1
+                eligible_degree[b] += 1
+                if rank < hero_rank:
+                    lower += 1
+                    lower_degree[a] += 1
+                    lower_degree[b] += 1
+    wins = lower * (lower - 1) if lower else 0
+    unbeaten = eligible * (eligible - 1) if eligible else 0
+    for i in range(53):
+        wins -= lower_degree[i] * (lower_degree[i] - 1)
+        unbeaten -= eligible_degree[i] * (eligible_degree[i] - 1)
+    total = (<stdint.uint64_t>n * (n - 1) * (n - 2) * (n - 3)) // 4
+    counts[0] += wins
+    counts[1] += unbeaten - wins
+    counts[2] += total - unbeaten
+
+
+cpdef object evaluate_one_hand_vs_two_random_c(int[:] hero, int[:] board, int[:] dead):
+    """Validated inputs only; exact win/tie/loss EVENTS, not pot shares."""
+    cdef bint blocked[53]
+    cdef int deck[52]
+    cdef int rivals[52]
+    cdef int i, a, b, n = 0, m, missing = 5 - board.shape[0]
+    cdef stdint.uint32_t prefix = 53, turn, river
+    cdef stdint.uint64_t counts[3]
+    for i in range(53):
+        blocked[i] = False
+    blocked[hero[0]] = True
+    blocked[hero[1]] = True
+    for i in range(board.shape[0]):
+        blocked[board[i]] = True
+        prefix = handdat[prefix + board[i]]
+    for i in range(dead.shape[0]):
+        blocked[dead[i]] = True
+    for i in range(1, 53):
+        if not blocked[i]:
+            deck[n] = i
+            n += 1
+    counts[0] = counts[1] = counts[2] = 0
+    with nogil:
+        if missing == 0:
+            _two_random_on_board(hero[0], hero[1], deck, n, prefix, counts)
+        else:
+            for a in range(n):
+                turn = handdat[prefix + deck[a]]
+                if missing == 1:
+                    m = 0
+                    for i in range(n):
+                        if i != a:
+                            rivals[m] = deck[i]
+                            m += 1
+                    _two_random_on_board(hero[0], hero[1], rivals, m, turn, counts)
+                else:
+                    for b in range(a + 1, n):
+                        river = handdat[turn + deck[b]]
+                        m = 0
+                        for i in range(n):
+                            if i != a and i != b:
+                                rivals[m] = deck[i]
+                                m += 1
+                        _two_random_on_board(hero[0], hero[1], rivals, m, river, counts)
+    return (int(counts[0]), int(counts[1]), int(counts[2]))
+
+
 @cython.cdivision(True)
 cdef inline double _hand_equity(double wins, double ties, double losses) nogil:
     cdef double total = wins + 2.0 * ties + losses

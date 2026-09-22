@@ -4,6 +4,11 @@ High-performance poker hand evaluation for Texas Hold’em using Cython-backed e
 
 ## Features
 - Evaluate one hand vs the entire range of possible opponents
+- Exact postflop win/tie/loss event counts against two uniform random rivals:
+  `evaluate_one_hand_vs_two_random(hero, board, dead_cards=())`. Supports
+  flop/turn/river and additional dead cards; ties are events, not pot shares.
+  Counts compatible rival pairs per completed board without enumerating every
+  pair. Uses the existing HandRanks table, no additional table or cache.
 - Evaluate multiple hands against each other on a given board
 - Get exact heads-up win/tie/total counts for two specific combos
 - Build exact preflop heads-up lookup tables from canonical combo ids
