@@ -64,6 +64,7 @@ from .main import (
     int_to_cards,
     packed_pair_index,
     ranking_to_category,
+    river_category_histograms,
 )
 from .eval_cython.python_wrapper import create_deck_wrapper
 from .eval_cython.hands_evaluate import evaluate_range_vs_range_c

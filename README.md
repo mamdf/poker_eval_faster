@@ -100,6 +100,38 @@ print(counts.wins, counts.ties, counts.total)
 print(round(counts.equity * 100, 2), '%')
 ```
 
+### Exact river category histograms
+```python
+from poker_eval_faster import river_category_histograms
+
+result = river_category_histograms(['Ac', 'Tc'], ['9c', '2d', 'As'])
+print(result['hero'], result['opponent'])
+hero_pct = {category: 100 * count / result['hero_total']
+            for category, count in result['hero'].items()}
+opponent_pct = {category: 100 * count / result['opponent_total']
+                for category, count in result['opponent'].items()}
+```
+
+Returns `mode="exact"`, `opponent_scope="one_random_opponent"`, two category
+count dictionaries and `hero_total` / `opponent_total`. Each dictionary includes
+all nine names from `ranking_to_category`, including zero counts. This describes
+final hand categories, not equity or win/tie/loss events.
+
+Hero counts each unordered board completion once; opponent counts each legal
+(completed board, two-card hand) pair, excluding hero and board cards. Normalize
+each histogram by its own total. Without additional dead cards:
+
+| Current board | Hero total | Opponent total |
+| --- | ---: | ---: |
+| Flop | 1,081 | 1,070,190 |
+| Turn | 46 | 45,540 |
+| River | 1 | 990 |
+
+Optional `dead_cards=()` excludes additional known cards from both runouts and
+opponent hands. Supports 3–5 board cards and string or integer card encodings.
+The enumeration runs in Cython without the GIL using the existing HandRanks table.
+Rebuild extensions after updating a development checkout.
+
 ### Build a heads-up lookup table
 ```python
 from poker_eval_faster import (

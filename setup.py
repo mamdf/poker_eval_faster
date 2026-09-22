@@ -10,6 +10,7 @@ except ImportError:
 
 ROOT = Path(__file__).parent
 EXTENSION_NAMES = (
+    "category_histograms",
     "common",
     "hands_evaluate",
     "main",

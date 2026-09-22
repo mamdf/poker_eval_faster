@@ -416,6 +416,28 @@ def evaluate_heads_up_counts(hero_hand, villain_hand, board=None) -> HeadsUpCoun
     return HeadsUpCounts(wins=int(counts[0]), ties=int(counts[1]), total=int(counts[2]))
 
 
+def river_category_histograms(hero, board, dead_cards=()) -> dict:
+    """Exact final categories for hero and one uniform random opponent.
+
+    Hero counts each legal completed board once. Opponent counts every legal
+    (completed board, opponent hand) pair. All nine categories are included.
+    Supports flop, turn and river; dead cards are excluded from both draws.
+    """
+    from .eval_cython.category_histograms import river_category_histograms_c
+
+    hero_counts, opponent_counts = river_category_histograms_c(
+        _normalize_cards(hero), _normalize_cards(board), _normalize_cards(dead_cards),
+    )
+    return {
+        "mode": "exact",
+        "opponent_scope": "one_random_opponent",
+        "hero": dict(zip(RANKING[1:], hero_counts)),
+        "opponent": dict(zip(RANKING[1:], opponent_counts)),
+        "hero_total": sum(hero_counts),
+        "opponent_total": sum(opponent_counts),
+    }
+
+
 def evaluate_one_hand_vs_two_random(hero, board, dead_cards=()) -> Tuple[int, int, int]:
     """Exact postflop win/tie/loss event counts versus two uniform random hands.
 
