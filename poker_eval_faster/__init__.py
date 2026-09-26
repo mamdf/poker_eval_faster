@@ -40,6 +40,7 @@ from .three_way_class_lookup import (
 from .main import (
     BestHand,
     HeadsUpCounts,
+    RandomEquityEstimate,
     HeadsUpLookupTable,
     THREE_WAY_ORDER_LABELS,
     ThreeWayOrderCounts,
@@ -58,6 +59,7 @@ from .main import (
     evaluate_heads_up_counts,
     evaluate_one_hand_vs_all,
     evaluate_one_hand_vs_two_random,
+    estimate_equity_vs_random,
     evaluate_ranges,
     evaluate_rank,
     evaluate_best_hand,

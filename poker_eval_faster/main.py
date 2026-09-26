@@ -2,7 +2,9 @@ from collections import Counter
 from dataclasses import dataclass
 from functools import lru_cache
 from itertools import combinations
-from math import comb
+from math import comb, log, sqrt
+from operator import index
+from secrets import randbits
 from typing import Iterable, List, Sequence, Tuple
 import numpy as np
 
@@ -107,6 +109,27 @@ class HeadsUpCounts:
         if self.total == 0:
             return 0.0
         return (self.wins + (self.ties / 2.0)) / self.total
+
+
+@dataclass(frozen=True)
+class RandomEquityEstimate:
+    """Sampled showdown events and hero's expected fraction of an equal pot."""
+
+    equity: float
+    wins: int
+    ties: int
+    losses: int
+    samples: int
+    seed: int
+
+    @property
+    def mode(self) -> str:
+        return "monte_carlo"
+
+    @property
+    def error_bound_95(self) -> float:
+        """Two-sided Hoeffding radius for fixed independent uniform samples."""
+        return min(1.0, sqrt(log(40.0) / (2 * self.samples)))
 
 
 @dataclass(frozen=True)
@@ -514,6 +537,67 @@ def river_category_histograms(hero, board, dead_cards=()) -> dict:
         "hero_total": sum(hero_counts),
         "opponent_total": sum(opponent_counts),
     }
+
+
+def _simulation_integer(value, name, minimum, maximum):
+    try:
+        if isinstance(value, (bool, np.bool_)):
+            raise TypeError
+        value = index(value)
+    except TypeError:
+        raise ValueError(f"{name} must be an integer in {minimum}..{maximum}") from None
+    if not minimum <= value <= maximum:
+        raise ValueError(f"{name} must be an integer in {minimum}..{maximum}")
+    return value
+
+
+def _simulation_cards(cards):
+    # Validate before casting to int32: floats and overflowing integers must
+    # not silently become different, otherwise valid deck IDs.
+    normalized = []
+    for card in cards:
+        if isinstance(card, str):
+            try:
+                card = CARDS_TO_INT[card]
+            except KeyError:
+                raise ValueError(f"Invalid card: {card!r}") from None
+        normalized.append(_simulation_integer(card, "Card ID", 1, 52))
+    return np.array(normalized, dtype=np.int32)
+
+
+def estimate_equity_vs_random(
+    hero, board, num_opponents, *, dead_cards=(), samples=100_000, seed=None,
+) -> RandomEquityEstimate:
+    """Estimate hero's postflop equity against 1–9 uniform random opponents.
+
+    Complete exactly `samples` legal deals, sharing the pot equally among top
+    hands. `error_bound_95` is a conservative absolute probability radius under
+    independent uniform sampling, not a deterministic error guarantee. Pass the
+    returned seed to reproduce a call. Runtime is not capped.
+    """
+    from .eval_cython.random_equity import estimate_equity_vs_random_c
+
+    opponents = _simulation_integer(num_opponents, "num_opponents", 1, 9)
+    samples = _simulation_integer(samples, "samples", 1, (1 << 63) - 1)
+    seed = randbits(64) if seed is None else _simulation_integer(seed, "seed", 0, (1 << 64) - 1)
+    hero = _simulation_cards(hero)
+    board = _simulation_cards(board)
+    dead = _simulation_cards(dead_cards)
+    if len(hero) != 2 or len(board) not in (3, 4, 5):
+        raise ValueError("Expected two hero cards and a flop, turn or river board")
+    cards = np.concatenate((hero, board, dead))
+    if _cards_have_duplicates(cards):
+        raise ValueError("Cards must be distinct deck IDs in 1..52")
+    if 52 - len(cards) < 2 * opponents + 5 - len(board):
+        raise ValueError("Not enough cards for the rivals and the board runout")
+
+    wins, ties, losses, equity = estimate_equity_vs_random_c(
+        hero, board, dead, opponents, samples, seed,
+    )
+    return RandomEquityEstimate(
+        equity=equity, wins=wins, ties=ties, losses=losses,
+        samples=samples, seed=seed,
+    )
 
 
 def evaluate_one_hand_vs_two_random(hero, board, dead_cards=()) -> Tuple[int, int, int]:

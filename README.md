@@ -10,6 +10,8 @@ High-performance poker hand evaluation for Texas Hold’em using Cython-backed e
   Counts compatible rival pairs per completed board without enumerating every
   pair. Uses the existing HandRanks table, no additional table or cache.
 - Evaluate multiple hands against each other on a given board
+- Estimate postflop split-pot equity against 1–9 uniform random opponents
+  with reproducible Cython Monte Carlo and a statistical error bound
 - Get exact heads-up win/tie/total counts for two specific combos
 - Build exact preflop heads-up lookup tables from canonical combo ids
 - Aggregate combo-level HU lookups into hand classes such as `AA`, `AKs`, `AKo`
@@ -111,6 +113,40 @@ best = evaluate_best_hand(['7d', 'Qs', '9h', '5h', '9c'], ['Tc', '7s'])
 assert best.board_indices == (0, 1, 2, 4)
 assert best.hand_indices == (1,)
 ```
+
+### Monte Carlo equity against random opponents
+
+```python
+from poker_eval_faster import estimate_equity_vs_random
+
+result = estimate_equity_vs_random(
+    ["Ac", "Tc"], ["9c", "2d", "As"], num_opponents=7,
+    samples=100_000, seed=42,
+)
+print(result.equity, result.error_bound_95)
+```
+
+Supports flop, turn and river, 2–10 players total, string or integer card IDs,
+and optional `dead_cards=()`. Each sample completes the board and deals uniform
+random rival hands without repeated cards. Hero receives `1/k` of the pot when
+tied for first among `k` players. This assumes equal pot eligibility; it does
+not model side pots or opponent ranges.
+
+The frozen `RandomEquityEstimate` returns `equity` in `[0, 1]`, sampled
+`wins`, `ties`, `losses`, `samples`, the actual `seed`, and `mode="monte_carlo"`.
+The event counts sum to `samples`; ties count shared first-place events, not
+fractional wins. Pass the returned seed with the same inputs to reproduce a
+call. Omitted seeds are generated automatically. Seeds are unsigned 64-bit
+integers; samples must be integers in `1..2**63-1` and default to 100,000.
+
+`error_bound_95` is the conservative two-sided Hoeffding radius
+`min(1, sqrt(log(40)/(2*samples)))`, in probability units: approximately
+**±0.43 percentage points at 100,000 samples**. Under independent uniform
+sampling the interval, clipped to `[0, 1]`, covers the true equity with at least
+95% probability; this is not a guaranteed error for each seed. A local PCG32
+generator keeps concurrent calls independent of shared random state. Calls
+always finish the requested sample count, without a time cutoff. Existing
+exact APIs retain their behavior. No additional equity tables are needed.
 
 ### Exact heads-up counts
 ```python
@@ -256,6 +292,28 @@ Import path: `from poker_eval_faster import ...` (see `poker_eval_faster/__init_
 ## Benchmarks
 Basic, reproducible benchmarks are included.
 
+- Monte Carlo latency across four scenarios, all postflop streets, 2/3/6/8/10
+  players and 10k/100k/1M samples:
+```bash
+python benchmarks/benchmark_random_equity.py --repeats 7
+python benchmarks/benchmark_random_equity.py --players 8 --samples 100000 --repeats 31
+```
+  JSON output separates package import (including HandRanks loading), the
+  first call for each scenario, warm median and p95 latency. Timings include
+  Python validation and result construction. The second command checks the
+  eight-player target of warm p95 ≤100 ms per scenario/street.
+
+  On a Ryzen 5 5600X, Python 3.13.15, Linux, 100,000 samples against seven
+  randoms measured the following across those four scenarios (31 warm calls,
+  September 2026). Package import including table loading took about 397 ms;
+  this one-time cost is excluded from query latency.
+
+  | Street | Warm median range | Worst scenario p95 |
+  | --- | ---: | ---: |
+  | Flop | 4.64–5.33 ms | 5.90 ms |
+  | Turn | 3.53–4.49 ms | 4.64 ms |
+  | River | 3.02–4.14 ms | 4.32 ms |
+
 - Run the simple script (no extra deps):
 ```bash
 python benchmarks/benchmark_basic.py --iters 50000
@@ -356,7 +414,9 @@ find poker_eval_faster/eval_cython -name "*.pyd" -delete
 ```
 
 ## Performance
-This library uses a table-driven evaluator and Cython wrappers. While formal benchmarks are pending, it is designed to be very fast. The approach is comparable to classic C/C++ evaluators (e.g., PokerStove) and may be faster than pure-Python or differently implemented Cython libraries such as `pyeval7` depending on workload and platform.
+This library uses a table-driven evaluator and Cython kernels. See the
+benchmarks above for reproducible measurements; latency depends on the
+workload, hardware and whether the ranking table is already loaded.
 
 References:
 - Two Plus Two hand evaluator data/table generator: [TwoPlusTwoHandEvaluator](https://github.com/tangentforks/TwoPlusTwoHandEvaluator)

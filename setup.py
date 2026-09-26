@@ -16,6 +16,7 @@ EXTENSION_NAMES = (
     "main",
     "one_hand_evaluate",
     "python_wrapper",
+    "random_equity",
     "three_way_class_lookup_builder",
     "three_way_orders",
 )
