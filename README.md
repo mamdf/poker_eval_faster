@@ -148,6 +148,9 @@ generator keeps concurrent calls independent of shared random state. Calls
 always finish the requested sample count, without a time cutoff. Existing
 exact APIs retain their behavior. No additional equity tables are needed.
 
+An [independent PokerStove validation](docs/random_equity_validation.md) compares
+3,400 estimates with exact and 10M-sample references, including eight players.
+
 ### Exact heads-up counts
 ```python
 from poker_eval_faster import evaluate_heads_up_counts
