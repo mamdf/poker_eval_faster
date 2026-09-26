@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "poker_eval_faster"
-version = "1.0"
+version = "1.1.0"
 description = "High-performance poker hand evaluation for Texas Hold'em"
 readme = "README.md"
 requires-python = ">=3.11"

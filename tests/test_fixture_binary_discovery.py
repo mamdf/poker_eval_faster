@@ -13,12 +13,14 @@ SCRIPTS = Path(__file__).resolve().parents[1] / "scripts"
 @pytest.mark.parametrize("name", ["heads_up", "three_way"])
 @pytest.mark.parametrize("source", ["argument", "environment", "path", "missing"])
 def test_fixture_generator_binary_discovery(tmp_path, name, source):
-    binary = tmp_path / "ps-eval"
-    binary.write_text("#!/bin/sh\nexit 0\n")
+    bin_dir = tmp_path / "bin"
+    bin_dir.mkdir()
+    binary = bin_dir / ("ps-eval.cmd" if os.name == "nt" else "ps-eval")
+    binary.write_text("@exit /b 0\n" if os.name == "nt" else "#!/bin/sh\nexit 0\n")
     binary.chmod(0o755)
     fixture = tmp_path / "fixture.json"
     fixture.write_text(json.dumps({"cases": []}))
-    env = dict(os.environ, PATH=str(tmp_path) if source == "path" else "")
+    env = dict(os.environ, PATH=str(bin_dir) if source == "path" else "")
     env.pop("POKERSTOVE_BIN", None)
     if source == "environment":
         env["POKERSTOVE_BIN"] = str(binary)

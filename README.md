@@ -312,10 +312,11 @@ uv run python -m pytest tests/ -v
 ## Releases
 GitHub Actions builds wheels and an `sdist` automatically for release tags that start with `v`.
 
-Release flow:
+Update `project.version` in `pyproject.toml` and refresh `uv.lock` with `uv lock`.
+Commit and push those changes, then publish the matching tag:
 ```bash
-git tag v1.0.0
-git push origin v1.0.0
+git tag v1.1.0
+git push origin v1.1.0
 ```
 
 That triggers `.github/workflows/release.yml`, which:
@@ -326,7 +327,7 @@ That triggers `.github/workflows/release.yml`, which:
 
 To install from a tagged Git revision:
 ```bash
-uv add "git+https://github.com/mamdf/poker_eval_faster.git@v1.0.0"
+uv add "git+https://github.com/mamdf/poker_eval_faster.git@v1.1.0"
 ```
 
 To install from a GitHub Release artifact, download the matching wheel for your OS/Python version and install it with `pip install <wheel-file>`.
