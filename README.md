@@ -91,6 +91,23 @@ category_id, category_name = ranking_to_category(rank)
 print(rank, category_id, category_name)  # e.g., 36874 9 STRAIGHT_FLUSH
 ```
 
+### Best five cards
+
+`evaluate_best_hand(board, hand=())` returns a frozen `BestHand` with `rank`,
+`board_indices`, and `hand_indices` (tuples relative to the supplied sequences).
+It accepts 5–7 distinct cards using the same string or integer encodings as
+`evaluate_rank`. The selected five include kickers. Equivalent selections prefer
+more board cards, then the lexicographically smallest pair of index tuples.
+This is Hold’em selection; it does not impose Omaha hole-card constraints.
+
+```python
+from poker_eval_faster import evaluate_best_hand
+
+best = evaluate_best_hand(['7d', 'Qs', '9h', '5h', '9c'], ['Tc', '7s'])
+assert best.board_indices == (0, 1, 2, 4)
+assert best.hand_indices == (1,)
+```
+
 ### Exact heads-up counts
 ```python
 from poker_eval_faster import evaluate_heads_up_counts

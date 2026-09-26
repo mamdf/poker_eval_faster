@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from functools import lru_cache
+from itertools import combinations
 from math import comb
 from typing import Iterable, List, Sequence, Tuple
 import numpy as np
@@ -77,6 +78,15 @@ _THREE_WAY_EQUITY_WEIGHTS = (
     (0.0, 0.0, 1.0),
     (1.0 / 3.0, 1.0 / 3.0, 1.0 / 3.0),
 )
+
+
+@dataclass(frozen=True)
+class BestHand:
+    """Rank and input-relative indices of one deterministic best five-card hand."""
+
+    rank: int
+    board_indices: tuple[int, ...]
+    hand_indices: tuple[int, ...]
 
 
 @dataclass(frozen=True)
@@ -312,6 +322,35 @@ def ranking_to_category(rank: int) -> Tuple[int, str]:
 def evaluate_rank(board: List, hand: List = []):
     cards = _normalize_cards(list(hand) + list(board))
     return evaluate_c(cards)
+
+
+def evaluate_best_hand(board: Sequence, hand: Sequence = ()) -> BestHand:
+    """Select the best five from 5–7 cards, preferring board cards on ties.
+
+    Inputs use the same string or 1–52 integer encoding as ``evaluate_rank``.
+    Equivalent selections maximize board usage, then minimize the pair of
+    index tuples lexicographically. Indices refer to the supplied sequences.
+    """
+    board_size = len(board)
+    cards = _normalize_cards(list(board) + list(hand))
+    if cards.ndim != 1 or not 5 <= cards.size <= 7:
+        raise ValueError("evaluate_best_hand requires 5 to 7 total cards.")
+    if np.any(cards < 1) or np.any(cards > 52):
+        raise ValueError("Card integers must be between 1 and 52.")
+    if _cards_have_duplicates(cards):
+        raise ValueError("Cards must be distinct.")
+
+    rank = int(evaluate_c(cards))
+    candidates = []
+    for indices in combinations(range(cards.size), 5):
+        if evaluate_c(cards[list(indices)]) == rank:
+            board_indices = tuple(i for i in indices if i < board_size)
+            hand_indices = tuple(i - board_size for i in indices if i >= board_size)
+            candidates.append((board_indices, hand_indices))
+    board_indices, hand_indices = min(
+        candidates, key=lambda selected: (-len(selected[0]), selected)
+    )
+    return BestHand(rank, board_indices, hand_indices)
 
 
 def evaluate_hands(hands, board=None, eq=True, incomplete_board=False) -> List[float]:

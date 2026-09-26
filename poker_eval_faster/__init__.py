@@ -38,6 +38,7 @@ from .three_way_class_lookup import (
     write_three_way_class_lookup,
 )
 from .main import (
+    BestHand,
     HeadsUpCounts,
     HeadsUpLookupTable,
     THREE_WAY_ORDER_LABELS,
@@ -59,6 +60,7 @@ from .main import (
     evaluate_one_hand_vs_two_random,
     evaluate_ranges,
     evaluate_rank,
+    evaluate_best_hand,
     evaluate_three_way_ranges,
     evaluate_three_way_orders,
     int_to_cards,
