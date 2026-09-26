@@ -95,6 +95,10 @@ print(rank, category_id, category_name)  # e.g., 36874 9 STRAIGHT_FLUSH
 
 `evaluate_best_hand(board, hand=())` returns a frozen `BestHand` with `rank`,
 `board_indices`, and `hand_indices` (tuples relative to the supplied sequences).
+Its `category` uses the existing `ranking_to_category` token; `description`
+provides an English label including all kickers, e.g. `Two pair, Nines and
+Sevens, Queen kicker`. These fields default to empty strings when constructing
+`BestHand` with the original three arguments.
 It accepts 5–7 distinct cards using the same string or integer encodings as
 `evaluate_rank`. The selected five include kickers. Equivalent selections prefer
 more board cards, then the lexicographically smallest pair of index tuples.

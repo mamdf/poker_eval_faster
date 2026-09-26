@@ -1,3 +1,4 @@
+from collections import Counter
 from dataclasses import dataclass
 from functools import lru_cache
 from itertools import combinations
@@ -87,6 +88,8 @@ class BestHand:
     rank: int
     board_indices: tuple[int, ...]
     hand_indices: tuple[int, ...]
+    category: str = ""
+    description: str = ""
 
 
 @dataclass(frozen=True)
@@ -324,6 +327,39 @@ def evaluate_rank(board: List, hand: List = []):
     return evaluate_c(cards)
 
 
+def _describe_best_hand(category: str, cards: Sequence[int]) -> str:
+    names = ("Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine",
+             "Ten", "Jack", "Queen", "King", "Ace")
+    counts = Counter((int(card) - 1) // 4 for card in cards)
+    ranks = sorted(counts, reverse=True)
+    groups = sorted(counts, key=lambda rank: (counts[rank], rank), reverse=True)
+
+    def kickers(values):
+        label = "kicker" if len(values) == 1 else "kickers"
+        return f"{'-'.join(names[rank] for rank in values)} {label}"
+
+    def plural(rank):
+        return names[rank] + ("es" if rank == 4 else "s")
+
+    if category in ("STRAIGHT", "STRAIGHT_FLUSH"):
+        high = 3 if ranks == [12, 3, 2, 1, 0] else ranks[0]
+        label = "Straight" if category == "STRAIGHT" else "Straight flush"
+        return f"{label}, {names[high]} high"
+    if category == "QUADS":
+        return f"Four of a kind, {plural(groups[0])}, {kickers(groups[1:])}"
+    if category == "FULL":
+        return f"Full house, {plural(groups[0])} full of {plural(groups[1])}"
+    if category == "TRIPS":
+        return f"Three of a kind, {plural(groups[0])}, {kickers(groups[1:])}"
+    if category == "DOUBLES":
+        return f"Two pair, {plural(groups[0])} and {plural(groups[1])}, {kickers(groups[2:])}"
+    if category == "PAIR":
+        return f"Pair of {plural(groups[0])}, {kickers(groups[1:])}"
+    if category == "FLUSH":
+        return f"Flush, {names[ranks[0]]} high, {kickers(ranks[1:])}"
+    return f"High card, {names[ranks[0]]}, {kickers(ranks[1:])}"
+
+
 def evaluate_best_hand(board: Sequence, hand: Sequence = ()) -> BestHand:
     """Select the best five from 5–7 cards, preferring board cards on ties.
 
@@ -350,7 +386,10 @@ def evaluate_best_hand(board: Sequence, hand: Sequence = ()) -> BestHand:
     board_indices, hand_indices = min(
         candidates, key=lambda selected: (-len(selected[0]), selected)
     )
-    return BestHand(rank, board_indices, hand_indices)
+    _, category = ranking_to_category(rank)
+    selected = cards[list(board_indices) + [board_size + i for i in hand_indices]]
+    description = _describe_best_hand(category, selected)
+    return BestHand(rank, board_indices, hand_indices, category, description)
 
 
 def evaluate_hands(hands, board=None, eq=True, incomplete_board=False) -> List[float]:

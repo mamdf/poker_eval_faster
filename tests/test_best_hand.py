@@ -61,3 +61,44 @@ def test_invalid_cards(cards):
 def test_duplicate_across_board_and_hand():
     with pytest.raises(ValueError, match='distinct'):
         evaluate_best_hand('Ac Kd Qh Js Tc'.split(), ['Ac', '2d'])
+
+
+@pytest.mark.parametrize('cards,category,description', [
+    ('Ac Kd Qh Ts 8c', 'NOPAIR', 'High card, Ace, King-Queen-Ten-Eight kickers'),
+    ('Ac Ad Kh Qs Tc', 'PAIR', 'Pair of Aces, King-Queen-Ten kickers'),
+    ('9c 9d 7h 7s Qc', 'DOUBLES', 'Two pair, Nines and Sevens, Queen kicker'),
+    ('9c 9d 9h As Kc', 'TRIPS', 'Three of a kind, Nines, Ace-King kickers'),
+    ('Ac 2d 3h 4s 5c', 'STRAIGHT', 'Straight, Five high'),
+    ('Ac Kc Qc Tc 8c', 'FLUSH', 'Flush, Ace high, King-Queen-Ten-Eight kickers'),
+    ('Ac Ad Ah Ks Kc', 'FULL', 'Full house, Aces full of Kings'),
+    ('Ac Ad Ah As Kc', 'QUADS', 'Four of a kind, Aces, King kicker'),
+    ('Ac Kc Qc Jc Tc', 'STRAIGHT_FLUSH', 'Straight flush, Ace high'),
+    ('Ac 2c 3c 4c 5c', 'STRAIGHT_FLUSH', 'Straight flush, Five high'),
+    ('6c 6d 6h As Kc', 'TRIPS', 'Three of a kind, Sixes, Ace-King kickers'),
+])
+@pytest.mark.parametrize('encoding', ['strings', 'integers', 'array'])
+def test_best_hand_descriptions(cards, category, description, encoding):
+    cards = cards.split()
+    if encoding != 'strings':
+        cards = cards_to_int_array(cards)
+        if encoding == 'integers':
+            cards = cards.tolist()
+    result = evaluate_best_hand(cards)
+    assert result.category == category
+    assert result.description == description
+
+
+def test_description_uses_best_selection_including_equivalent_cards():
+    board = '7d Qs 9h 5h 9c'.split()
+    for hand in ('Tc 7s', 'Jd 7h'):
+        result = evaluate_best_hand(board, hand.split())
+        assert result.category == 'DOUBLES'
+        assert result.description == 'Two pair, Nines and Sevens, Queen kicker'
+    first = evaluate_best_hand('Ac Kd Qh Js Tc'.split(), 'Ad Kh'.split())
+    second = evaluate_best_hand('Ad Kh Qh Js Tc'.split(), 'Ac Kd'.split())
+    assert first.description == second.description == 'Straight, Ace high'
+
+
+def test_best_hand_original_constructor_defaults():
+    result = BestHand(123, (0, 1, 2), (0, 1))
+    assert result.category == result.description == ''
