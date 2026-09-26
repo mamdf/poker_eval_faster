@@ -54,5 +54,6 @@ edge that declares a risk. Full `what`/`risk` prose:
 `uv run tooling/workspace-index/impact.py libs/poker_eval_faster`.
 Refresh: `uv run tooling/workspace-index/gen_consumed_by.py --write`.
 
+- **`core/poker_game`** (uv-path) — Optional eval extra: evaluate_rank and evaluate_best_hand for showdown…
 - **`libs/holdem_insights`** (import) — lazy evaluator import; rank, HU and known-three-way counts… ⚠
 <!-- END AUTOGEN:consumed-by -->
