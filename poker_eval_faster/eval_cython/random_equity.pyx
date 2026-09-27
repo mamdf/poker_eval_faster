@@ -29,7 +29,8 @@ cdef inline uint32_t _bounded(uint64_t* state, uint32_t bound,
 
 def estimate_equity_vs_random_c(int[::1] hero, int[::1] board,
                                 int[::1] dead, int num_opponents,
-                                uint64_t samples, uint64_t seed):
+                                uint64_t samples, uint64_t seed,
+                                bint current_board=False):
     """Internal kernel: inputs must first be validated by the Python API."""
     cdef bint blocked[53]
     cdef int base[52]
@@ -38,7 +39,7 @@ def estimate_equity_vs_random_c(int[::1] hero, int[::1] board,
     cdef uint64_t outcomes[11]
     cdef uint64_t state = 0, sample, ties = 0
     cdef int i, j, tmp, n = 0, winners, offset
-    cdef int missing = 5 - board.shape[0]
+    cdef int missing = 0 if current_board else 5 - board.shape[0]
     cdef int draws = missing + 2 * num_opponents
     cdef uint32_t prefix = 53, final_board, hero_rank, rival_rank
     cdef double pot_share = 0.0

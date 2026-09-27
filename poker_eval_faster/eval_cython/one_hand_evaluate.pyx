@@ -53,12 +53,13 @@ cdef void _two_random_on_board(int hero0, int hero1, int* deck, int n,
     counts[2] += total - unbeaten
 
 
-cpdef object evaluate_one_hand_vs_two_random_c(int[:] hero, int[:] board, int[:] dead):
+cpdef object evaluate_one_hand_vs_two_random_c(int[:] hero, int[:] board, int[:] dead,
+                                                bint current_board=False):
     """Validated inputs only; exact win/tie/loss EVENTS, not pot shares."""
     cdef bint blocked[53]
     cdef int deck[52]
     cdef int rivals[52]
-    cdef int i, a, b, n = 0, m, missing = 5 - board.shape[0]
+    cdef int i, a, b, n = 0, m, missing = 0 if current_board else 5 - board.shape[0]
     cdef stdint.uint32_t prefix = 53, turn, river
     cdef stdint.uint64_t counts[3]
     for i in range(53):

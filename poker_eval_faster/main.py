@@ -567,6 +567,7 @@ def _simulation_cards(cards):
 
 def estimate_equity_vs_random(
     hero, board, num_opponents, *, dead_cards=(), samples=100_000, seed=None,
+    current_board=False,
 ) -> RandomEquityEstimate:
     """Estimate hero's postflop equity against 1–9 uniform random opponents.
 
@@ -577,6 +578,8 @@ def estimate_equity_vs_random(
     """
     from .eval_cython.random_equity import estimate_equity_vs_random_c
 
+    if not isinstance(current_board, bool):
+        raise ValueError("current_board must be true or false")
     opponents = _simulation_integer(num_opponents, "num_opponents", 1, 9)
     samples = _simulation_integer(samples, "samples", 1, (1 << 63) - 1)
     seed = randbits(64) if seed is None else _simulation_integer(seed, "seed", 0, (1 << 64) - 1)
@@ -588,11 +591,11 @@ def estimate_equity_vs_random(
     cards = np.concatenate((hero, board, dead))
     if _cards_have_duplicates(cards):
         raise ValueError("Cards must be distinct deck IDs in 1..52")
-    if 52 - len(cards) < 2 * opponents + 5 - len(board):
+    if 52 - len(cards) < 2 * opponents + (0 if current_board else 5 - len(board)):
         raise ValueError("Not enough cards for the rivals and the board runout")
 
     wins, ties, losses, equity = estimate_equity_vs_random_c(
-        hero, board, dead, opponents, samples, seed,
+        hero, board, dead, opponents, samples, seed, current_board,
     )
     return RandomEquityEstimate(
         equity=equity, wins=wins, ties=ties, losses=losses,
@@ -600,13 +603,15 @@ def estimate_equity_vs_random(
     )
 
 
-def evaluate_one_hand_vs_two_random(hero, board, dead_cards=()) -> Tuple[int, int, int]:
+def evaluate_one_hand_vs_two_random(hero, board, dead_cards=(), *, current_board=False) -> Tuple[int, int, int]:
     """Exact postflop win/tie/loss event counts versus two uniform random hands.
 
     Rivals occupy distinct seats and cannot share cards. Ties include both
     two-way and three-way top ties, so these counts are NOT split-pot equity.
     Additional known dead cards are excluded from rivals and board runouts.
     """
+    if not isinstance(current_board, bool):
+        raise ValueError("current_board must be true or false")
     hero = _normalize_cards(hero)
     board = _normalize_cards(board)
     dead = _normalize_cards(dead_cards)
@@ -615,9 +620,9 @@ def evaluate_one_hand_vs_two_random(hero, board, dead_cards=()) -> Tuple[int, in
     cards = np.concatenate((hero, board, dead))
     if np.any(cards < 1) or np.any(cards > 52) or len(set(cards.tolist())) != len(cards):
         raise ValueError("Cards must be distinct deck IDs in 1..52")
-    if 52 - len(cards) < 4 + 5 - len(board):
+    if 52 - len(cards) < 4 + (0 if current_board else 5 - len(board)):
         raise ValueError("Not enough cards for two rivals and the board runout")
-    return evaluate_one_hand_vs_two_random_c(hero, board, dead)
+    return evaluate_one_hand_vs_two_random_c(hero, board, dead, current_board)
 
 
 def evaluate_three_way_orders(hands, board=None) -> ThreeWayOrderCounts:

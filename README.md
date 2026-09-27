@@ -5,7 +5,7 @@ High-performance poker hand evaluation for Texas Hold’em using Cython-backed e
 ## Features
 - Evaluate one hand vs the entire range of possible opponents
 - Exact postflop win/tie/loss event counts against two uniform random rivals:
-  `evaluate_one_hand_vs_two_random(hero, board, dead_cards=())`. Supports
+  `evaluate_one_hand_vs_two_random(hero, board, dead_cards=(), current_board=False)`. Supports
   flop/turn/river and additional dead cards; ties are events, not pot shares.
   Counts compatible rival pairs per completed board without enumerating every
   pair. Uses the existing HandRanks table, no additional table or cache.
@@ -131,6 +131,10 @@ and optional `dead_cards=()`. Each sample completes the board and deals uniform
 random rival hands without repeated cards. Hero receives `1/k` of the pot when
 tied for first among `k` players. This assumes equal pot eligibility; it does
 not model side pots or opponent ranges.
+Set `current_board=True` to compare hands on the visible flop or turn without
+dealing later community cards. The same option is available for exact
+`evaluate_one_hand_vs_two_random`; exact heads-up comparison uses
+`evaluate_one_hand_vs_all(..., incomplete_board=True)`.
 
 The frozen `RandomEquityEstimate` returns `equity` in `[0, 1]`, sampled
 `wins`, `ties`, `losses`, `samples`, the actual `seed`, and `mode="monte_carlo"`.
