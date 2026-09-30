@@ -1,4 +1,4 @@
-"""Postflop random-opponent Monte Carlo latency, including Python overhead."""
+"""Random-opponent Monte Carlo latency on every street, including Python overhead."""
 import argparse
 import json
 import platform
@@ -30,7 +30,7 @@ def main():
     print(json.dumps({"package_import_ms": import_ms, "python": platform.python_version(),
                       "platform": platform.platform(), "repeats": args.repeats}))
     for hero, board in SCENARIOS:
-        for size in (3, 4, 5):
+        for size in (0, 3, 4, 5):
             for players in args.players:
                 for samples in args.samples:
                     times = []

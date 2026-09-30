@@ -569,7 +569,7 @@ def estimate_equity_vs_random(
     hero, board, num_opponents, *, dead_cards=(), samples=100_000, seed=None,
     current_board=False,
 ) -> RandomEquityEstimate:
-    """Estimate hero's postflop equity against 1–9 uniform random opponents.
+    """Estimate hero's preflop or postflop equity against 1–9 uniform random opponents.
 
     Complete exactly `samples` legal deals, sharing the pot equally among top
     hands. `error_bound_95` is a conservative absolute probability radius under
@@ -586,8 +586,9 @@ def estimate_equity_vs_random(
     hero = _simulation_cards(hero)
     board = _simulation_cards(board)
     dead = _simulation_cards(dead_cards)
-    if len(hero) != 2 or len(board) not in (3, 4, 5):
-        raise ValueError("Expected two hero cards and a flop, turn or river board")
+    if len(hero) != 2 or len(board) not in ((3, 4, 5) if current_board else (0, 3, 4, 5)):
+        raise ValueError("Expected two hero cards and an empty, flop, turn or river board; "
+                         "current_board needs a flop, turn or river")
     cards = np.concatenate((hero, board, dead))
     if _cards_have_duplicates(cards):
         raise ValueError("Cards must be distinct deck IDs in 1..52")

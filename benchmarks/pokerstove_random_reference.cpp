@@ -32,7 +32,7 @@ int main(int argc, char** argv) {
         const int players = std::stoi(argv[3]);
         const uint64_t samples = std::stoull(argv[4]), seed = std::stoull(argv[5]);
         const CardSet dead = parse_cards(std::string(argv[6]) == "-" ? "" : argv[6]);
-        if (players < 2 || players > 10 || hero.size() != 2 || board.size() < 3 || board.size() > 5 ||
+        if (players < 2 || players > 10 || hero.size() != 2 || board.size() == 1 || board.size() == 2 || board.size() > 5 ||
             !hero.disjoint(board) || !hero.disjoint(dead) || !board.disjoint(dead))
             throw std::invalid_argument("Invalid scenario");
         auto evaluator = PokerHandEvaluator::alloc("h");
@@ -40,7 +40,7 @@ int main(int argc, char** argv) {
         const auto start = std::chrono::steady_clock::now();
         double total = 0;
         if (!samples) {
-            if (dead.size() || !(players == 2 || (players == 3 && board.size() == 5)))
+            if (dead.size() || board.size() < 3 || !(players == 2 || (players == 3 && board.size() == 5)))
                 throw std::invalid_argument("Exact mode limited to HU postflop or three-player river without dead cards");
             std::vector<CardDistribution> distributions(players);
             distributions[0] = CardDistribution(hero);

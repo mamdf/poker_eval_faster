@@ -75,7 +75,8 @@ def test_pcg_reference_matches_published_vector():
     ]
 
 
-@pytest.mark.parametrize("size,opponents,seed", [(3, 7, 0), (4, 1, 42), (5, 9, (1 << 64) - 1)])
+# Preflop against nine rivals draws 23 cards, the size of the kernel's threshold array.
+@pytest.mark.parametrize("size,opponents,seed", [(0, 9, 7), (3, 7, 0), (4, 1, 42), (5, 9, (1 << 64) - 1)])
 def test_kernel_matches_independent_deals(size, opponents, seed):
     board = BOARD[:size]
     dead = ["3c", "4d"]
@@ -103,13 +104,15 @@ def test_kernel_matches_independent_deals(size, opponents, seed):
     assert result.equity == pytest.approx(sum(outcomes[k] / k for k in range(1, len(outcomes))) / samples)
 
 
-@pytest.mark.parametrize("size", [3, 4, 5])
+@pytest.mark.parametrize("size", [0, 3, 4, 5])
 @pytest.mark.parametrize("opponents", [1, 2, 3])
 def test_matches_exact_reduced_deck(size, opponents):
     deck = DECK.copy()
     random.Random(17 + size + opponents).shuffle(deck)
     hero, board = deck[:2], deck[2:2 + size]
-    available, dead = deck[2 + size:10 + size], deck[10 + size:]
+    # Enough cards for three rivals and the runout; preflop needs eleven.
+    end = 2 + size + max(8, 11 - size)
+    available, dead = deck[2 + size:end], deck[end:]
     outcomes, equity = exact_reduced_deck(hero, board, available, opponents)
     result = estimate_equity_vs_random(hero, board, opponents, dead_cards=dead, samples=50_000, seed=123)
     # Hoeffding at alpha=1e-9: conservative, fixed tolerance; no seed hunting.
@@ -131,6 +134,16 @@ def test_matches_existing_exact_evaluators(size):
     exact = evaluate_one_hand_vs_two_random(HERO, board)
     for actual, expected in zip((result.wins, result.ties, result.losses), exact):
         assert abs(actual / result.samples - expected / sum(exact)) < 0.011
+
+
+# Exhaustive heads-up preflop counts: pluribus/icm-calculator hu_preflop_equity_v1.bin.
+@pytest.mark.parametrize("hero, equity", [
+    (["Ac", "Ad"], 0.8520371330210104), (["7c", "2d"], 0.34583647315344157),
+    (["Js", "Ts"], 0.5752785710757826), (["5h", "6d"], 0.39944302303939544),
+])
+def test_preflop_matches_exact_heads_up(hero, equity):
+    result = estimate_equity_vs_random(hero, [], 1, seed=42)
+    assert abs(result.equity - equity) < sqrt(log(2e9) / (2 * result.samples))
 
 
 @pytest.mark.parametrize("opponents", [1, 2, 7, 9])
@@ -205,7 +218,7 @@ def test_one_sample_and_smallest_legal_deck():
     {"hero": ["Ac"]}, {"hero": ["Ac", "Ac"]}, {"hero": ["Ac", "As"]},
     {"hero": ["Xc", "Tc"]}, {"hero": [0, 2]}, {"hero": [1, 53]},
     {"hero": [1.5, 2]}, {"hero": [True, 2]}, {"hero": [1 << 32, 2]},
-    {"board": []}, {"board": BOARD[:2]}, {"board": BOARD + ["3c"]},
+    {"board": [], "current_board": True}, {"board": BOARD[:2]}, {"board": BOARD + ["3c"]},
     {"board": ["9c", "9c", "As"]}, {"dead_cards": ["Ac"]},
     {"dead_cards": ["3c", "3c"]}, {"dead_cards": ["9c"]},
     {"dead_cards": [c for c in DECK if c not in HERO + BOARD]},

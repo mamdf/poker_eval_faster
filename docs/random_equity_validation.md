@@ -1,17 +1,19 @@
 # Random-opponent equity validation with PokerStove
 
-Compared 100,000-sample estimates across 34 scenarios and seeds 0–99:
-**3,400 estimates**, with no observed difference above one percentage point.
+Compared 100,000-sample estimates across 48 scenarios and seeds 0–99:
+**4,800 estimates**, with no observed difference above one percentage point.
 
 | Reference | Scenarios / estimates | Mean absolute difference | Maximum difference |
 | --- | ---: | ---: | ---: |
 | PokerStove exact | 16 / 1,600 | 0.098 pp | 0.536 pp |
-| PokerStove independent 10M-sample simulation | 18 / 1,800 | 0.067 pp | 0.475 pp |
+| PokerStove independent 10M-sample simulation | 32 / 3,200 | 0.085 pp | 0.609 pp |
 
 The exact references cover four hands on flop/turn/river heads-up and four
 three-player river cases. The simulated references cover eight players on all
 postflop streets, a flush draw, a board-wide royal flush tie, ten players on
-flop, and additional dead cards. The saved [snapshot](../tests/fixtures/random_equity_pokerstove_snapshot.json)
+flop, and additional dead cards. Preflop cases cover the four hands against
+2, 3 and 8 players, aces against ten players, and dead cards; preflop is always
+simulated, because exact PokerStove enumeration is used only postflop. The saved [snapshot](../tests/fixtures/random_equity_pokerstove_snapshot.json)
 contains the reference equity, mode, sample count, timing, seed and per-case
 error statistics. Results are from September 2026, PokerStove revision
 `ae377e23cfd0cf2a5e2cdc11891a93307a30a65d`.

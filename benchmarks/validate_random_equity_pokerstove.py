@@ -30,6 +30,11 @@ def cases():
     yield dict(id="board_royal_8", hero=["2c", "3d"], board=["Ah", "Kh", "Qh", "Jh", "Th"], players=8, dead=[])
     yield dict(id="top_pair_flop_10", hero=SCENARIOS[0][1], board=SCENARIOS[0][2][:3], players=10, dead=[])
     yield dict(id="top_pair_flop_dead_8", hero=SCENARIOS[0][1], board=SCENARIOS[0][2][:3], players=8, dead=["Kh", "Qs", "Jc"])
+    for name, hero, _ in SCENARIOS:
+        for players in (2, 3, 8):
+            yield dict(id=f"{name}_preflop_{players}", hero=hero, board=[], players=players, dead=[])
+    yield dict(id="aces_preflop_10", hero=["Ac", "Ad"], board=[], players=10, dead=[])
+    yield dict(id="top_pair_preflop_dead_6", hero=SCENARIOS[0][1], board=[], players=6, dead=["Kh", "Qs", "Jc"])
 
 
 def main():
@@ -48,7 +53,8 @@ def main():
                    pokerstove_revision=args.revision, samples=args.samples, seeds=list(range(args.seeds)),
                    reference_samples=args.reference_samples, reference_seed=20260926, cases=[])
     for case in cases():
-        exact = case["players"] == 2 or (case["players"] == 3 and len(case["board"]) == 5)
+        # PokerStove's exact enumeration is used only postflop; preflop is simulated.
+        exact = bool(case["board"]) and (case["players"] == 2 or (case["players"] == 3 and len(case["board"]) == 5))
         command = [str(reference), "".join(case["hero"]), "".join(case["board"]), str(case["players"]),
                    "0" if exact else str(args.reference_samples), str(payload["reference_seed"]),
                    "".join(case["dead"]) or "-"]

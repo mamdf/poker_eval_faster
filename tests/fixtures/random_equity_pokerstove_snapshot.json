@@ -124,7 +124,7 @@
         "mode": "exact",
         "equity": 0.8796036217867855,
         "total": 1070190,
-        "seconds": 0.042605633,
+        "seconds": 0.041319488,
         "error_bound_95": 0
       },
       "comparison": {
@@ -154,7 +154,7 @@
         "mode": "monte_carlo",
         "equity": 0.4224848833333335,
         "total": 10000000,
-        "seconds": 2.515257354,
+        "seconds": 2.475736159,
         "error_bound_95": 0.00042946940834673753
       },
       "comparison": {
@@ -185,7 +185,7 @@
         "mode": "exact",
         "equity": 0.8632191480017567,
         "total": 45540,
-        "seconds": 0.001808972,
+        "seconds": 0.001811571,
         "error_bound_95": 0
       },
       "comparison": {
@@ -216,7 +216,7 @@
         "mode": "monte_carlo",
         "equity": 0.3264180999999607,
         "total": 10000000,
-        "seconds": 2.433371606,
+        "seconds": 2.452976606,
         "error_bound_95": 0.00042946940834673753
       },
       "comparison": {
@@ -248,7 +248,7 @@
         "mode": "exact",
         "equity": 0.8656565656565657,
         "total": 990,
-        "seconds": 0.00010512,
+        "seconds": 0.000112201,
         "error_bound_95": 0
       },
       "comparison": {
@@ -280,7 +280,7 @@
         "mode": "monte_carlo",
         "equity": 0.3174142166666666,
         "total": 10000000,
-        "seconds": 2.300304762,
+        "seconds": 2.302947881,
         "error_bound_95": 0.00042946940834673753
       },
       "comparison": {
@@ -312,7 +312,7 @@
         "mode": "exact",
         "equity": 0.7452084521851964,
         "total": 893970,
-        "seconds": 0.08294264,
+        "seconds": 0.090696427,
         "error_bound_95": 0
       },
       "comparison": {
@@ -342,7 +342,7 @@
         "mode": "exact",
         "equity": 0.6048388603892767,
         "total": 1070190,
-        "seconds": 0.042738893,
+        "seconds": 0.052312388,
         "error_bound_95": 0
       },
       "comparison": {
@@ -372,7 +372,7 @@
         "mode": "monte_carlo",
         "equity": 0.11093835833334509,
         "total": 10000000,
-        "seconds": 2.565343813,
+        "seconds": 2.823849141,
         "error_bound_95": 0.00042946940834673753
       },
       "comparison": {
@@ -403,7 +403,7 @@
         "mode": "exact",
         "equity": 0.6011089152393501,
         "total": 45540,
-        "seconds": 0.001814541,
+        "seconds": 0.001782432,
         "error_bound_95": 0
       },
       "comparison": {
@@ -434,7 +434,7 @@
         "mode": "monte_carlo",
         "equity": 0.0408040333333313,
         "total": 10000000,
-        "seconds": 2.454461301,
+        "seconds": 2.601033753,
         "error_bound_95": 0.00042946940834673753
       },
       "comparison": {
@@ -466,7 +466,7 @@
         "mode": "exact",
         "equity": 0.6696969696969697,
         "total": 990,
-        "seconds": 0.000175641,
+        "seconds": 0.000100981,
         "error_bound_95": 0
       },
       "comparison": {
@@ -498,7 +498,7 @@
         "mode": "monte_carlo",
         "equity": 0.04084600000000005,
         "total": 10000000,
-        "seconds": 2.315581769,
+        "seconds": 2.43243947,
         "error_bound_95": 0.00042946940834673753
       },
       "comparison": {
@@ -530,7 +530,7 @@
         "mode": "exact",
         "equity": 0.4416002028405129,
         "total": 893970,
-        "seconds": 0.081756952,
+        "seconds": 0.087990487,
         "error_bound_95": 0
       },
       "comparison": {
@@ -560,7 +560,7 @@
         "mode": "exact",
         "equity": 0.23997140694643007,
         "total": 1070190,
-        "seconds": 0.04234142,
+        "seconds": 0.044486287,
         "error_bound_95": 0
       },
       "comparison": {
@@ -590,7 +590,7 @@
         "mode": "monte_carlo",
         "equity": 0.018114100000000168,
         "total": 10000000,
-        "seconds": 2.579514073,
+        "seconds": 2.671320911,
         "error_bound_95": 0.00042946940834673753
       },
       "comparison": {
@@ -621,7 +621,7 @@
         "mode": "exact",
         "equity": 0.16306543697848044,
         "total": 45540,
-        "seconds": 0.001860012,
+        "seconds": 0.001792162,
         "error_bound_95": 0
       },
       "comparison": {
@@ -652,7 +652,7 @@
         "mode": "monte_carlo",
         "equity": 0.004409433333333343,
         "total": 10000000,
-        "seconds": 2.499152656,
+        "seconds": 2.473555812,
         "error_bound_95": 0.00042946940834673753
       },
       "comparison": {
@@ -684,7 +684,7 @@
         "mode": "exact",
         "equity": 0.10757575757575757,
         "total": 990,
-        "seconds": 0.000111661,
+        "seconds": 0.000100171,
         "error_bound_95": 0
       },
       "comparison": {
@@ -716,7 +716,7 @@
         "mode": "monte_carlo",
         "equity": 0,
         "total": 10000000,
-        "seconds": 2.351219387,
+        "seconds": 2.348444503,
         "error_bound_95": 0.00042946940834673753
       },
       "comparison": {
@@ -748,7 +748,7 @@
         "mode": "exact",
         "equity": 0.010013758850968214,
         "total": 893970.0000000002,
-        "seconds": 0.08451627,
+        "seconds": 0.081929577,
         "error_bound_95": 0
       },
       "comparison": {
@@ -778,7 +778,7 @@
         "mode": "exact",
         "equity": 0.4987656397462133,
         "total": 1070190,
-        "seconds": 0.046816239,
+        "seconds": 0.042619094,
         "error_bound_95": 0
       },
       "comparison": {
@@ -808,7 +808,7 @@
         "mode": "monte_carlo",
         "equity": 0.06502706666666819,
         "total": 10000000,
-        "seconds": 2.580264756,
+        "seconds": 2.60243201,
         "error_bound_95": 0.00042946940834673753
       },
       "comparison": {
@@ -839,7 +839,7 @@
         "mode": "exact",
         "equity": 0.4672705314009662,
         "total": 45540,
-        "seconds": 0.001820451,
+        "seconds": 0.001823241,
         "error_bound_95": 0
       },
       "comparison": {
@@ -870,7 +870,7 @@
         "mode": "monte_carlo",
         "equity": 0.04624251666666669,
         "total": 10000000,
-        "seconds": 2.508312683,
+        "seconds": 2.598455908,
         "error_bound_95": 0.00042946940834673753
       },
       "comparison": {
@@ -902,7 +902,7 @@
         "mode": "exact",
         "equity": 0.36414141414141415,
         "total": 990,
-        "seconds": 0.000100181,
+        "seconds": 0.000108981,
         "error_bound_95": 0
       },
       "comparison": {
@@ -934,7 +934,7 @@
         "mode": "monte_carlo",
         "equity": 0.00022231666666666666,
         "total": 10000000,
-        "seconds": 2.357176475,
+        "seconds": 2.402528147,
         "error_bound_95": 0.00042946940834673753
       },
       "comparison": {
@@ -966,7 +966,7 @@
         "mode": "exact",
         "equity": 0.12627269371455419,
         "total": 893970,
-        "seconds": 0.089629842,
+        "seconds": 0.08877964,
         "error_bound_95": 0
       },
       "comparison": {
@@ -996,7 +996,7 @@
         "mode": "monte_carlo",
         "equity": 0.4706731583333304,
         "total": 10000000,
-        "seconds": 2.634495262,
+        "seconds": 2.605487243,
         "error_bound_95": 0.00042946940834673753
       },
       "comparison": {
@@ -1027,7 +1027,7 @@
         "mode": "monte_carlo",
         "equity": 0.3039217583333333,
         "total": 10000000,
-        "seconds": 2.470704864,
+        "seconds": 2.452935962,
         "error_bound_95": 0.00042946940834673753
       },
       "comparison": {
@@ -1059,7 +1059,7 @@
         "mode": "monte_carlo",
         "equity": 0.00028871666666666665,
         "total": 10000000,
-        "seconds": 2.305967529,
+        "seconds": 2.370957455,
         "error_bound_95": 0.00042946940834673753
       },
       "comparison": {
@@ -1091,7 +1091,7 @@
         "mode": "monte_carlo",
         "equity": 0.125,
         "total": 10000000,
-        "seconds": 1.976119983,
+        "seconds": 1.986761508,
         "error_bound_95": 0.00042946940834673753
       },
       "comparison": {
@@ -1121,7 +1121,7 @@
         "mode": "monte_carlo",
         "equity": 0.33720101666666635,
         "total": 10000000,
-        "seconds": 2.926830913,
+        "seconds": 2.956111938,
         "error_bound_95": 0.00042946940834673753
       },
       "comparison": {
@@ -1155,7 +1155,7 @@
         "mode": "monte_carlo",
         "equity": 0.40931718333333444,
         "total": 10000000,
-        "seconds": 2.499621886,
+        "seconds": 2.505463455,
         "error_bound_95": 0.00042946940834673753
       },
       "comparison": {
@@ -1166,6 +1166,374 @@
         "mean_signed_error_pp": -0.01280833333344722,
         "count_over_one_pp": 0,
         "first_seed_equity": 0.40834833333333337
+      }
+    },
+    {
+      "id": "top_pair_preflop_2",
+      "hero": [
+        "Ac",
+        "Tc"
+      ],
+      "board": [],
+      "players": 2,
+      "dead": [],
+      "reference": {
+        "mode": "monte_carlo",
+        "equity": 0.6458087,
+        "total": 10000000,
+        "seconds": 1.498015371,
+        "error_bound_95": 0.00042946940834673753
+      },
+      "comparison": {
+        "mean_abs_error_pp": 0.12227339999999987,
+        "p95_abs_error_pp": 0.28472999999999354,
+        "max_abs_error_pp": 0.46412999999999593,
+        "max_error_seed": 1,
+        "mean_signed_error_pp": 0.031809999999998784,
+        "count_over_one_pp": 0,
+        "first_seed_equity": 0.647585
+      }
+    },
+    {
+      "id": "top_pair_preflop_3",
+      "hero": [
+        "Ac",
+        "Tc"
+      ],
+      "board": [],
+      "players": 3,
+      "dead": [],
+      "reference": {
+        "mode": "monte_carlo",
+        "equity": 0.47083648333332445,
+        "total": 10000000,
+        "seconds": 1.66271907,
+        "error_bound_95": 0.00042946940834673753
+      },
+      "comparison": {
+        "mean_abs_error_pp": 0.10995313333340462,
+        "p95_abs_error_pp": 0.29983500000089003,
+        "max_abs_error_pp": 0.39001833333421887,
+        "max_error_seed": 49,
+        "mean_signed_error_pp": 0.011770000000888015,
+        "count_over_one_pp": 0,
+        "first_seed_equity": 0.47237333333333337
+      }
+    },
+    {
+      "id": "top_pair_preflop_8",
+      "hero": [
+        "Ac",
+        "Tc"
+      ],
+      "board": [],
+      "players": 8,
+      "dead": [],
+      "reference": {
+        "mode": "monte_carlo",
+        "equity": 0.2101807916666585,
+        "total": 10000000,
+        "seconds": 2.78376298,
+        "error_bound_95": 0.00042946940834673753
+      },
+      "comparison": {
+        "mean_abs_error_pp": 0.11172041666650337,
+        "p95_abs_error_pp": 0.2805870833340669,
+        "max_abs_error_pp": 0.34920416666585075,
+        "max_error_seed": 38,
+        "mean_signed_error_pp": -0.034984583332517416,
+        "count_over_one_pp": 0,
+        "first_seed_equity": 0.21325916666666667
+      }
+    },
+    {
+      "id": "small_pair_preflop_2",
+      "hero": [
+        "5h",
+        "6d"
+      ],
+      "board": [],
+      "players": 2,
+      "dead": [],
+      "reference": {
+        "mode": "monte_carlo",
+        "equity": 0.39954875,
+        "total": 10000000,
+        "seconds": 1.46036033,
+        "error_bound_95": 0.00042946940834673753
+      },
+      "comparison": {
+        "mean_abs_error_pp": 0.11544000000000026,
+        "p95_abs_error_pp": 0.25628750000000144,
+        "max_abs_error_pp": 0.3868750000000032,
+        "max_error_seed": 16,
+        "mean_signed_error_pp": -0.027294999999999403,
+        "count_over_one_pp": 0,
+        "first_seed_equity": 0.40131
+      }
+    },
+    {
+      "id": "small_pair_preflop_3",
+      "hero": [
+        "5h",
+        "6d"
+      ],
+      "board": [],
+      "players": 3,
+      "dead": [],
+      "reference": {
+        "mode": "monte_carlo",
+        "equity": 0.26662560000000224,
+        "total": 10000000,
+        "seconds": 1.704013179,
+        "error_bound_95": 0.00042946940834673753
+      },
+      "comparison": {
+        "mean_abs_error_pp": 0.11301500000000009,
+        "p95_abs_error_pp": 0.2579123333335342,
+        "max_abs_error_pp": 0.304606666666446,
+        "max_error_seed": 44,
+        "mean_signed_error_pp": -0.005248333333557342,
+        "count_over_one_pp": 0,
+        "first_seed_equity": 0.26768166666666665
+      }
+    },
+    {
+      "id": "small_pair_preflop_8",
+      "hero": [
+        "5h",
+        "6d"
+      ],
+      "board": [],
+      "players": 8,
+      "dead": [],
+      "reference": {
+        "mode": "monte_carlo",
+        "equity": 0.10163240416666212,
+        "total": 10000000,
+        "seconds": 2.752749586,
+        "error_bound_95": 0.00042946940834673753
+      },
+      "comparison": {
+        "mean_abs_error_pp": 0.07752080000001824,
+        "p95_abs_error_pp": 0.1891366666671207,
+        "max_abs_error_pp": 0.24025958333378783,
+        "max_error_seed": 48,
+        "mean_signed_error_pp": 0.010731666667121442,
+        "count_over_one_pp": 0,
+        "first_seed_equity": 0.10019583333333335
+      }
+    },
+    {
+      "id": "weak_hand_preflop_2",
+      "hero": [
+        "4h",
+        "7d"
+      ],
+      "board": [],
+      "players": 2,
+      "dead": [],
+      "reference": {
+        "mode": "monte_carlo",
+        "equity": 0.38543625,
+        "total": 10000000,
+        "seconds": 1.601132341,
+        "error_bound_95": 0.00042946940834673753
+      },
+      "comparison": {
+        "mean_abs_error_pp": 0.11560500000000018,
+        "p95_abs_error_pp": 0.2715125000000004,
+        "max_abs_error_pp": 0.3786249999999991,
+        "max_error_seed": 84,
+        "mean_signed_error_pp": -0.031684999999997965,
+        "count_over_one_pp": 0,
+        "first_seed_equity": 0.38485
+      }
+    },
+    {
+      "id": "weak_hand_preflop_3",
+      "hero": [
+        "4h",
+        "7d"
+      ],
+      "board": [],
+      "players": 3,
+      "dead": [],
+      "reference": {
+        "mode": "monte_carlo",
+        "equity": 0.24469815000000214,
+        "total": 10000000,
+        "seconds": 1.69424676,
+        "error_bound_95": 0.00042946940834673753
+      },
+      "comparison": {
+        "mean_abs_error_pp": 0.11140719999997431,
+        "p95_abs_error_pp": 0.23853350000019244,
+        "max_abs_error_pp": 0.3711483333335458,
+        "max_error_seed": 23,
+        "mean_signed_error_pp": 0.011646666666453864,
+        "count_over_one_pp": 0,
+        "first_seed_equity": 0.24528333333333333
+      }
+    },
+    {
+      "id": "weak_hand_preflop_8",
+      "hero": [
+        "4h",
+        "7d"
+      ],
+      "board": [],
+      "players": 8,
+      "dead": [],
+      "reference": {
+        "mode": "monte_carlo",
+        "equity": 0.08455512916666306,
+        "total": 10000000,
+        "seconds": 2.779113814,
+        "error_bound_95": 0.00042946940834673753
+      },
+      "comparison": {
+        "mean_abs_error_pp": 0.06816432500000714,
+        "p95_abs_error_pp": 0.14999750000035975,
+        "max_abs_error_pp": 0.2668462499996402,
+        "max_error_seed": 97,
+        "mean_signed_error_pp": 0.0019508333336928918,
+        "count_over_one_pp": 0,
+        "first_seed_equity": 0.083955
+      }
+    },
+    {
+      "id": "overcards_preflop_2",
+      "hero": [
+        "Ks",
+        "Jh"
+      ],
+      "board": [],
+      "players": 2,
+      "dead": [],
+      "reference": {
+        "mode": "monte_carlo",
+        "equity": 0.60560765,
+        "total": 10000000,
+        "seconds": 1.491089153,
+        "error_bound_95": 0.00042946940834673753
+      },
+      "comparison": {
+        "mean_abs_error_pp": 0.1195334999999994,
+        "p95_abs_error_pp": 0.32253499999999324,
+        "max_abs_error_pp": 0.6092650000000033,
+        "max_error_seed": 98,
+        "mean_signed_error_pp": 0.01691499999999513,
+        "count_over_one_pp": 0,
+        "first_seed_equity": 0.605215
+      }
+    },
+    {
+      "id": "overcards_preflop_3",
+      "hero": [
+        "Ks",
+        "Jh"
+      ],
+      "board": [],
+      "players": 3,
+      "dead": [],
+      "reference": {
+        "mode": "monte_carlo",
+        "equity": 0.43089869999999075,
+        "total": 10000000,
+        "seconds": 1.689805546,
+        "error_bound_95": 0.00042946940834673753
+      },
+      "comparison": {
+        "mean_abs_error_pp": 0.13400060000011116,
+        "p95_abs_error_pp": 0.31522166666759055,
+        "max_abs_error_pp": 0.45279666666758756,
+        "max_error_seed": 87,
+        "mean_signed_error_pp": 0.01917500000092609,
+        "count_over_one_pp": 0,
+        "first_seed_equity": 0.430625
+      }
+    },
+    {
+      "id": "overcards_preflop_8",
+      "hero": [
+        "Ks",
+        "Jh"
+      ],
+      "board": [],
+      "players": 8,
+      "dead": [],
+      "reference": {
+        "mode": "monte_carlo",
+        "equity": 0.1771945666666615,
+        "total": 10000000,
+        "seconds": 3.010441301,
+        "error_bound_95": 0.00042946940834673753
+      },
+      "comparison": {
+        "mean_abs_error_pp": 0.08947916666666689,
+        "p95_abs_error_pp": 0.2168420833328191,
+        "max_abs_error_pp": 0.26666833333384987,
+        "max_error_seed": 69,
+        "mean_signed_error_pp": -0.004730833332816653,
+        "count_over_one_pp": 0,
+        "first_seed_equity": 0.17711875
+      }
+    },
+    {
+      "id": "aces_preflop_10",
+      "hero": [
+        "Ac",
+        "Ad"
+      ],
+      "board": [],
+      "players": 10,
+      "dead": [],
+      "reference": {
+        "mode": "monte_carlo",
+        "equity": 0.3108366133333332,
+        "total": 10000000,
+        "seconds": 3.144250256,
+        "error_bound_95": 0.00042946940834673753
+      },
+      "comparison": {
+        "mean_abs_error_pp": 0.11984842666666806,
+        "p95_abs_error_pp": 0.28284186666665323,
+        "max_abs_error_pp": 0.48833866666668224,
+        "max_error_seed": 87,
+        "mean_signed_error_pp": 0.010491333333351172,
+        "count_over_one_pp": 0,
+        "first_seed_equity": 0.3118356666666667
+      }
+    },
+    {
+      "id": "top_pair_preflop_dead_6",
+      "hero": [
+        "Ac",
+        "Tc"
+      ],
+      "board": [],
+      "players": 6,
+      "dead": [
+        "Kh",
+        "Qs",
+        "Jc"
+      ],
+      "reference": {
+        "mode": "monte_carlo",
+        "equity": 0.2739852999999985,
+        "total": 10000000,
+        "seconds": 2.275605763,
+        "error_bound_95": 0.00042946940834673753
+      },
+      "comparison": {
+        "mean_abs_error_pp": 0.11812989999998791,
+        "p95_abs_error_pp": 0.2892591666665162,
+        "max_abs_error_pp": 0.39052999999985016,
+        "max_error_seed": 1,
+        "mean_signed_error_pp": -0.013639166666518099,
+        "count_over_one_pp": 0,
+        "first_seed_equity": 0.271745
       }
     }
   ]

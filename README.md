@@ -10,7 +10,7 @@ High-performance poker hand evaluation for Texas Hold’em using Cython-backed e
   Counts compatible rival pairs per completed board without enumerating every
   pair. Uses the existing HandRanks table, no additional table or cache.
 - Evaluate multiple hands against each other on a given board
-- Estimate postflop split-pot equity against 1–9 uniform random opponents
+- Estimate preflop or postflop split-pot equity against 1–9 uniform random opponents
   with reproducible Cython Monte Carlo and a statistical error bound
 - Get exact heads-up win/tie/total counts for two specific combos
 - Build exact preflop heads-up lookup tables from canonical combo ids
@@ -126,13 +126,13 @@ result = estimate_equity_vs_random(
 print(result.equity, result.error_bound_95)
 ```
 
-Supports flop, turn and river, 2–10 players total, string or integer card IDs,
+Supports preflop (empty board), flop, turn and river, 2–10 players total, string or integer card IDs,
 and optional `dead_cards=()`. Each sample completes the board and deals uniform
 random rival hands without repeated cards. Hero receives `1/k` of the pot when
 tied for first among `k` players. This assumes equal pot eligibility; it does
 not model side pots or opponent ranges.
 Set `current_board=True` to compare hands on the visible flop or turn without
-dealing later community cards. The same option is available for exact
+dealing later community cards; it requires a flop, turn or river. The same option is available for exact
 `evaluate_one_hand_vs_two_random`; exact heads-up comparison uses
 `evaluate_one_hand_vs_all(..., incomplete_board=True)`.
 
@@ -153,7 +153,8 @@ always finish the requested sample count, without a time cutoff. Existing
 exact APIs retain their behavior. No additional equity tables are needed.
 
 An [independent PokerStove validation](docs/random_equity_validation.md) compares
-3,400 estimates with exact and 10M-sample references, including eight players.
+4,800 estimates with exact and 10M-sample references, including eight players
+and preflop.
 
 ### Exact heads-up counts
 ```python
@@ -299,7 +300,7 @@ Import path: `from poker_eval_faster import ...` (see `poker_eval_faster/__init_
 ## Benchmarks
 Basic, reproducible benchmarks are included.
 
-- Monte Carlo latency across four scenarios, all postflop streets, 2/3/6/8/10
+- Monte Carlo latency across four scenarios, preflop and all postflop streets, 2/3/6/8/10
   players and 10k/100k/1M samples:
 ```bash
 python benchmarks/benchmark_random_equity.py --repeats 7
@@ -317,6 +318,7 @@ python benchmarks/benchmark_random_equity.py --players 8 --samples 100000 --repe
 
   | Street | Warm median range | Worst scenario p95 |
   | --- | ---: | ---: |
+  | Preflop | 23.0–29.0 ms | 36.0 ms |
   | Flop | 4.64–5.33 ms | 5.90 ms |
   | Turn | 3.53–4.49 ms | 4.64 ms |
   | River | 3.02–4.14 ms | 4.32 ms |
