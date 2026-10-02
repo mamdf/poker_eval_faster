@@ -46,15 +46,8 @@ Recent history uses short imperative summaries, often in Spanish, for example: `
 ## Data & Configuration Notes
 `poker_eval_faster/data/HandRanks.dat` is required at runtime. Do not rename or relocate it without updating packaging in `setup.py` and adding a regression test.
 
-<!-- BEGIN AUTOGEN:consumed-by (workspace.contracts.yaml — do not edit by hand) -->
-## Consumed by
+## Cross-repo consumers
 
-If you change this repo's exposed surface, these repos may break — ⚠ marks an
-edge that declares a risk. Full `what`/`risk` prose:
-`uv run tooling/workspace-index/impact.py libs/poker_eval_faster`.
-Refresh: `uv run tooling/workspace-index/gen_consumed_by.py --write`.
-
-- **`core/poker_game`** (uv-path) — Optional eval extra: evaluate_rank and evaluate_best_hand for showdown…
-- **`libs/holdem_insights`** (import) — lazy evaluator import; rank, HU and known-three-way counts… ⚠
-- **`tooling/jev-lab`** (uv-path) — evaluate_best_hand, evaluate_one_hand_vs_all for spot labels…
-<!-- END AUTOGEN:consumed-by -->
+Other poker-stack repos may depend on this one. Before changing its exposed
+surface, run from the workspace root:
+`uv run tooling/workspace-index/impact.py libs/poker_eval_faster`
