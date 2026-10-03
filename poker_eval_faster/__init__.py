@@ -37,6 +37,7 @@ from .three_way_class_lookup import (
     unpack_class_triple_index,
     write_three_way_class_lookup,
 )
+from .preflop_tables import preflop_class_equities, preflop_equity_vs_random
 from .main import (
     BestHand,
     HeadsUpCounts,
